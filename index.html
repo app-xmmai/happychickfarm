@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en" data-lg-theme="dark">
+<head>
+
+<script>
+(function(){
+  try{
+    var h=(location.hostname||"").toLowerCase().replace(/\.+$/,"");
+    if(!h)return;
+    var ok =
+      h==="xmm-ai.com" ||
+      h==="www.xmm-ai.com" ||
+      h==="localhost" ||
+      h==="127.0.0.1" ||
+      h==="0.0.0.0" ||
+      h.endsWith(".local") ||
+      /^192\.168\.\d+\.\d+$/.test(h) ||
+      /^10\.\d+\.\d+\.\d+$/.test(h);
+    if(ok)return;
+    var path=(location.pathname||"/")+(location.search||"")+(location.hash||"");
+    var dest="https://xmm-ai.com"+path;
+    /* hard redirect — do not rewrite DOM (avoids breaking the page) */
+    location.replace(dest);
+  }catch(e){}
+})();
+</script>
+
+
+<script>
+(function(){
+  function apply(){
+    try{
+      var w=innerWidth||0;
+      var coarse=false;
+      try{coarse=matchMedia("(pointer:coarse)").matches}catch(e){}
+      var tab=w<=1100 || (coarse && w<=1400);
+      document.documentElement.classList.toggle("is-tablet", !!tab);
+      document.documentElement.classList.toggle("is-landscape", !!matchMedia("(orientation:landscape)").matches);
+      document.documentElement.classList.toggle("is-portrait", !!matchMedia("(orientation:portrait)").matches);
+    }catch(e){}
+  }
+  apply();
+  addEventListener("resize", apply);
+  addEventListener("orientationchange", function(){setTimeout(apply, 100)});
+})();
+</script>
+
+
+<script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="8dJAeILRK-D278rZk-3t9al1bweV_zfB74jZjzjLGfE" />
+<meta name="google-site-verification" content="CBqLRxP98Py_x8bL-OoaPuFanIPWQgY4GPwTYcnFwT0" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>XMM AI – Your smart assistant</title>
+<link rel="canonical" href="https://xmmai.vercel.app/">
+<meta name="description" content="XMM AI: your smart assistant. Chat, analyze images, create images and write with one fast AI, instantly.">
+<meta name="theme-color" content="#202020">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" href="/favicon.ico" sizes="48x48 96x96">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/chat/manifest.webmanifest">
+<meta property="og:site_name" content="XMM AI">
+<meta property="og:title" content="XMM AI – Your smart assistant">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xmmai.vercel.app/">
+<meta property="og:description" content="XMM AI: chat, analyze images, create images and write with one fast AI assistant.">
+<meta name="application-name" content="XMM AI">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"XMM AI","alternateName":["XMMAI","XMM AI Assistant"],"url":"https://xmmai.vercel.app/"}</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{color-scheme:dark;--bg:#202020;--ink:#f4f4f5;--mu:#a3a3a8;--ln:#3a3a3d;--card:#262628;--ac:#8b5cf6;--sb:env(safe-area-inset-bottom,0px)}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-height:100dvh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;color:var(--ink);padding-top:env(safe-area-inset-top,0px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.w{max-width:1240px;margin:0 auto;padding:0 28px}
+header{position:sticky;top:0;z-index:20;background:#1b1b1c;border-bottom:1px solid #2c2c2e}
+header .w{display:flex;align-items:center;gap:22px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:650;font-size:17px;color:var(--ink);text-decoration:none}
+.brand img{width:26px;height:26px;border-radius:7px}.dv{width:1px;height:26px;background:#5a5a5e}
+.nv{display:flex;gap:22px;margin-right:auto;align-items:center}
+.lk{font-size:14px;color:#d4d4d8;text-decoration:none}.lk:hover{color:#fff}
+select{appearance:none;background:none;border:1px solid var(--ln);border-radius:8px;height:34px;padding:0 10px;font-size:13px;font-family:inherit;color:var(--ink);cursor:pointer}select option{color:#000}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border-radius:12px;font-weight:600;font-size:14px;font-family:inherit;text-decoration:none;cursor:pointer;border:1px solid transparent;background:#fff;color:#111;transition:transform .15s,opacity .15s}
+.btn:hover{transform:translateY(-1px);opacity:.93}.btn.big{height:50px;padding:0 34px;font-size:16px;border-radius:14px}
+.btn.o{background:transparent;color:var(--ink);border-color:#5a5a5e}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,.tab:focus-visible{outline:2px solid #b9a3f8;outline-offset:3px}
+em,i{font-style:italic}
+.hero{padding:110px 28px 80px;text-align:center}
+.hero h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:clamp(40px,6vw,76px);line-height:1.06;letter-spacing:-.02em;margin:0 auto 24px;max-width:11em;color:#ececee}
+.hero .sub{font-size:clamp(16px,1.8vw,20px);line-height:1.55;color:var(--mu);max-width:28em;margin:0 auto 34px}
+.row.ctr{justify-content:center}.row .btn.big{height:50px;padding:0 34px;font-size:16px;border-radius:14px}
+.one{padding:40px 0 40px}
+.one h2,.dlh,.dk h2{font-weight:300;font-size:clamp(30px,4vw,46px);letter-spacing:-.01em;color:#ececee}
+.one h2{text-align:center;margin-bottom:34px}.one h2 i{font-style:italic}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:44px}
+.tab{height:42px;padding:0 24px;border-radius:99px;border:0;background:transparent;color:#e8e8ea;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer;transition:background .2s,color .2s}
+.tab[aria-selected=true]{background:#fff;color:#111}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cd{border:1px solid #5b5b5f;border-radius:30px;padding:14px 14px 28px;display:flex;flex-direction:column;background:transparent;min-height:448px}
+.mock{height:206px;border-radius:20px;background:#181818;display:grid;place-items:center;overflow:hidden;position:relative;padding:0 14px}
+.cd h3{font-size:18px;font-weight:600;margin:30px 14px 10px;color:#ededef}
+.cd p{font-size:16px;line-height:1.5;color:var(--mu);margin:0 14px 24px}
+.go{margin:auto 14px 0;display:inline-flex;align-items:center;gap:12px;color:#ececee;text-decoration:none;font-size:16px;font-weight:500}
+.go i{width:32px;height:32px;border:1px solid #6a6a6e;border-radius:9px;display:grid;place-items:center;transition:background .2s}
+.go:hover i{background:#3a3a3d}.go svg{width:14px;height:14px}
+form.ask{display:flex;align-items:center;gap:10px;width:100%;height:56px;border:1px solid #6a6a6e;border-radius:99px;padding:0 8px 0 20px;background:#202020}
+form.ask svg{flex:none}
+.ask input{flex:1;min-width:0;border:0;outline:0;font-size:15px;font-family:inherit;background:none;color:var(--ink)}
+.ask .wv{width:38px;height:38px;border-radius:50%;background:#fff;border:0;display:grid;place-items:center;cursor:pointer;flex:none}
+.sr{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;position:relative}
+.sr .t{font-size:17px;color:#e8e8ea}.sr .c{width:58px;height:58px;border-radius:50%;background:#37373a;display:grid;place-items:center}
+.chips{display:grid;gap:8px;justify-items:start}.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:#3a3a3d;font-size:13px;color:#e2e2e5;text-decoration:none;transition:background .15s}.chip:hover{background:#4a4a4e}.pl{display:grid;gap:10px;justify-items:start;width:100%}.pl .chip{text-align:left;border-radius:14px}
+#download{padding:90px 0 50px}
+.dl{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.dlb{display:flex;gap:24px;align-items:flex-start}
+.pic{flex:none;width:264px;height:198px;border-radius:20px;background:#181818;overflow:hidden;display:grid;place-items:center;position:relative}
+.dlb h3{font-weight:300;font-size:clamp(28px,3vw,38px);line-height:1.12;margin-bottom:14px;color:#ececee}
+.dlb p{color:var(--mu);font-size:16px;line-height:1.5;margin-bottom:20px;max-width:17em}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row .btn{height:40px;border-radius:10px;font-weight:500;font-size:14px;font-family:inherit}
+.ph{width:150px;height:190px;align-self:flex-end;background:#fff;border-radius:22px 22px 0 0;border:3px solid #d0d0d4;border-bottom:0;margin-top:22px;display:grid;place-items:start center;padding-top:12px}
+.ph img{width:122px;height:122px;display:block}
+.dk{padding:70px 0 40px}
+.dkh{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:36px}
+.dkh h2{font-size:clamp(34px,4.4vw,54px)}
+.ex{height:48px;padding:0 24px;border-radius:12px;border:2px solid #6a6a6e;background:transparent;color:#ececee;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer}.ex:hover{background:#2c2c2e}
+details{border-top:1px solid #3a3a3d;padding:26px 0}details:last-child{border-bottom:1px solid #3a3a3d}
+summary{list-style:none;display:grid;grid-template-columns:230px 1fr 48px;gap:20px;align-items:start;cursor:pointer;font-size:18px;font-weight:500;color:#ededef}
+summary::-webkit-details-marker{display:none}
+summary .n{font-size:15px;color:#d4d4d8;padding-top:2px}
+summary .pm{width:34px;height:34px;border:1px solid #6a6a6e;border-radius:9px;display:grid;place-items:center;justify-self:end}
+summary .pm:before{content:"";width:12px;height:2px;background:#ececee;border-radius:2px}
+details:not([open]) summary .pm:after{content:"";position:absolute;width:2px;height:12px;background:#ececee;border-radius:2px}
+summary .pm{position:relative}
+details .bd{margin:12px 0 0 250px;color:var(--mu);font-size:16px;line-height:1.55;max-width:46em;padding-right:68px}
+footer{border-top:1px solid var(--ln);padding:34px 0 calc(34px + var(--sb));font-size:13px;color:var(--mu);text-align:center;margin-top:50px}
+.fl{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}.fl a{color:var(--mu)}.fl a:hover{color:var(--ink)}.lnk{margin:0!important;background:none;border:0;color:var(--mu);font-size:13px;font-family:inherit;text-decoration:underline;cursor:pointer}
+.ck{position:fixed;left:12px;right:12px;bottom:calc(12px + var(--sb));z-index:60;display:flex;justify-content:center}.ck[hidden]{display:none}.ckb{max-width:620px;background:#141417;border:1px solid #33333b;border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.6);text-align:left}.ckb h3{font-size:15px;margin-bottom:6px}.ckb p{font-size:13px;line-height:1.5;color:var(--mu)}.ckb a{color:#b9a3f8}.ckb b{color:var(--ink);font-weight:600}.ckr{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;flex-wrap:wrap}.ckr .btn{height:40px;flex:1 1 150px}.ckr .btn:not(.big){background:#2a2a2e;color:#fff;border-color:#3a3a3f}.ckr .btn.p{background:#fff;color:#111}
+.ig-modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:20px}.ig-modal[hidden]{display:none}
+.ig-sheet{width:min(420px,100%);background:#1b1b1c;border:1px solid #3a3a3d;border-radius:18px;padding:20px;text-align:left}
+.ig-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.ig-head h3{font-size:18px}.ig-head button{background:none;border:0;color:#fff;font-size:26px;cursor:pointer;line-height:1}
+.ig-hint{color:var(--mu);font-size:14px;margin-bottom:14px;line-height:1.5}.ig-step{display:flex;gap:12px;align-items:center;margin:10px 0}.ig-n{flex:none;width:26px;height:26px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-size:13px;font-weight:700}.ig-txt b{font-weight:500;font-size:14.5px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(max-width:980px){
+ .cards{grid-template-columns:1fr}.cd{min-height:0}.dl{grid-template-columns:1fr;gap:44px}
+ summary{grid-template-columns:48px 1fr 40px;gap:12px;font-size:17px}details .bd{margin-left:60px;padding-right:0}
+}
+@media(max-width:560px){.w{padding:0 18px}.nv .lk{display:none}.dlb{flex-direction:column}.pic{width:100%}.dkh{flex-direction:column;align-items:flex-start}.tab{padding:0 16px}header .w{gap:12px}.nv{margin-right:auto}}
+
+/* ---- Anthropic-style home: pill nav + video hero ---- */
+header{position:static!important;background:transparent!important;border:0!important}
+header .w{height:78px!important;max-width:1360px}
+.brand{font-weight:700;letter-spacing:.05em;font-size:18px}
+.nv{margin:0 0 0 auto!important;gap:6px!important}
+.lk{padding:9px 16px;border-radius:99px;background:#2a2a2c;color:#ececee;font-size:14px;transition:background .2s}.lk:hover{background:#3a3a3d}
+select{border-radius:99px;background:#2a2a2c;border-color:transparent;padding:0 14px}
+header .btn{height:36px;border-radius:99px;padding:0 18px}
+.hv-w{max-width:1360px!important;padding-top:4px!important}
+.hv{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:2/1;min-height:440px;background:#000;display:grid;place-items:center}
+.hv-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hv:before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at center,rgba(0,0,0,.55),rgba(0,0,0,.12) 70%)}
+.hv-c{position:relative;z-index:2;text-align:center;padding:30px 24px}
+.hv-c h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:clamp(34px,5.2vw,68px);line-height:1.05;letter-spacing:-.02em;margin:0 auto 18px;max-width:12em;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.hv-c .sub{font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:rgba(255,255,255,.88);max-width:30em;margin:0 auto 26px;text-shadow:0 1px 18px rgba(0,0,0,.7)}
+.hv-c .row{justify-content:center}.hv-c .btn.big{height:44px;padding:0 22px;border-radius:10px;font-size:15px}
+.hv-c .btn.o{background:rgba(20,20,22,.72);border-color:transparent;color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@media(max-width:560px){.hv{aspect-ratio:auto;min-height:520px;border-radius:18px}header .w{height:64px!important}}
+@media(prefers-reduced-motion:reduce){.hv-v{display:none}.hv{background:#000 url(/media/hero-icon.jpg) center/cover}}
+.hero2{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:70px 0 50px}
+.hero2 h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:clamp(40px,6vw,76px);line-height:1.05;letter-spacing:-.02em;margin:0 0 18px;color:#ececee}
+.hero2 .sub{font-size:clamp(17px,1.9vw,22px);line-height:1.5;color:var(--mu);max-width:24em;margin:0 0 30px}
+.hero2 .row{display:flex;gap:12px;flex-wrap:wrap}
+.hero2 .pic2{display:grid;place-items:center}.hero2 .pic2 img{width:min(100%,340px);aspect-ratio:1;border-radius:22%;display:block}
+@media(max-width:760px){.hero2{grid-template-columns:1fr;gap:28px;padding:40px 0 30px;text-align:left}.hero2 .pic2 img{width:min(70%,260px)}}
+</style>
+</head>
+<body>
+<header><div class="w"><a class="brand" href="/"><img src="/icon.svg?v=x33" alt="" width="26" height="26"><span>XMM AI</span></a><nav class="nv"><a class="lk" href="#one" data-t="nf">Features</a><a class="lk" href="#download" data-t="nd">Download</a><a class="lk" href="/support">Support</a></nav>
+<select id="lang" aria-label="Language"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select>
+<a class="btn js-open" href="/chat/?lens=clone" data-t="signin">Sign in</a></div></header>
+<main>
+<div class="w"><div class="hero2"><div><h1>XMM AI</h1><p class="sub">Fast, free, local and private.</p><div class="row"><a class="btn big js-open" href="/chat/?lens=clone" data-t="signin">Sign in</a><a class="btn big o" href="#one" data-t="see">See features</a></div></div><div class="pic2"><img src="/icon.svg?v=x33" alt="XMM AI" width="340" height="340"></div></div></div>
+
+<section class="one" id="one"><div class="w"><h2 data-t="one">One XMM AI for <i>every part</i> of your day</h2>
+<div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-tab="work" data-t="work">Work</button><button class="tab" role="tab" aria-selected="false" data-tab="life" data-t="life">Life</button><button class="tab" role="tab" aria-selected="false" data-tab="school" data-t="school">School</button></div>
+<div class="cards">
+<div class="cd"><div class="mock"><form class="ask" id="ask" action="/chat/" autocomplete="off"><input type="hidden" name="lens" value="clone"><input id="q" name="q" data-p="ph" enterkeyhint="send" dir="auto" aria-label="Message" placeholder="Ask XMM AI"><button class="wv" type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></form></div>
+<h3 data-t="c1t">Get started with chat</h3><p id="d1"></p><a class="go" href="/chat/?lens=clone"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i><span data-t="b1">Go to Chat</span></a></div>
+<div class="cd"><div class="mock"><div class="sr"><div class="chips"><a class="chip" href="/chat/?go=analyze" data-t="k1">Photos</a><a class="chip" href="/chat/?go=analyze" data-t="k2">Screenshots</a></div><a class="c" href="/chat/?go=analyze" aria-label="Analyze"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg></a><div class="chips"><a class="chip" href="/chat/?go=analyze" data-t="k3">Charts</a><a class="chip" href="/chat/?go=analyze" data-t="k4">Documents</a></div></div></div>
+<h3 data-t="c2t">Analyze what you see</h3><p id="d2"></p><a class="go" href="/chat/?go=analyze"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i><span data-t="b2">Go to Analyze</span></a></div>
+<div class="cd"><div class="mock"><div class="pl"><a class="chip" href="/chat/?lens=clone&amp;q=make%20image%20of%20a%20red%20car%20at%20sunset" data-t="p1">Make image of a red car at sunset</a><a class="chip" href="/chat/?lens=clone&amp;q=Write%20a%20polite%20email%20to%20my%20landlord" data-t="p2">Write a polite email to my landlord</a><a class="chip" href="/chat/?lens=clone&amp;q=Translate%20%22good%20morning%22%20into%20German" data-t="p3">Translate “good morning” into German</a></div></div>
+<h3 data-t="c3t">Create with AI</h3><p id="d3"></p><a class="go" href="/chat/?go=image"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i><span data-t="b3">Start creating</span></a></div>
+</div></div></section>
+
+<section id="download"><div class="w dl">
+<div class="dlb"><div class="pic"><img src="/icon.svg?v=x33" alt="" width="84" height="84" style="border-radius:20px"></div>
+<div><h3 data-t="dl1">Download for desktop</h3><p data-t="dl1d">Bring XMM AI to your desktop in its own focused window.</p><div class="row"><button class="btn js-inst" type="button" data-os="linux" data-t="lin">For Linux</button><button class="btn js-inst" type="button" data-os="windows" data-t="win">For Windows</button><button class="btn js-inst" type="button" data-os="mac" data-t="mac">For Mac</button></div></div></div>
+<div class="dlb"><div class="pic"><div class="ph"><img src="/qr/qr.svg" alt="QR code: install XMM AI on your phone" width="122" height="122"></div></div>
+<div><h3 data-t="dl2">Download on mobile</h3><p data-t="dl2d">Scan the code to see how to install XMM AI on your phone.</p><div class="row"><a class="btn" href="/qr#ios" data-t="ios">iPhone &amp; iPad</a><a class="btn" href="/qr#android" data-t="and">Android</a></div></div></div>
+</div></section>
+
+<section class="dk" id="dyk"><div class="w"><div class="dkh"><h2 data-t="dk">Did you know?</h2><button class="ex" id="exAll" type="button" data-t="ex">Expand all</button></div><div id="faq"></div></div></section>
+</main>
+<div class="ig-modal" id="igModal" hidden><div class="ig-sheet"><div class="ig-head"><h3>Install XMM AI</h3><button type="button" id="igClose" aria-label="Close">×</button></div><div id="igContent"></div></div></div>
+<footer><div class="w"><nav class="fl"><a href="/privacy" data-t="pp">Privacy Policy</a><a href="/terms" data-t="tu">Terms of Use</a><a href="/support">Support</a><button type="button" class="lnk" id="ckOpen" data-t="cs">Cookie settings</button></nav>© XMMAI. All rights reserved.</div></footer>
+<div class="ck" id="ck" role="dialog" aria-modal="false" aria-labelledby="ckT" hidden><div class="ckb"><h3 id="ckT" data-t="ckt">Cookies &amp; local storage</h3><p data-t="ckp">We use only what is needed to run XMM AI: your chats, profile and settings are stored on this device, not on our servers. <b>Necessary</b> storage keeps the app working. <b>Optional</b> storage remembers your language and display preferences. We do not use ads or tracking. <a href="/privacy">Privacy Policy</a></p><div class="ckr"><button type="button" class="btn" id="ckN" data-t="ckn">Accept only necessary</button><button type="button" class="btn p" id="ckA" data-t="cka">Accept all</button></div></div></div>
+<script>
+if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)location.replace("/chat/?lens=clone");
+
+var T={
+en:{h1:"Your smart assistant. Instantly.",tag:"Local, private, fast",sub:"Chat, analyze images, create visuals, write and code. Your chats stay on this device.",ph:"Ask anything…",open:"Open XMM AI",cta:"Start chatting",install:"Install app",ios:"Tap Share, then “Add to Home Screen”.",chat:"Chat",analyze:"Analyze",image:"Create images",write:"Write",code:"Code",translate:"Translate"},
+de:{h1:"Dein smarter Assistent. Sofort.",tag:"Lokal, privat, schnell",sub:"Chatten, Bilder analysieren, Visuals erstellen, schreiben und coden. Deine Chats bleiben auf diesem Gerät.",ph:"Frag irgendwas…",open:"XMM AI öffnen",cta:"Jetzt chatten",install:"App installieren",ios:"Tippe auf Teilen, dann „Zum Home-Bildschirm“.",chat:"Chat",analyze:"Analysieren",image:"Bilder erstellen",write:"Schreiben",code:"Code",translate:"Übersetzen"},
+es:{h1:"Tu asistente inteligente. Al instante.",tag:"Local, privado, rápido",sub:"Chatea, analiza imágenes, crea visuales, escribe y programa. Tus chats se quedan en este dispositivo.",ph:"Pregunta lo que quieras…",open:"Abrir XMM AI",cta:"Empezar a chatear",install:"Instalar app",ios:"Pulsa Compartir y luego «Añadir a pantalla de inicio».",chat:"Chat",analyze:"Analizar",image:"Crear imágenes",write:"Escribir",code:"Código",translate:"Traducir"},
+ar:{h1:"مساعدك الذكي. فورًا.",tag:"محلي، خاص، سريع",sub:"دردشة، تحليل صور، إنشاء مرئيات، كتابة وبرمجة. تبقى محادثاتك على هذا الجهاز.",ph:"اسأل أي شيء…",open:"افتح XMM AI",cta:"ابدأ الدردشة",install:"تثبيت التطبيق",ios:"اضغط مشاركة ثم «إضافة إلى الشاشة الرئيسية».",chat:"دردشة",analyze:"تحليل",image:"إنشاء صور",write:"كتابة",code:"برمجة",translate:"ترجمة"},
+fa:{h1:"دستیار هوشمند شما. فوری.",tag:"محلی، خصوصی، سریع",sub:"گفتگو، تحلیل تصویر، ساخت ویژوال، نوشتن و کدنویسی. گفتگوهای شما روی همین دستگاه می‌مانند.",ph:"هر چیزی بپرسید…",open:"باز کردن XMM AI",cta:"شروع گفتگو",install:"نصب برنامه",ios:"روی اشتراک‌گذاری بزنید و «افزودن به صفحه اصلی» را انتخاب کنید.",chat:"گفتگو",analyze:"تحلیل",image:"ساخت تصویر",write:"نوشتن",code:"کد",translate:"ترجمه"}
+};
+
+T.en.signin="Sign in";T.en.local="Local account · your chats stay on this device";T.en.nf="Features";T.en.nl="Local";T.en.fh="Everything in one workspace";T.en.fl="Tools for everyday work, built to stay out of your way.";T.en.lh="Local by design";T.en.ll="Your profile and chat history are saved on this device. No email and no password to create an account.";
+T.de.signin="Anmelden";T.de.local="Lokales Konto · Chats bleiben auf diesem Gerät";T.de.nf="Funktionen";T.de.nl="Lokal";T.de.fh="Alles in einem Arbeitsbereich";T.de.fl="Werkzeuge für den Alltag, die nicht im Weg stehen.";T.de.lh="Lokal von Grund auf";T.de.ll="Dein Profil und dein Chatverlauf werden auf diesem Gerät gespeichert. Keine E-Mail, kein Passwort.";
+
+Object.assign(T.en,{"pp": "Privacy Policy", "tu": "Terms of Use", "cs": "Cookie settings", "ckt": "Cookies & local storage", "ckp": "We use only what is needed to run XMM AI: your chats, profile and settings are stored on this device, not on our servers. <b>Necessary</b> storage keeps the app working. <b>Optional</b> storage remembers your language and display preferences. We do not use ads or tracking. <a href=\"/privacy\">Privacy Policy</a>", "ckn": "Accept only necessary", "cka": "Accept all"});
+Object.assign(T.de,{"pp": "Datenschutz", "tu": "Nutzungsbedingungen", "cs": "Cookie-Einstellungen", "ckt": "Cookies & lokaler Speicher", "ckp": "Wir nutzen nur, was zum Betrieb von XMM AI nötig ist: Chats, Profil und Einstellungen liegen auf deinem Gerät, nicht auf unseren Servern. <b>Notwendiger</b> Speicher hält die App am Laufen. <b>Optionaler</b> Speicher merkt sich Sprache und Anzeige. Keine Werbung, kein Tracking. <a href=\"/privacy\">Datenschutz</a>", "ckn": "Nur notwendige", "cka": "Alle akzeptieren"});
+Object.assign(T.es,{"pp": "Privacidad", "tu": "Términos de uso", "cs": "Ajustes de cookies", "ckt": "Cookies y almacenamiento local", "ckp": "Solo usamos lo necesario para que XMM AI funcione: tus chats, perfil y ajustes se guardan en este dispositivo, no en nuestros servidores. El almacenamiento <b>necesario</b> mantiene la app funcionando. El <b>opcional</b> recuerda idioma y preferencias. Sin anuncios ni seguimiento. <a href=\"/privacy\">Privacidad</a>", "ckn": "Solo las necesarias", "cka": "Aceptar todas"});
+Object.assign(T.ar,{"pp": "سياسة الخصوصية", "tu": "شروط الاستخدام", "cs": "إعدادات الكوكيز", "ckt": "الكوكيز والتخزين المحلي", "ckp": "نستخدم فقط ما يلزم لتشغيل XMM AI: تُحفظ محادثاتك وملفك وإعداداتك على هذا الجهاز لا على خوادمنا. التخزين <b>الضروري</b> يبقي التطبيق يعمل، و<b>الاختياري</b> يتذكر لغتك وتفضيلاتك. لا إعلانات ولا تتبع. <a href=\"/privacy\">سياسة الخصوصية</a>", "ckn": "الضرورية فقط", "cka": "قبول الكل"});
+Object.assign(T.fa,{"pp": "حریم خصوصی", "tu": "شرایط استفاده", "cs": "تنظیمات کوکی", "ckt": "کوکی‌ها و ذخیره‌سازی محلی", "ckp": "فقط آنچه برای اجرای XMM AI لازم است استفاده می‌شود: گفتگوها، پروفایل و تنظیمات روی همین دستگاه ذخیره می‌شوند، نه روی سرورهای ما. ذخیره‌سازی <b>ضروری</b> برنامه را فعال نگه می‌دارد و <b>اختیاری</b> زبان و ترجیحات را به خاطر می‌سپارد. بدون تبلیغات و ردیابی. <a href=\"/privacy\">حریم خصوصی</a>", "ckn": "فقط ضروری", "cka": "پذیرش همه"});
+
+Object.assign(T.en,{h1:"Sign into <i>XMM AI</i>",sub:"Chat to find answers, create content, and complete tasks with AI. Your chats stay on this device.",nd:"Download",one:"One XMM AI for <i>every part</i> of your day",work:"Work",life:"Life",school:"School",c1t:"Get started with chat",b1:"Go to Chat",c2t:"Analyze what you see",b2:"Go to Analyze",c3t:"Create with AI",b3:"Start creating",k1:"Photos",k2:"Screenshots",k3:"Charts",k4:"Documents",p1:"Make image of a red car at sunset",p2:"Write a polite email to my landlord",p3:"Translate “good morning” into German",see:"See features",lin:"For Linux",dl1:"Download for desktop",dl1d:"Bring XMM AI to your desktop in its own focused window.",win:"For Windows",mac:"For Mac",dl2:"Download on mobile",dl2d:"Scan the code to see how to install XMM AI on your phone.",ios:"iPhone & iPad",and:"Android",dk:"Did you know?",ex:"Expand all",ph:"Ask XMM AI"});
+Object.assign(T.de,{h1:"Melde dich bei <i>XMM AI</i> an",sub:"Chatte, finde Antworten, erstelle Inhalte und erledige Aufgaben mit KI. Deine Chats bleiben auf diesem Gerät.",nd:"Download",one:"Ein XMM AI für <i>jeden Teil</i> deines Tages",work:"Arbeit",life:"Alltag",school:"Schule",c1t:"Starte mit dem Chat",b1:"Zum Chat",c2t:"Analysiere, was du siehst",b2:"Zur Analyse",c3t:"Mit KI erstellen",b3:"Jetzt erstellen",k1:"Fotos",k2:"Screenshots",k3:"Diagramme",k4:"Dokumente",p1:"Make image of a red car at sunset",p2:"Schreibe eine höfliche E-Mail an meinen Vermieter",p3:"Übersetze „good morning“ ins Deutsche",see:"Funktionen ansehen",lin:"Für Linux",dl1:"Für den Desktop laden",dl1d:"Hol XMM AI in einem eigenen, fokussierten Fenster auf deinen Desktop.",win:"Für Windows",mac:"Für Mac",dl2:"Auf dem Handy laden",dl2d:"Scanne den Code und sieh, wie du XMM AI auf deinem Handy installierst.",ios:"iPhone & iPad",and:"Android",dk:"Schon gewusst?",ex:"Alle öffnen",ph:"Frag XMM AI"});
+Object.assign(T.es,{h1:"Inicia sesión en <i>XMM AI</i>",sub:"Chatea para encontrar respuestas, crear contenido y completar tareas con IA. Tus chats se quedan en este dispositivo.",ph:"Pregunta a XMM AI"});
+Object.assign(T.ar,{h1:"سجّل الدخول إلى <i>XMM AI</i>",sub:"دردش للعثور على إجابات وإنشاء محتوى وإنجاز المهام بالذكاء الاصطناعي. تبقى محادثاتك على هذا الجهاز.",ph:"اسأل XMM AI"});
+Object.assign(T.fa,{h1:"وارد <i>XMM AI</i> شوید",sub:"گفتگو کنید تا پاسخ بگیرید، محتوا بسازید و کارها را با هوش مصنوعی انجام دهید. گفتگوهای شما روی همین دستگاه می‌مانند.",ph:"از XMM AI بپرسید"});
+var TABS={
+en:{work:["Think through projects, summarize information, and keep work moving forward in one conversation.","Upload a screenshot or chart and ask for the key points, fast.","Draft content, generate images, and turn ideas into polished work faster."],
+life:["Plan trips, get recipe ideas, and talk things through any time of day.","Upload a photo and ask what it is, how it works, or what to do next.","Make images, write messages, and translate between languages."],
+school:["Explain tricky topics, check your understanding, and study at your own pace.","Upload a diagram or worksheet and ask for a step-by-step explanation.","Write essays, outline ideas, or build a small website with the code agent."]},
+de:{work:["Denke Projekte durch, fasse Infos zusammen und bleib in einem Gespräch am Ball.","Lade einen Screenshot oder ein Diagramm hoch und frag nach den wichtigsten Punkten.","Entwirf Inhalte, erzeuge Bilder und mach aus Ideen schneller fertige Arbeit."],
+life:["Plane Reisen, hol dir Rezeptideen und sprich jederzeit alles durch.","Lade ein Foto hoch und frag, was es ist, wie es funktioniert oder was als Nächstes zu tun ist.","Erstelle Bilder, schreibe Nachrichten und übersetze zwischen Sprachen."],
+school:["Lass dir schwierige Themen erklären, prüfe dein Wissen und lerne in deinem Tempo.","Lade ein Diagramm oder Arbeitsblatt hoch und frag nach einer Schritt-für-Schritt-Erklärung.","Schreibe Aufsätze, gliedere Ideen oder baue mit dem Code-Agent eine kleine Website."]}};
+var FAQ={
+en:[["One XMM AI experience across your devices","Use XMM AI in the browser, or install it as an app on Windows, Mac, iPhone and Android. It is the same experience everywhere."],["Local by design","Your profile and chat history are saved on this device. No email and no password to create an account."],["Create images by just asking","Write “make image of a red car at sunset” in any chat and XMM AI creates it for you."],["A code agent that builds whole sites","Describe a website or app in the Code tab, watch the files appear live, and export the result as a ZIP."],["Speaks your language","Switch between English, Deutsch, Español, العربية and فارسی any time."]],
+de:[["Ein XMM AI Erlebnis auf all deinen Geräten","Nutze XMM AI im Browser oder installiere es als App auf Windows, Mac, iPhone und Android. Überall dasselbe Erlebnis."],["Lokal von Grund auf","Dein Profil und dein Chatverlauf werden auf diesem Gerät gespeichert. Keine E-Mail, kein Passwort."],["Bilder erstellen, indem du fragst","Schreib in einem Chat „make image of a red car at sunset“ und XMM AI erstellt es für dich."],["Ein Code-Agent, der ganze Websites baut","Beschreibe eine Website oder App im Code-Tab, sieh die Dateien live entstehen und exportiere das Ergebnis als ZIP."],["Spricht deine Sprache","Wechsle jederzeit zwischen English, Deutsch, Español, العربية und فارسی."]]};
+
+var curTab="work";
+function renderTabs(){var L=TABS[lang]?lang:"en",d=TABS[L][curTab];["d1","d2","d3"].forEach(function(id,i){document.getElementById(id).textContent=d[i]});
+ document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-selected",b.dataset.tab===curTab?"true":"false")})}
+function renderFaq(){var L=FAQ[lang]?lang:"en",open={};document.querySelectorAll("#faq details").forEach(function(d,i){if(d.open)open[i]=1});if(!document.querySelector("#faq details"))open[0]=1;
+ document.getElementById("faq").innerHTML=FAQ[L].map(function(f,i){return'<details'+(open[i]?" open":"")+'><summary><span class="n">0'+(i+1)+'/</span><span>'+f[0]+'</span><span class="pm"></span></summary><div class="bd">'+f[1]+'</div></details>'}).join("");syncEx()}
+function syncEx(){var all=document.querySelectorAll("#faq details"),o=document.querySelectorAll("#faq details[open]").length;document.getElementById("exAll").dataset.state=o===all.length?"open":"closed";var b=document.getElementById("exAll");b.textContent=o===all.length?({de:"Alle schließen",es:"Cerrar todo",ar:"إغلاق الكل",fa:"بستن همه"}[lang]||"Collapse all"):(T[lang]&&T[lang].ex||T.en.ex)}
+var nm="";try{nm=JSON.parse(localStorage.getItem("xmm.name"))||""}catch(e){}
+document.querySelectorAll(".js-open").forEach(function(a){a.dataset.t=nm?"open":"signin"});
+var sel=document.getElementById("lang"),lang="en";
+try{lang=localStorage.getItem("xmm.lang")||""}catch(e){}
+if(!T[lang]){var n=(navigator.language||"en").slice(0,2);lang=T[n]?n:"en"}
+function apply(l){window.__ap=1;
+  lang=l;sel.value=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=(l==="fa"||l==="ar")?"rtl":"ltr";
+  document.querySelectorAll("[data-t]").forEach(function(e){e.innerHTML=T[l][e.dataset.t]||T.en[e.dataset.t]||e.innerHTML});
+  document.querySelectorAll("[data-p]").forEach(function(e){e.placeholder=T[l][e.dataset.p]||T.en[e.dataset.p]});
+  renderTabs();renderFaq();
+}
+function consent(){try{return localStorage.getItem("xmm.consent")}catch(e){return null}}
+sel.onchange=function(){if(consent()==="all"){try{localStorage.setItem("xmm.lang",sel.value)}catch(e){}}apply(sel.value)};
+var ck=document.getElementById("ck");
+function setC(v){try{localStorage.setItem("xmm.consent",v);if(v!=="all")localStorage.removeItem("xmm.lang");else localStorage.setItem("xmm.lang",lang)}catch(e){}ck.hidden=true}
+document.getElementById("ckA").onclick=function(){setC("all")};
+document.getElementById("ckN").onclick=function(){setC("necessary")};
+document.getElementById("ckOpen").onclick=function(){ck.hidden=false};
+if(!consent())ck.hidden=false;
+apply(lang);
+
+document.getElementById("ask").onsubmit=function(e){
+  e.preventDefault();
+  var v=document.getElementById("q").value.trim();
+  location.href=v?"/chat/?lens=clone&q="+encodeURIComponent(v):"/chat/?lens=clone";
+};
+
+
+document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){curTab=b.dataset.tab;renderTabs()}});
+document.getElementById("exAll").onclick=function(){var open=this.dataset.state!=="open";document.querySelectorAll("#faq details").forEach(function(d){d.open=open});syncEx()};
+document.getElementById("faq").addEventListener("toggle",syncEx,true);
+renderTabs();renderFaq();
+document.querySelectorAll(".js-inst").forEach(function(b){b.onclick=async function(){
+  if(dp){try{dp.prompt();await dp.userChoice}catch(e){}dp=null;return}
+  document.getElementById("igContent").innerHTML=installGuideHTML(b.dataset.os);document.getElementById("igModal").hidden=false}});
+var dp=null;
+addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e});
+function platform(){var ua=navigator.userAgent||"";var isI=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);var isA=/android/i.test(ua);return{isI:isI,isA:isA,isDesk:!isI&&!isA}}
+function desk(os,step){
+  var h='<p class="ig-hint">Install XMM AI as an app in its own window.</p>';
+  if(os==="windows")return h+step(1,"Open XMM AI in Microsoft Edge or Chrome")+step(2,"Click the install icon at the right end of the address bar, or open the menu (⋯) → Apps → Install XMM AI")+step(3,"Click Install, then pin it to your taskbar");
+  if(os==="mac")return h+step(1,"Chrome or Edge: click the install icon in the address bar, then Install")+step(2,"Safari 17+: choose File → Add to Dock")+step(3,"Open XMM AI from your Dock or Launchpad");
+  return h+step(1,"Open XMM AI in Chrome, Chromium or Edge")+step(2,"Click the install icon in the address bar, or open the menu (⋮) and choose Install XMM AI")+step(3,"Click Install and find XMM AI in your app menu")+'<p class="ig-hint">Firefox on Linux cannot install web apps, so use a Chromium-based browser.</p>';
+}
+function installGuideHTML(os){
+  var p=platform();
+  function step(n,t){return'<div class="ig-step"><div class="ig-n">'+n+'</div><div class="ig-txt"><b>'+t+'</b></div></div>'}
+  if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)return'<p class="ig-hint">XMM AI is already installed on this device.</p>';
+  var body="";
+  if(os)body=desk(os,step);
+  else if(p.isI)body='<p class="ig-hint">Add XMM AI to your Home Screen for the full app experience.</p>'+step(1,"Tap the Share button in Safari")+step(2,'Scroll and tap “Add to Home Screen”')+step(3,"Confirm — XMM appears on your Home Screen");
+  else if(p.isA)body='<p class="ig-hint">Install XMM AI for full-screen, faster access.</p>'+step(1,"Tap the menu (⋮) in Chrome")+step(2,'Tap “Install app” or “Add to Home screen”')+step(3,"Confirm — XMM opens like a native app");
+  else body='<p class="ig-hint">Install XMM AI on your computer for a dedicated window.</p>'+step(1,"Open the browser menu (⋮ or ⋯)")+step(2,'Click “Install XMM AI” or “Install app”')+step(3,"The app opens in its own window — pin it to taskbar/dock");
+  return body;
+}
+document.getElementById("igClose").onclick=function(){document.getElementById("igModal").hidden=true};
+document.getElementById("igModal").onclick=function(e){if(e.target.id==="igModal")e.target.hidden=true};
+addEventListener("load",function(){(window.requestIdleCallback||setTimeout)(function(){if("serviceWorker"in navigator&&location.protocol.indexOf("http")===0)navigator.serviceWorker.register("/chat/sw.js",{scope:"/chat/"}).catch(function(){})})});
+</script>
+</body>
+</html>

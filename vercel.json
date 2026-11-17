@@ -1,0 +1,38 @@
+{
+  "redirects": [
+    {
+      "source": "/terms.html",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(favicon.ico|favicon-48x48.png|favicon-96x96.png|favicon-192x192.png|apple-touch-icon.png|icon.svg)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "all"
+        }
+      ]
+    },
+    {
+      "source": "/chat/(sun\\.js|sun\\.css|index\\.html|companion\\.js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

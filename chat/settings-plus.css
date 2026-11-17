@@ -1,0 +1,12 @@
+#settings .sp-prof{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 16px 8px}
+#settings .sp-circ{width:84px;height:84px;border-radius:50%;background:#26262a;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 8px 24px rgba(0,0,0,.4);overflow:hidden}
+#settings .sp-circ img{width:54px;height:54px;object-fit:contain}
+#settings .sp-nm{display:flex;align-items:center;gap:8px;min-height:32px}
+#settings .sp-n{font-size:20px;font-weight:650}
+#settings .sp-pen{width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:inherit;display:grid;place-items:center;cursor:pointer}
+#settings .sp-edit{font:inherit;font-size:18px;font-weight:600;text-align:center;width:200px;padding:6px 10px;border-radius:12px;border:0;background:rgba(0,0,0,.3);color:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);outline:0}
+#settings .sp-bar{padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.07)}
+#settings .sp-save{background:#f2f2f3!important;color:#111!important;font-weight:650}
+#settings .sp-ev{display:flex;flex-direction:column;gap:4px;padding:14px 16px;margin-bottom:10px;border-radius:16px;background:rgba(255,255,255,.05)}
+#settings .sp-ev span{font-size:13px;opacity:.7}
+#settings .sp-none{padding:40px 0;text-align:center;opacity:.6;font-size:15px}
