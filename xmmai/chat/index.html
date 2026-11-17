@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="xmm-no-cf">
+
+html.cf-pending body > *:not(
+</style>
+<meta name="xmm-build" content="v83-no-cf">
+<script>
+(function(){
+  window.__xmmCfPassed = 1;
+  document.documentElement.classList.add("cf-passed");
+  document.documentElement.classList.remove("cf-pending");
+  try { localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now())); } catch(e){}
+  try { localStorage.removeItem("xmm.cf.ok"); localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now())); } catch(e){}
+  window.dispatchEvent(new Event("xmm:cf-ok"));
+  // nuke any leftover gate if somehow present
+  document.addEventListener("DOMContentLoaded", function(){
+    try{var g=document.getElementById("cfGate");if(g)g.remove()}catch(e){}
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  try{
+    var h=(location.hostname||"").toLowerCase().replace(/\.+$/,"");
+    if(!h)return;
+    var ok =
+      h==="xmm-ai.com" ||
+      h==="www.xmm-ai.com" ||
+      h==="localhost" ||
+      h==="127.0.0.1" ||
+      h==="0.0.0.0" ||
+      h.endsWith(".local") ||
+      /^192\.168\.\d+\.\d+$/.test(h) ||
+      /^10\.\d+\.\d+\.\d+$/.test(h);
+    if(ok)return;
+    var path=(location.pathname||"/")+(location.search||"")+(location.hash||"");
+    var dest="https://xmm-ai.com"+path;
+    /* hard redirect — do not rewrite DOM (avoids breaking the page) */
+    location.replace(dest);
+  }catch(e){}
+})();
+</script>
+
+
+<script>
+(function(){
+  function apply(){
+    try{
+      var w=innerWidth||0;
+      var coarse=false;
+      try{coarse=matchMedia("(pointer:coarse)").matches}catch(e){}
+      var tab=w<=1100 || (coarse && w<=1400);
+      document.documentElement.classList.toggle("is-tablet", !!tab);
+      document.documentElement.classList.toggle("is-landscape", !!matchMedia("(orientation:landscape)").matches);
+      document.documentElement.classList.toggle("is-portrait", !!matchMedia("(orientation:portrait)").matches);
+    }catch(e){}
+  }
+  apply();
+  addEventListener("resize", apply);
+  addEventListener("orientationchange", function(){setTimeout(apply, 100)});
+})();
+</script>
+
+
+<script>/* clean-install gate: first load of a new build wipes cache, SW, cookies, storage. Change B to force another wipe. */
+(function(){var B="b20261116f";try{if(localStorage.getItem("xmm.build")===B)return;
+var bk=null;try{bk=localStorage.getItem("xmm.ban")}catch(e){}var ck=(document.cookie.match(/(?:^|;\s*)xmm_ban=(\d+)/)||[])[1];if(!bk&&ck)bk=ck;
+var done=function(){try{localStorage.clear();sessionStorage.clear()}catch(e){}
+document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
+try{localStorage.setItem("xmm.build",B);if(bk&&+bk>Date.now()){localStorage.setItem("xmm.ban",bk);document.cookie="xmm_ban="+bk+";expires="+new Date(+bk+86400000).toUTCString()+";path=/"}}catch(e){}
+location.replace(location.pathname+(location.search?location.search+"&":"?")+"cb="+B+location.hash)};
+var p=[];
+if(navigator.serviceWorker)p.push(navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}));
+if(window.caches)p.push(caches.keys().then(function(k){return Promise.all(k.map(function(x){return caches.delete(x)}))}));
+if(window.indexedDB&&indexedDB.databases)p.push(indexedDB.databases().then(function(d){d.forEach(function(x){indexedDB.deleteDatabase(x.name)})}));
+document.documentElement.style.visibility="hidden";
+Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
+<script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
+<script>try{var _n=JSON.parse(localStorage.getItem("xmm.name")||'""');if(!String(_n||"").trim()||/[?&]login=1/.test(location.search)){location.replace("/login/"+(String(_n||"").trim()?"?force=1":""))}}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>XMM AI</title>
+<meta name="theme-color" content="#161617">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="XMM AI by XMMAI">
+<link rel="preload" as="image" href="icon.svg?v=x33" type="image/svg+xml" fetchpriority="high">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="icon.svg?v=x33">
+<link rel="apple-touch-icon" href="icon-180.png?v=x33">
+
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="XMM AI">
+<link rel="stylesheet" href="styles.css?v=34">
+<link rel="stylesheet" href="redesign.css?v=29">
+<link rel="stylesheet" href="code-ui.css?v=6">
+<link rel="stylesheet" href="video-ui.css?v=5" media="(max-width:1100px)">
+<link rel="stylesheet" href="companion.css?v=3" media="(max-width:1100px)">
+<link rel="stylesheet" href="voice-ui.css?v=4">
+<link rel="stylesheet" href="widgets.css?v=4">
+<link rel="stylesheet" href="pro.css?v=6">
+<link rel="stylesheet" href="liquid.css?v=17" media="(max-width:1100px)">
+<link rel="stylesheet" href="settings-ui.css?v=4">
+<link rel="stylesheet" href="settings-plus.css?v=1">
+<link rel="stylesheet" href="final.css?v=11">
+<link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="tablet-fix.css?v=3"><link rel="stylesheet" href="mobile-fix.css?v=1"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=13">
+
+
+
+
+
+
+<script>
+(function(){
+  window.__xmmCfPassed=1;
+  document.documentElement.classList.add("cf-passed");
+  document.documentElement.classList.remove("cf-pending");
+  try{localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now()))}catch(e){}
+  window.dispatchEvent(new Event("xmm:cf-ok"));
+})();
+</script>
+
+</head>
+<body>
+
+
+<div class="aurora"></div>
+<div id="langTop"><select id="topLang" aria-label="Language"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
+<div id="splash"><div class="sp-inner"><img src="icon.svg?v=x33" alt="XMM AI" fetchpriority="high" decoding="sync"><h1>XMM AI</h1><p>by XMM Bayat</p></div><small>© XMMAI</small></div>
+
+<section class="shell" id="shell-chat">
+  <aside class="side glass" id="sideChat">
+    <div class="side-top">
+      <div class="brand"><img class="logo" src="icon.svg?v=x33" alt=""><span>XMM AI</span></div>
+      <div class="side-tools"><button class="icon-btn only-m" data-act="closeDrawer" data-ic="chev2" aria-label="Close"></button></div>
+    </div>
+    <nav class="side-nav" id="chatNav"></nav>
+    <div id="codeSec" hidden><div class="side-label">Code projects</div><div class="code-list" id="codeList"></div></div>
+    <div class="side-label">Chats</div>
+    <div class="chat-list" id="chatList"></div>
+    <nav class="sidenav2"><button data-act="opencode" id="sideCode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Code</button><button data-k="notebooks" data-ic="folder">Notebooks</button></nav>
+    <div class="sbar"><label class="sin"><i data-ic="search"></i><input id="sideSearch" placeholder="Search" dir="auto"></label><button class="icon-btn" data-act="settings" data-ic="gear" aria-label="Settings"></button><button class="icon-btn" data-act="newchat" data-ic="plus" aria-label="New chat"></button></div>
+    <div class="user"><span class="av">XM</span><span class="uname">XMM User</span></div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <main class="main" id="mainChat" data-empty="1">
+    <header class="topbar">
+      <button class="icon-btn expand only-d" data-act="toggleSide" data-ic="panel" aria-label="Open sidebar"></button>
+      <button class="icon-btn glass only-m" data-act="openDrawer" data-ic="menu" aria-label="Menu"></button>
+            <div class="spacer"></div>
+      <div class="xpill" id="seg" data-pos="0"><span class="xp-thumb"></span><button type="button" class="xp-b" data-m="chat">Ask</button><button type="button" class="xp-b" data-m="code">Build</button></div>
+      
+      <button class="icon-btn only-d tb-share" data-act="share" data-ic="share" aria-label="Share"></button>
+    
+    <button id="tbCode" hidden aria-hidden="true"></button>
+    </header>
+
+    <div class="view chatview empty" id="viewChat">
+      <div class="sp sp-top"></div>
+      <div class="convo" id="convo">
+        <div class="greeting"><span class="g-d">Hi, what can I help you with?</span><span class="g-m">Hi, how's it going?</span></div>
+        <div class="msgs" id="msgs"></div>
+      </div>
+      <div class="dock">
+        <div class="chips" id="chips" hidden></div>
+                <div class="atts" id="atts"></div>
+        <div class="composer glass">
+          <button class="icon-btn" id="attBtn" data-ic="plus" aria-label="Attach"></button>
+          <textarea id="msg" rows="1" placeholder="Ask Anything" dir="auto"></textarea>
+          <button class="mode" id="modeBtn" data-ic="bolt"><span>XMM AI 2.5</span></button><button class="send" id="sendBtn" aria-label="Send"></button>
+        </div>
+        <div class="foot">AI-generated content may be incorrect · © XMMAI. All rights reserved.</div>
+        <!-- file input created only on intentional upload tile tap -->
+      </div>
+      <div class="sp sp-bot"></div>
+    </div>
+
+    <div class="view page" id="viewSearch" hidden>
+      <h2>Search</h2>
+      <div class="searchbar glass"><i data-ic="search"></i><input id="searchIn" placeholder="Search your chats" dir="auto"></div>
+      <div class="results-list" id="searchOut"></div>
+    </div>
+    <div class="view page" id="viewNotebooks" hidden>
+      <div class="page-head"><h2>Notebooks</h2><button class="btn glass" id="newNote" data-ic="plus">New note</button></div>
+      <div class="notes" id="notes"></div>
+    </div>
+  </main>
+
+  <nav class="bnav-wrap only-m"><div class="bnav glass" id="chatBnav"></div><button class="circle glass" data-act="newchat" data-ic="plus" aria-label="New chat"></button></nav>
+</section>
+
+<div class="install glass" id="installBanner" hidden><img src="icon.svg?v=x33" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
+
+<div class="modal" id="settings" hidden><div class="sheet glass">
+  <div class="sheet-h"><h3>Settings</h3><button class="icon-btn sm" data-act="closeSettings" data-ic="close" aria-label="Close"></button></div>
+  <label>Your name</label><input class="field" id="setName" placeholder="Your name" maxlength="40" dir="auto">
+  <label>Language</label><select class="field sel" id="setLang"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select>
+  <label>AI memory</label><textarea class="field mem" id="setMem" rows="3" maxlength="2000" placeholder="Things the AI should always remember about you…" dir="auto"></textarea>
+  <label>Model</label><p class="hint" id="modelInfo"></p>
+  <label>Install check</label><p class="hint" id="pwaInfo">Checking…</p>
+  <button class="btn wide" id="logout" data-ic="close">Log out</button>
+  <button class="btn glass danger wide" id="clearAll" data-ic="trash">Delete all chats</button>
+  <button class="btn glass wide" data-act="install" data-ic="download">Install App</button>
+  <div class="brandline"><img src="icon.svg?v=x33" alt=""><span>XMM AI by XMMAI</span></div>
+  <div class="copy c">© XMMAI. All rights reserved.</div>
+</div></div>
+<div class="modal" id="installGuide" hidden><div class="sheet glass install-guide">
+  <div class="sheet-h"><h3>Install XMM AI</h3><button class="icon-btn sm" data-act="closeInstall" data-ic="close" aria-label="Close"></button></div>
+  <div id="igBody"></div>
+</div></div>
+<div class="modal" id="welcome" hidden><form class="sheet glass welcome" id="welcomeForm" autocomplete="off">
+  <img src="icon.svg?v=x33" alt="">
+  <h3>Welcome to XMM AI</h3>
+  <p class="hint">What should I call you? Give me your name so I know you.</p>
+  <input class="field" id="nameIn" placeholder="Your name" maxlength="40" dir="auto" autocapitalize="words" enterkeyhint="done">
+  <button class="btn wide" type="submit">Continue</button>
+  <button class="skip" type="button" id="nameSkip">Skip for now</button>
+</form></div>
+<div id="login" class="xl" hidden>
+<div class="xl-x" aria-hidden="true"><svg viewBox="1 1 22 22" width="100%" height="100%" style="overflow:visible"><defs><linearGradient id="xlg" gradientUnits="userSpaceOnUse" x1="24" y1="0" x2="0" y2="24"><stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#c4c4c4"/><stop offset=".62" stop-color="#6a6a6a"/><stop offset="1" stop-color="#4a4a4a"/><animateTransform attributeName="gradientTransform" type="rotate" from="0 12 12" to="360 12 12" dur="16s" repeatCount="indefinite"/></linearGradient><filter id="xlb" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".42"/></filter></defs><g fill="none" stroke="url(#xlg)" stroke-width=".42" filter="url(#xlb)" opacity=".9"><circle cx="12" cy="12" r="9.6"/><rect x="8.115" y="8.35" width="2.67" height="5.83" rx="1.335"/><rect x="14.435" y="8.35" width="2.67" height="5.83" rx="1.335"/></g><g fill="none" stroke="url(#xlg)" stroke-width=".14"><circle cx="12" cy="12" r="9.6"/><rect x="8.115" y="8.35" width="2.67" height="5.83" rx="1.335"/><rect x="14.435" y="8.35" width="2.67" height="5.83" rx="1.335"/></g></svg></div>
+<div class="xl-l"><div class="xl-h" role="heading" aria-level="1">Ask<br>anything.</div>
+<input id="lgName" class="xl-in" placeholder="Username" maxlength="24" autocapitalize="off" autocomplete="off" spellcheck="false" enterkeyhint="go" aria-label="Username">
+<button type="button" class="xl-b xl-c" id="lgGo" disabled>Continue</button>
+<div class="xl-t">By continuing, you agree to our <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/privacy" target="_blank" rel="noopener">Cookie Use</a>.</div></div>
+<div class="xl-qr"><span>Scan to get the app</span><img src="/qr/qr-dark.svg" alt="QR code: get XMM AI" width="130" height="130"></div>
+<div class="xl-f"><a href="/">About</a><a href="/qr">Get App</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/privacy">Cookies</a><a href="/privacy">Accessibility</a><span>© 2026 XMM AI</span></div>
+</div>
+<div class="toast glass" id="toast" hidden></div>
+
+<script src="guard.js?v=3"></script>
+<script src="config.js?v=5"></script>
+<script src="limit.js?v=5"></script>
+<script src="sun.js?v=3"></script>
+<script src="app.js?v=75"></script>
+<script src="widgets.js?v=9"></script>
+<script src="redesign.js?v=14"></script>
+<script src="summary.js?v=1"></script>
+<script src="morph.js?v=5"></script>
+<script src="imgrace.js?v=9"></script>
+<script src="img.js?v=14"></script>
+<script src="code.js?v=20"></script>
+<script src="upload.js?v=2"></script>
+<script src="lang.js"></script>
+<script src="pro.js?v=2"></script>
+<script src="settings-plus.js?v=2"></script>
+<script src="voice-ui.js?v=6"></script>
+<script src="twin.js?v=2"></script>
+<script src="grok.js?v=9"></script>
+<script src="hold.js?v=3"></script>
+<script>(function(){
+var mq=matchMedia("(max-width:1100px), ((pointer:coarse) and (max-width:1400px))");
+if(!mq.matches||window.__xmmTabletUI)return;
+window.__xmmTabletUI=1;
+["glass.js?v=4","fx.js","space.js?v=3","grow.js?v=7","video-ui.js?v=9","companion.js?v=8","liquid.js?v=15"].forEach(function(src){
+  var s=document.createElement("script");s.src=src;s.defer=true;document.body.appendChild(s);
+});
+})();</script>
+<script>setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("out");setTimeout(function(){s&&s.remove()},200)}},600)</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="xmm-no-cf">
+
+html.cf-pending body > *:not(
+</style>
+<meta name="xmm-build" content="v83-no-cf">
+<script>
+(function(){
+  window.__xmmCfPassed = 1;
+  document.documentElement.classList.add("cf-passed");
+  document.documentElement.classList.remove("cf-pending");
+  try { localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now())); } catch(e){}
+  try { localStorage.removeItem("xmm.cf.ok"); localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now())); } catch(e){}
+  window.dispatchEvent(new Event("xmm:cf-ok"));
+  // nuke any leftover gate if somehow present
+  document.addEventListener("DOMContentLoaded", function(){
+    try{var g=document.getElementById("cfGate");if(g)g.remove()}catch(e){}
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  try{
+    var h=(location.hostname||"").toLowerCase().replace(/\.+$/,"");
+    if(!h)return;
+    var ok =
+      h==="xmm-ai.com" ||
+      h==="www.xmm-ai.com" ||
+      h==="localhost" ||
+      h==="127.0.0.1" ||
+      h==="0.0.0.0" ||
+      h.endsWith(".local") ||
+      /^192\.168\.\d+\.\d+$/.test(h) ||
+      /^10\.\d+\.\d+\.\d+$/.test(h);
+    if(ok)return;
+    var path=(location.pathname||"/")+(location.search||"")+(location.hash||"");
+    var dest="https://xmm-ai.com"+path;
+    /* hard redirect — do not rewrite DOM (avoids breaking the page) */
+    location.replace(dest);
+  }catch(e){}
+})();
+</script>
+
+
+<script>
+(function(){
+  function apply(){
+    try{
+      var w=innerWidth||0;
+      var coarse=false;
+      try{coarse=matchMedia("(pointer:coarse)").matches}catch(e){}
+      var tab=w<=1100 || (coarse && w<=1400);
+      document.documentElement.classList.toggle("is-tablet", !!tab);
+      document.documentElement.classList.toggle("is-landscape", !!matchMedia("(orientation:landscape)").matches);
+      document.documentElement.classList.toggle("is-portrait", !!matchMedia("(orientation:portrait)").matches);
+    }catch(e){}
+  }
+  apply();
+  addEventListener("resize", apply);
+  addEventListener("orientationchange", function(){setTimeout(apply, 100)});
+})();
+</script>
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sign in · XMM AI</title>
+<meta name="theme-color" content="#0b0b0c">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:#0b0b0c;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100dvh;
+ background-image:radial-gradient(900px 500px at 50% -10%,rgba(255,255,255,.07),transparent 70%)}
+main{flex:1;display:grid;place-items:center;padding:32px 20px}
+.card{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:stretch}
+.logo{width:52px;height:52px;border-radius:14px;display:block;margin:0 0 28px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:42px;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
+p.sub{color:#a1a1a6;font-size:16px;line-height:1.5;margin-bottom:30px}
+label{font-size:13px;color:#a1a1a6;margin:0 0 8px 4px}
+.in{height:54px;border-radius:999px;border:0;outline:0;background:rgba(255,255,255,.06);color:#fff;font:500 17px/1 inherit;font-family:inherit;padding:0 22px;width:100%;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:box-shadow .25s,transform .5s cubic-bezier(.3,1.5,.5,1),background .25s}
+.in::placeholder{color:#6e6e73}
+.in:focus{background:rgba(255,255,255,.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,.42),0 0 0 4px rgba(255,255,255,.06);transform:scale(1.012)}
+.go{margin-top:14px;height:54px;border-radius:999px;border:0;background:#f2f2f0;color:#111;font:600 17px/1 inherit;font-family:inherit;cursor:pointer;
+ transition:transform .5s cubic-bezier(.3,1.5,.5,1),opacity .25s,background .25s}
+.go:active{transform:scale(.95)}
+.go:disabled{background:#2a2a2d;color:#6b6b70;cursor:default}
+.go:disabled:active{transform:none}
+.fine{margin-top:22px;font-size:12.5px;line-height:1.5;color:#7d7d82}
+.fine a{color:#b9b9bd;text-decoration:underline;text-underline-offset:2px}
+footer{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));font-size:12.5px;color:#6e6e73}
+footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
+.card>*{animation:rise .7s cubic-bezier(.2,1,.3,1) both}
+.card>*:nth-child(2){animation-delay:.05s}.card>*:nth-child(3){animation-delay:.1s}.card>*:nth-child(4){animation-delay:.15s}.card>*:nth-child(5){animation-delay:.2s}.card>*:nth-child(6){animation-delay:.25s}.card>*:nth-child(7){animation-delay:.3s}
+@keyframes rise{from{opacity:0;transform:translateY(14px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .25s}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+
+
+</style>
+
+
+
+
+
+<script>
+(function(){
+  window.__xmmCfPassed=1;
+  document.documentElement.classList.add("cf-passed");
+  document.documentElement.classList.remove("cf-pending");
+  try{localStorage.setItem("xmm.cf.ok", JSON.stringify(Date.now()))}catch(e){}
+  window.dispatchEvent(new Event("xmm:cf-ok"));
+})();
+</script>
+
+</head>
+<body>
+
+
+<main>
+ <form class="card" id="f" autocomplete="off">
+  <img class="logo" src="/icon.svg?v=x33" alt="XMM AI" width="52" height="52">
+  <h1>Welcome to XMM AI</h1>
+  <p class="sub">Pick a name and start chatting. Everything stays on this device.</p>
+  <label for="n">Your name</label>
+  <input class="in" id="n" placeholder="Name" maxlength="40" autocapitalize="words" autocomplete="off" spellcheck="false" enterkeyhint="go" dir="auto">
+  <button class="go" id="go" type="submit" disabled>Continue</button>
+  <p class="fine">By continuing you agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>. Need help? <a href="/support">Support</a> · support@xmm-ai.com</p>
+ </form>
+</main>
+<footer><a href="/">Home</a><a href="/qr">Get the app</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/support">Support</a><span>© 2026 XMM AI</span></footer>
+<script>
+(function(){
+var n=document.getElementById("n"),go=document.getElementById("go"),f=document.getElementById("f");
+var q=location.search,force=/[?&]force=1/.test(q);
+function dest(){var m=q.match(/[?&]next=([^&]+)/);var d=m?decodeURIComponent(m[1]):"/chat/?lens=clone";return/^\/(?!\/)/.test(d)?d:"/chat/?lens=clone"}
+try{var ex=JSON.parse(localStorage.getItem("xmm.name")||'""');if(String(ex||"").trim()&&!force){location.replace(dest());return}if(ex)n.value=ex}catch(e){}
+function upd(){go.disabled=!n.value.trim()}n.addEventListener("input",upd);upd();
+function cfReady(){return true}
+f.addEventListener("submit",function(e){e.preventDefault();var v=n.value.trim();
+ if(!v){n.focus();n.classList.remove("shake");void n.offsetWidth;n.classList.add("shake");return}
+ try{localStorage.setItem("xmm.name",JSON.stringify(v.slice(0,40)));localStorage.setItem("xmm.terms",JSON.stringify(Date.now()));localStorage.setItem("xmm.welcomed","1")}catch(x){}
+ location.href=dest()});
+// keep Continue disabled until CF passed + name filled
+var _upd=upd;upd=function(){go.disabled=!n.value.trim()};
+window.addEventListener("xmm:cf-ok",upd);upd();
+setTimeout(function(){try{n.focus()}catch(e){}},400);
+})();
+</script>
+</body>
+</html>
