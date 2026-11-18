@@ -203,15 +203,20 @@ function rebuildRecents(){
 /* ---------- composer ---------- */
 var comp,msg,ph,hold,tip,keep=0,holding=0,dict=0;
 function hasContent(){var a=$("#atts");var S=API().S||{};return !!(msg&&msg.value.trim())||!!(a&&a.children.length)||!!S.busy}
-function setExp(v){if(comp)comp.classList.toggle("cl-exp",!!v)}
+function setExp(v){if(!comp)return;v=!!v;if(comp.classList.contains("cl-exp")===v)return;
+ var h0=comp.offsetHeight;comp.classList.toggle("cl-exp",v);var h1=comp.offsetHeight;
+ if(comp.animate&&h0&&h1&&h0!==h1){var ez="cubic-bezier(.22,.8,.24,1)";try{comp.animate([{height:h0+"px"},{height:h1+"px"}],{duration:340,easing:ez});
+  Array.prototype.forEach.call(comp.children,function(c){if(c.tagName==="BUTTON"&&c.animate)c.animate([{opacity:0,transform:"scale(.8)"},{opacity:1,transform:"none"}],{duration:300,delay:50,easing:ez,fill:"backwards"})})}catch(_){}}}
 function chatEmpty(){var v=$("#viewChat");return !v||v.classList.contains("empty")}
+function sentFx(){if(!comp)return;comp.classList.add("cl-sent");if(ph)ph.classList.add("hide");setTimeout(function(){if(comp)comp.classList.remove("cl-sent")},1400)}
 function ensureComposer(){
  comp=$(".composer");msg=$("#msg");if(!comp||!msg)return false;
  var att=$("#attBtn"),wave=$("#gWave"),mic=$("#gMic");
  if(att&&!att.__cl){att.__cl=1;att.removeAttribute("data-ic");att.innerHTML=IC.plus;att.setAttribute("aria-label","Add to chat")}
  if(wave&&!wave.__cl){var nw=wave.cloneNode(false);nw.id="gWave";nw.type="button";nw.__cl=1;nw.className="g-ib g-wave";nw.setAttribute("aria-label","Voice mode");nw.innerHTML=IC.wave;wave.parentNode.replaceChild(nw,wave);nw.onclick=function(){openVoice()}}
  if(mic&&!mic.__cl){mic.__cl=1;mic.innerHTML=IC.mic}
- var send=$("#sendBtn");if(send&&!send.__cl){send.__cl=1}
+ var send=$("#sendBtn");if(send&&!send.__cl){send.__cl=1;send.addEventListener("pointerdown",sentFx,true);send.addEventListener("click",sentFx,true)}
+ if(msg&&!msg.__clk){msg.__clk=1;msg.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey&&msg.value.trim())sentFx()});msg.addEventListener("input",function(){if(ph)ph.classList.toggle("hide",!!msg.value)})}
  if(!ph){ph=el("div","cl-ph");comp.appendChild(ph)}
  if(!hold){hold=el("div","cl-hold");comp.appendChild(hold);wireHold()}
  if(!comp.__cl){comp.__cl=1;
@@ -443,6 +448,7 @@ function buildVoice(){
  };
 }
 function openVoice(){
+ if(/firefox|fxios/i.test(navigator.userAgent)&&!/seamonkey/i.test(navigator.userAgent)){toast("Unsupported browser — voice mode needs Chrome, Edge or Safari");return}
  if(!window.XMM_VOICE){toast("Voice mode is not available");return}
  buildVoice();var m=$("#msg");if(m)m.blur();
  vMuted=false;vEl.classList.remove("muted","talk","speak","spkoff");window.__clSpkOff=false;$("#cvMic").innerHTML=IC.mic;$("#cvSpk").innerHTML=IC.spk;

@@ -342,3 +342,20 @@ html body .cl-sheet,html body [class*="cl-sheet"]{will-change:transform}
 /* top-right pill always visible */
 html body #clTop,html body #clPill,html body #clMore,html body #clNew{display:flex!important;visibility:visible!important;opacity:1!important}
 html body #clMore svg,html body #clNew svg{display:block!important}
+
+/* ===== v94 ===== */
+html body .composer>.cl-ph,html body .composer.cl-sent>.cl-ph{animation:none!important;background:none!important;-webkit-text-fill-color:var(--cl-mut)!important;color:var(--cl-mut)!important;transition:opacity .12s}
+html body .composer.cl-sent>.cl-ph,html body .composer.cl-sent>.cl-hold{display:none!important}
+html body .composer{transition:border-radius .34s cubic-bezier(.22,.8,.24,1),background-color .2s,border-color .2s,box-shadow .2s!important;overflow:hidden}
+/* no colour flash on tap / focus */
+html body button,html body .cl-b,html body #msg,html body .composer,html body .cl-nr,html body .cl-ci{-webkit-tap-highlight-color:transparent!important;outline:none!important;-webkit-user-select:none;user-select:none}
+html body #msg{-webkit-user-select:text;user-select:text}
+html body .composer:focus-within,html body .composer.focus{box-shadow:none!important;border-color:var(--cl-glass-b)!important}
+html body .cl-b:active,html body .cl-b:focus{background:var(--cl-glass)!important;transform:scale(.94)}
+html body *{-webkit-backdrop-filter:none;}
+/* mobile: new-chat input sits at the bottom */
+@media (max-width:700px){
+ html body #viewChat.empty:not([hidden]){justify-content:flex-end!important;padding-bottom:0!important}
+ html body #viewChat.empty .convo{flex:1 1 auto!important;min-height:0!important;height:auto!important}
+ html body #viewChat.empty .dock{flex:none!important;padding:0 12px calc(env(safe-area-inset-bottom,0px) + 12px)!important}
+}
