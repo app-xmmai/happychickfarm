@@ -331,3 +331,14 @@ html body .composer,html body .cl-b,html body .cl-nr,html body .cl-ci,html body 
 body.cl-drawer .cl-nr,body.cl-drawer .cl-ci,body.cl-drawer .cl-rl{animation-duration:.3s!important;animation-delay:calc(var(--i,0)*12ms)!important}
 html body *{-webkit-backdrop-filter:none!important}
 html body .cl-sheet,html body [class*="cl-sheet"]{will-change:transform}
+
+/* v93 chat-row ... button */
+.cl-ci{position:relative}
+.cl-ci .cl-dots{flex:none!important;width:34px;height:34px;margin-right:-8px;border-radius:50%;display:grid;place-items:center;opacity:0;transition:opacity .15s,background-color .15s;cursor:pointer}
+.cl-ci .cl-dots svg{width:20px!important;height:20px!important;opacity:1}
+.cl-ci:hover .cl-dots,.cl-ci.on .cl-dots,.cl-ci .cl-dots:focus{opacity:.85}
+.cl-ci .cl-dots:hover{background:var(--cl-glass-b);opacity:1}
+@media (hover:none){.cl-ci .cl-dots{opacity:.6}}
+/* top-right pill always visible */
+html body #clTop,html body #clPill,html body #clMore,html body #clNew{display:flex!important;visibility:visible!important;opacity:1!important}
+html body #clMore svg,html body #clNew svg{display:block!important}

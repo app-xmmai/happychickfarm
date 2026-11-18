@@ -149,17 +149,14 @@ function buildDrawer(){
  var d=el("div");d.id="clDrawer";
  d.innerHTML='<div class="cl-dh">XMM AI</div><div class="cl-ds" id="clDs">'+
   '<button class="cl-nr" data-n="chats" style="--i:0">'+IC.chats+'<span>Chats</span></button>'+
-  '<button class="cl-nr" data-n="projects" style="--i:1">'+IC.projects+'<span>Projects</span></button>'+
-  '<button class="cl-nr" data-n="code" style="--i:2">'+IC.code+'<span>Code</span></button>'+
-  '<button class="cl-nr" data-n="artifacts" style="--i:3">'+IC.art+'<span>Artifacts</span></button>'+
-  '<div class="cl-rl" style="--i:4">Recents</div><div id="clRecents"></div>'+
+  '<div class="cl-rl" style="--i:1">Recents</div><div id="clRecents"></div>'+
   '<button class="cl-all" id="clAll"><span>All chats</span>'+IC.chev+'</button></div>'+
   '<div class="cl-db"><button class="cl-av" id="clAv" type="button" aria-label="Settings">X</button><button class="cl-nc" id="clNc" type="button">'+IC.plus+'New chat</button></div>';
  sh.insertBefore(d,sh.firstChild);
  d.addEventListener("click",function(e){
   var n=e.target.closest(".cl-nr");
   if(n){var k=n.dataset.n;
-   if(k==="chats"){B.classList.toggle("cl-allc");var r=$("#clRecents");if(r)r.scrollIntoView({behavior:"smooth",block:"start"});return}
+   if(k==="chats"){try{API().newChat()}catch(_){}closeDrawer();return}
    closeDrawer();
    if(k==="projects"){var b=$('.sidenav2 [data-k="notebooks"]');if(b)b.click()}
    else if(k==="code"){var c=$("#sideCode");if(c)c.click()}
@@ -168,6 +165,10 @@ function buildDrawer(){
   if(e.target.closest("#clAll")){B.classList.toggle("cl-allc");var al=$("#clAll span");if(al)al.textContent=B.classList.contains("cl-allc")?"Show less":"All chats";return}
   if(e.target.closest("#clAv")){closeDrawer();openSettings();return}
   if(e.target.closest("#clNc")){try{API().newChat()}catch(_){}closeDrawer();return}
+  var dt=e.target.closest(".cl-dots");
+  if(dt){e.stopPropagation();var ro=dt.closest(".cl-ci"),rid=ro.dataset.id,its=[];try{if(window.XMM_TWIN&&XMM_TWIN.chatItems)its=XMM_TWIN.chatItems(rid)||[]}catch(_){}
+   its.push({label:"Delete chat",danger:1,fn:function(){try{API().delChat(rid)}catch(_){}}});
+   try{API().showMenu(dt,its,"right")}catch(_){}return}
   var ci=e.target.closest(".cl-ci");
   if(ci){if(ci.__lp){ci.__lp=0;return}var id=ci.dataset.id;closeDrawer();var src=$('#chatList .chat-i[data-id="'+id+'"]');if(src)src.click()}
  });
@@ -192,7 +193,7 @@ function rebuildRecents(){
  var box=$("#clRecents");if(!box)return;
  var src=$$("#chatList .chat-i[data-id]"),h="",i=0;
  src.forEach(function(c){var sp=c.querySelector("span");var t=(sp?sp.textContent:c.textContent||"").trim()||"Untitled";
-  h+='<button class="cl-ci'+(c.classList.contains("on")?" on":"")+(i>=10?" cl-x":"")+'" data-id="'+esc(c.dataset.id)+'" style="--i:'+Math.min(i+5,16)+'">'+IC.bub+'<span dir="auto">'+esc(t)+'</span></button>';i++});
+  h+='<button class="cl-ci'+(c.classList.contains("on")?" on":"")+(i>=10?" cl-x":"")+'" data-id="'+esc(c.dataset.id)+'" style="--i:'+Math.min(i+5,16)+'">'+IC.bub+'<span dir="auto">'+esc(t)+'</span><span class="cl-dots" role="button" aria-label="Chat options">'+IC.dots+'</span></button>';i++});
  if(!src.length)h='<div class="cl-none">No conversations yet</div>';
  if(box.__h!==h){box.innerHTML=h;box.__h=h}
  B.classList.toggle("cl-more",src.length>10);
