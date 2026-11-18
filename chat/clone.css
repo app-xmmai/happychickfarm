@@ -298,3 +298,36 @@ html body #mainChat>#viewChat,html body #mainChat>.view{position:relative!import
 /* v90: placeholder must vanish once there is text (was overridden by .composer>.cl-ph display rule) */
 html body .composer>.cl-ph.hide,html body .composer.cl-has>.cl-ph{display:none!important}
 html body #msg{position:relative;z-index:3;caret-color:var(--cl-txt)}
+
+/* ===== v91 ===== */
+/* ghost placeholder overlay from hold.js/grok.js that overlapped the chat input */
+html body .g-pv,html body .hold-pop{display:none!important}
+/* drawer: no darkening, no coloured corner leak, no rounded gap */
+html body #mainChat::after{background:transparent!important;transition:none!important}
+html body.cl-drawer #mainChat{box-shadow:none!important;border-radius:0!important;border-left:1px solid var(--cl-line)}
+html body.cl-drawer #mainChat>*{opacity:1!important}
+html body #cine,html body .cine,html body #cin,html body canvas#cine,html body [class^="cin-"],html body [id^="cin"]{display:none!important}
+html,html body,html body #shell-chat{background:var(--cl-bg2)!important}
+@media (max-width:700px){html body.cl-drawer #mainChat{border-radius:26px!important;border-left:0}}
+/* PC drawer width and mainChat no longer dragged off-screen */
+@media (min-width:900px){:root{--dw:300px}}
+/* hover feedback (mouse only) */
+@media (hover:hover){
+ .cl-nr:hover,.cl-ci:hover{background:var(--cl-glass)!important}
+ .cl-nc:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+ .cl-av:hover,.cl-b:hover{background:var(--cl-glass-b)!important;transform:scale(1.05)}
+ .cl-pill button:hover{background:var(--cl-glass)!important}
+ html body .composer #attBtn:hover,html body .composer #gMic:hover,html body .composer #gWave:hover,html body .composer #modeBtn:hover{background:var(--cl-glass-b)!important;color:var(--cl-txt)}
+ html body .composer #sendBtn:hover{filter:brightness(1.1);transform:scale(1.06)}
+ html body .composer:hover{border-color:rgba(255,255,255,.2)!important}
+ .cl-row:hover{background:var(--cl-glass2)!important}
+ html body .m-acts button:hover,html body .m-acts .icon-btn:hover{background:var(--cl-glass)!important;color:var(--cl-txt)!important}
+ html body *[role=button]:hover,html body button:hover{cursor:pointer}
+}
+/* smoother motion: GPU layers, shorter/lighter animations */
+html body #mainChat,#clDrawer,.cl-b,.cl-nc,.cl-pill{will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+html body #mainChat{transition:transform .38s cubic-bezier(.22,.8,.24,1)!important}
+html body .composer,html body .cl-b,html body .cl-nr,html body .cl-ci,html body .cl-av,html body .cl-nc,html body .composer button{transition:background-color .18s ease,border-color .18s ease,transform .22s cubic-bezier(.22,.8,.24,1),box-shadow .22s ease,opacity .18s ease,filter .18s ease!important}
+body.cl-drawer .cl-nr,body.cl-drawer .cl-ci,body.cl-drawer .cl-rl{animation-duration:.3s!important;animation-delay:calc(var(--i,0)*12ms)!important}
+html body *{-webkit-backdrop-filter:none!important}
+html body .cl-sheet,html body [class*="cl-sheet"]{will-change:transform}

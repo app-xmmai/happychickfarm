@@ -354,7 +354,7 @@ function pageRoot(){
  '<div class="cl-lbl" style="padding-top:6px">Account</div><div class="cl-grp">'+
   row(IC.person,"Profile",{go:"profile"})+row(IC.bell,"Notifications",{go:"notif"})+row(IC.shield,"Privacy",{go:"privacy"})+'</div>'+
  '<div class="cl-lbl">App</div><div class="cl-grp">'+
-  row(IC.sliders,"Capabilities",{go:"caps"})+row(IC.voice,"Voice and dictation",{go:"voice"})+
+  row(IC.sliders,"Memory",{go:"caps"})+row(IC.voice,"Voice and dictation",{go:"voice"})+
   '<div class="cl-row" style="cursor:default">'+IC.globe+'<span class="rt">Open links in</span><span class="rv">'+(ld("xmm.cl.links","tab")==="same"?"This tab":"New tab")+IC.updn+'</span><select data-links><option value="tab"'+(ld("xmm.cl.links","tab")==="tab"?" selected":"")+'>New tab</option><option value="same"'+(ld("xmm.cl.links","tab")==="same"?" selected":"")+'>This tab</option></select></div>'+
   '<div class="cl-row" style="cursor:default" data-do="hap">'+IC.haptic+'<span class="rt">Haptic feedback</span><button class="cl-sw'+(hapOn()?" on":"")+'" data-sw="hap" type="button" aria-label="Haptic feedback"></button></div>'+
   row(IC.dl,"Install app",{act:"install"})+'</div>'+
@@ -370,7 +370,7 @@ function pagePrivacy(){return'<div class="cl-grp" style="margin-top:6px">'+row(I
 function pageCaps(){return'<div class="cl-lbl" style="padding-top:6px">Memory</div><textarea class="cl-in" id="clMem" maxlength="2000" placeholder="Things XMM AI should always remember about you…" dir="auto">'+esc(ld("xmm.mem",""))+'</textarea><div class="cl-note">XMM AI uses this in every chat. You can change it any time.</div>'}
 function pageVoice(){return'<div class="cl-grp" style="margin-top:6px"><div class="cl-row nl" style="cursor:default">'+IC.globe+'<span class="rt">Voice language<small>Voice mode and dictation listen and speak in this language.</small></span><span class="rv">'+esc(langName())+IC.updn+'</span>'+langSel()+'</div></div>'}
 function pageInfo(){return'<div class="cl-prof" style="margin-top:6px"><div class="a" style="background:none"><img src="icon.svg?v=x33" alt="" width="40" height="40" style="border-radius:11px"></div><div><b>XMM AI</b><span>by XMM Bayat · v89</span></div></div><div class="cl-grp">'+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-note" style="text-align:center">© XMMAI. All rights reserved.</div>'}
-var PAGES={root:{t:"Settings",h:pageRoot},profile:{t:"Profile",h:pageProfile},notif:{t:"Notifications",h:pageNotif},privacy:{t:"Privacy",h:pagePrivacy},caps:{t:"Capabilities",h:pageCaps},voice:{t:"Voice and dictation",h:pageVoice},info:{t:"About",h:pageInfo}};
+var PAGES={root:{t:"Settings",h:pageRoot},profile:{t:"Profile",h:pageProfile},notif:{t:"Notifications",h:pageNotif},privacy:{t:"Privacy",h:pagePrivacy},caps:{t:"Memory",h:pageCaps},voice:{t:"Voice and dictation",h:pageVoice},info:{t:"About",h:pageInfo}};
 function show(pg,anim){
  if(!setS)return;var P=PAGES[pg]||PAGES.root;setS.title.textContent=P.t;setS.body.innerHTML=P.h();setS.page=pg;
  setS.left.innerHTML=pg==="root"?IC.x:IC.back;
