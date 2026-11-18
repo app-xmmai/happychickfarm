@@ -147,7 +147,7 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 <link rel="stylesheet" href="settings-ui.css?v=4">
 <link rel="stylesheet" href="settings-plus.css?v=1">
 <link rel="stylesheet" href="final.css?v=12">
-<link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=14"><link rel="stylesheet" href="cinema.css?v=3">
+<link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=14"><link rel="stylesheet" href="cinema.css?v=3"><link rel="stylesheet" href="fix.css?v=88">
 
 
 
@@ -178,14 +178,14 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 try{last=+localStorage.getItem(K)||0}catch(e){}
 var rm=false;try{rm=matchMedia("(prefers-reduced-motion:reduce)").matches}catch(e){}
 var warm=!rm&&last&&t0-last<6e5;c.className=rm?"rm":(warm?"warm":"cold");
-var min=rm?250:(warm?650:1650),ready=document.readyState==="complete",done=0;
+var min=rm?250:(warm?2600:5200),ready=document.readyState==="complete",done=0;
 function go(){if(done)return;done=1;c.classList.add("out");R.classList.add("cine-reveal");
 try{localStorage.setItem(K,String(Date.now()))}catch(e){}
-setTimeout(function(){try{c.remove()}catch(e){}R.classList.remove("cine-reveal")},rm?300:900)}
+setTimeout(function(){try{c.remove()}catch(e){}R.classList.remove("cine-reveal")},rm?300:1500)}
 function chk(){if(ready&&Date.now()-t0>=min)go()}
 addEventListener("load",function(){ready=true;chk()});
 setTimeout(chk,min);
-setTimeout(function(){ready=true;chk()},4500);
+setTimeout(function(){ready=true;chk()},9000);
 c.addEventListener("pointerdown",function(){ready=true;min=0;go()});
 addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ready=true;min=0;go()}});
 })();</script>
@@ -315,6 +315,7 @@ addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.k
 <script src="hold.js?v=3"></script>
 <script src="cinema.js?v=1" defer></script>
 <script src="unify.js?v=1"></script>
+<script src="fix.js?v=88"></script>
 
 </body>
 </html>
