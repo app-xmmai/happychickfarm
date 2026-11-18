@@ -377,3 +377,8 @@ html body #msgs .m-user,html body #msgs .m-bot .body{-webkit-touch-callout:none}
 @media (max-width:700px){
  html body.xempty #viewChat .dock,html body.xempty #viewChat.empty .dock{position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;width:100%!important;max-width:none!important;margin:0!important;padding:0 12px calc(env(safe-area-inset-bottom,0px) + 12px)!important;z-index:20}
 }
+
+/* v97 tablets: same pinned-bottom new-chat input as phones */
+html.is-tablet body.xempty #viewChat .dock,html.is-tablet body.xempty #viewChat.empty .dock{position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;width:100%!important;max-width:none!important;margin:0!important;padding:0 24px calc(env(safe-area-inset-bottom,0px) + 16px)!important;z-index:20}
+html.is-tablet body.xempty .composer{max-width:760px!important;margin:0 auto!important}
+html.is-tablet body.xempty #viewChat.empty:not([hidden]){justify-content:center!important;padding-bottom:110px!important}
