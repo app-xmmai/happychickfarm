@@ -287,3 +287,14 @@ html body #vo{opacity:0!important;pointer-events:none!important;z-index:1!import
   .cl-logo{width:54px;height:54px;border-radius:15px}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ===== v90 layout fix: kill legacy sidebar offsets (grok.css/cinema.css) so the new push-drawer layout is the only one ===== */
+html body #shell-chat #mainChat,html body.collapsed #shell-chat #mainChat,html body.xempty #shell-chat #mainChat,
+html body #shell-chat>#mainChat{margin:0!important;left:0!important;right:0!important;top:0!important;width:auto!important;max-width:none!important;min-width:0!important;position:absolute!important}
+html body #shell-chat #mainChat>.dock,html body #mainChat .dock{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;transform:none!important;margin-left:auto!important;margin-right:auto!important;width:100%!important;max-width:760px!important;box-sizing:border-box}
+html body #sideChat,html body.collapsed #sideChat{display:none!important}
+html body .g-fabD{display:none!important}
+html body #mainChat>#viewChat,html body #mainChat>.view{position:relative!important;margin:0!important;max-width:none!important;width:100%!important;left:auto!important;right:auto!important;transform:none!important}
+/* v90: placeholder must vanish once there is text (was overridden by .composer>.cl-ph display rule) */
+html body .composer>.cl-ph.hide,html body .composer.cl-has>.cl-ph{display:none!important}
+html body #msg{position:relative;z-index:3;caret-color:var(--cl-txt)}
