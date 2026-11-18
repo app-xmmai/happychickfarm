@@ -115,7 +115,7 @@ try{var SS=window.speechSynthesis;if(SS&&!SS.__cl){var _sp=SS.speak.bind(SS);SS.
 function greetWord(){var h=new Date().getHours();return h>=5&&h<12?"Good morning":h>=12&&h<18?"Good afternoon":"Good evening"}
 function buildGreeting(){
  var cv=$("#convo");if(!cv||$(".cl-greet",cv))return;
- var g=el("div","cl-greet");g.innerHTML='<img class="cl-logo" src="icon.svg?v=x33" alt=""><div class="cl-gt"></div>';
+ var g=el("div","cl-greet");g.innerHTML='<img class="cl-logo" src="icon.svg?v=x40" alt=""><div class="cl-gt"></div>';
  cv.insertBefore(g,cv.firstChild);
 }
 function updGreeting(){var t=$(".cl-gt");if(!t)return;var n=uname(),s=greetWord()+(n?", "+n:"");if(t.textContent!==s)t.textContent=s}
@@ -382,7 +382,7 @@ function pageNotif(){var p="Notification" in window?Notification.permission:"den
 function pagePrivacy(){return'<div class="cl-grp" style="margin-top:6px">'+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-grp">'+row(IC.trash,"Delete all chats",{act:"clear",cls:"dg",chev:false})+'</div>'}
 function pageCaps(){return'<div class="cl-lbl" style="padding-top:6px">Memory</div><textarea class="cl-in" id="clMem" maxlength="2000" placeholder="Things XMM AI should always remember about you…" dir="auto">'+esc(ld("xmm.mem",""))+'</textarea><div class="cl-note">XMM AI uses this in every chat. You can change it any time.</div>'}
 function pageVoice(){return'<div class="cl-grp" style="margin-top:6px"><div class="cl-row nl" style="cursor:default">'+IC.globe+'<span class="rt">Voice language<small>Voice mode and dictation listen and speak in this language.</small></span><span class="rv">'+esc(langName())+IC.updn+'</span>'+langSel()+'</div></div>'}
-function pageInfo(){return'<div class="cl-prof" style="margin-top:6px"><div class="a" style="background:none"><img src="icon.svg?v=x33" alt="" width="40" height="40" style="border-radius:11px"></div><div><b>XMM AI</b><span>by XMM Bayat · v89</span></div></div><div class="cl-grp">'+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-note" style="text-align:center">© XMMAI. All rights reserved.</div>'}
+function pageInfo(){return'<div class="cl-prof" style="margin-top:6px"><div class="a" style="background:none"><img src="icon.svg?v=x40" alt="" width="40" height="40" style="border-radius:11px"></div><div><b>XMM AI</b><span>by XMM Bayat · v89</span></div></div><div class="cl-grp">'+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-note" style="text-align:center">© XMMAI. All rights reserved.</div>'}
 var PAGES={root:{t:"Settings",h:pageRoot},profile:{t:"Profile",h:pageProfile},notif:{t:"Notifications",h:pageNotif},privacy:{t:"Privacy",h:pagePrivacy},caps:{t:"Memory",h:pageCaps},voice:{t:"Voice and dictation",h:pageVoice},info:{t:"About",h:pageInfo}};
 function show(pg,anim){
  if(!setS)return;var P=PAGES[pg]||PAGES.root;setS.title.textContent=P.t;setS.body.innerHTML=P.h();setS.page=pg;
@@ -438,7 +438,7 @@ function buildVoice(){
  if($("#clVoice"))return;
  vEl=el("div");vEl.id="clVoice";
  vEl.innerHTML='<div class="cl-vglow"></div><div class="cl-vtop"><button class="cl-b" id="cvMenu" type="button" aria-label="Menu">'+IC.menu+'</button><span class="cl-sp"></span><button class="cl-b" id="cvGear" type="button" aria-label="Settings">'+IC.gear+'</button></div>'+
-  '<div class="cl-vmid"><img class="cl-logo" src="icon.svg?v=x33" alt=""><div class="cl-vt">Hold tight, connecting…</div><div class="cl-vs"></div></div>'+
+  '<div class="cl-vmid"><img class="cl-logo" src="icon.svg?v=x40" alt=""><div class="cl-vt">Hold tight, connecting…</div><div class="cl-vs"></div></div>'+
   '<button class="cl-vmic" id="cvMic" type="button" aria-label="Microphone">'+IC.mic+'</button>'+
   '<div class="cl-vbar"><button class="cl-b" id="cvPlus" type="button" aria-label="Add">'+IC.plus+'</button><button class="cl-vmodel" id="cvModel" type="button"><span></span>'+IC.updn+'</button><span class="cl-sp"></span><button class="cl-b" id="cvSpk" type="button" aria-label="Speaker">'+IC.spk+'</button><button class="cl-vx" id="cvX" type="button" aria-label="End">'+IC.x+'</button></div>';
  document.body.appendChild(vEl);

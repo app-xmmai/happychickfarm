@@ -340,7 +340,7 @@ function syncEmpty(){
 /* ====================================================== logo (empty state) */
 function buildLogo(){
  var g=$(".greeting");if(!g||$(".vlogo",g))return;
- var d=document.createElement("div");d.className="vlogo";d.innerHTML='<img src="icon.svg?v=x33" alt="">';g.appendChild(d)}
+ var d=document.createElement("div");d.className="vlogo";d.innerHTML='<img src="icon.svg?v=x40" alt="">';g.appendChild(d)}
 
 /* ====================================================== init */
 function init(){
