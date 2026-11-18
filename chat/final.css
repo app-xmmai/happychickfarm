@@ -68,14 +68,7 @@ html body :is(.icon-btn,.nav-i,.mode,.send,.xp-b,.xtog,.xnew,.mg-i,.chat-i,.btn,
 html body :is(.icon-btn,.nav-i,.mode,.send,.xp-b,.xtog,.xnew,.chat-i,.btn,.xnav button,.dots,.xfab,.user):active{transform:scale(.9)}
 
 /* orange ambient glow — force on mobile too */
-@media (max-width:1100px){
- .shell::before,html body .shell::before,html body.vui .shell::before{
-  content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;z-index:0!important;
-  background:radial-gradient(70% 50% at 50% 110%,rgba(255,132,40,.40),rgba(255,110,30,.14) 48%,transparent 74%),radial-gradient(45% 32% at 10% 100%,rgba(255,170,90,.18),transparent 70%)!important;
-  animation:xglow 7s ease-in-out infinite alternate!important;opacity:1!important;display:block!important
- }
- html body.vui #mainChat,html body.vui .main{background:transparent!important}
-}
+
 
 /* weaker blur everywhere */
 html body :is(.composer,.menu,.sheet,.xs,.xsum-s,.toast,.searchbar,.install,.vtop,.vseg,.vgl,.vc,.vpop,.mg-panel,#settings .sheet,#sideChat,.bnav,.glass,.xpill,.sv-bar,.sv-view){
@@ -92,16 +85,7 @@ html body #sideChat{
   -webkit-backdrop-filter:blur(8px)!important;
   backdrop-filter:blur(8px)!important
 }
-@media (max-width:1100px){
-  html body.vui :is(.composer,.vtop,.vseg,.vgl,.vc,.vpop,#settings .sheet,.mg-panel){
-    -webkit-backdrop-filter:blur(5px) saturate(1.05)!important;
-    backdrop-filter:blur(5px) saturate(1.05)!important
-  }
-  html body #settings.modal{
-    -webkit-backdrop-filter:blur(4px)!important;
-    backdrop-filter:blur(4px)!important
-  }
-}
+
 
 /* hide Files & Preview button */
 html body #tbPreview,html body [aria-label="Files & Preview"],html body .tb-preview{display:none!important}
@@ -184,7 +168,7 @@ html body #cfGate[hidden]{display:none!important;pointer-events:none!important}
 html body input[type=file]{position:fixed!important;left:-99999px!important;width:0!important;height:0!important;opacity:0!important;pointer-events:none!important}
 /* no full-screen invisible overlays when closed */
 html body .scrim:not(.on){pointer-events:none!important;opacity:0!important}
-@media(max-width:1100px){html body #sideChat:not(.open){pointer-events:none!important}}
+
 html body #sideChat.open,html body #sideChat .xnav button,html body #sideChat .chat-list,html body #sideChat .chat-list *,html body #sideChat .user,html body #sideChat .xfab{pointer-events:auto}
 
 

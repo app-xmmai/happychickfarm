@@ -74,8 +74,8 @@ function navClick(k){if(k==="image"){const x=$('#chatNav [data-act="image"]');x&
 function chatView(v){const dir=ORDER.indexOf(v)>=ORDER.indexOf(lastV)?"r":"l";const changed=v!==lastV;lastV=v;S.view=v;$("#viewChat").hidden=v!=="chat";$("#viewSearch").hidden=v!=="search";$("#viewNotebooks").hidden=v!=="notebooks";
  if(v==="search"){doSearch();if(innerWidth>860)$("#searchIn").focus()}if(v==="notebooks")renderNotes();syncNav();closeDrawer();
  if(changed&&innerWidth<=860){const el=$({chat:"#viewChat",search:"#viewSearch",notebooks:"#viewNotebooks"}[v]);el.classList.remove("slide-r","slide-l");void el.offsetWidth;el.classList.add("slide-"+dir)}}
-function openDrawer(){$("#sideChat").classList.add("open");$("#scrim").classList.add("on")}
-function closeDrawer(){$("#sideChat").classList.remove("open");$("#scrim").classList.remove("on")}
+function openDrawer(){document.body.classList.remove("collapsed");$("#sideChat").classList.add("open");$("#scrim").classList.add("on")}
+function closeDrawer(){$("#sideChat").classList.remove("open");$("#scrim").classList.remove("on");if(innerWidth<768)document.body.classList.add("collapsed")}
 
 /* ---------- markdown ---------- */
 function md(s){return window.XMM_MDX?window.XMM_MDX(s):md0(s)}

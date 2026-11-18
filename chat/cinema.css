@@ -123,3 +123,35 @@ html body .msgs .m-acts{animation:cinFade .6s ease .15s backwards}
  html body .dock,html body #mainChat>.topbar>*,html body #sideChat,html body #sideChat .chat-list>*,html body .msgs>*,html body .msgs .m-acts,html body .view{animation:none!important}
  .cin-leak{animation:none}
 }
+
+/* ================= v87: one UI for PC, tablets (any rotation) and phones ================= */
+html,body{height:100%;min-height:100dvh}
+html body .shell{height:100dvh;min-height:-webkit-fill-available}
+html body #mainChat{padding-bottom:env(safe-area-inset-bottom,0px)}
+html body .composer{max-width:100%}
+html body #msgs,html body .msgs{padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+
+/* mid widths: sidebar slightly slimmer so tablets keep room for the chat */
+@media (min-width:768px) and (max-width:1024px){
+  html body #sideChat{width:232px!important;max-width:232px!important}
+  html body #shell-chat #mainChat{margin-left:232px!important}
+  html body.collapsed #shell-chat #mainChat{margin-left:0!important}
+}
+
+/* phones: same look as PC, sidebar slides over the chat */
+@media (max-width:767px){
+  html body #sideChat{width:min(84vw,320px)!important;max-width:320px!important;z-index:60!important;
+    transition:transform .5s var(--cin-soft)!important;padding-top:env(safe-area-inset-top,0px)}
+  html body #shell-chat #mainChat,html body.collapsed #shell-chat #mainChat{margin-left:0!important;width:100%!important}
+  html body #scrim{display:block!important;position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.5);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .45s var(--cin-soft)}
+  html body #scrim:not(.on){opacity:0;pointer-events:none!important}
+  html body #scrim.on{opacity:1;pointer-events:auto!important}
+  /* top settings button is gone on phones (Settings lives in the sidebar) */
+  html body .g-fabS,html body #gFabS,html body .g-dmo,html body .g-fabM{display:none!important}
+  /* sidebar toggle sits where the PC one does, below the status bar */
+  html body.collapsed .g-fabD{top:calc(10px + env(safe-area-inset-top,0px));left:calc(12px + env(safe-area-inset-left,0px))}
+  html body .greeting::before{font-size:24px}
+  html body .composer{width:calc(100% - 24px)!important}
+  html body #viewChat.empty .dock{padding:0 12px!important}
+}
