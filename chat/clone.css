@@ -359,3 +359,9 @@ html body *{-webkit-backdrop-filter:none;}
  html body #viewChat.empty .convo{flex:1 1 auto!important;min-height:0!important;height:auto!important}
  html body #viewChat.empty .dock{flex:none!important;padding:0 12px calc(env(safe-area-inset-bottom,0px) + 12px)!important}
 }
+
+/* v95 top-right pill: evenly centred icons */
+html body #clPill{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:2px!important;width:auto!important;min-width:0!important;padding:0 4px!important;height:46px!important;box-sizing:border-box!important}
+html body #clPill button{flex:none!important;width:44px!important;height:40px!important;margin:0!important;padding:0!important;display:grid!important;place-items:center!important;border-radius:20px!important;transform:none!important}
+html body #clPill button svg{width:22px!important;height:22px!important;margin:0!important;display:block!important}
+html body #clPill button:hover,html body #clPill button:active{background:var(--cl-glass)!important;transform:none!important}
