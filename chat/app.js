@@ -576,7 +576,7 @@ async function ask(c){
     if(found){bot.web=true;sys+=" Fresh web search results are below; use them to answer accurately, mention source names briefly at the end, and say so if they don't answer the question.\n\n[WEB RESULTS for: "+q+"]\n"+found}
     else{sys+=" Web search was attempted for \""+q+"\" but it failed or returned nothing. Answer from your own knowledge. Briefly tell the user that the live web search failed, then give the best answer you can from knowledge."}}}
   const MIN_MS=lite?8000:0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
-  const paint=()=>{const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){e.innerHTML=bot.text?md(bot.text):e.innerHTML;scrollDown()}};
+  let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
   if(sun){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
   else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:mm.max,temp:mm.temp,stream:true,autoCont:true,signal:ctrl.signal,onDelta:(t,th)=>{

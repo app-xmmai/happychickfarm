@@ -10,5 +10,5 @@ function tabs(){
 kill();setInterval(kill,1000);
 var R=document.getElementById("settings");
 if(R)new MutationObserver(function(){setTimeout(tabs,30)}).observe(R,{attributes:true,attributeFilter:["hidden"]});
-new MutationObserver(kill).observe(document.body,{childList:true,subtree:true});
+var _kq=0;new MutationObserver(function(){if(_kq)return;_kq=setTimeout(function(){_kq=0;kill()},400)}).observe(document.body,{childList:true,subtree:true});
 })();
