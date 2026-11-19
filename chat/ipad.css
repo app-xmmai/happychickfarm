@@ -200,3 +200,15 @@ html body.ip .cl-av{background:rgba(122,90,42,.7)!important}
 html body.ip .m-bot .body,html body.ip .m-bot{background:none!important;border:0!important;box-shadow:none!important;padding-left:0!important;padding-right:0!important}
 html body.ip .m-bot .body *{border-color:transparent}
 html body.ip .m-bot .body pre,html body.ip .m-bot .body code{border-color:rgba(255,255,255,.1)}
+
+/* v117: stable colours — more opaque glass, no colour transitions/animations */
+:root{--ip-glass:rgba(34,34,38,.82)}
+html body.ip .cl-b,html body.ip .cl-pill button,.ip-pill,.ip-circ{background:rgba(34,34,38,.82)!important;color:#fff!important}
+html body.ip .composer,html body.ip .composer.cl-exp,html body.ip .composer:hover,html body.ip .composer:focus-within,html body.ip .composer.focus,html body.ip .composer.cl-sent{background:rgba(24,24,27,.8)!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:none!important}
+.ip-bar form,.ip-vpill{background:rgba(24,24,27,.8)!important}
+html body.ip .composer,html body.ip .composer button,html body.ip .cl-b,html body.ip .cl-pill button,.ip-pill,.ip-circ{transition:transform .2s cubic-bezier(.22,.8,.24,1)!important;animation:none!important}
+html body.ip #attBtn,html body.ip #gMic,html body.ip #attBtn:hover,html body.ip #gMic:hover,html body.ip #gMic.on{background:none!important;color:#e8e8ea!important}
+html body.ip .composer #sendBtn,html body.ip .composer>#gWave,html body.ip .composer #sendBtn:hover,html body.ip .composer>#gWave:hover{background:#2f54f5!important;color:#fff!important;filter:none!important}
+html body.ip .cl-b:hover,html body.ip .cl-pill button:hover{background:rgba(34,34,38,.82)!important}
+html body.ip .composer>.cl-ph{animation:none!important;background:none!important;-webkit-text-fill-color:#8d8d93!important;color:#8d8d93!important}
+html body.ip .cin-back,html body.ip .cin-front,.cin-back,.cin-front,#cine{display:none!important}
