@@ -565,6 +565,8 @@ async function ask(c){
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
 const slowT=setTimeout(()=>{if(!bot.text&&S.busy&&!bot.status){bot.status="Slow connection, please wait…";renderMsgs()}},5000);
+let wT=0,wEnd=0;const wTick=()=>{if(!S.busy||bot.text){clearInterval(wT);wT=0;return}const r=Math.max(0,Math.ceil((wEnd-Date.now())/1000));bot.status=r>0?"Slow connection, please wait… "+r+"s":"Slow connection, please wait… retrying";const el=$(`.m-bot[data-i="${idx}"] .think-lbl`);if(el)el.textContent=bot.status;else renderMsgs()};
+const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();wT=setInterval(wTick,1000)};addEventListener("xmm-wait",onWait);
  try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
   if(lastU&&lastU.role==="user"){const us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);
@@ -594,7 +596,7 @@ const slowT=setTimeout(()=>{if(!bot.text&&S.busy&&!bot.status){bot.status="Slow 
   if(!bot.text)bot.text="…";paint()
   }
  catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
- clearTimeout(slowT);if(bot.status==="Slow connection, please wait…")bot.status="";bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
+ clearTimeout(slowT);clearInterval(wT);removeEventListener("xmm-wait",onWait);if(/^Slow connection, please wait/.test(bot.status||""))bot.status="";bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
 function regen(i){const c=cur();if(!c||S.busy)return;c.msgs.splice(i);ask(c)}
 function transcript(c){return c.msgs.map(m=>(m.role==="user"?"You: ":"XMM: ")+(m.text||"")).join("\n\n")}
 function doSearch(){const q=$("#searchIn").value.trim().toLowerCase();const out=$("#searchOut");
@@ -717,6 +719,6 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
    else{newChat();const m=$("#msg");m.value=PRE[GOK]||"";autosize(m);updateSend();m.focus();if(GOK==="analyze"){$("#attBtn").classList.add("pulse");setTimeout(()=>$("#attBtn").classList.remove("pulse"),4000);toast("Tap + to attach an image")}}};
   if(document.readyState==="complete")run();else addEventListener("load",run)}
 }
-window.XMM_API={S,cur,ask,saveChats,renderMsgs,renderList,toast,regen,transcript,showMenu,newChat,delChat,openChat,send};
+window.XMM_API={S,cur,ask,saveChats,renderMsgs,renderList,toast,regen,transcript,showMenu,newChat,delChat,openChat,send,groq,CFG};window.XMM_GROQ=groq;
 init();
 })();
