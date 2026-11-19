@@ -499,7 +499,7 @@ function msgHTML(m,i,last){if(m.gen&&m.role==="assistant")return genHTML(m,i);if
 function renderMsgs(){try{window.XMM_GUARD&&XMM_GUARD.sync()}catch(_){}const c=cur();const empty=!c||!c.msgs.length;$("#viewChat").classList.toggle("empty",empty);$("#mainChat").dataset.empty=empty?1:0;
  $("#msgs").innerHTML=c?c.msgs.map((m,i)=>msgHTML(m,i,i===c.msgs.length-1)).join(""):"";scrollDown();syncNav();}
 function scrollDown(){const c=$("#convo");c.scrollTop=c.scrollHeight}
-function autosize(t){t.style.height="auto";t.style.height=Math.min(t.scrollHeight,180)+"px"}
+function autosize(t){if(!t.value){if(t.style.height)t.style.height="";return}const o=t.style.height;t.style.height="auto";const h=Math.min(t.scrollHeight,180)+"px";t.style.height=h===o?o:h}
 function updateSend(){const has=$("#msg").value.trim()||S.att.length;const b=$("#sendBtn");
  if(S.busy){
   if(!b.classList.contains("is-busy")){

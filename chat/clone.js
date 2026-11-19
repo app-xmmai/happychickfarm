@@ -209,7 +209,7 @@ function setExp(v){if(!comp)return;v=!!v;if(comp.classList.contains("cl-exp")===
  var h1=comp.getBoundingClientRect().height;
  if(!comp.animate)return;var ez="cubic-bezier(.22,.8,.24,1)",D=420;
  try{
-  if(h0&&h1&&Math.abs(h0-h1)>1)comp.animate([{height:h0+"px"},{height:h1+"px"}],{duration:D,easing:ez});
+  
   ch.forEach(function(c,k){if(!c.offsetParent||c.classList.contains("cl-hold")||c.classList.contains("cl-ph"))return;var r1=c.getBoundingClientRect(),o=r0[k];
    if(o){var dx=o.left-r1.left,dy=o.top-r1.top;if(Math.abs(dx)>1||Math.abs(dy)>1)c.animate([{transform:"translate("+dx+"px,"+dy+"px)"},{transform:"none"}],{duration:D,easing:ez})}
    else c.animate([{opacity:0,transform:"scale(.7)"},{opacity:1,transform:"none"}],{duration:D-80,delay:80,easing:ez,fill:"backwards"})});

@@ -61,11 +61,12 @@ function init(){
  function syncExpand(){
   if(!comp||!m)return;
   // only grow when text is actually multi-line / too long — not on focus
-  m.style.height="auto";
+  if(!m.value){comp.classList.remove("expanded");if(m.style.height)m.style.height="";return}
+  var o=m.style.height;m.style.height="auto";
   var h=m.scrollHeight;
   var on=h>52;
-  comp.classList.toggle("expanded",!!on);
-  m.style.height=Math.min(h,160)+"px";
+  if(comp.classList.contains("expanded")!==!!on)comp.classList.toggle("expanded",!!on);
+  var n=Math.min(h,160)+"px";m.style.height=n===o?o:n;
  }
  if(m){
   m.addEventListener("input",syncExpand);
