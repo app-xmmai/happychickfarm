@@ -10,7 +10,6 @@ var IC={
  lib:I('<path d="M5 20 9 4M11 5v15M15 5v15M19 5v15"/>'),
  plus:I('<path d="M12 5v14M5 12h14"/>'),
  code:I('<path d="m8 7-5 5 5 5M16 7l5 5-5 5"/>'),
- vid:I('<rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3z"/>'),
  layers:I('<path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
  bot:I('<circle cx="12" cy="12" r="8.5"/><circle cx="14.5" cy="9.8" r="1.1" fill="currentColor"/>'),
  priv:'<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-dasharray="3.2 3.2"><circle cx="12" cy="12" r="9"/></svg>',
@@ -46,9 +45,6 @@ function build(){fabs();
  sb.onclick=function(){sw.hidden=!sw.hidden;if(!sw.hidden&&ss)ss.focus()};
  var nc=btn("g-keep g-new",'<span class="g-plus">'+I('<path d="M12 6v12M6 12h12"/>',14)+'</span>New chat',{"data-act":"newchat"});nc.addEventListener("click",function(){if(document.body.classList.contains("v-build")){var a=$('.vseg button[data-v="ask"]');if(a)a.click()}});side.appendChild(nc);
  var nav=el("div","g-keep g-nav");
- var vb=btn("g-row g-vid",IC.vid+'<span>Videos</span><em class="g-beta">BETA</em>',{"aria-label":"Make a video"});
- vb.onclick=function(){closeSide();if(window.XMM_VIDEO&&XMM_VIDEO.open)XMM_VIDEO.open();else if(api().toast)api().toast("Videos is still loading, try again")};
- nav.appendChild(vb);
  side.appendChild(nav);
  side.appendChild(el("div","g-keep g-sec","Chats"));
  if(cl){cl.classList.add("g-keep");side.appendChild(cl)}

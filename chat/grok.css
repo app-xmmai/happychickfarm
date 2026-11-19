@@ -134,7 +134,3 @@ html body #msg::placeholder,html body #msg.g-phx::placeholder{color:transparent!
 .g-pv.out{opacity:0;filter:blur(4px);transform:translate3d(0,-5px,0)}
 .g-pv.pre{opacity:0;filter:blur(4px);transform:translate3d(0,6px,0);transition:none}
 html body .m-bot,html body .m-bot *:not(pre):not(code),html body .m-user,html body .m-user *,html body #msgs .m-uw{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
-
-#sideChat .g-nav{display:flex;flex-direction:column;gap:2px;flex:none;margin:0 0 2px}
-#sideChat .g-vid span{flex:1}
-#sideChat .g-beta{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.3px;line-height:1;padding:3px 6px;border-radius:99px;background:#f5a623;color:#000}

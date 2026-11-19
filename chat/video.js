@@ -36,6 +36,12 @@ async function dl(u){try{var b=await(await fetch(u)).blob(),a=document.createEle
 var nav=document.getElementById("chatNav");
 function add(){if(!nav||nav.querySelector('[data-act="video"]'))return;var b=document.createElement("button");b.className="nav-i";b.dataset.act="video";b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3z"/></svg><span>Videos <small style="font-size:9px;background:#f5a623;color:#000;border-radius:6px;padding:1px 4px;margin-left:3px">BETA</small></span>';nav.appendChild(b)}
 if(nav){add();new MutationObserver(add).observe(nav,{childList:true})}
+/* real sidebar = #clDrawer (clone.js, rebuilt by ipad.js on tablets): keep a Videos row at the top of #clDs */
+var VI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3z"/></svg>',pend=0;
+function ensure(){pend=0;var ds=document.getElementById("clDs");if(!ds||ds.querySelector(".xv-nr"))return;var b=document.createElement("button");b.type="button";b.className="cl-nr xv-nr";b.setAttribute("style","--i:0");b.innerHTML=VI+'<span>Videos</span><em style="font-style:normal;font-size:10px;font-weight:700;background:#f5a623;color:#000;border-radius:99px;padding:3px 6px;margin-left:auto">BETA</em>';ds.insertBefore(b,ds.firstChild)}
+function sched(){if(!pend){pend=1;requestAnimationFrame(ensure)}}
+try{new MutationObserver(sched).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}ensure();setInterval(ensure,1000);
+document.addEventListener("click",function(e){var r=e.target.closest&&e.target.closest(".xv-nr");if(!r)return;e.preventDefault();e.stopPropagation();document.body.classList.remove("cl-drawer");var sc=document.getElementById("scrim");if(sc&&sc.classList.contains("on"))sc.click();open()},true);
 document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest('[data-act="video"]')){e.preventDefault();e.stopPropagation();open()}},true);
 window.XMM_VIDEO={open:open,close:close};
 })();
