@@ -167,3 +167,36 @@ html body.ip #msg{caret-color:#5d7bff}
 #clVoice .ip-vpill .cl-vmic::before{display:none}
 #clVoice.muted .ip-vpill .cl-vmic{background:none;color:#ff7a7a}
 #clVoice .cl-vx{width:52px;height:52px;background:#fff;color:#000}
+
+/* ===== floating glass: no bars, text scrolls underneath ===== */
+:root{--ip-glass:rgba(40,40,44,.42);--ip-blur:blur(14px) saturate(1.5)}
+html body.ip #clTop{background:none!important;box-shadow:none!important;border:0!important}
+html body.ip #clTop::before,html body.ip #clTop::after{display:none!important}
+html body.ip .cl-b,html body.ip .cl-pill button,.ip-pill,.ip-circ,.ip-chip,html body.ip .cl-vx.glass,
+html body.ip #attBtn,html body.ip #gMic,html body.ip .cl-av{background:var(--ip-glass)!important;-webkit-backdrop-filter:var(--ip-blur);backdrop-filter:var(--ip-blur)}
+html body.ip .cl-b,html body.ip .cl-pill button,.ip-pill,.ip-circ{border:1px solid rgba(255,255,255,.08)!important}
+html body.ip .composer,html body.ip .composer.cl-exp{background:rgba(24,24,27,.45)!important;-webkit-backdrop-filter:var(--ip-blur);backdrop-filter:var(--ip-blur);border:1px solid rgba(255,255,255,.12)!important;overflow:hidden}
+html body.ip #attBtn,html body.ip #gMic{background:none!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+html body.ip .composer #sendBtn,html body.ip .composer>#gWave{background:rgba(47,84,245,.9)!important}
+html body.ip .cl-nc{background:rgba(47,84,245,.85)!important;-webkit-backdrop-filter:var(--ip-blur);backdrop-filter:var(--ip-blur)}
+/* chat: dock floats over the messages */
+html body #viewChat{position:relative!important}
+html body.ip #viewChat:not(.empty) .dock{position:absolute!important;left:0!important;right:0!important;bottom:0!important;margin:0 auto!important;background:none!important;box-shadow:none!important;border:0!important;z-index:20;padding:0 14px calc(env(safe-area-inset-bottom,0px) + 12px)!important}
+html body.ip #viewChat:not(.empty) .dock::before,html body.ip #viewChat:not(.empty) .dock::after{display:none!important}
+html body.ip #viewChat:not(.empty) .convo{padding-bottom:130px!important}
+html body.ip #viewChat .dock{background:none!important}
+/* pages + settings: header and bottom bar float */
+#ipPage,#ipSet{position:absolute}#ipSet{position:fixed}
+.ip-h{position:absolute;top:0;left:0;right:0;z-index:3;background:none!important}
+.ip-b{padding-top:calc(env(safe-area-inset-top,0px) + 76px)!important;padding-bottom:110px!important}
+.ip-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;background:none!important}
+.ip-bar form{background:rgba(24,24,27,.45)!important;-webkit-backdrop-filter:var(--ip-blur);backdrop-filter:var(--ip-blur)}
+.ip-chip{background:rgba(60,60,66,.5)!important}.ip-chip.on{background:rgba(110,110,120,.55)!important}
+.ip-vpill{background:rgba(24,24,27,.45)!important;-webkit-backdrop-filter:var(--ip-blur);backdrop-filter:var(--ip-blur)}
+/* drawer bottom */
+html body.ip .cl-db{background:none!important}
+html body.ip .cl-av{background:rgba(122,90,42,.7)!important}
+#ipPlus{background:rgba(40,40,44,.7)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5)}
+html body.ip .m-bot .body,html body.ip .m-bot{background:none!important;border:0!important;box-shadow:none!important;padding-left:0!important;padding-right:0!important}
+html body.ip .m-bot .body *{border-color:transparent}
+html body.ip .m-bot .body pre,html body.ip .m-bot .body code{border-color:rgba(255,255,255,.1)}
