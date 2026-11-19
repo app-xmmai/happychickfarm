@@ -19,11 +19,16 @@ window.XMM_CONFIG = {
   // Gives your visitors a bigger free image allowance. Leave empty to run without it.
   HF_TOKEN: "",
 
-  // Free community AIs, no API key. Used before Groq:
-  // tried FIRST (1st, then 2nd). If both fail the app shows "Server 1 failed, using server 2" and uses Groq.
+  // Free community AIs, no API key. Requests rotate through this list; a server that is full or failing
+  // sits out for a while and the next one takes over. If all fail the app says "Server 1 failed, using server 2" and uses Groq.
+  // rpm = max requests per minute we allow ourselves, conc = max at once.
   FREE_AI: [
-    { name: "LLM7", url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused" },
-    { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai", key: "" }
+    { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25 },
+    { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1 },
+    { name: "Airforce",     url: "https://api.airforce/v1/chat/completions", model: "step-3.5-flash:free", key: "", rpm: 10 },
+    { name: "OVH gpt-oss",  url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "gpt-oss-120b", key: "", rpm: 2 },
+    { name: "OVH llama",    url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "meta-llama-3_3-70b-instruct", key: "", rpm: 2 },
+    { name: "Airforce grok",url: "https://api.airforce/v1/chat/completions", model: "grok-4.1-mini:free", key: "", rpm: 10 }
   ],
 
   // Optional extra models to try if the main one fails

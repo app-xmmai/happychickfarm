@@ -168,7 +168,21 @@ function widget(type,body,partial){var cfg=fixJ(body);
  if(!cfg){return partial?'<div class="xw xw-skel"><span></span>Building '+E(type)+'\u2026</div>':bad(type)}
  var fn=B[type];if(!fn)return bad(type);if(Array.isArray(cfg))cfg={items:cfg,images:cfg,sources:cfg,products:cfg,cards:cfg,questions:cfg};
  try{return fn(cfg)||bad(type)}catch(e){return bad(type)}}
-function mk(info,body,partial){var m=String(info).match(/^xmm[-:_ ]?(\w+)/i);return m?widget(m[1].toLowerCase(),body,partial):code(String(info).split(/\s/)[0],body,partial)}
+var ALIAS=/^(quiz|flashcards|chart|table|map|weather|timer|place|compare|recipe|checklist|ask|form|products|sources|currency|calendar|expand|suggest|confirm|writing|diet|homework|mcq|carousel|productinfo|directions|location)$/;
+function mk(info,body,partial){var m=String(info).match(/^xmm[-:_ ]?(\w+)/i);if(m)return widget(m[1].toLowerCase(),body,partial);var w=String(info).split(/\s/)[0].toLowerCase();
+ /* any model: accept ```quiz, ```json with a "type", etc. */
+ if(ALIAS.test(w))return widget(w,body,partial);
+ if(w==="json"||w===""){var c=fixJ(body);if(c&&!Array.isArray(c)&&typeof c.type==="string"&&ALIAS.test(c.type.toLowerCase()))return widget(c.type.toLowerCase(),body,partial)}
+ return code(w,body,partial)}
+/* client-side boxes: no model needed for timers, weather, places and directions */
+window.XMM_AUTOBOX=function(t){t=String(t||"").trim();if(!t||t.length>140)return"";var m,fe=function(ty,o){return"```xmm-"+ty+"\n"+JSON.stringify(o)+"\n```"};
+ m=t.match(/\b(?:timer|countdown)\b[^\d]*(\d+(?:\.\d+)?)\s*(seconds?|secs?|minutes?|mins?|hours?|hrs?|s|m|h)\b/i)||t.match(/\b(\d+(?:\.\d+)?)\s*(seconds?|secs?|minutes?|mins?|hours?|hrs?)\b[^\d]*\b(?:timer|countdown)\b/i);
+ if(m){var n=+m[1],u=m[2][0].toLowerCase(),sec=Math.round(n*(u==="h"?3600:u==="m"?60:1));if(sec>0&&sec<=86400)return"Timer set.\n\n"+fe("timer",{seconds:sec,label:n+" "+m[2]})}
+ m=t.match(/\bweather\b(?:\s+(?:in|for|at|of))?\s+([^?!.,]{2,40})/i)||t.match(/^([^?!.,]{2,40}?)\s+weather\b/i);
+ if(m){var loc=m[1].replace(/\b(today|now|tonight|tomorrow|right now|like|please|forecast|the|how is|what is|whats|what's)\b/ig,"").replace(/\s+/g," ").trim();if(loc.length>=2)return"Here\u2019s the weather for "+loc+".\n\n"+fe("weather",{location:loc})}
+ var pl="";m=t.match(/\b(?:directions?|route|navigate|navigation|take me|drive|go|get)\s+(?:me\s+)?to\s+(.{2,60})$/i)||t.match(/\bwhere(?:'s| is)\s+(.{2,50})$/i);if(m)pl=m[1];else if(/caspian\s*mall/i.test(t))pl="Caspian Mall Anzali";
+ pl=pl.replace(/\b(please|from here|from my location|from me|now|asap)\b/ig,"").replace(/[?!.\s]+$/,"").trim();
+ if(pl&&pl.split(/\s+/).length<=7&&!/^(my|a|an|some|there|it|that|this|the best|best|school|work|home)\b/i.test(pl))return"Pick the place you mean, then tap Directions.\n\n"+fe("place",{name:pl,address:pl});return""};
 /* fallback: if the AI wrote quiz/questions as a plain numbered list, turn them into the ask box */
 function cleanQ(t){return t.replace(/\*\*|__/g,"").replace(/\$\$?/g,"").replace(/\\times/g,"×").replace(/\\cdot/g,"·").replace(/\\pi/g,"π").replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g,"$1/$2").replace(/\\sqrt\{([^}]*)\}/g,"√($1)").replace(/\^\{?([\w+-]+)\}?/g,function(m,x){return"^"+x}).replace(/\\[a-z]+/g,"").trim()}
 function autoAsk(s){if(/```xmm/i.test(s)||s.indexOf("```")>=0)return s;var L=s.split("\n"),idx=[];L.forEach(function(l,i){if(/^\s{0,3}\d{1,2}[.)]\s+\S/.test(l))idx.push(i)});if(idx.length<2)return s;

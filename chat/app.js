@@ -333,21 +333,27 @@ const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
 const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
 const textOnly=ms=>ms.every(m=>typeof m.content==="string");
 async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw}){
- const CL=raw?cleanR:clean,k=tmo(12000,signal);
- try{const ms=fitMsgs(messages,3000).slice(-14).map(m=>({role:m.role,content:m.content}));
+ const CL=raw?cleanR:clean,k=tmo(10000,signal);
+ try{const ms=fitMsgs(messages,12000).slice(-14).map(m=>({role:m.role,content:m.content}));
   if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
   const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,2000),stream:false}),signal:k.ac.signal});
-  if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+  if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;e.ra=+(r.headers.get("Retry-After")||0);throw e}const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
   if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
  finally{k.done()}}
-let freeDownUntil=0;
+/* rotating pool: each request starts at the next free server; a server that is full / failing sits out (cooldown) while the others take over */
+const FP=FREE_AI.map(()=>({until:0,hits:[],busy:0}));let fRot=0,fNote=0;
+function fAvail(i){const p=FREE_AI[i],st=FP[i],n=Date.now();if(st.until>n)return false;if(p.conc&&st.busy>=p.conc)return false;st.hits=st.hits.filter(t=>n-t<60000);return !p.rpm||st.hits.length<p.rpm}
+function fCool(i,x){const st=FP[i],c=x&&x.status;st.until=Date.now()+((c===404||c===401||c===403||c===400)?600000:(c===429||c===402||c===503)?Math.max(20000,Math.min(120000,((x&&x.ra)||60)*1000)):45000)}
 async function groq1(messages,o={}){
- /* free no-key AIs first; if they all fail, tell the user and use Groq (and skip the free ones for 60 s so it stays fast) */
- if(FREE_AI.length&&textOnly(messages)&&Date.now()>freeDownUntil){
-  for(const p of FREE_AI.slice(0,2)){
+ if(FREE_AI.length&&textOnly(messages)){
+  const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i))order.push(i)}fRot=(fRot+1)%n;
+  for(const i of order.slice(0,3)){
    if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
-   try{const r=await freeAsk(p,messages,o);window.__xmmBackup=p.name;return r}catch(x){if(o.signal&&o.signal.aborted)throw x}}
-  freeDownUntil=Date.now()+60000;try{toast("Server 1 failed, using server 2")}catch(e){}}
+   const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
+   try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}
+   catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
+   finally{st.busy--}}
+  if(Date.now()-fNote>30000){fNote=Date.now();try{toast("Server 1 failed, using server 2")}catch(e){}}}
  return groqMain(messages,o)}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
@@ -611,12 +617,13 @@ async function ask(c){
  const nImg=hist0.length-1,lastImg=hist0[nImg]&&typeof hist0[nImg].content!=="string"?hist0.pop():null;const hist=XMM_PICK(hist0,3,T.name==="dev"?60000:2600).concat(lastImg?[lastImg]:[]);
   {const li=hist.length-1;if(li>=0&&hist[li].role==="user"&&typeof hist[li].content==="string"){const u=hist[li].content;let h="";
   if(/\b(flash\s*cards?)\b/i.test(u))h="xmm-flashcards";else if(/\b(quiz|test me|test my|exam me|trivia|practice (questions|problems)|mcq|multiple[- ]choice|questions? (about|on) )/i.test(u))h="xmm-quiz";else if(/\b(ask me|interview me|help me (choose|pick|decide|plan)|what do you need to know)\b/i.test(u))h="xmm-ask";
-  if(h)hist[li]={...hist[li],content:u+"\n\n[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]"}}}
+  let ex="";if(!h){const X=[[/\b(chart|graph|plot)\b/i,"xmm-chart",'{"type":"bar","title":"…","labels":["A","B"],"datasets":[{"label":"…","data":[1,2]}]}'],[/\b(compare|comparison|versus|vs\.?|which is better)\b/i,"xmm-compare",'{"title":"…","items":[{"name":"A","price":"…","desc":"…","best":true,"specs":{"Label":"value"}},{"name":"B","specs":{"Label":"value"}}],"verdict":"…"}'],[/\b(recipe|how to (cook|make|bake))\b/i,"xmm-recipe",'{"title":"Dish","time":"30 min","servings":2,"ingredients":["…"],"steps":["…"]}'],[/\b(table|spreadsheet)\b/i,"xmm-table",'{"headers":["A","B"],"rows":[["1","2"]]}'],[/\b(checklist|to-?do list|packing list)\b/i,"xmm-checklist",'{"title":"…","items":["…"]}']];for(const [re,hh,e] of X)if(re.test(u)){h=hh;ex=e;break}}
+  if(h)hist[li]={...hist[li],content:u+"\n\n"+(ex?"[SYSTEM NOTE: reply with a short intro line and then exactly ONE ```"+h+" fenced block containing valid JSON shaped like "+ex+". Never describe the block in plain text.]":"[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]")}}}
  const idx=c.msgs.length-1;ctrl=new AbortController();const t0=performance.now();
  if(S.mode==="sun62"&&sunSensitive(lu&&lu.text)){sunSetMode("x25");bot.fallback=true;bot.text="";bot.ms=performance.now()-t0;bot.mode=MODELS.x25.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
-const slowT=setTimeout(()=>{if(!bot.text&&S.busy&&!bot.status){bot.status="Slow connection, please wait…";renderMsgs()}},5000);
+const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";const slowT=setTimeout(()=>{if(!bot.text&&S.busy&&!bot.status){bot.status="Slow connection, please wait…";renderMsgs()}},5000);
 let wT=0,wEnd=0;const wTick=()=>{if(!S.busy||bot.text){clearInterval(wT);wT=0;return}const r=Math.max(0,Math.ceil((wEnd-Date.now())/1000));bot.status=r>0?"Slow connection, please wait… "+r+"s":"Slow connection, please wait… retrying";const el=$(`.m-bot[data-i="${idx}"] .think-lbl`);if(el)el.textContent=bot.status;else renderMsgs()};
 const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();wT=setInterval(wTick,1000)};addEventListener("xmm-wait",onWait);
  try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
@@ -624,7 +631,7 @@ const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();w
   if(lastU&&lastU.role==="user"){let us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);if(!us)us=bareSites(String(lastU.text||lastU.full||""));
    if(us){bot.status="Visiting website…";renderMsgs();const pg=await visitSites([...new Set(us)].slice(0,2),ctrl.signal);bot.status="";vis=1;
     if(pg){bot.visit=true;sys+=" The user's message contains website link(s). The page contents were fetched live and are below. Use them to answer, and say so if the content is missing or does not answer the question.\n\n"+pg}}}
-  if(!vis&&lastU&&lastU.role==="user"&&!(lastU.imgs&&lastU.imgs.length)){
+  if(!vis&&!AB&&lastU&&lastU.role==="user"&&!(lastU.imgs&&lastU.imgs.length)){
    const q=await needsSearch(lastU.full||lastU.text,ctrl.signal);
    if(q){bot.status="Searching the web…";renderMsgs();
     let found="";try{found=await webSearch(q,ctrl.signal)}catch(e){if(e.name==="AbortError")throw e;found=""}
@@ -635,7 +642,8 @@ const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();w
   let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
   const BUD=budgetFor(userTxt,hist);
-  if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
+  if(AB){bot.text=AB;paint()}
+  else if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
   else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")+BUD.hint},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:BUD.max,temp:mm.temp,stream:true,autoCont:BUD.cont,signal:ctrl.signal,onDelta:(t,th)=>{
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
