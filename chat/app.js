@@ -563,6 +563,7 @@ async function ask(c){
  if(S.mode==="sun62"&&sunSensitive(lu&&lu.text)){sunSetMode("x25");bot.fallback=true;bot.text="";bot.ms=performance.now()-t0;bot.mode=MODELS.x25.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
+const slowT=setTimeout(()=>{if(!bot.text&&S.busy&&!bot.status){bot.status="Slow connection, please wait…";renderMsgs()}},5000);
  try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
   if(lastU&&lastU.role==="user"){const us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);
@@ -592,7 +593,7 @@ async function ask(c){
   if(!bot.text)bot.text="…";paint()
   }
  catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
- bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
+ clearTimeout(slowT);if(bot.status==="Slow connection, please wait…")bot.status="";bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
 function regen(i){const c=cur();if(!c||S.busy)return;c.msgs.splice(i);ask(c)}
 function transcript(c){return c.msgs.map(m=>(m.role==="user"?"You: ":"XMM: ")+(m.text||"")).join("\n\n")}
 function doSearch(){const q=$("#searchIn").value.trim().toLowerCase();const out=$("#searchOut");
