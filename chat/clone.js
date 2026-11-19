@@ -317,6 +317,7 @@ function pickFile(kind){
 }
 function skillsMem(){var s=window.XMM_SKILLS;return s?s.memory!==false:true}
 function openAdd(){
+ if(window.__ipPlus){window.__ipPlus(document.querySelector("#clVoice.on #cvPlus")||document.getElementById("attBtn"));return}
  var s=sheet("clAdd",{title:"Add to Chat",grab:true});
  s.body.innerHTML='<div class="cl-tiles"><button class="cl-tile" data-k="camera" type="button">'+IC.camera+'<span>Camera</span></button><button class="cl-tile" data-k="photos" type="button">'+IC.photos+'<span>Photos</span></button><button class="cl-tile" data-k="files" type="button">'+IC.files+'<span>Files</span></button></div>'+
   '<div class="cl-grp"><div class="cl-row nl" id="clMemRow">'+IC.brain+'<div class="rt">Memory<small>Let XMM AI use what you told it about you</small></div><button class="cl-sw'+(skillsMem()?" on":"")+'" id="clMemSw" type="button" aria-label="Memory"></button></div></div>';
@@ -498,7 +499,7 @@ function closeVoice(){
 window.addEventListener("click",function(e){
  var t=e.target;if(!t||!t.closest)return;
  var stop=function(){e.stopImmediatePropagation();e.stopPropagation();e.preventDefault()};
- if(t.closest("#attBtn")){stop();openAdd();return}
+ if(t.closest("#attBtn"))return;
  if(t.closest("#modeBtn")){stop();openModel();return}
  var s=t.closest('[data-act="settings"]');if(s&&!t.closest(".cl-sheet")){stop();openSettings();return}
  var d=t.closest('[data-act="openDrawer"],[data-act="toggleSide"]');if(d){stop();openDrawer();return}
