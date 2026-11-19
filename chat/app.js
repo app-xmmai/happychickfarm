@@ -200,7 +200,9 @@ function budgetFor(txt,hist){
  const GREET=/^(hi|hello|hey|hii+|yo|sup|thanks?|thank you|ok(ay)?|cool|good (morning|evening|night)|salam|slm|hallo|hola|bye|سلام|مرسی|ممنون|خوبی|چطوری|wie geht'?s|how are you|what'?s up|how'?s it going)\b[\s!?.,😊🙂👋]*(.{0,25})$/i;
  const QUICK=/\b(weather|temperature|forecast|time|date|today|what day|direction|directions|route|where is|how far|distance|nearest|closest|open now|price of|how much is|convert|who is|who was|capital of|when (is|was)|هوا|آب و هوا|مسیر|کجاست|ساعت|wetter|wo ist)\b/i;
  const code=/```|\bfunction\b.*\{|<\/?[a-z]+>/i.test(t);
+ const BOX=/\b(quiz|test me|flash\s*cards?|chart|graph|plot|compare|comparison|versus|which is better|recipe|table|spreadsheet|checklist|to-?do list|packing list|ask me|interview me|diet plan|calendar|itinerary|homework)\b/i;
  let max,hint="",cont=false;
+ if(BOX.test(t)&&!hasImg)return{max:5000,hint:"",cont:false,box:true};
  if(hasImg||code||HARD.test(t)||w>150){max=w>150||/\b(full|complete|whole|entire|long|detailed|in[- ]depth|\d{3,}\s*words|website|app|game)\b/i.test(t)?7000:5000;cont=true}
  else if(GREET.test(t)&&w<=8){max=300;hint=" Reply in one or two short sentences."}
  else if(QUICK.test(t)&&w<=14){max=500;hint=" Keep the reply short and direct (a few sentences)."}
@@ -332,21 +334,23 @@ async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,o
 const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
 const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
 const textOnly=ms=>ms.every(m=>typeof m.content==="string");
-async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw}){
+async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw,box}){
  const CL=raw?cleanR:clean,k=tmo(10000,signal);
  try{const ms=fitMsgs(messages,12000).slice(-14).map(m=>({role:m.role,content:m.content}));
   if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
-  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,2000),stream:false}),signal:k.ac.signal});
+  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,box?5000:2000),stream:false}),signal:k.ac.signal});
   if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;e.ra=+(r.headers.get("Retry-After")||0);throw e}const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
   if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
  finally{k.done()}}
 /* rotating pool: each request starts at the next free server; a server that is full / failing sits out (cooldown) while the others take over */
+const BOX_MIN_TPM=CFG.BOX_MIN_TPM||8000;
 const FP=FREE_AI.map(()=>({until:0,hits:[],busy:0}));let fRot=0,fNote=0;
 function fAvail(i){const p=FREE_AI[i],st=FP[i],n=Date.now();if(st.until>n)return false;if(p.conc&&st.busy>=p.conc)return false;st.hits=st.hits.filter(t=>n-t<60000);return !p.rpm||st.hits.length<p.rpm}
 function fCool(i,x){const st=FP[i],c=x&&x.status;st.until=Date.now()+((c===404||c===401||c===403||c===400)?600000:(c===429||c===402||c===503)?Math.max(20000,Math.min(120000,((x&&x.ra)||60)*1000)):45000)}
 async function groq1(messages,o={}){
  if(FREE_AI.length&&textOnly(messages)){
-  const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i))order.push(i)}fRot=(fRot+1)%n;
+  const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i)&&(!o.box||(FREE_AI[i].tpm||0)>=BOX_MIN_TPM))order.push(i)}fRot=(fRot+1)%n;
+  if(o.box)order.sort((a,b)=>(FREE_AI[b].tpm||0)-(FREE_AI[a].tpm||0));
   for(const i of order.slice(0,3)){
    if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
    const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
@@ -644,7 +648,7 @@ const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();w
   const BUD=budgetFor(userTxt,hist);
   if(AB){bot.text=AB;paint()}
   else if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
-  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")+BUD.hint},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:BUD.max,temp:mm.temp,stream:true,autoCont:BUD.cont,signal:ctrl.signal,onDelta:(t,th)=>{
+  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")+BUD.hint},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:BUD.max,box:!!BUD.box,temp:mm.temp,stream:true,autoCont:BUD.cont,signal:ctrl.signal,onDelta:(t,th)=>{
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
    bot.text=tt;

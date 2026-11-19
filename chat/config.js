@@ -22,13 +22,16 @@ window.XMM_CONFIG = {
   // Free community AIs, no API key. Requests rotate through this list; a server that is full or failing
   // sits out for a while and the next one takes over. If all fail the app says "Server 1 failed, using server 2" and uses Groq.
   // rpm = max requests per minute we allow ourselves, conc = max at once.
+  // Box requests (quiz, chart, compare, recipe, table...) get up to 5000 tokens and only use servers whose tpm (estimated tokens per minute)
+  // is at least BOX_MIN_TPM, biggest first. tpm = rpm x ~4000 tokens, a rough estimate: edit it if you learn the real limit.
+  BOX_MIN_TPM: 8000,
   FREE_AI: [
-    { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25 },
-    { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1 },
-    { name: "Airforce",     url: "https://api.airforce/v1/chat/completions", model: "step-3.5-flash:free", key: "", rpm: 10 },
-    { name: "OVH gpt-oss",  url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "gpt-oss-120b", key: "", rpm: 2 },
-    { name: "OVH llama",    url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "meta-llama-3_3-70b-instruct", key: "", rpm: 2 },
-    { name: "Airforce grok",url: "https://api.airforce/v1/chat/completions", model: "grok-4.1-mini:free", key: "", rpm: 10 }
+    { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25, tpm: 100000 },
+    { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1, tpm: 8000 },
+    { name: "Airforce",     url: "https://api.airforce/v1/chat/completions", model: "step-3.5-flash:free", key: "", rpm: 10, tpm: 40000 },
+    { name: "OVH gpt-oss",  url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "gpt-oss-120b", key: "", rpm: 2, tpm: 8000 },
+    { name: "OVH llama",    url: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions", model: "meta-llama-3_3-70b-instruct", key: "", rpm: 2, tpm: 8000 },
+    { name: "Airforce grok",url: "https://api.airforce/v1/chat/completions", model: "grok-4.1-mini:free", key: "", rpm: 10, tpm: 40000 }
   ],
 
   // Optional extra models to try if the main one fails
