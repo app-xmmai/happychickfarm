@@ -192,6 +192,23 @@ const cleanR=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]
 const getKey=()=>String(CFG.GROQ_KEY||"").trim();
 const MODELS={sun62:{name:"XMMGPT Sun 6.2",short:"XMMGPT Sun 6.2",desc:"Most powerful",max:1400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT Sun 6.2 Lite",short:"XMMGPT Sun 6.2 Lite",desc:"Warm · thinks 8 seconds",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2 Lite, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMMGPT 6.2",short:"XMMGPT 6.2",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT 6.2 in XMM AI. Give thorough, careful, high quality answers with good structure."},x20:{name:"XMMGPT 5.2",short:"XMMGPT 5.2",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" You are XMMGPT 5.2 in XMM AI. Think step by step when needed and give clear, useful answers."},x12:{name:"XMMGPT 5.0",short:"XMMGPT 5.0",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 5.0 in XMM AI. Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
 
+/* ---------- answer length budget: tiny for chit-chat, big only for really hard requests ---------- */
+function budgetFor(txt,hist){
+ const t=String(txt||"").trim(),w=t?t.split(/\s+/).length:0,last=hist&&hist[hist.length-1],hasImg=!!(last&&Array.isArray(last.content));
+ const HARD=/\b(write (me )?(a |an |the )?(full|complete|long|detailed)|build|create (a |an )?(website|app|game|program|script|bot)|code|implement|refactor|debug|algorithm|prove|proof|derive|analy[sz]e|in[- ]depth|deep dive|thesis|research paper|essay|report|business plan|step[- ]by[- ]step|full (guide|plan|course)|curriculum|\d{3,}\s*words|schreibe|erstelle|programmier)\b/i;
+ const MID=/\b(explain|compare|difference|summari[sz]e|plan|itinerary|recipe|list|steps?|how (do|to|can|does)|why|pros and cons|review|translate|rewrite|improve|ideas|tips|guide|erkl[äa]r|warum|wie|توضیح|چرا|چطور)\b/i;
+ const GREET=/^(hi|hello|hey|hii+|yo|sup|thanks?|thank you|ok(ay)?|cool|good (morning|evening|night)|salam|slm|hallo|hola|bye|سلام|مرسی|ممنون|خوبی|چطوری|wie geht'?s|how are you|what'?s up|how'?s it going)\b[\s!?.,😊🙂👋]*(.{0,25})$/i;
+ const QUICK=/\b(weather|temperature|forecast|time|date|today|what day|direction|directions|route|where is|how far|distance|nearest|closest|open now|price of|how much is|convert|who is|who was|capital of|when (is|was)|هوا|آب و هوا|مسیر|کجاست|ساعت|wetter|wo ist)\b/i;
+ const code=/```|\bfunction\b.*\{|<\/?[a-z]+>/i.test(t);
+ let max,hint="",cont=false;
+ if(hasImg||code||HARD.test(t)||w>150){max=w>150||/\b(full|complete|whole|entire|long|detailed|in[- ]depth|\d{3,}\s*words|website|app|game)\b/i.test(t)?7000:5000;cont=true}
+ else if(GREET.test(t)&&w<=8){max=300;hint=" Reply in one or two short sentences."}
+ else if(QUICK.test(t)&&w<=14){max=500;hint=" Keep the reply short and direct (a few sentences)."}
+ else if(w<=6&&!MID.test(t)){max=500;hint=" Keep the reply short and direct (a few sentences)."}
+ else if(MID.test(t)||w>40){max=Math.min(5000,Math.max(2000,1200+w*35))}
+ else{max=Math.min(2500,Math.max(1000,700+w*40))}
+ return{max,hint,cont}}
+
 /* ===== XMMGPT Sun 6.2 helpers ===== */
 const SUN_BLOCK=/\b(wars?|warfare|battle|invasion|invade|genocide|terror\w*|bomb\w*|explosive\w*|weapons?|guns?|rifles?|missiles?|nukes?|nuclear|military|soldiers?|army|isis|hamas|kill\w*|murder\w*|suicid\w*|self[- ]?harm|overdose|poison\w*|abuse\w*|rape\w*|drugs?|cocaine|heroin|meth|porn\w*|sex\w*|nsfw|hack\w*|religions?|religious|god|gods|allah|islam\w*|muslim\w*|christian\w*|jesus|bible|quran|koran|jewish|judaism|jews?|hindu\w*|buddh\w*|atheis\w*|prophet|church|mosque|afterlife|heaven|hell|politic\w*|election|president|abortion|racis\w*|slur\w*|meaning of life|free will|consciousness|why do we exist|why are we here|what happens after (we )?die|what happens when (we|you) die|philosoph\w*|existential\w*|nihilis\w*|krieg\w*|religion|gott|selbstmord|waffen|töten|جنگ|دین|مذهب|خدا|خودکشی|اسلام|مسیحی|کشتن|سلاح|حرب|دين|الله|انتحار|قتل|أسلحة|guerra|religión|dios|suicidio|matar|armas)\b|جنگ|مذهب|خودکشی|حرب|انتحار/i;
 const sunSensitive=t=>SUN_BLOCK.test(String(t||""));
@@ -316,27 +333,22 @@ const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
 const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
 const textOnly=ms=>ms.every(m=>typeof m.content==="string");
 async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw}){
- const CL=raw?cleanR:clean,k=tmo(25000,signal);
+ const CL=raw?cleanR:clean,k=tmo(12000,signal);
  try{const ms=fitMsgs(messages,3000).slice(-14).map(m=>({role:m.role,content:m.content}));
   if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
   const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,2000),stream:false}),signal:k.ac.signal});
   if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
   if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
  finally{k.done()}}
+let freeDownUntil=0;
 async function groq1(messages,o={}){
- const used=(()=>{const n=Date.now();return tokLog.filter(x=>n-x[0]<=60000).reduce((a,x)=>a+x[1],0)})();
- const limitedNow=FREE_AI.length&&used>RATE_CAP*.95&&textOnly(messages);
- if(!limitedNow){
-  try{return await groqMain(messages,o)}
-  catch(e){if(!(FREE_AI.length&&isLimit(e)&&textOnly(messages))||(o.signal&&o.signal.aborted))throw e;var lim=e}
- }
- try{await sleepW(3,o.signal)}catch(x){throw x}
- for(const p of FREE_AI.slice(0,2)){
-  if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
-  try{const r=await freeAsk(p,messages,o);window.__xmmBackup=p.name;return r}catch(x){if(x&&x.name==="AbortError"&&o.signal&&o.signal.aborted)throw x}}
- /* both backups failed: wait, then go back to Groq (existing retry logic) */
- if(lim){lim.retry=true;throw lim}
- await sleepW(3,o.signal);return groqMain(messages,o)}
+ /* free no-key AIs first; if they all fail, tell the user and use Groq (and skip the free ones for 60 s so it stays fast) */
+ if(FREE_AI.length&&textOnly(messages)&&Date.now()>freeDownUntil){
+  for(const p of FREE_AI.slice(0,2)){
+   if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
+   try{const r=await freeAsk(p,messages,o);window.__xmmBackup=p.name;return r}catch(x){if(o.signal&&o.signal.aborted)throw x}}
+  freeDownUntil=Date.now()+60000;try{toast("Server 1 failed, using server 2")}catch(e){}}
+ return groqMain(messages,o)}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */
@@ -622,8 +634,9 @@ const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();w
   const MIN_MS=0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
   let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
+  const BUD=budgetFor(userTxt,hist);
   if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
-  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:mm.max,temp:mm.temp,stream:true,autoCont:true,signal:ctrl.signal,onDelta:(t,th)=>{
+  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")+BUD.hint},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:BUD.max,temp:mm.temp,stream:true,autoCont:BUD.cont,signal:ctrl.signal,onDelta:(t,th)=>{
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
    bot.text=tt;

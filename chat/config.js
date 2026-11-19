@@ -19,8 +19,8 @@ window.XMM_CONFIG = {
   // Gives your visitors a bigger free image allowance. Leave empty to run without it.
   HF_TOKEN: "",
 
-  // Free community AIs, no API key. Used only when Groq hits its per-minute limit:
-  // wait 3 s -> try the 1st -> if it fails try the 2nd -> if that fails wait and go back to Groq.
+  // Free community AIs, no API key. Used before Groq:
+  // tried FIRST (1st, then 2nd). If both fail the app shows "Server 1 failed, using server 2" and uses Groq.
   FREE_AI: [
     { name: "LLM7", url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused" },
     { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai", key: "" }
