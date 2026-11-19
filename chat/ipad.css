@@ -149,3 +149,21 @@ html body.ip #msg{caret-color:#5d7bff}
 #ipSet{position:fixed;inset:0;z-index:100002;background:#000;display:flex;flex-direction:column;color:#fff;font-family:var(--cl-sans)}
 .ip-av{width:34px;height:34px;border-radius:50%;background:#7a5a2a;color:#f5d9a6;display:grid;place-items:center;font:600 13px var(--cl-sans);flex:none}
 .ip-row.dg{color:#ff7a7a}
+
+.cl-notif,#clNotif{display:none!important}
+.ip-fb{display:none!important}
+/* voice */
+#clVoice{background:#000}
+#clVoice .cl-vmid::before{width:170px;height:170px;background:radial-gradient(circle at 50% 10%,#fff 0,#e3ecff 12%,#7fa1ff 34%,#2a4ee6 66%,#1a2fb8 100%);box-shadow:0 0 90px rgba(70,110,255,.4),inset 0 -14px 30px rgba(10,20,120,.5)}
+#clVoice .cl-vt{font:500 15px var(--cl-sans);color:#a0a0a8;opacity:1}
+#clVoice .cl-vs{font:16px/1.5 var(--cl-sans);color:#e6e6ea}
+#cvGear,#cvModel,#clVoice .cl-sp{display:none!important}
+#clVoice .cl-vbar{gap:10px;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 18px);align-items:center}
+.ip-vpill{flex:1;display:flex;align-items:center;gap:8px;height:52px;border-radius:26px;background:#0e0e0f;border:1px solid rgba(255,255,255,.1);padding:0 7px}
+.ip-vpill .cl-b{width:38px;height:38px;background:none!important;border:0}
+.ip-vph{flex:1;color:#8d8d93;font:16px var(--cl-sans)}
+#clVoice .ip-vpill .cl-vmic{position:static;transform:none;width:38px;height:38px;border:0;background:none;color:#fff;display:grid;place-items:center;margin:0}
+#clVoice .ip-vpill .cl-vmic svg{width:20px;height:20px}
+#clVoice .ip-vpill .cl-vmic::before{display:none}
+#clVoice.muted .ip-vpill .cl-vmic{background:none;color:#ff7a7a}
+#clVoice .cl-vx{width:52px;height:52px;background:#fff;color:#000}

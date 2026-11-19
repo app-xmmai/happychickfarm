@@ -1,4 +1,4 @@
-/* XMM AI v113 */
+/* XMM AI v114 */
 /* XMM AI ipad.js v1 — tablet-app layer on top of clone.js: drawer nav, pages, plus menu, feedback card. Loaded last. */
 (function(){
 "use strict";
@@ -332,7 +332,7 @@ var SP={
  root:function(){var n=String(ld("xmm.name","")||"").trim()||"XMM User";
   return'<div class="ip-grp"><button class="ip-row" data-g="account" type="button"><span class="ip-av">'+esc(n.charAt(0).toUpperCase())+'</span><span class="t">'+esc(n)+'<small>Account</small></span>'+IC.chev.replace("<svg",'<svg class="ch"')+'</button></div>'+
   '<div class="ip-grp"><button class="ip-row" data-g="customize" type="button">'+IC.cust+'<span class="t">Customize XMM AI<small>Personality, memory, plugins and more</small></span>'+IC.chev.replace("<svg",'<svg class="ch"')+'</button></div>'+
-  '<div class="ip-grp">'+R(IC.cust,"General","","","general")+R(IC.sched,"Notifications","","","notif")+R(IC.globe,"Voice","","","voice")+R(IC.shield,"Privacy and security","","","privacy")+R(IC.files,"Storage","","","storage")+R(IC.dl,"Data controls","","","data")+'</div>'+
+  '<div class="ip-grp">'+R(IC.cust,"General","","","general")+R(IC.globe,"Voice","","","voice")+R(IC.shield,"Privacy and security","","","privacy")+R(IC.files,"Storage","","","storage")+R(IC.dl,"Data controls","","","data")+'</div>'+
   '<div class="ip-grp">'+R(IC.plus,"Install app","","","install")+R(IC.person,"About","","","about")+'</div>'+
   '<div class="ip-grp">'+R(IC.x,"Log out","","","logout","dg")+'</div>'},
  account:function(){return'<div class="ip-lbl">Name</div><input class="ip-in" id="ipNm2" maxlength="40" value="'+esc(String(ld("xmm.name","")||""))+'" placeholder="Your name" dir="auto">'},
@@ -342,7 +342,7 @@ var SP={
  privacy:function(){return'<div class="ip-grp">'+R(IC.shield,"Privacy policy","","","l:/privacy")+R(IC.files,"Terms of Service","","","l:/terms")+R(IC.person,"Support","","","l:/support")+'</div>'},
  storage:function(){var n=(ld("xmm.chats",[])||[]).length,kb=0;try{kb=Math.round((localStorage.getItem("xmm.chats")||"").length/1024)}catch(e){}return'<div class="ip-grp"><div class="ip-row" style="cursor:default">'+IC.files+'<span class="t">Chats on this device<small>'+n+' chats · about '+kb+' KB</small></span></div></div><div class="ip-grp">'+R(IC.trash,"Delete all chats","","","clear","dg")+'</div>'},
  data:function(){return'<div class="ip-grp">'+R(IC.dl,"Export chats","Download all chats as a file","","export")+R(IC.trash,"Delete all chats","","","clear","dg")+'</div>'},
- about:function(){return'<div class="ip-grp"><div class="ip-row" style="cursor:default"><img src="icon.svg?v=x40" width="36" height="36" style="border-radius:10px" alt=""><span class="t">XMM AI<small>by XMM Bayat · v113</small></span></div></div><div class="ip-lbl" style="text-align:center">© XMMAI. All rights reserved.</div>'},
+ about:function(){return'<div class="ip-grp"><div class="ip-row" style="cursor:default"><img src="icon.svg?v=x40" width="36" height="36" style="border-radius:10px" alt=""><span class="t">XMM AI<small>by XMM Bayat · v114</small></span></div></div><div class="ip-lbl" style="text-align:center">© XMMAI. All rights reserved.</div>'},
  lang:function(){var L=[["de","Deutsch"],["en","English"],["fa","فارسی"],["ar","العربية"],["es","Español"]],c=langCode();return'<div class="ip-grp">'+L.map(function(l){return'<button class="ip-row ip-opt'+(l[0]===c?" on":"")+'" data-lg="'+l[0]+'"><span class="t">'+l[1]+'</span>'+IC.check.replace("<svg",'<svg class="ck"')+'</button>'}).join("")+'</div>'}
 };
 var STT={root:"Settings",account:"Account",general:"General",notif:"Notifications",voice:"Voice",privacy:"Privacy and security",storage:"Storage",data:"Data controls",about:"About",lang:"Language"};
@@ -377,6 +377,12 @@ function openSet(){
 new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.id==="clSet"){n.remove();var bg=document.getElementById("clSetBg");if(bg)bg.remove();openSet()}})})}).observe(document.body,{childList:true});
 window.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("#clAv")){e.stopImmediatePropagation();e.preventDefault();openSet()}},true);
 
+/* ============ voice screen (video style) ============ */
+function voiceUI(){
+ var v=$("#clVoice");if(!v||v.__ip)return;var bar=$(".cl-vbar",v),x=$("#cvX",v),mic=$("#cvMic",v),plus=$("#cvPlus",v),spk=$("#cvSpk",v);if(!bar||!x||!mic||!plus)return;v.__ip=1;
+ var pill=el("div","ip-vpill");pill.appendChild(plus);pill.appendChild(el("span","ip-vph","Ask XMM AI"));if(spk)pill.appendChild(spk);pill.appendChild(mic);
+ bar.insertBefore(pill,bar.firstChild);
+}
 /* ============ boot ============ */
 function boot(){
  B.classList.add("ip");
@@ -384,7 +390,7 @@ function boot(){
   tries++;
   var a=buildDrawer(),b=buildTop();buildSug();
   if((a&&b)||tries>60){clearInterval(iv);
-   setInterval(function(){syncModel();splitPins();feedback();settingsExtras();var av=$("#clAv");if(av){var l=(String(ld("xmm.name","")||"X").trim().charAt(0)||"X").toUpperCase();if(av.textContent!==l)av.textContent=l}},500);
+   setInterval(function(){syncModel();splitPins();settingsExtras();voiceUI();var av=$("#clAv");if(av){var l=(String(ld("xmm.name","")||"X").trim().charAt(0)||"X").toUpperCase();if(av.textContent!==l)av.textContent=l}},500);
    setInterval(tickSched,15000);tickSched();
   }
  },150);
