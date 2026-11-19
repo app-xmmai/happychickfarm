@@ -1,4 +1,4 @@
-/* companion.js — stretch (iOS 26+/Android 14+ phones), auto XMM AI 2.5 in Code, update popup, iPhone flag */
+/* companion.js — stretch (iOS 26+/Android 14+ phones), auto XMMGPT 6.2 in Code, update popup, iPhone flag */
 (function(){
 "use strict";
 var $=function(s,r){return (r||document).querySelector(s)};
@@ -72,12 +72,12 @@ stretchAllowed().then(function(ok){if(ok)initStretch()});
 var prevMode=null;
 function toEngine(){
  var a=api();if(!a.S)return;
- if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMM AI 2.5";
-  if(a.toast)a.toast("Code uses XMM AI 2.5")}
+ if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMMGPT 6.2";
+  if(a.toast)a.toast("Code uses XMMGPT 6.2")}
 }
 function fromEngine(){
  var a=api();if(!a.S||!prevMode)return;
- if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMM AI 1.2",x20:"XMM AI 2.0",x25:"XMM AI 2.5",sun62:"XMMGPT Sun 6.2"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMM AI 2.5"}
+ if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMMGPT 5.0",x20:"XMMGPT 5.2",x25:"XMMGPT 6.2",sun62:"XMMGPT Sun 6.2"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMMGPT 6.2"}
  prevMode=null;
 }
 var wasCode=false;
