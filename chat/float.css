@@ -22,3 +22,51 @@ html body #mainChat>header.topbar.topbar .xnew{background:rgba(120,120,128,.22)!
 html body #mainChat>header.topbar.topbar .xpill .xp-b{background:none!important}
 html body #mainChat .chatview{padding-top:64px}
 html body #mainChat .chatview .convo{padding-top:0}
+/* ---- maps: better layout, fits every screen ---- */
+html body #nv{height:100vh;height:100dvh;bottom:auto}
+html body #nv .gl{border-radius:22px;box-shadow:0 10px 36px rgba(0,0,0,.2),0 0 0 .5px rgba(255,255,255,.45) inset}
+html body #nv .sheet,html body #nv .drv{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));border-radius:28px;max-height:calc(100dvh - 130px - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+html body #nv .sheet::-webkit-scrollbar{display:none}
+html body #nv .acts .st{flex:1.7;height:58px;border-radius:16px;font-size:13px;background:linear-gradient(135deg,#0a84ff,#2563eb);box-shadow:0 6px 18px rgba(10,132,255,.45)}
+html body #nv .acts .st b{font-size:17px}
+html body #nv .acts>*{height:58px;border-radius:16px}
+html body #nv .rts{display:none;gap:8px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+html body #nv .rts::-webkit-scrollbar{display:none}
+html body #nv .rts button{flex:1 0 auto;min-width:96px;text-align:start;border:1.5px solid transparent;border-radius:14px;padding:8px 12px;background:var(--chip);display:flex;flex-direction:column;gap:1px}
+html body #nv .rts button b{font-size:16px;font-weight:700}
+html body #nv .rts button small{font-size:11.5px;color:var(--mu);font-weight:600;white-space:nowrap}
+html body #nv .rts button.on{border-color:#0a84ff;background:rgba(10,132,255,.14)}
+html body #nv .rts button.on b{color:#0a84ff}
+html body #nv .aip{max-height:min(60%,calc(100dvh - var(--sh,200px) - 150px));border-radius:24px}
+html body #nv .aio{max-height:min(32vh,calc(100dvh - var(--sh,200px) - 330px))}
+html body #nv .top{left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px))}
+html body #nv .fabs button{width:44px;height:44px}
+@media (max-height:700px){
+ html body #nv .fabs button{width:38px;height:38px}
+ html body #nv .stats{display:none}
+ html body #nv .sheet,html body #nv .drv{padding:6px 12px 12px}
+ html body #nv .turn b{font-size:18px}
+ html body #nv .acts>*,html body #nv .acts .st{height:50px}
+}
+/* ---- chat dialogs and boxes: always on screen ---- */
+html body .modal{padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));place-items:center;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+html body .modal .sheet{margin:0;width:min(520px,100%);max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;border-radius:26px;box-shadow:0 24px 70px rgba(0,0,0,.45);box-sizing:border-box}
+html body .modal .sheet .field,html body .modal .sheet input,html body .modal .sheet select,html body .modal .sheet textarea{max-width:100%;box-sizing:border-box}
+html body .toast{max-width:min(92vw,460px);bottom:calc(env(safe-area-inset-bottom,0px) + 90px)}
+html body .xw{border-radius:22px;padding:16px;box-sizing:border-box;max-width:100%;overflow-wrap:anywhere;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+html body .xw-place{padding:0}
+html body .xw img,html body .xw iframe,html body .xw table,html body .xw svg{max-width:100%}
+html body .xw-scroll,html body .xw .xw-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+html body .xw .xw-btn,html body .xw button{min-height:40px}
+html body .xw-ck,html body .xw-checklist li{min-height:40px}
+@media (max-width:420px){html body .xw{padding:13px;border-radius:20px}html body .modal .sheet{padding:18px}}
+/* ---- map AI: glowing button, text button, reply replaces the turn banner ---- */
+html body #nv .fabs .txb{display:none}
+html body #nv.aion .fabs .txb{display:grid;color:var(--blue)}
+html body #nv.aion .fabs .aib{background:#0a84ff;color:#fff;animation:nvg 1.5s ease-in-out infinite}
+@keyframes nvg{0%,100%{box-shadow:inset 0 0 8px 1px rgba(255,255,255,.3)}50%{box-shadow:inset 0 0 22px 7px rgba(255,255,255,.75)}}
+html body #nv.airep .turn{display:flex!important}
+html body #nv.airep .turn b{-webkit-line-clamp:6;font-size:17px;font-weight:600;line-height:1.3}
+html body #nv.airep .turn{cursor:pointer}
+html body #nv .aip{padding:8px;gap:0}
+html body #nv .aip .aih,html body #nv .aip .aio,html body #nv .aip .aic{display:none!important}
