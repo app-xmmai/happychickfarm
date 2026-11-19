@@ -26,13 +26,8 @@ function css(){if(document.getElementById("nv-css"))return;var s=document.create
 "#nv .top>*{pointer-events:auto}"+
 "#nv .wx{align-self:flex-start;display:none;align-items:center;gap:6px;border-radius:99px;padding:7px 13px 7px 10px;font-weight:600;font-size:15px}"+
 "#nv .wx.on{display:flex}"+
-"#nv .sbar{display:flex;align-items:center;gap:10px;border-radius:16px;padding:0 6px 0 14px;height:46px}"+
-"#nv .sbar svg{flex:none;opacity:.55}"+
-"#nv .sbar input{flex:1;min-width:0;border:0;background:none;outline:0;font:500 17px inherit;color:var(--fg);padding:0}"+
-"#nv .sbar input::placeholder{color:var(--mu)}"+
-"#nv .sbar .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8ea0ff,#6c7be0);color:#fff;font:600 13px inherit;display:grid;place-items:center;border:0}"+
 "#nv .turn{display:none;align-items:center;gap:14px;border-radius:22px;padding:12px 16px;background:linear-gradient(135deg,#0a84ff,#2563eb)!important;color:#fff;border:0}"+
-"#nv:not(.pre) .turn{display:flex}#nv:not(.pre) .sbar{display:none}"+
+"#nv:not(.pre) .turn{display:flex}"+
 "#nv .turn .ti{width:44px;height:44px;display:grid;place-items:center;flex:none}#nv .turn .ti svg{transition:transform .3s}"+
 "#nv .turn .tt{min-width:0;flex:1}#nv .turn small{display:block;font-size:13px;opacity:.8;font-weight:600}#nv .turn b{display:block;font-size:21px;font-weight:700;line-height:1.15;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}"+
 "#nv .rcl{align-self:center;display:none;align-items:center;gap:9px;border-radius:99px;padding:9px 16px;font-weight:700;font-size:15px}"+
@@ -118,14 +113,11 @@ function setDest(d,inf){destLL=d;info=inf||info;if(!el||!map)return;if(dest)map.
   var c=$(".acts .call"),w=$(".acts .web");if(c&&info.phone){c.href="tel:"+info.phone.split(/[;,]/)[0].replace(/\s/g,"");c.classList.remove("off")}
   if(w&&info.web){w.href=/^https?:/i.test(info.web)?info.web:"https://"+info.web;w.classList.remove("off")}
   if(info.hours){var hb=$(".s-hr");if(hb){hb.parentNode.style.display="";hb.textContent=info.hours.split(";")[0].slice(0,22)}}}}
-function search(v){v=String(v||"").trim();if(!v)return;q=v;coords=[];steps=[];destLL=null;info=null;started=false;if(line){map.removeLayer(line);map.removeLayer(casing);line=null;casing=null}
- $(".nm b").textContent=title();$(".nm small").textContent="";status(true,"Searching…");
- geoFull(v,function(i){status(false);setDest(i.ll,i);if(lastP)getRoute(lastP)},function(){status(true,"Place not found");setTimeout(function(){status(false)},2000)})}
 function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;driving=false;follow=true;coords=[];steps=[];me=null;line=null;casing=null;failed=0;lastRoute=0;routing=false;offCount=0;wxDone=false;
  if(!navigator.geolocation){alert("Location is not supported");return}
  css();el=document.createElement("div");el.id="nv";el.className="pre";
  el.innerHTML='<div class="map"></div>'+
- '<div class="top"><div class="wx gl"></div><div class="sbar gl">'+IC.search+'<input type="text" placeholder="Search Maps" enterkeyhint="search"><button class="av" aria-label="Close">'+'✕'+'</button></div>'+
+ '<div class="top"><div class="wx gl"></div>'+
  '<div class="turn gl"><div class="ti">'+IC.arr+'</div><div class="tt"><small>Starting…</small><b>Calculating route…</b></div></div><div class="rcl gl"><i></i><span>Calculating route…</span></div></div>'+
  '<div class="spd gl"><b class="spv">0</b><small>KM/H</small></div>'+
  '<div class="fabs gl"><button class="rc" aria-label="My location">'+IC.loc+'</button><button class="zi" aria-label="Zoom in">+</button><button class="zo" aria-label="Zoom out">−</button></div>'+
@@ -134,8 +126,7 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
  '<div class="stats"><div><small>Distance</small><b class="s-km">--</b></div><div><small>Arrive</small><b class="s-eta">--</b></div><div style="display:none"><small>Hours</small><b class="s-hr"></b></div></div></div>'+
  '<div class="drv gl"><div class="row"><div><b class="tm">--</b><small>time left</small></div><div><b class="km">--</b><small>distance</small></div><div><b class="eta">--</b><small>arrive</small></div><button class="ex">End</button></div></div>';
  document.body.appendChild(el);$(".nm b").textContent=title();
- var inp=$(".sbar input");inp.value=title();inp.addEventListener("keydown",function(e){if(e.key==="Enter"){inp.blur();search(inp.value)}});inp.addEventListener("focus",function(){inp.select()});
- $(".sbar .av").onclick=close;$(".cls").onclick=close;$(".ex").onclick=close;
+ $(".cls").onclick=close;$(".ex").onclick=close;
  $(".shr").onclick=function(){var u="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);if(navigator.share)navigator.share({title:title(),url:u}).catch(function(){});else if(navigator.clipboard){navigator.clipboard.writeText(u);status(true,"Link copied");setTimeout(function(){status(false)},1500)}};
  $(".st").onclick=function(){if(!coords.length)return;driving=true;follow=true;el.classList.remove("pre");sh();setTurn("Starting…","Follow the blue line",0,"arr");if(lastP){map.setView(lastP,17);var r=[lastP].concat(coords);casing.setLatLngs(r);line.setLatLngs(r);upd(lastP)}};
  $(".rc").onclick=function(){follow=true;if(lastP){if(driving)map.setView(lastP,17);else map.setView(lastP,15)}else if(line)fit()};
