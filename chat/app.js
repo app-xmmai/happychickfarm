@@ -313,7 +313,19 @@ async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDe
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */
+/* Free open-source tools: Jina Reader (r.jina.ai) over DuckDuckGo Lite + Bing, Wikipedia API, AllOrigins proxy. No keys, no AI quota. */
+const OS_BAD=/captcha|unusual traffic|are you a robot|verify you are human|access denied|enable javascript|just a moment/i;
+function tmo(ms,signal){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),ms);if(signal){if(signal.aborted)ac.abort();else signal.addEventListener("abort",()=>ac.abort(),{once:true})}return{ac,done:()=>clearTimeout(t)}}
+async function jread(u,ms,signal){const k=tmo(ms,signal);try{const r=await fetch("https://r.jina.ai/"+u,{headers:{Accept:"text/plain"},signal:k.ac.signal});if(!r.ok)throw 0;const t=(await r.text()).trim();if(t.length<200||OS_BAD.test(t.slice(0,1500)))throw 0;return t}finally{k.done()}}
+function cleanSerp(t){return String(t||"").replace(/https?:\/\/duckduckgo\.com\/l\/\?[^)\s]*?uddg=([^&)\s]+)[^)\s]*/g,(m,e)=>{try{return decodeURIComponent(e)}catch(x){return m}}).replace(/!\[[^\]]*\]\([^)]*\)/g,"").replace(/^.*(sign in|cookie|privacy|feedback|settings).*$/gim,"").replace(/\n{3,}/g,"\n\n").trim()}
+async function wikiSnip(q,signal){const k=tmo(4500,signal);try{const r=await fetch("https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrnamespace=0&gsrlimit=3&gsrsearch="+encodeURIComponent(q)+"&prop=extracts&exintro=1&explaintext=1&exsentences=3&exlimit=3&format=json&origin=*",{signal:k.ac.signal});const j=await r.json();const p=j&&j.query&&j.query.pages;if(!p)return"";return Object.keys(p).map(x=>p[x]).sort((a,b)=>a.index-b.index).filter(x=>x.extract).map(x=>x.title+": "+x.extract.trim()+" (https://en.wikipedia.org/wiki/"+encodeURIComponent(x.title.replace(/ /g,"_"))+")").join("\n")}finally{k.done()}}
+async function openSearch(query,signal){const q=encodeURIComponent(String(query).slice(0,200));
+ const serp=Promise.any([jread("https://lite.duckduckgo.com/lite/?q="+q,6500,signal),jread("https://www.bing.com/search?q="+q,6500,signal)]).then(cleanSerp).catch(()=>"");
+ const wk=wikiSnip(query,signal).catch(()=>"");
+ const r=await Promise.all([serp,wk]);if(signal&&signal.aborted)throw new DOMException("Aborted","AbortError");
+ const a=r[0],b=r[1];return(a&&a.length>150?"[WEB SEARCH RESULTS (DuckDuckGo/Bing via Jina Reader)]\n"+a.slice(0,3400)+(b&&a.length<900?"\n\n[WIKIPEDIA]\n"+b:""):b?"[WIKIPEDIA]\n"+b:"").slice(0,4200)}
 async function webSearch(query,signal){
+ try{const o=await openSearch(query,signal);if(o)return o}catch(e){if(e.name==="AbortError")throw e}
  for(const m of WEB_MODELS){try{
   const r=await groq1([{role:"system",content:"Today is "+nowInfo()+". You are a web research tool. Search the web and report concise, accurate, up-to-date findings (max 220 words). Include the source site names or URLs. No filler."},{role:"user",content:query}],{model:m,signal});
   if(r&&r.trim())return r.trim()}catch(e){if(e.name==="AbortError")throw e}}
@@ -329,9 +341,11 @@ async function webSearch(query,signal){
  return""}
 const QUICK_YES=/\b(latest|newest|new|recent(ly)?|today|tonight|yesterday|tomorrow|this (week|month|year)|last (week|month)|news|current(ly)?|right now|now|price|prices|cost of|weather|forecast|score|scores|standings|stock|stocks|crypto|bitcoin|release date|released|launch(ed)?|announced|new version|update|trending|202[4-9]|iphone|ipad|macbook|ios|android|samsung|galaxy|pixel|playstation|ps5|ps6|xbox|switch 2|tesla|openai|chatgpt|gemini|claude|world cup|olympics|champions league|who is|who won|what happened|when is|when does|how much is|exchange rate|election|president|prime minister|breaking)\b/i;
 const QUICK_NO=/^(hi|hello|hey|thanks|thank you|ok|okay|yes|no|lol|bye|good (morning|night|evening))\b[\s!.?]*$/i;
+const EXPL_SEARCH=/^\s*(?:please\s+|pls\s+|hey\s+|can you\s+|could you\s+)*(?:search|google|look\s*up|look\s*for|browse)\b|\b(?:search|look)\s+(?:the\s+)?(?:web|internet|online)\b|\bgoogle\s+(?:it|this|that|for)\b|\bweb\s*search\b|\bsearch\s+(?:for|up)\b|\bon the (?:web|internet)\b/i;
 async function needsSearch(text,signal,mode){
  text=String(text||"").trim();if(text.length<4||QUICK_NO.test(text)||/```/.test(text))return null;
  if(/\b(xmm[\s-]?ai|xmmai|xmm|mohammad\s+yasin|yasin\s+bayat|bayat|xmm-ai\.com)\b/i.test(text))return null;
+ if(mode!=="image"&&EXPL_SEARCH.test(text)){const c=text.replace(/^\s*(?:please\s+|pls\s+|hey\s+|can you\s+|could you\s+)*(?:search|google|look\s*up|look\s*for|browse|find)(?:\s+(?:the\s+)?(?:web|internet|online))?(?:\s+(?:for|up))?\s*:?\s*/i,"").replace(/\s+(?:on|in)\s+the\s+(?:web|internet)\s*$/i,"").trim();return(c.length>2?c:text).slice(0,300)}
  if(mode!=="image"&&QUICK_YES.test(text))return text.slice(0,300);
  return null; /* no extra AI classifier call: saves quota */
  try{
@@ -345,14 +359,13 @@ window.XMM_WEB={async visual(prompt){try{const q=await needsSearch(prompt,undefi
   const r=await webSearch("Describe visually (shape, colors, materials, distinctive features) in under 50 words, no links: "+q);return r.replace(/https?:\/\/\S+/g,"").slice(0,400)}catch{return""}}};
 
 /* ---------- websites + in-chat images ---------- */
-async function visitSites(urls,signal){const out=[];
- for(const u of urls){let t="";
-  try{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);signal&&signal.addEventListener("abort",()=>ac.abort(),{once:true});
-   const r=await fetch("https://r.jina.ai/"+u,{headers:{Accept:"text/plain"},signal:ac.signal});clearTimeout(tm);if(r.ok)t=(await r.text()).trim()}
-  catch(e){if(signal&&signal.aborted)throw e}
-  if(t.length<80){try{t=await groq1([{role:"system",content:"You can visit websites. Visit the URL and report its real content in detail (max 500 words): title, main text, key facts. No filler."},{role:"user",content:u}],{model:CFG.TEXT_MODEL,signal})}catch(e){if(e.name==="AbortError")throw e}}
-  if(t)out.push("[PAGE: "+u+"]\n"+t.slice(0,7000))}
- return out.join("\n\n")}
+function bareSites(t){if(!/\b(open|visit|go to|goto|enter|check|read|browse|look at|summari[sz]e|what(?:'s| is) on|load|show me)\b/i.test(t))return null;const m=String(t).match(/\b(?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|app|co|edu|gov|info|tv|nl|de|uk|fr|es|ir|ru|xyz|site|online|tech|news|wiki|pages\.dev|vercel\.app)(?:\/[^\s<>"')\]]*)?/gi);return m?m.slice(0,2).map(x=>"https://"+x):null}
+async function pageText(u,signal){let t="";
+ try{t=await jread(u,9000,signal)}catch(e){if(signal&&signal.aborted)throw e}
+ if(t.length<120){const k=tmo(8000,signal);try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(u),{signal:k.ac.signal});if(r.ok){const h=await r.text();t=h.replace(/<(script|style|noscript|svg)[\s\S]*?<\/\1>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/\s+/g," ").trim();const ti=(h.match(/<title[^>]*>([^<]*)/i)||[])[1];if(ti)t="Title: "+ti.trim()+"\n"+t}}catch(e){if(signal&&signal.aborted)throw e}finally{k.done()}}
+ if(t.length<120){try{t=await groq1([{role:"system",content:"You can visit websites. Visit the URL and report its real content in detail (max 500 words): title, main text, key facts. No filler."},{role:"user",content:u}],{model:CFG.TEXT_MODEL,signal})}catch(e){if(e.name==="AbortError")throw e}}
+ return t}
+async function visitSites(urls,signal){const r=await Promise.all(urls.map(u=>pageText(u,signal).then(t=>t?"[PAGE: "+u+"]\n"+t.slice(0,7000):"")));return r.filter(Boolean).join("\n\n")}
 /* Image intent: ONLY real commands like "make an image of ..." count. Questions / statements about images do not. */
 const W_=x=>`(?:${x})(?![\\p{L}\\p{M}])`;
 const V_LAT="draw|paint|sketch|generate|create|make|render|design|produce|illustrate|zeichne|male|erstelle|erstell|generiere|mach|mache|erzeuge|dibuja|dibújame|dibujame|genera|crea|haz|hazme|dessine|dessine-moi|génère|genere|crée|cree|fais|fais-moi|disegna|disegnami|fai|crie|cria|gera|faz|desenha|desenhe|maak|teken|genereer|creëer|ontwerp|çiz|oluştur|yap|üret|нарисуй|создай|сгенерируй|сделай|нарисуйте|создайте|ارسم|أنشئ|انشئ|اصنع|ولد|ولّد|صمم|أريد صورة|बनाओ|बनाइए|बना दो|बनाएं|बनाओ";
@@ -569,7 +582,7 @@ let wT=0,wEnd=0;const wTick=()=>{if(!S.busy||bot.text){clearInterval(wT);wT=0;re
 const onWait=e=>{wEnd=Date.now()+(+e.detail||0)*1000;clearInterval(wT);wTick();wT=setInterval(wTick,1000)};addEventListener("xmm-wait",onWait);
  try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
-  if(lastU&&lastU.role==="user"){const us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);
+  if(lastU&&lastU.role==="user"){let us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);if(!us)us=bareSites(String(lastU.text||lastU.full||""));
    if(us){bot.status="Visiting website…";renderMsgs();const pg=await visitSites([...new Set(us)].slice(0,2),ctrl.signal);bot.status="";vis=1;
     if(pg){bot.visit=true;sys+=" The user's message contains website link(s). The page contents were fetched live and are below. Use them to answer, and say so if the content is missing or does not answer the question.\n\n"+pg}}}
   if(!vis&&lastU&&lastU.role==="user"&&!(lastU.imgs&&lastU.imgs.length)){
