@@ -285,7 +285,7 @@ async function throttle(est,signal){for(;;){const now=Date.now();while(tokLog.le
   await new Promise((res,rej)=>{const t=setTimeout(res,Math.min(wait,4000));if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})})}
  const ent=[Date.now(),est];tokLog.push(ent);return ent}
 const sleepW=(sec,signal)=>new Promise((res,rej)=>{window.dispatchEvent(new CustomEvent("xmm-wait",{detail:sec}));const t=setTimeout(res,sec*1000);if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})});
-async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
+async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
  const CL=raw?cleanR:clean;
  messages=fitMsgs(messages,tight?Math.round(T.inCap*.6):(cap||T.inCap));const inTok=messages.reduce((n,m)=>n+msgTok(m),0);
  const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};if(/gpt-oss/i.test(model))body.reasoning_effort="low";
@@ -310,6 +310,33 @@ async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDe
  for(;;){let rr;try{rr=await rd.read()}catch(e){clearTimeout(tm);if(timedOut){if(full)return CL(full);const x=SVC_MSG("timeout");x.retry=true;throw x}throw e}const{done,value}=rr;arm(60000);if(done)break;buf+=dec.decode(value,{stream:true});const lines=buf.split("\n");buf=lines.pop();
   for(const l of lines){if(!l.startsWith("data:"))continue;const d=l.slice(5).trim();if(d==="[DONE]")continue;try{const jd=JSON.parse(d),ch=(jd.choices&&jd.choices[0])||{},dl=ch.delta||{},t=dl.content;if(ch.finish_reason&&meta)meta.finish=ch.finish_reason;if(dl.reasoning){S.__r=1;full=full.replace(/<\/think>$/,"");if(!/<think>/.test(full))full="<think>"+full;full+=dl.reasoning;onDelta&&onDelta(CL(full),(full.match(/<think>([\s\S]*?)$/)||[])[1]||"");continue}if(t){if(full.indexOf("<think>")>=0&&full.indexOf("</think>")<0&&t.indexOf("<think>")<0&&S.__r)full+="</think>";full+=t;onDelta&&onDelta(CL(full),(full.match(/<think>([\s\S]*?)(<\/think>|$)/)||[])[1]||"")}}catch{}}}
  clearTimeout(tm);ent[1]=inTok+tokEst(full);return CL(full)}
+
+/* ---------- free backup AIs (no key): when Groq is rate limited wait 3 s, try backup 1, then backup 2, then go back to Groq ---------- */
+const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
+const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
+const textOnly=ms=>ms.every(m=>typeof m.content==="string");
+async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw}){
+ const CL=raw?cleanR:clean,k=tmo(25000,signal);
+ try{const ms=fitMsgs(messages,3000).slice(-14).map(m=>({role:m.role,content:m.content}));
+  if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
+  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,2000),stream:false}),signal:k.ac.signal});
+  if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+  if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
+ finally{k.done()}}
+async function groq1(messages,o={}){
+ const used=(()=>{const n=Date.now();return tokLog.filter(x=>n-x[0]<=60000).reduce((a,x)=>a+x[1],0)})();
+ const limitedNow=FREE_AI.length&&used>RATE_CAP*.95&&textOnly(messages);
+ if(!limitedNow){
+  try{return await groqMain(messages,o)}
+  catch(e){if(!(FREE_AI.length&&isLimit(e)&&textOnly(messages))||(o.signal&&o.signal.aborted))throw e;var lim=e}
+ }
+ try{await sleepW(3,o.signal)}catch(x){throw x}
+ for(const p of FREE_AI.slice(0,2)){
+  if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
+  try{const r=await freeAsk(p,messages,o);window.__xmmBackup=p.name;return r}catch(x){if(x&&x.name==="AbortError"&&o.signal&&o.signal.aborted)throw x}}
+ /* both backups failed: wait, then go back to Groq (existing retry logic) */
+ if(lim){lim.retry=true;throw lim}
+ await sleepW(3,o.signal);return groqMain(messages,o)}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */
