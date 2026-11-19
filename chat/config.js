@@ -22,9 +22,9 @@ window.XMM_CONFIG = {
   // Optional extra models to try if the main one fails
   FALLBACK_MODELS: [],
 
-  TEXT_MODEL: "qwen/qwen3.8-27b",
-  FAST_MODEL: "qwen/qwen3.8-27b",
-  SMART_MODEL: "qwen/qwen3.8-27b",
-  CODE_MODEL: "qwen/qwen3.8-27b",
+  TEXT_MODEL: "openai/gpt-oss-120b",
+  FAST_MODEL: "openai/gpt-oss-120b",
+  SMART_MODEL: "openai/gpt-oss-120b",
+  CODE_MODEL: "openai/gpt-oss-120b",
   VISION_MODEL: "qwen/qwen3.8-27b"
 };

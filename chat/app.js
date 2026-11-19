@@ -97,7 +97,7 @@ const GROQ = (CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim()) || "https://api.g
 const USE_PROXY = !!(CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim());
 /* Groq plan profile. free = 8K tokens/min (input + max_tokens must fit in one request budget); dev = 250K tokens/min */
 const TIERS={
- free:{name:"free",inCap:3400,reqCap:7600,rate:7400,outCode:8000,chat:{x12:500,x20:900,x25:1800,sun62:2400}},
+ free:{name:"free",inCap:3400,reqCap:7600,rate:7400,outCode:8000,chat:{x12:500,x20:900,x25:1200,sun62:1400}},
  dev:{name:"dev",inCap:60000,reqCap:120000,rate:240000,outCode:16000,chat:{x12:1500,x20:3000,x25:8000,sun62:12000}}};
 const T=TIERS[String(CFG.TIER||"free").toLowerCase()]||TIERS.free;
 window.XMM_TIER=T;
@@ -190,7 +190,7 @@ function autoMem(text){
 const clean=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"").replace(/^\s+/,"");
 const cleanR=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"");
 const getKey=()=>String(CFG.GROQ_KEY||"").trim();
-const MODELS={sun62:{name:"XMMGPT Sun 6.2",short:"XMMGPT Sun 6.2",desc:"Most powerful",max:2400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT Sun 6.2 Lite",short:"XMMGPT Sun 6.2 Lite",desc:"Warm · thinks 8 seconds",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2 Lite, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMM AI 2.5",short:"XMM AI 2.5",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" Give thorough, careful, high quality answers with good structure."},x20:{name:"XMM AI 2.0",short:"XMM AI 2.0",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" Think step by step when needed and give clear, useful answers."},x12:{name:"XMM AI 1.2",short:"XMM AI 1.2",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
+const MODELS={sun62:{name:"XMMGPT Sun 6.2",short:"XMMGPT Sun 6.2",desc:"Most powerful",max:1400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT Sun 6.2 Lite",short:"XMMGPT Sun 6.2 Lite",desc:"Warm · thinks 8 seconds",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2 Lite, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMM AI 2.5",short:"XMM AI 2.5",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" Give thorough, careful, high quality answers with good structure."},x20:{name:"XMM AI 2.0",short:"XMM AI 2.0",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" Think step by step when needed and give clear, useful answers."},x12:{name:"XMM AI 1.2",short:"XMM AI 1.2",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
 
 /* ===== XMMGPT Sun 6.2 helpers ===== */
 const SUN_BLOCK=/\b(wars?|warfare|battle|invasion|invade|genocide|terror\w*|bomb\w*|explosive\w*|weapons?|guns?|rifles?|missiles?|nukes?|nuclear|military|soldiers?|army|isis|hamas|kill\w*|murder\w*|suicid\w*|self[- ]?harm|overdose|poison\w*|abuse\w*|rape\w*|drugs?|cocaine|heroin|meth|porn\w*|sex\w*|nsfw|hack\w*|religions?|religious|god|gods|allah|islam\w*|muslim\w*|christian\w*|jesus|bible|quran|koran|jewish|judaism|jews?|hindu\w*|buddh\w*|atheis\w*|prophet|church|mosque|afterlife|heaven|hell|politic\w*|election|president|abortion|racis\w*|slur\w*|meaning of life|free will|consciousness|why do we exist|why are we here|what happens after (we )?die|what happens when (we|you) die|philosoph\w*|existential\w*|nihilis\w*|krieg\w*|religion|gott|selbstmord|waffen|töten|جنگ|دین|مذهب|خدا|خودکشی|اسلام|مسیحی|کشتن|سلاح|حرب|دين|الله|انتحار|قتل|أسلحة|guerra|religión|dios|suicidio|matar|armas)\b|جنگ|مذهب|خودکشی|حرب|انتحار/i;
@@ -288,7 +288,7 @@ const sleepW=(sec,signal)=>new Promise((res,rej)=>{window.dispatchEvent(new Cust
 async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
  const CL=raw?cleanR:clean;
  messages=fitMsgs(messages,tight?Math.round(T.inCap*.6):(cap||T.inCap));const inTok=messages.reduce((n,m)=>n+msgTok(m),0);
- const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};
+ const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};if(/gpt-oss/i.test(model))body.reasoning_effort="low";
  /* Groq checks input + max_tokens against the per-minute budget up front, so never ask for more than fits */
  body.max_tokens=Math.max(256,Math.min(body.max_tokens,T.reqCap-inTok));
  const ent=await throttle(inTok+Math.round(body.max_tokens*.5),signal);if(json)body.response_format={type:"json_object"};
@@ -551,11 +551,11 @@ async function ask(c){
   if(tw){const tl=performance.now();bot.status="Thinking…";renderMsgs();ctrl=new AbortController();const sg=ctrl.signal;
    await new Promise(r=>{const id=setTimeout(r,tw.delay);sg.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});
    bot.status="";bot.text=sg.aborted?"Stopped.":tw.text;bot.ms=performance.now()-tl;bot.mode=(MODELS[S.mode]||MODELS.x25).short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}}
- const prior=c.msgs.slice(0,-1).slice(-30);
+ const prior=c.msgs.slice(0,-1).slice(-3);
  const hist0=prior.map((m,i)=>{if(m.role==="assistant")return{role:"assistant",content:m.text||""};
   if(i===prior.length-1&&m.imgs&&m.imgs.length)return{role:"user",content:[{type:"text",text:m.full},...m.imgs.map(u=>({type:"image_url",image_url:{url:u}}))]};
   return{role:"user",content:m.full||m.text}}).filter(x=>!(x.role==="assistant"&&!x.content));
- const nImg=hist0.length-1,lastImg=hist0[nImg]&&typeof hist0[nImg].content!=="string"?hist0.pop():null;const hist=XMM_PICK(hist0,24,T.name==="dev"?60000:3800).concat(lastImg?[lastImg]:[]);
+ const nImg=hist0.length-1,lastImg=hist0[nImg]&&typeof hist0[nImg].content!=="string"?hist0.pop():null;const hist=XMM_PICK(hist0,3,T.name==="dev"?60000:2600).concat(lastImg?[lastImg]:[]);
   {const li=hist.length-1;if(li>=0&&hist[li].role==="user"&&typeof hist[li].content==="string"){const u=hist[li].content;let h="";
   if(/\b(flash\s*cards?)\b/i.test(u))h="xmm-flashcards";else if(/\b(quiz|test me|test my|exam me|trivia|practice (questions|problems)|mcq|multiple[- ]choice|questions? (about|on) )/i.test(u))h="xmm-quiz";else if(/\b(ask me|interview me|help me (choose|pick|decide|plan)|what do you need to know)\b/i.test(u))h="xmm-ask";
   if(h)hist[li]={...hist[li],content:u+"\n\n[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]"}}}
@@ -563,7 +563,7 @@ async function ask(c){
  if(S.mode==="sun62"&&sunSensitive(lu&&lu.text)){sunSetMode("x25");bot.fallback=true;bot.text="";bot.ms=performance.now()-t0;bot.mode=MODELS.x25.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
- try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(/\b(code|app|website|site|html|css|script|function|program|game|build|create|make)\b/i.test(c.msgs[c.msgs.length-2]&&c.msgs[c.msgs.length-2].text||"")?" /no_think":"");const lastU=prior[prior.length-1];
+ try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
   if(lastU&&lastU.role==="user"){const us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);
    if(us){bot.status="Visiting website…";renderMsgs();const pg=await visitSites([...new Set(us)].slice(0,2),ctrl.signal);bot.status="";vis=1;
@@ -575,11 +575,11 @@ async function ask(c){
     bot.status="";
     if(found){bot.web=true;sys+=" Fresh web search results are below; use them to answer accurately, mention source names briefly at the end, and say so if they don't answer the question.\n\n[WEB RESULTS for: "+q+"]\n"+found}
     else{sys+=" Web search was attempted for \""+q+"\" but it failed or returned nothing. Answer from your own knowledge. Briefly tell the user that the live web search failed, then give the best answer you can from knowledge."}}}
-  const MIN_MS=lite?8000:0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
+  const MIN_MS=0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
   let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
-  if(sun){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
-  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:mm.max,temp:mm.temp,stream:true,autoCont:true,signal:ctrl.signal,onDelta:(t,th)=>{
+  if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
+  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:mm.max,temp:mm.temp,stream:true,autoCont:true,signal:ctrl.signal,onDelta:(t,th)=>{
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
    bot.text=tt;
