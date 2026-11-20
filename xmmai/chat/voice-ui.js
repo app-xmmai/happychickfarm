@@ -9,7 +9,7 @@ function lang(){var l=(document.documentElement.lang||"en").slice(0,2);return{de
 function build(){
  if(el)return;el=document.createElement("div");el.id="vo";
  
- el.innerHTML='<div class="bg"><i></i><i></i><i></i></div><button class="x" aria-label="Close">'+X+'</button><div class="log"></div><div class="hint">Listening…</div>'+
+ el.innerHTML='<div class="bg"><i></i><i></i><i></i></div><button class="x" aria-label="Close">'+X+'</button><div class="log"></div><div class="face"><i class="fb"><b class="e l"><u></u></b><b class="e r"><u></u></b></i></div><div class="hint">Listening…</div>'+
  '<div class="bar">'+
  '<div class="pill"><div class="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div><div class="fill"></div><div class="txt"><span></span></div><div class="tm"></div></div>'+
  '</div>';
@@ -26,6 +26,7 @@ function frame(){
  else if(heard)lv=Math.max(lv,pulse);
  lv=Math.max(0,Math.min(1,lv));cur+=(lv-cur)*.2;
  el.style.setProperty("--lv",cur.toFixed(3));
+ if(now>(window._eyeT||0)){window._eyeT=now+(speaking||heard?2400:900+Math.random()*1600);var d=(speaking||heard||el.classList.contains("think"))?[[0,1],[-.7,1],[.7,1],[0,.8]]:[[0,0],[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[1,-1],[-1,1],[1,1]];var q=d[Math.floor(Math.random()*d.length)];el.style.setProperty("--ex",q[0]);el.style.setProperty("--ey",q[1])}
  raf=requestAnimationFrame(frame)}
 function ensureMic(cb){
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){cb(true);return}

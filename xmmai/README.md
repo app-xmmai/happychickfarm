@@ -52,6 +52,11 @@ Everything a user creates (chats, profile, settings, notebooks, projects) is sto
 
 ## ✨ Features
 
+### 🎬 Cinematic UI
+- Short film-style intro (letterbox curtain, lens flare, title card). Cold start ~1.7s, warm start ~0.65s, tap or press Enter to skip, plain fade with reduced motion
+- Orange and teal colour grade, light film grain, soft vignette and a pointer spotlight on desktop
+- Messages, dialogs and the greeting animate in like shots; everything is transform/opacity only so it stays fast (see `chat/cinema.css`, `chat/cinema.js`)
+
 ### 💬 Chat
 - Fast streaming chat with a clean, modern interface
 - Markdown rendering, code blocks and rich interactive reply cards (the AI can answer with `xmm-TYPE` JSON blocks that are rendered as widgets)

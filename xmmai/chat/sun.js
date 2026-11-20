@@ -6,9 +6,9 @@ function now(){return Date.now()}
 function eventOn(){return now()<EVENT_END}
 function unlockedAt(){try{return +JSON.parse(localStorage.getItem(KEY))||0}catch(e){return 0}}
 function fullOk(){var u=unlockedAt();return !!u&&now()<u+USE_MS}
-function list(){var l=[];if(fullOk()||eventOn())l.push("sun62");if(!eventOn())l.push("sun62l");return l.concat(["x25","x20","x12"])}
+function list(){var l=[];if(fullOk()||eventOn())l.push("sun62");l.push("sun62l");return l.concat(["x25","x20","x12"])}
 function locked(k){return k==="sun62"&&!fullOk()}
-function allowed(k){if(k==="sun62")return fullOk();if(k==="sun62l")return !eventOn();return true}
+function allowed(k){if(k==="sun62")return fullOk();if(k==="sun62l")return true;return true}
 function hint(){A().toast("Locked. Event: tell the AI \u201Csun\u201D to unlock it.")}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
@@ -58,7 +58,7 @@ function confetti(){var cv=document.createElement("canvas");cv.className="sun-co
 /* shows on EVERY load/reload until the user claims (unlocks) the model; nothing is remembered about dismissing it */
 function showWN(){if(!eventOn()||fullOk()||document.querySelector(".sunwn"))return;
  var busy=function(id){var e=document.getElementById(id);return e&&!e.hidden&&getComputedStyle(e).display!=="none"};
- if(busy("login")||busy("welcome")||document.getElementById("splash")||/\/login/.test(location.pathname)){setTimeout(showWN,150);return}
+ if(busy("login")||busy("welcome")||document.getElementById("cine")||/\/login/.test(location.pathname)){setTimeout(showWN,150);return}
  var o=document.createElement("div");o.className="sunpop sunwn";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");
  o.innerHTML='<div class="sp-card"><div class="sp-sun"></div><h3>New features!</h3><ul class="sp-fl"><li><b>XMMGPT Sun 6.2 event</b><span>Wanna play a game? Get a reward!</span></li><li><b>Smoother animations</b><span>The upload menu and model switcher now open and close smoothly.</span></li></ul><button type="button" class="sp-go">Let\u2019s play!</button><button type="button" class="sp-later">Maybe later</button></div>';
  document.body.appendChild(o);requestAnimationFrame(function(){requestAnimationFrame(function(){o.classList.add("in")})});

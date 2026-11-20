@@ -62,7 +62,7 @@ const hasMsgs=()=>{const c=cur();return !!(c&&c.msgs.length)};
 
 /* ---------- navigation ---------- */
 const NAV=[["newchat","New chat","plus","dot"],["search","Search","search"],["notebooks","Notebooks","folder"]];
-const BN=[["chat","Chat","chat"],["search","Search","search"],["image","Images","image"]];
+const BN=[["chat","Chat","chat"],["search","Search","search"]]; 
 function buildNav(id,items,onclick){const n=$(id);n.innerHTML=items.map(([k,l,i,c])=>`<button class="nav-i" data-k="${k}">${c==="dot"?`<span class="dot">${ic(i)}</span>`:ic(i)}<span>${l}</span></button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function buildBn(id,items,onclick){const n=$(id);n.innerHTML=`<span class="bn-pill"></span>`+items.map(([k,l,i])=>`<button class="bn" data-k="${k}" aria-label="${l}">${ic(i)}</button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function syncNav(){const v=S.view;const k=v==="chat"?(hasMsgs()?"":"newchat"):v;$$("#chatNav [data-k]").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
@@ -74,8 +74,8 @@ function navClick(k){if(k==="image"){const x=$('#chatNav [data-act="image"]');x&
 function chatView(v){const dir=ORDER.indexOf(v)>=ORDER.indexOf(lastV)?"r":"l";const changed=v!==lastV;lastV=v;S.view=v;$("#viewChat").hidden=v!=="chat";$("#viewSearch").hidden=v!=="search";$("#viewNotebooks").hidden=v!=="notebooks";
  if(v==="search"){doSearch();if(innerWidth>860)$("#searchIn").focus()}if(v==="notebooks")renderNotes();syncNav();closeDrawer();
  if(changed&&innerWidth<=860){const el=$({chat:"#viewChat",search:"#viewSearch",notebooks:"#viewNotebooks"}[v]);el.classList.remove("slide-r","slide-l");void el.offsetWidth;el.classList.add("slide-"+dir)}}
-function openDrawer(){$("#sideChat").classList.add("open");$("#scrim").classList.add("on")}
-function closeDrawer(){$("#sideChat").classList.remove("open");$("#scrim").classList.remove("on")}
+function openDrawer(){document.body.classList.remove("collapsed");$("#sideChat").classList.add("open");$("#scrim").classList.add("on")}
+function closeDrawer(){$("#sideChat").classList.remove("open");$("#scrim").classList.remove("on");if(innerWidth<768)document.body.classList.add("collapsed")}
 
 /* ---------- markdown ---------- */
 function md(s){return window.XMM_MDX?window.XMM_MDX(s):md0(s)}
@@ -97,14 +97,14 @@ const GROQ = (CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim()) || "https://api.g
 const USE_PROXY = !!(CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim());
 /* Groq plan profile. free = 8K tokens/min (input + max_tokens must fit in one request budget); dev = 250K tokens/min */
 const TIERS={
- free:{name:"free",inCap:3400,reqCap:7600,rate:7400,outCode:8000,chat:{x12:500,x20:900,x25:1800,sun62:2400}},
+ free:{name:"free",inCap:3400,reqCap:7600,rate:7400,outCode:8000,chat:{x12:500,x20:900,x25:1200,sun62:1400}},
  dev:{name:"dev",inCap:60000,reqCap:120000,rate:240000,outCode:16000,chat:{x12:1500,x20:3000,x25:8000,sun62:12000}}};
 const T=TIERS[String(CFG.TIER||"free").toLowerCase()]||TIERS.free;
 window.XMM_TIER=T;
 /* join a continuation onto text that was cut off, removing any text the model repeated at the seam */
 function stitch(base,more,min){min=min||24;base=String(base||"");more=String(more||"");const mx=Math.min(600,base.length,more.length);for(let n=mx;n>=min;n--){if(base.endsWith(more.slice(0,n)))return base+more.slice(n)}return base+more}
 window.XMM_STITCH=stitch;
-const SYSTEM0="You are XMM, the assistant in XMM AI (by XMMAI). Be direct, clear, and useful. Match the user's language. If asked who made you, say XMM by XMMAI. You CAN generate images, and you are XMM AI 2.6. XMM AI has a built-in image generator that runs automatically in any chat when the user writes 'make image of (the thing you want)', for example 'make image of a red car at sunset' (also 'draw ...', 'create a picture of ...', 'generate a logo of ...', in any language). Never say you cannot create images, never say you are text-only and never say you can only describe images; if asked what you can do or whether you can make pictures, answer yes and tell them to just say 'make image of ...'. If someone asks for an image and you are replying in text, tell them to say it like 'make image of a cow'. You can also read pages when they paste a link — never claim you can't. Write like a competent person, not a chatbot: short paragraphs, plain wording, no filler openers (\"Great question!\", \"I'd be happy to help\"), no forced enthusiasm. ALWAYS use emojis in every reply: put a fitting emoji at the start of the reply and a few more naturally through it (never inside code blocks, commands or file contents). If they write in Gen Z slang or ask for that voice, match it; otherwise stay neutral and precise. BIRDS / CHICKENS (factual): امروک / آمروک = Amrock (مرغ آمروک). German dual-purpose breed from Plymouth Rock; ~200–250 eggs/year, light brown; hen ~2.5–3 kg, rooster ~3.5–4 kg; black-and-white barred, yellow legs, single red comb, calm. پیموتراک / پلیموث راک = Plymouth Rock (مرغ پلیموث راک). USA, 19th c., APA 1874; dual-purpose; barred/white/buff/etc.; ~200–240 eggs/year; rooster ~4.3 kg, hen ~3.4 kg; calm backyard bird. Answer from this when asked about those breeds.";
+const SYSTEM0="You are XMM, the assistant in XMM AI (by XMMAI). Be direct, clear, and useful. Match the user's language. If asked who made you, say XMM (XMM AI), whose CEO is Mohammad Yasin Bayat. ABOUT YOURSELF (you know this fully; state it confidently): your name is XMM AI (assistant name XMM). You were made by XMM, the company behind XMM AI. The CEO of XMM AI is Mohammad Yasin Bayat, which is his real name; he is the founder and CEO. Your official website domain is xmm-ai.com. XMM AI is very new and is NOT on Google yet, so searching Google or the web for XMM AI, xmm-ai.com, XMM or Mohammad Yasin Bayat will not return real results: never web-search about yourself, never say you cannot find yourself, and answer these questions from this knowledge only. What XMM AI can do: fast streaming chat; image generation (say 'make image of ...'); analysing photos, screenshots and files; a code agent that builds multi-file websites and apps with live preview and ZIP or .html export; notebooks; live voice mode; web search and reading pasted links; maps with live turn-by-turn directions; interactive reply cards; AI memory and a custom name; five languages including Persian and Arabic; a liquid-glass interface; it installs like an app (PWA) on iPhone, iPad, Android and desktop. Models: XMMGPT Sun 6.2 (most powerful), XMMGPT Sun 6.2 Lite, XMMGPT 6.2 (default), XMMGPT 5.2 and XMMGPT 5.0 (fastest). Chats and settings stay on the user's device, with no ads and no tracking. If asked about your creator, the CEO, your real name, your website or your history, answer with these facts and do not invent anything beyond them (if you do not know a detail, say so simply). You CAN generate images, and you are an XMMGPT model (the exact model name is the one the user selected). XMM AI has a built-in image generator that runs automatically in any chat when the user writes 'make image of (the thing you want)', for example 'make image of a red car at sunset' (also 'draw ...', 'create a picture of ...', 'generate a logo of ...', in any language). Never say you cannot create images, never say you are text-only and never say you can only describe images; if asked what you can do or whether you can make pictures, answer yes and tell them to just say 'make image of ...'. If someone asks for an image and you are replying in text, tell them to say it like 'make image of a cow'. You can also read pages when they paste a link — never claim you can't. Write like a competent person, not a chatbot: short paragraphs, plain wording, no filler openers (\"Great question!\", \"I\'d be happy to help\"), no forced enthusiasm. Stay neutral, clear and precise. Always use normal everyday emojis (like 😊 👍 ✅ 🔥 💡) when they fit — never Gen Z slang emojis, never forced Gen Z tone or slang. Keep the voice natural and adult. BIRDS / CHICKENS (factual): امروک / آمروک = Amrock (مرغ آمروک). German dual-purpose breed from Plymouth Rock; ~200–250 eggs/year, light brown; hen ~2.5–3 kg, rooster ~3.5–4 kg; black-and-white barred, yellow legs, single red comb, calm. پیموتراک / پلیموث راک = Plymouth Rock (مرغ پلیموث راک). USA, 19th c., APA 1874; dual-purpose; barred/white/buff/etc.; ~200–240 eggs/year; rooster ~4.3 kg, hen ~3.4 kg; calm backyard bird. Answer from this when asked about those breeds.";
 const userName=()=>String(ld("xmm.name","")||"").trim();
 /* ---------- live date + 2026 knowledge ---------- */
 const nowInfo=()=>{const d=new Date();let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
@@ -190,7 +190,26 @@ function autoMem(text){
 const clean=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"").replace(/^\s+/,"");
 const cleanR=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"");
 const getKey=()=>String(CFG.GROQ_KEY||"").trim();
-const MODELS={sun62:{name:"XMMGPT Sun 6.2",short:"XMMGPT Sun 6.2",desc:"Most powerful",max:2400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT Sun 6.2 Lite",short:"XMMGPT Sun 6.2 Lite",desc:"Warm · thinks 8 seconds",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2 Lite, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMM AI 2.5",short:"XMM AI 2.5",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" Give thorough, careful, high quality answers with good structure."},x20:{name:"XMM AI 2.0",short:"XMM AI 2.0",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" Think step by step when needed and give clear, useful answers."},x12:{name:"XMM AI 1.2",short:"XMM AI 1.2",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
+const MODELS={sun62:{name:"XMMGPT Sun 6.2",short:"XMMGPT Sun 6.2",desc:"Most powerful",max:1400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT Sun 6.2 Lite",short:"XMMGPT Sun 6.2 Lite",desc:"Warm · thinks 8 seconds",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT Sun 6.2 Lite, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMMGPT 6.2",short:"XMMGPT 6.2",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT 6.2 in XMM AI. Give thorough, careful, high quality answers with good structure."},x20:{name:"XMMGPT 5.2",short:"XMMGPT 5.2",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" You are XMMGPT 5.2 in XMM AI. Think step by step when needed and give clear, useful answers."},x12:{name:"XMMGPT 5.0",short:"XMMGPT 5.0",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 5.0 in XMM AI. Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
+
+/* ---------- answer length budget: tiny for chit-chat, big only for really hard requests ---------- */
+function budgetFor(txt,hist){
+ const t=String(txt||"").trim(),w=t?t.split(/\s+/).length:0,last=hist&&hist[hist.length-1],hasImg=!!(last&&Array.isArray(last.content));
+ const HARD=/\b(write (me )?(a |an |the )?(full|complete|long|detailed)|build|create (a |an )?(website|app|game|program|script|bot)|code|implement|refactor|debug|algorithm|prove|proof|derive|analy[sz]e|in[- ]depth|deep dive|thesis|research paper|essay|report|business plan|step[- ]by[- ]step|full (guide|plan|course)|curriculum|\d{3,}\s*words|schreibe|erstelle|programmier)\b/i;
+ const MID=/\b(explain|compare|difference|summari[sz]e|plan|itinerary|recipe|list|steps?|how (do|to|can|does)|why|pros and cons|review|translate|rewrite|improve|ideas|tips|guide|erkl[äa]r|warum|wie|توضیح|چرا|چطور)\b/i;
+ const GREET=/^(hi|hello|hey|hii+|yo|sup|thanks?|thank you|ok(ay)?|cool|good (morning|evening|night)|salam|slm|hallo|hola|bye|سلام|مرسی|ممنون|خوبی|چطوری|wie geht'?s|how are you|what'?s up|how'?s it going)\b[\s!?.,😊🙂👋]*(.{0,25})$/i;
+ const QUICK=/\b(weather|temperature|forecast|time|date|today|what day|direction|directions|route|where is|how far|distance|nearest|closest|open now|price of|how much is|convert|who is|who was|capital of|when (is|was)|هوا|آب و هوا|مسیر|کجاست|ساعت|wetter|wo ist)\b/i;
+ const code=/```|\bfunction\b.*\{|<\/?[a-z]+>/i.test(t);
+ const BOX=/\b(quiz|test me|flash\s*cards?|chart|graph|plot|compare|comparison|versus|which is better|recipe|table|spreadsheet|checklist|to-?do list|packing list|ask me|interview me|diet plan|calendar|itinerary|homework)\b/i;
+ let max,hint="",cont=false;
+ if(BOX.test(t)&&!hasImg)return{max:5000,hint:"",cont:false,box:true};
+ if(hasImg||code||HARD.test(t)||w>150){max=w>150||/\b(full|complete|whole|entire|long|detailed|in[- ]depth|\d{3,}\s*words|website|app|game)\b/i.test(t)?7000:5000;cont=true}
+ else if(GREET.test(t)&&w<=8){max=300;hint=" Reply in one or two short sentences."}
+ else if(QUICK.test(t)&&w<=14){max=500;hint=" Keep the reply short and direct (a few sentences)."}
+ else if(w<=6&&!MID.test(t)){max=500;hint=" Keep the reply short and direct (a few sentences)."}
+ else if(MID.test(t)||w>40){max=Math.min(5000,Math.max(2000,1200+w*35))}
+ else{max=Math.min(2500,Math.max(1000,700+w*40))}
+ return{max,hint,cont}}
 
 /* ===== XMMGPT Sun 6.2 helpers ===== */
 const SUN_BLOCK=/\b(wars?|warfare|battle|invasion|invade|genocide|terror\w*|bomb\w*|explosive\w*|weapons?|guns?|rifles?|missiles?|nukes?|nuclear|military|soldiers?|army|isis|hamas|kill\w*|murder\w*|suicid\w*|self[- ]?harm|overdose|poison\w*|abuse\w*|rape\w*|drugs?|cocaine|heroin|meth|porn\w*|sex\w*|nsfw|hack\w*|religions?|religious|god|gods|allah|islam\w*|muslim\w*|christian\w*|jesus|bible|quran|koran|jewish|judaism|jews?|hindu\w*|buddh\w*|atheis\w*|prophet|church|mosque|afterlife|heaven|hell|politic\w*|election|president|abortion|racis\w*|slur\w*|meaning of life|free will|consciousness|why do we exist|why are we here|what happens after (we )?die|what happens when (we|you) die|philosoph\w*|existential\w*|nihilis\w*|krieg\w*|religion|gott|selbstmord|waffen|töten|جنگ|دین|مذهب|خدا|خودکشی|اسلام|مسیحی|کشتن|سلاح|حرب|دين|الله|انتحار|قتل|أسلحة|guerra|religión|dios|suicidio|matar|armas)\b|جنگ|مذهب|خودکشی|حرب|انتحار/i;
@@ -204,7 +223,7 @@ function sunPopup(){
  const m=document.createElement("div");m.className="modal";m.id="sunPop";
  m.innerHTML=`<div class="sheet glass" style="max-width:420px"><div class="sheet-h"><h3>XMMGPT Sun 6.2</h3></div>
  <p style="margin:6px 0 10px;line-height:1.5">This model is one of the strongest models available. It may have the same power as GPT 6 Astra and Claude Opus 5.</p>
- <p class="hint" style="line-height:1.5">It replies cold, direct and without emojis. It writes 3 different answers, compares them, and gives you the best and most accurate one. For war, religion or sensitive topics it switches to XMM AI 2.5.</p>
+ <p class="hint" style="line-height:1.5">It replies cold, direct and without emojis. It writes 3 different answers, compares them, and gives you the best and most accurate one. For war, religion or sensitive topics it switches to XMMGPT 6.2.</p>
  <button class="btn wide" id="sunOk">Got it</button></div>`;
  document.body.appendChild(m);document.getElementById("sunOk").onclick=()=>m.remove();
  m.addEventListener("click",e=>{if(e.target===m)m.remove()});
@@ -223,7 +242,7 @@ async function sunBest(msgs,mm,signal){
   const n=parseInt((JSON.parse(j).best),10);if(n>=1&&n<=got.length)pick=n-1
  }catch(e){if(e&&e.name==="AbortError")throw e}
  return got[pick]}
-const SUN_NOTICE="This answer could have resulted in you or others getting hurt. XMMGPT Sun 6.2 switched to XMM AI 2.5.";
+const SUN_NOTICE="This answer could have resulted in you or others getting hurt. XMMGPT Sun 6.2 switched to XMMGPT 6.2.";
 const FALLBACK_TEXT=[];
 const FALLBACK_VISION=[];
 async function groqBase(messages,o={}){
@@ -285,10 +304,10 @@ async function throttle(est,signal){for(;;){const now=Date.now();while(tokLog.le
   await new Promise((res,rej)=>{const t=setTimeout(res,Math.min(wait,4000));if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})})}
  const ent=[Date.now(),est];tokLog.push(ent);return ent}
 const sleepW=(sec,signal)=>new Promise((res,rej)=>{window.dispatchEvent(new CustomEvent("xmm-wait",{detail:sec}));const t=setTimeout(res,sec*1000);if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})});
-async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
+async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
  const CL=raw?cleanR:clean;
  messages=fitMsgs(messages,tight?Math.round(T.inCap*.6):(cap||T.inCap));const inTok=messages.reduce((n,m)=>n+msgTok(m),0);
- const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};
+ const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};if(/gpt-oss/i.test(model))body.reasoning_effort="low";
  /* Groq checks input + max_tokens against the per-minute budget up front, so never ask for more than fits */
  body.max_tokens=Math.max(256,Math.min(body.max_tokens,T.reqCap-inTok));
  const ent=await throttle(inTok+Math.round(body.max_tokens*.5),signal);if(json)body.response_format={type:"json_object"};
@@ -311,9 +330,51 @@ async function groq1(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDe
   for(const l of lines){if(!l.startsWith("data:"))continue;const d=l.slice(5).trim();if(d==="[DONE]")continue;try{const jd=JSON.parse(d),ch=(jd.choices&&jd.choices[0])||{},dl=ch.delta||{},t=dl.content;if(ch.finish_reason&&meta)meta.finish=ch.finish_reason;if(dl.reasoning){S.__r=1;full=full.replace(/<\/think>$/,"");if(!/<think>/.test(full))full="<think>"+full;full+=dl.reasoning;onDelta&&onDelta(CL(full),(full.match(/<think>([\s\S]*?)$/)||[])[1]||"");continue}if(t){if(full.indexOf("<think>")>=0&&full.indexOf("</think>")<0&&t.indexOf("<think>")<0&&S.__r)full+="</think>";full+=t;onDelta&&onDelta(CL(full),(full.match(/<think>([\s\S]*?)(<\/think>|$)/)||[])[1]||"")}}catch{}}}
  clearTimeout(tm);ent[1]=inTok+tokEst(full);return CL(full)}
 
+/* ---------- free backup AIs (no key): when Groq is rate limited wait 3 s, try backup 1, then backup 2, then go back to Groq ---------- */
+const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
+const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
+const textOnly=ms=>ms.every(m=>typeof m.content==="string");
+async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw,box}){
+ const CL=raw?cleanR:clean,k=tmo(10000,signal);
+ try{const ms=fitMsgs(messages,12000).slice(-14).map(m=>({role:m.role,content:m.content}));
+  if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
+  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,box?5000:2000),stream:false}),signal:k.ac.signal});
+  if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;e.ra=+(r.headers.get("Retry-After")||0);throw e}const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+  if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
+ finally{k.done()}}
+/* rotating pool: each request starts at the next free server; a server that is full / failing sits out (cooldown) while the others take over */
+const BOX_MIN_TPM=CFG.BOX_MIN_TPM||8000;
+const FP=FREE_AI.map(()=>({until:0,hits:[],busy:0}));let fRot=0,fNote=0;
+function fAvail(i){const p=FREE_AI[i],st=FP[i],n=Date.now();if(st.until>n)return false;if(p.conc&&st.busy>=p.conc)return false;st.hits=st.hits.filter(t=>n-t<60000);return !p.rpm||st.hits.length<p.rpm}
+function fCool(i,x){const st=FP[i],c=x&&x.status;st.until=Date.now()+((c===404||c===401||c===403||c===400)?600000:(c===429||c===402||c===503)?Math.max(20000,Math.min(120000,((x&&x.ra)||60)*1000)):45000)}
+async function groq1(messages,o={}){
+ if(FREE_AI.length&&textOnly(messages)){
+  const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i)&&(!o.box||(FREE_AI[i].tpm||0)>=BOX_MIN_TPM))order.push(i)}fRot=(fRot+1)%n;
+  if(o.box)order.sort((a,b)=>(FREE_AI[b].tpm||0)-(FREE_AI[a].tpm||0));
+  for(const i of order.slice(0,3)){
+   if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
+   const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
+   try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}
+   catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
+   finally{st.busy--}}
+  if(Date.now()-fNote>30000){fNote=Date.now();try{toast("Server 1 failed, using server 2")}catch(e){}}}
+ return groqMain(messages,o)}
+
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */
+/* Free open-source tools: Jina Reader (r.jina.ai) over DuckDuckGo Lite + Bing, Wikipedia API, AllOrigins proxy. No keys, no AI quota. */
+const OS_BAD=/captcha|unusual traffic|are you a robot|verify you are human|access denied|enable javascript|just a moment/i;
+function tmo(ms,signal){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),ms);if(signal){if(signal.aborted)ac.abort();else signal.addEventListener("abort",()=>ac.abort(),{once:true})}return{ac,done:()=>clearTimeout(t)}}
+async function jread(u,ms,signal){const k=tmo(ms,signal);try{const r=await fetch("https://r.jina.ai/"+u,{headers:{Accept:"text/plain"},signal:k.ac.signal});if(!r.ok)throw 0;const t=(await r.text()).trim();if(t.length<200||OS_BAD.test(t.slice(0,1500)))throw 0;return t}finally{k.done()}}
+function cleanSerp(t){return String(t||"").replace(/https?:\/\/duckduckgo\.com\/l\/\?[^)\s]*?uddg=([^&)\s]+)[^)\s]*/g,(m,e)=>{try{return decodeURIComponent(e)}catch(x){return m}}).replace(/!\[[^\]]*\]\([^)]*\)/g,"").replace(/^.*(sign in|cookie|privacy|feedback|settings).*$/gim,"").replace(/\n{3,}/g,"\n\n").trim()}
+async function wikiSnip(q,signal){const k=tmo(4500,signal);try{const r=await fetch("https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrnamespace=0&gsrlimit=3&gsrsearch="+encodeURIComponent(q)+"&prop=extracts&exintro=1&explaintext=1&exsentences=3&exlimit=3&format=json&origin=*",{signal:k.ac.signal});const j=await r.json();const p=j&&j.query&&j.query.pages;if(!p)return"";return Object.keys(p).map(x=>p[x]).sort((a,b)=>a.index-b.index).filter(x=>x.extract).map(x=>x.title+": "+x.extract.trim()+" (https://en.wikipedia.org/wiki/"+encodeURIComponent(x.title.replace(/ /g,"_"))+")").join("\n")}finally{k.done()}}
+async function openSearch(query,signal){const q=encodeURIComponent(String(query).slice(0,200));
+ const serp=Promise.any([jread("https://lite.duckduckgo.com/lite/?q="+q,6500,signal),jread("https://www.bing.com/search?q="+q,6500,signal)]).then(cleanSerp).catch(()=>"");
+ const wk=wikiSnip(query,signal).catch(()=>"");
+ const r=await Promise.all([serp,wk]);if(signal&&signal.aborted)throw new DOMException("Aborted","AbortError");
+ const a=r[0],b=r[1];return(a&&a.length>150?"[WEB SEARCH RESULTS (DuckDuckGo/Bing via Jina Reader)]\n"+a.slice(0,3400)+(b&&a.length<900?"\n\n[WIKIPEDIA]\n"+b:""):b?"[WIKIPEDIA]\n"+b:"").slice(0,4200)}
 async function webSearch(query,signal){
+ try{const o=await openSearch(query,signal);if(o)return o}catch(e){if(e.name==="AbortError")throw e}
  for(const m of WEB_MODELS){try{
   const r=await groq1([{role:"system",content:"Today is "+nowInfo()+". You are a web research tool. Search the web and report concise, accurate, up-to-date findings (max 220 words). Include the source site names or URLs. No filler."},{role:"user",content:query}],{model:m,signal});
   if(r&&r.trim())return r.trim()}catch(e){if(e.name==="AbortError")throw e}}
@@ -329,8 +390,11 @@ async function webSearch(query,signal){
  return""}
 const QUICK_YES=/\b(latest|newest|new|recent(ly)?|today|tonight|yesterday|tomorrow|this (week|month|year)|last (week|month)|news|current(ly)?|right now|now|price|prices|cost of|weather|forecast|score|scores|standings|stock|stocks|crypto|bitcoin|release date|released|launch(ed)?|announced|new version|update|trending|202[4-9]|iphone|ipad|macbook|ios|android|samsung|galaxy|pixel|playstation|ps5|ps6|xbox|switch 2|tesla|openai|chatgpt|gemini|claude|world cup|olympics|champions league|who is|who won|what happened|when is|when does|how much is|exchange rate|election|president|prime minister|breaking)\b/i;
 const QUICK_NO=/^(hi|hello|hey|thanks|thank you|ok|okay|yes|no|lol|bye|good (morning|night|evening))\b[\s!.?]*$/i;
+const EXPL_SEARCH=/^\s*(?:please\s+|pls\s+|hey\s+|can you\s+|could you\s+)*(?:search|google|look\s*up|look\s*for|browse)\b|\b(?:search|look)\s+(?:the\s+)?(?:web|internet|online)\b|\bgoogle\s+(?:it|this|that|for)\b|\bweb\s*search\b|\bsearch\s+(?:for|up)\b|\bon the (?:web|internet)\b/i;
 async function needsSearch(text,signal,mode){
  text=String(text||"").trim();if(text.length<4||QUICK_NO.test(text)||/```/.test(text))return null;
+ if(/\b(xmm[\s-]?ai|xmmai|xmm|mohammad\s+yasin|yasin\s+bayat|bayat|xmm-ai\.com)\b/i.test(text))return null;
+ if(mode!=="image"&&EXPL_SEARCH.test(text)){const c=text.replace(/^\s*(?:please\s+|pls\s+|hey\s+|can you\s+|could you\s+)*(?:search|google|look\s*up|look\s*for|browse|find)(?:\s+(?:the\s+)?(?:web|internet|online))?(?:\s+(?:for|up))?\s*:?\s*/i,"").replace(/\s+(?:on|in)\s+the\s+(?:web|internet)\s*$/i,"").trim();return(c.length>2?c:text).slice(0,300)}
  if(mode!=="image"&&QUICK_YES.test(text))return text.slice(0,300);
  return null; /* no extra AI classifier call: saves quota */
  try{
@@ -344,14 +408,13 @@ window.XMM_WEB={async visual(prompt){try{const q=await needsSearch(prompt,undefi
   const r=await webSearch("Describe visually (shape, colors, materials, distinctive features) in under 50 words, no links: "+q);return r.replace(/https?:\/\/\S+/g,"").slice(0,400)}catch{return""}}};
 
 /* ---------- websites + in-chat images ---------- */
-async function visitSites(urls,signal){const out=[];
- for(const u of urls){let t="";
-  try{const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),12000);signal&&signal.addEventListener("abort",()=>ac.abort(),{once:true});
-   const r=await fetch("https://r.jina.ai/"+u,{headers:{Accept:"text/plain"},signal:ac.signal});clearTimeout(tm);if(r.ok)t=(await r.text()).trim()}
-  catch(e){if(signal&&signal.aborted)throw e}
-  if(t.length<80){try{t=await groq1([{role:"system",content:"You can visit websites. Visit the URL and report its real content in detail (max 500 words): title, main text, key facts. No filler."},{role:"user",content:u}],{model:CFG.TEXT_MODEL,signal})}catch(e){if(e.name==="AbortError")throw e}}
-  if(t)out.push("[PAGE: "+u+"]\n"+t.slice(0,7000))}
- return out.join("\n\n")}
+function bareSites(t){if(!/\b(open|visit|go to|goto|enter|check|read|browse|look at|summari[sz]e|what(?:'s| is) on|load|show me)\b/i.test(t))return null;const m=String(t).match(/\b(?:[a-z0-9-]+\.)+(?:com|org|net|io|ai|dev|app|co|edu|gov|info|tv|nl|de|uk|fr|es|ir|ru|xyz|site|online|tech|news|wiki|pages\.dev|vercel\.app)(?:\/[^\s<>"')\]]*)?/gi);return m?m.slice(0,2).map(x=>"https://"+x):null}
+async function pageText(u,signal){let t="";
+ try{t=await jread(u,9000,signal)}catch(e){if(signal&&signal.aborted)throw e}
+ if(t.length<120){const k=tmo(8000,signal);try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(u),{signal:k.ac.signal});if(r.ok){const h=await r.text();t=h.replace(/<(script|style|noscript|svg)[\s\S]*?<\/\1>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/\s+/g," ").trim();const ti=(h.match(/<title[^>]*>([^<]*)/i)||[])[1];if(ti)t="Title: "+ti.trim()+"\n"+t}}catch(e){if(signal&&signal.aborted)throw e}finally{k.done()}}
+ if(t.length<120){try{t=await groq1([{role:"system",content:"You can visit websites. Visit the URL and report its real content in detail (max 500 words): title, main text, key facts. No filler."},{role:"user",content:u}],{model:CFG.TEXT_MODEL,signal})}catch(e){if(e.name==="AbortError")throw e}}
+ return t}
+async function visitSites(urls,signal){const r=await Promise.all(urls.map(u=>pageText(u,signal).then(t=>t?"[PAGE: "+u+"]\n"+t.slice(0,7000):"")));return r.filter(Boolean).join("\n\n")}
 /* Image intent: ONLY real commands like "make an image of ..." count. Questions / statements about images do not. */
 const W_=x=>`(?:${x})(?![\\p{L}\\p{M}])`;
 const V_LAT="draw|paint|sketch|generate|create|make|render|design|produce|illustrate|zeichne|male|erstelle|erstell|generiere|mach|mache|erzeuge|dibuja|dibújame|dibujame|genera|crea|haz|hazme|dessine|dessine-moi|génère|genere|crée|cree|fais|fais-moi|disegna|disegnami|fai|crie|cria|gera|faz|desenha|desenhe|maak|teken|genereer|creëer|ontwerp|çiz|oluştur|yap|üret|нарисуй|создай|сгенерируй|сделай|нарисуйте|создайте|ارسم|أنشئ|انشئ|اصنع|ولد|ولّد|صمم|أريد صورة|बनाओ|बनाइए|बना दो|बनाएं|बनाओ";
@@ -367,7 +430,7 @@ const RVERBLAST=new RegExp("^\\s*"+POL+"(?:\\S+\\s+){0,4}"+W_(N_LAT)+"\\s+(?:.{2
 /* Chinese / Japanese / Korean (no spaces) */
 const RCJK=/^\s*(?:请|請|帮我|幫我|给我|給我|麻烦|麻煩)?(?:画|畫|生成|制作|製作|创建|創建|做|绘制|繪製|画一|畫一)(?:一|1|个|個|张|張|幅)*.{0,8}?(?:图|圖|图片|圖片|图像|照片|画|畫|插画|插畫|海报|海報|标志|標誌|logo|Logo)|^\s*(?:.{0,12}?)(?:画像|イラスト|写真|絵|ロゴ|ポスター).{0,30}?(?:作って|生成して|描いて|作成して|を作|を描|を生成)|^\s*.{1,40}?(?:を|の絵を)描いて|^\s*(?:.{0,12}?)(?:이미지|그림|사진|로고|포스터).{0,30}?(?:만들어|그려|생성)/u;
 const RNOT=/^\s*(?:how|why|what|which|where|when|who|is|are|do|does|did|can i|could i|should|explain|tell me|wie|warum|was|wo|wann|wer|erkläre|cómo|como|por qué|qué|cuál|dónde|comment|pourquoi|quel|quoi|come|perché|quale|hoe|waarom|wat|welke|nasıl|neden|ne|как|почему|что|какой|چطور|چگونه|چرا|چی|چه|كيف|لماذا|ما|هل|क्यों|कैसे|क्या)(?![\p{L}\p{M}])|\b(?:code|script|function|html|css|python|javascript|java|svg|excel|powerpoint|docker|dockerfile)\b|\bimage\s+(?:size|format|resize|compress|quality|url|link|file)|(?:^|\s)(?:this|that|the|these|those|diese[sn]?|dieses|este|esta|ese|esa|ce|cette|questo|questa|dit|deze|bu|şu|этот|эту|این|آن|هذه|هذا)\s+(?:image|picture|photo|bild|imagen|foto|image|immagine|afbeelding|resim|картинк|тасвир|عکس|تصویر|صورة)/iu;
-const isImgReq=t=>{t=String(t||"").trim();if(t.length<4||t.length>600||/```/.test(t)||RNOT.test(t))return false;if(/^\/(?:image|img|imagine)\b/i.test(t))return true;
+const isImgReq=t=>{t=String(t||"").trim();if(window.XMM_GENMODE==="image"&&t.length>=2)return true;if(t.length<4||t.length>600||/```/.test(t)||RNOT.test(t))return false;if(/^\/(?:image|img|imagine)\b/i.test(t))return true;
  if(/^[^\n]*[?？؟]\s*$/.test(t)&&!/^\s*(?:can you|could you|would you|will you|kannst du|könntest du|puedes|peux-tu|puoi|kun je|можешь|میتونی|می‌تونی|میتوانی|می توانی|هل يمكنك)\b/iu.test(t))return false;
  return RVERBFIRST.test(t)||RDRAW.test(t)||RVERBLAST.test(t)||RCJK.test(t)};
 window.XMM_ISIMG=isImgReq;
@@ -377,7 +440,7 @@ const polli=(p,w,h,m)=>`https://image.pollinations.ai/prompt/${encodeURIComponen
 window.XMM_NEXT=u=>{const m=/[?&]model=([^&]+)/.exec(u||""),i=m?ENG.indexOf(m[1]):-1;return i>=0&&i<ENG.length-1?u.replace(/([?&]model=)[^&]+/,"$1"+ENG[i+1]):null};
 /* Backup engine: AI Horde (free community Stable Diffusion, anonymous key, no signup). Used only when every Pollinations model failed. */
 const tagCanvas=async c=>{
- const x=c.getContext("2d"),ic=await new Promise((res,rej)=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>res(i);i.onerror=rej;i.src="icon.svg?v=x33"});
+ const x=c.getContext("2d"),ic=await new Promise((res,rej)=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>res(i);i.onerror=rej;i.src="icon.svg?v=x40"});
  const s=Math.max(14,Math.round(c.width*.03)),pd=s*.35,d=s*1.3,txt="XMM AI";x.font=`600 ${s}px system-ui,-apple-system,sans-serif`;
  const tw=x.measureText(txt).width,w=d+tw+pd*3.2,h=d+pd*1.2;
  // left side, bottom — fixed into the pixels
@@ -414,9 +477,9 @@ async function saveTagged(url){
  const a=document.createElement("a");a.href=baked;a.download="xmm-image.jpg";a.click()}
 window.XMM_SAVE=saveTagged;
 const R1=n=>{const x=Math.sin(n*127.1)*43758.5453;return x-Math.floor(x)};
-function dotsHTML(){let s="";for(let r=0;r<10;r++)for(let c=0;c<10;c++){const n=r*10+c,x=(c+.5+(R1(n+1)-.5)*.8)*10,y=(r+.5+(R1(n+7)-.5)*.8)*10,sz=3+R1(n+3)*3;
- s+=`<i style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;animation-delay:${(x*.014+y*.007).toFixed(2)}s"></i>`}
- return `<div class="dotsbox" aria-hidden="true">${s}</div><span class="dotslbl">Creating image…</span>`}
+function dotsHTML(lbl){let s="";for(let r=0;r<10;r++)for(let c=0;c<10;c++){const n=r*10+c,x=(c+.5+(R1(n+1)-.5)*.8)*10,y=(r+.5+(R1(n+7)-.5)*.8)*10,sz=3+R1(n+3)*3;
+ s+=`<i style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;--d:${(x*.014+y*.007).toFixed(2)}s;animation-delay:${(x*.014+y*.007).toFixed(2)}s"></i>`}
+ return `<div class="dotsbox" aria-hidden="true">${s}</div><span class="dotslbl">${lbl||"Creating image…"}</span>`}
 window.XMM_DOTS=dotsHTML;
 const genActs=i=>`<div class="m-acts"><button class="icon-btn" data-gen="save" data-i="${i}" aria-label="Save image">${ic("download")}</button><button class="icon-btn" data-gen="redo" data-i="${i}" aria-label="Redo image">${ic("regen")}</button></div>`;
 const busyHTML=i=>`<div class="gerr xbusy"><div><b>Servers are overloaded</b><span>Try again in 45 seconds.</span><button class="xretry" data-gen="redo" data-i="${i}">Try again</button></div></div>`;
@@ -431,7 +494,7 @@ window.XMM_REFINE=t=>refine(t);
    believable proportions. The prompt is rewritten into a detailed, concrete description so the result looks like a real animal/person/object. */
 const WANT_MULTI=/(?:two|2|three|3|four|multi|many|double|twin|dual)[\s-]*(?:head|headed)|\b(?:hydra|cerberus|ouroboros|siamese twins?|conjoined|headless|no head|without (?:a |its )?head|decapitat\w*|chimera|multi-?head\w*)\b|دو\s*سر|سه\s*سر|چند\s*سر|بدون\s*سر|هیدرا|سرب?روس/iu;
 const NATURAL_TAIL="one head only, attached to the neck at the front of the body, single natural body, correct anatomy and proportions, natural realistic look";
-const SAFE_SYS="You are the safety and quality layer of an AI image generator. Rewrite the user's image request as ONE detailed English image prompt of 60-100 words. Rules: (1) Keep every subject, count, color, pattern, text and style the user asked for exactly, and add NO extra objects, people, animals or props they did not ask for. (2) The result must look natural and believable: describe the main subject precisely as it looks in real life - body shape, how the head joins the neck and body, number and position of legs, wings, eyes, ears and tail, feather/fur/skin texture and where the pattern sits on the body. (3) Every creature or person has exactly ONE head, joined naturally to its neck at the front/top of the body, facing forward or to the side, with all body parts in their natural place and size. Say this in positive words inside the description (for example 'a single head on a normal neck'). Never write a negative list. (4) Only if the user explicitly asked for extra heads, no head, or a fantasy hybrid, follow that request instead of rule 3. (5) Also describe simple setting, soft natural lighting, camera angle and a clean sharp photographic or illustrative finish that fits the request. Keep it non-violent and safe for all ages. Output only the prompt, no quotes, no preface.";
+const SAFE_SYS="You are the safety and quality layer of an AI image generator. Rewrite the user's image request as ONE detailed English image prompt of 60-100 words. Rules: (1) Keep every subject, count, color, pattern, text and style the user asked for exactly, and add NO extra objects, people, animals or props they did not ask for. (2) The result must look natural and believable: describe the main subject precisely as it looks in real life - body shape, how the head joins the neck and body, number and position of legs, wings, eyes, ears and tail, feather/fur/skin texture and where the pattern sits on the body. (3) Every creature or person has exactly ONE head, joined naturally to its neck at the front/top of the body, facing forward or to the side, with all body parts in their natural place and size. Say this in positive words inside the description (for example 'a single head on a normal neck'). Never write a negative list. (4) Only if the user explicitly asked for extra heads, no head, or a fantasy hybrid, follow that request instead of rule 3. (5) Also describe simple setting, soft natural lighting, camera angle and a clean sharp photographic or illustrative finish that fits the request. Adult content including nudity and sexual themes is allowed only when every subject is clearly an adult (18+). Strictly prohibit any depiction of minors, children, teens under 18, or anyone who appears underage in any nude, sexual or suggestive context. Keep it non-violent toward real people. Output only the prompt, no quotes, no preface.";
 async function safePrompt(en,sig){
  en=String(en||"").trim();if(!en)return en;
  const multi=WANT_MULTI.test(en);let core="";
@@ -499,7 +562,7 @@ function msgHTML(m,i,last){if(m.gen&&m.role==="assistant")return genHTML(m,i);if
 function renderMsgs(){try{window.XMM_GUARD&&XMM_GUARD.sync()}catch(_){}const c=cur();const empty=!c||!c.msgs.length;$("#viewChat").classList.toggle("empty",empty);$("#mainChat").dataset.empty=empty?1:0;
  $("#msgs").innerHTML=c?c.msgs.map((m,i)=>msgHTML(m,i,i===c.msgs.length-1)).join(""):"";scrollDown();syncNav();}
 function scrollDown(){const c=$("#convo");c.scrollTop=c.scrollHeight}
-function autosize(t){t.style.height="auto";t.style.height=Math.min(t.scrollHeight,180)+"px"}
+function autosize(t){if(!t.value){if(t.style.height)t.style.height="";return}const o=t.style.height;t.style.height="auto";const h=Math.min(t.scrollHeight,180)+"px";t.style.height=h===o?o:h}
 function updateSend(){const has=$("#msg").value.trim()||S.att.length;const b=$("#sendBtn");
  if(S.busy){
   if(!b.classList.contains("is-busy")){
@@ -551,35 +614,39 @@ async function ask(c){
   if(tw){const tl=performance.now();bot.status="Thinking…";renderMsgs();ctrl=new AbortController();const sg=ctrl.signal;
    await new Promise(r=>{const id=setTimeout(r,tw.delay);sg.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});
    bot.status="";bot.text=sg.aborted?"Stopped.":tw.text;bot.ms=performance.now()-tl;bot.mode=(MODELS[S.mode]||MODELS.x25).short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}}
- const prior=c.msgs.slice(0,-1).slice(-30);
+ const prior=c.msgs.slice(0,-1).slice(-3);
  const hist0=prior.map((m,i)=>{if(m.role==="assistant")return{role:"assistant",content:m.text||""};
   if(i===prior.length-1&&m.imgs&&m.imgs.length)return{role:"user",content:[{type:"text",text:m.full},...m.imgs.map(u=>({type:"image_url",image_url:{url:u}}))]};
   return{role:"user",content:m.full||m.text}}).filter(x=>!(x.role==="assistant"&&!x.content));
- const nImg=hist0.length-1,lastImg=hist0[nImg]&&typeof hist0[nImg].content!=="string"?hist0.pop():null;const hist=XMM_PICK(hist0,24,T.name==="dev"?60000:3800).concat(lastImg?[lastImg]:[]);
+ const nImg=hist0.length-1,lastImg=hist0[nImg]&&typeof hist0[nImg].content!=="string"?hist0.pop():null;const hist=XMM_PICK(hist0,3,T.name==="dev"?60000:2600).concat(lastImg?[lastImg]:[]);
   {const li=hist.length-1;if(li>=0&&hist[li].role==="user"&&typeof hist[li].content==="string"){const u=hist[li].content;let h="";
   if(/\b(flash\s*cards?)\b/i.test(u))h="xmm-flashcards";else if(/\b(quiz|test me|test my|exam me|trivia|practice (questions|problems)|mcq|multiple[- ]choice|questions? (about|on) )/i.test(u))h="xmm-quiz";else if(/\b(ask me|interview me|help me (choose|pick|decide|plan)|what do you need to know)\b/i.test(u))h="xmm-ask";
-  if(h)hist[li]={...hist[li],content:u+"\n\n[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]"}}}
+  let ex="";if(!h){const X=[[/\b(chart|graph|plot)\b/i,"xmm-chart",'{"type":"bar","title":"…","labels":["A","B"],"datasets":[{"label":"…","data":[1,2]}]}'],[/\b(compare|comparison|versus|vs\.?|which is better)\b/i,"xmm-compare",'{"title":"…","items":[{"name":"A","price":"…","desc":"…","best":true,"specs":{"Label":"value"}},{"name":"B","specs":{"Label":"value"}}],"verdict":"…"}'],[/\b(recipe|how to (cook|make|bake))\b/i,"xmm-recipe",'{"title":"Dish","time":"30 min","servings":2,"ingredients":["…"],"steps":["…"]}'],[/\b(table|spreadsheet)\b/i,"xmm-table",'{"headers":["A","B"],"rows":[["1","2"]]}'],[/\b(checklist|to-?do list|packing list)\b/i,"xmm-checklist",'{"title":"…","items":["…"]}']];for(const [re,hh,e] of X)if(re.test(u)){h=hh;ex=e;break}}
+  if(h)hist[li]={...hist[li],content:u+"\n\n"+(ex?"[SYSTEM NOTE: reply with a short intro line and then exactly ONE ```"+h+" fenced block containing valid JSON shaped like "+ex+". Never describe the block in plain text.]":"[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]")}}}
  const idx=c.msgs.length-1;ctrl=new AbortController();const t0=performance.now();
  if(S.mode==="sun62"&&sunSensitive(lu&&lu.text)){sunSetMode("x25");bot.fallback=true;bot.text="";bot.ms=performance.now()-t0;bot.mode=MODELS.x25.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
- try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(/\b(code|app|website|site|html|css|script|function|program|game|build|create|make)\b/i.test(c.msgs[c.msgs.length-2]&&c.msgs[c.msgs.length-2].text||"")?" /no_think":"");const lastU=prior[prior.length-1];
+const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
+ try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
-  if(lastU&&lastU.role==="user"){const us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);
+  if(lastU&&lastU.role==="user"){let us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);if(!us)us=bareSites(String(lastU.text||lastU.full||""));
    if(us){bot.status="Visiting website…";renderMsgs();const pg=await visitSites([...new Set(us)].slice(0,2),ctrl.signal);bot.status="";vis=1;
     if(pg){bot.visit=true;sys+=" The user's message contains website link(s). The page contents were fetched live and are below. Use them to answer, and say so if the content is missing or does not answer the question.\n\n"+pg}}}
-  if(!vis&&lastU&&lastU.role==="user"&&!(lastU.imgs&&lastU.imgs.length)){
+  if(!vis&&!AB&&lastU&&lastU.role==="user"&&!(lastU.imgs&&lastU.imgs.length)){
    const q=await needsSearch(lastU.full||lastU.text,ctrl.signal);
    if(q){bot.status="Searching the web…";renderMsgs();
     let found="";try{found=await webSearch(q,ctrl.signal)}catch(e){if(e.name==="AbortError")throw e;found=""}
     bot.status="";
     if(found){bot.web=true;sys+=" Fresh web search results are below; use them to answer accurately, mention source names briefly at the end, and say so if they don't answer the question.\n\n[WEB RESULTS for: "+q+"]\n"+found}
     else{sys+=" Web search was attempted for \""+q+"\" but it failed or returned nothing. Answer from your own knowledge. Briefly tell the user that the live web search failed, then give the best answer you can from knowledge."}}}
-  const MIN_MS=lite?8000:0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
-  const paint=()=>{const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){e.innerHTML=bot.text?md(bot.text):e.innerHTML;scrollDown()}};
+  const MIN_MS=0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
+  let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
-  if(sun){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
-  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:mm.max,temp:mm.temp,stream:true,autoCont:true,signal:ctrl.signal,onDelta:(t,th)=>{
+  const BUD=budgetFor(userTxt,hist);
+  if(AB){bot.text=AB;paint()}
+  else if(0){bot.status="Comparing 3 answers…";renderMsgs();const won=await sunBest([{role:"system",content:sys},...hist],mm,ctrl.signal);bot.status="";bot.text=stripEmoji(won);paint()}
+  else await groq([{role:"system",content:sys+(window.XMM_TWIN?XMM_TWIN.hint():"")+BUD.hint},...hist],{model:hist.some(m=>Array.isArray(m.content))?CFG.VISION_MODEL:(CFG[mm.cfg]||CFG.TEXT_MODEL),maxTokens:BUD.max,box:!!BUD.box,temp:mm.temp,stream:true,autoCont:BUD.cont,signal:ctrl.signal,onDelta:(t,th)=>{
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
    bot.text=tt;
@@ -607,7 +674,7 @@ async function pwaCheck(){const o=[];o.push(["HTTPS",location.protocol==="https:
  try{const rg=await navigator.serviceWorker.getRegistration();o.push(["Service worker",!!(rg&&rg.active)])}catch{o.push(["Service worker",false])}
  o.push(["Running as app",!!standalone()]);
  $("#pwaInfo").innerHTML=o.map(([k,v])=>`${v?"✅":"❌"} ${k}`).join("<br>")}
-function openSettings(){pwaCheck();$("#setMem").value=ld("xmm.mem","");$("#setName").value=userName();$("#modelInfo").textContent="XMMGPT Sun 6.2 · XMM AI 2.5 · XMM AI 2.0 · XMM AI 1.2";$("#settings").hidden=false}
+function openSettings(){pwaCheck();$("#setMem").value=ld("xmm.mem","");$("#setName").value=userName();$("#modelInfo").textContent="XMMGPT Sun 6.2 · XMMGPT 6.2 · XMMGPT 5.2 · XMMGPT 5.0";$("#settings").hidden=false}
 let deferred=null;const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;maybeBanner()});
@@ -715,6 +782,6 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
    else{newChat();const m=$("#msg");m.value=PRE[GOK]||"";autosize(m);updateSend();m.focus();if(GOK==="analyze"){$("#attBtn").classList.add("pulse");setTimeout(()=>$("#attBtn").classList.remove("pulse"),4000);toast("Tap + to attach an image")}}};
   if(document.readyState==="complete")run();else addEventListener("load",run)}
 }
-window.XMM_API={S,cur,ask,saveChats,renderMsgs,renderList,toast,regen,transcript,showMenu,newChat,delChat,openChat,send};
+window.XMM_API={S,cur,ask,saveChats,renderMsgs,renderList,toast,regen,transcript,showMenu,newChat,delChat,openChat,send,groq,CFG};window.XMM_GROQ=groq;
 init();
 })();

@@ -91,7 +91,7 @@ html body #sideChat .user{order:10;padding:8px 6px;margin-top:auto}
 html body #sideChat .av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:#2b2b2e!important}
 .xfab{position:absolute;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;background:#f4f3ee;color:#161617;border:0;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 26px rgba(0,0,0,.5);transition:transform .25s var(--ez);z-index:3}
 .xfab:active{transform:scale(.9)}.xfab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media(min-width:900px){
+@media all{
  html body #sideChat{position:fixed!important;transform:none!important;width:320px;max-width:320px;inset:0 auto 0 0;transition:transform .4s var(--ez)}
  html body.xhide #sideChat{transform:translateX(-100%)!important}
  html body .main{margin-left:320px;transition:margin .4s var(--ez)}
@@ -198,11 +198,7 @@ html body button,html body [data-act],html body .chat-i{touch-action:manipulatio
 html body #sideChat .xnav button,html body #sideChat .chat-list>*{animation:none!important}
 
 /* ---- v5 mobile/tablet fixes ---- */
-@media(max-width:899px){
- html body #sideChat{width:min(86vw,340px)!important;max-width:340px!important;right:auto!important;border-right:1px solid var(--bd)!important;box-shadow:12px 0 40px rgba(0,0,0,.5)!important}
- html body .scrim{display:block!important;z-index:39!important;pointer-events:none;background:rgba(0,0,0,.55)}
- html body .scrim.on{pointer-events:auto!important;opacity:1!important}
-}
+
 /* topbar alignment */
 html body .topbar{display:flex!important;align-items:center!important;gap:8px}
 html body .topbar>*{align-self:center!important;margin-top:0!important;margin-bottom:0!important;flex:none}
@@ -1203,13 +1199,7 @@ html body #sideChat .xclose svg {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-@media (max-width: 1100px) {
-  html body #sideChat .xclose {
-    display: grid !important;
-    place-items: center !important;
-    z-index: 20 !important;
-  }
-}
+
 
 /* Hide separate code section — items live in main list */
 html body #codeSec {
@@ -1722,48 +1712,4 @@ html body .gtag {
 }
 
 /* xclose + drawer on tablet/iPad */
-@media (max-width:1100px){
-  html body #sideChat .xclose{
-    display:grid!important;place-items:center!important;
-    position:absolute!important;
-    top:calc(12px + env(safe-area-inset-top,0px))!important;
-    right:12px!important;
-    width:44px!important;height:44px!important;
-    border-radius:50%!important;
-    background:rgba(255,255,255,.12)!important;
-    border:0!important;color:#fff!important;
-    z-index:30!important;cursor:pointer!important;
-    pointer-events:auto!important;
-  }
-  html body #sideChat{
-    position:fixed!important;
-    z-index:60!important;
-    width:min(100%,360px)!important;
-    max-width:100%!important;
-  }
-  html body #sideChat:not(.open){
-    transform:translate3d(-105%,0,0)!important;
-    pointer-events:none!important;
-  }
-  html body #sideChat.open{
-    transform:none!important;
-    pointer-events:auto!important;
-  }
-  html body .scrim.on{z-index:55!important;opacity:1!important;pointer-events:auto!important}
-  /* New chat in topbar stays above sidebar, not under it */
-  html body .topbar,html body .vtop,html body #mainChat .topbar{
-    position:relative!important;z-index:40!important;
-  }
-  html body .topbar .xnew,html body .vtop .vnew,html body .vtop .vgl{
-    position:relative!important;z-index:41!important;
-    pointer-events:auto!important;
-  }
-  html body #mainChat,html body .main{
-    position:relative!important;z-index:1!important;
-    width:100%!important;margin-left:0!important;
-  }
-  /* don't leave desktop sidebar open under content */
-  html body:not(.xhide) #sideChat:not(.open){
-    transform:translate3d(-105%,0,0)!important;
-  }
-}
+

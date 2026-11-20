@@ -1,11 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
+<style id="cine-css">
+html{background:#000}
+#cine{position:fixed;inset:0;z-index:2147483000;overflow:hidden;display:grid;place-items:center;contain:strict;-webkit-tap-highlight-color:transparent;cursor:pointer}
+#cine *{box-sizing:border-box}
+#cine .ci-bar{position:absolute;left:0;right:0;height:50.3%;background:#000;z-index:1;transition:transform .7s cubic-bezier(.76,0,.18,1) .12s;will-change:transform}
+#cine .ci-t{top:0}#cine .ci-b{bottom:0}
+#cine .ci-t::after,#cine .ci-b::after{content:"";position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.6);box-shadow:0 0 18px 2px rgba(130,180,255,.55);opacity:0;transition:opacity .2s}
+#cine .ci-t::after{bottom:0}#cine .ci-b::after{top:0}
+#cine.out .ci-t{transform:translate3d(0,-101%,0)}#cine.out .ci-b{transform:translate3d(0,101%,0)}
+#cine.out .ci-t::after,#cine.out .ci-b::after{opacity:1}
+#cine .ci-flare{position:absolute;z-index:2;left:50%;top:50%;width:min(92vw,1000px);height:2px;margin-top:-1px;transform:translate(-50%,0) scaleX(0);opacity:0;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.95) 50%,transparent);box-shadow:0 0 26px 5px rgba(120,170,255,.5);animation:ciFlare .9s cubic-bezier(.2,.8,.2,1) .05s both}
+#cine .ci-c{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;transition:opacity .3s ease-in,transform .55s cubic-bezier(.5,0,1,1)}
+#cine.out .ci-c{opacity:0;transform:scale(1.16)}
+#cine .ci-glow{position:absolute;left:50%;top:38px;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;
+ background:radial-gradient(circle,rgba(120,170,255,.34),rgba(120,170,255,0) 66%);animation:ciGlow 1.7s ease-out .1s both}
+#cine .ci-logo{position:relative;width:76px;height:76px;animation:ciLogo .95s cubic-bezier(.16,1,.3,1) .22s both}
+#cine .ci-logo svg{display:block;width:100%;height:100%}
+#cine .ci-title{margin:26px -.42em 0 0;font:300 clamp(24px,6.4vw,40px)/1 -apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Inter,system-ui,sans-serif;letter-spacing:.42em;text-transform:uppercase;color:#f4f4f2;animation:ciTitle 1.1s cubic-bezier(.16,1,.3,1) .6s both}
+#cine .ci-sub{margin:16px -.5em 0 0;font:400 10.5px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;letter-spacing:.5em;text-transform:uppercase;color:#7c7c82;animation:ciSub .9s ease 1s both}
+#cine .ci-grain,#cine .ci-vig{position:absolute;inset:-50%;z-index:4;pointer-events:none;transition:opacity .4s ease .2s}
+#cine .ci-grain{opacity:.09;background-size:160px 160px;animation:ciGrain .6s steps(5) infinite;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#cine .ci-vig{inset:0;background:radial-gradient(120% 95% at 50% 50%,transparent 45%,rgba(0,0,0,.7) 100%)}
+#cine.out .ci-grain,#cine.out .ci-vig{opacity:0}
+#cine.out{pointer-events:none}
+/* warm start: quick logo flash, no title card */
+#cine.warm .ci-title,#cine.warm .ci-sub,#cine.warm .ci-glow{display:none}
+#cine.warm .ci-logo{animation-duration:.4s;animation-delay:0s}
+#cine.warm .ci-flare{animation-duration:.5s;animation-delay:0s}
+#cine.warm .ci-grain{animation:none}
+/* reduced motion: plain fade */
+#cine.rm .ci-flare,#cine.rm .ci-glow,#cine.rm .ci-sub,#cine.rm .ci-grain{display:none}
+#cine.rm .ci-logo,#cine.rm .ci-title{animation:none}
+#cine.rm .ci-bar{transition:none;background:#000}
+#cine.rm{transition:opacity .25s ease}#cine.rm.out{opacity:0}
+#cine.rm.out .ci-t,#cine.rm.out .ci-b{transform:none}
+@keyframes ciFlare{0%{opacity:0;transform:translate(-50%,0) scaleX(0)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,0) scaleX(1)}}
+@keyframes ciGlow{0%{opacity:0;transform:scale(.55)}45%{opacity:1}100%{opacity:.5;transform:scale(1.12)}}
+@keyframes ciLogo{from{opacity:0;transform:scale(1.18)}}
+@keyframes ciTitle{from{opacity:0;transform:scale(1.2)}}
+@keyframes ciSub{from{opacity:0;transform:translateY(6px)}}
+@keyframes ciGrain{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-2%,0)}80%{transform:translate3d(3%,3%,0)}100%{transform:translate3d(0,0,0)}}
+</style>
 <style id="xmm-no-cf">
 
 html.cf-pending body > *:not(
 </style>
-<meta name="xmm-build" content="v83-no-cf">
+<meta name="xmm-build" content="v84-cinema">
 <script>
 (function(){
   window.__xmmCfPassed = 1;
@@ -67,7 +111,7 @@ html.cf-pending body > *:not(
 
 
 <script>/* clean-install gate: first load of a new build wipes cache, SW, cookies, storage. Change B to force another wipe. */
-(function(){var B="b20261116f";try{if(localStorage.getItem("xmm.build")===B)return;
+(function(){var B="b20261118a";try{if(localStorage.getItem("xmm.build")===B)return;
 var bk=null;try{bk=localStorage.getItem("xmm.ban")}catch(e){}var ck=(document.cookie.match(/(?:^|;\s*)xmm_ban=(\d+)/)||[])[1];if(!bk&&ck)bk=ck;
 var done=function(){try{localStorage.clear();sessionStorage.clear()}catch(e){}
 document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
@@ -84,29 +128,27 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <title>XMM AI</title>
-<meta name="theme-color" content="#161617">
+<meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <meta name="description" content="XMM AI by XMMAI">
-<link rel="preload" as="image" href="icon.svg?v=x33" type="image/svg+xml" fetchpriority="high">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="icon.svg?v=x33">
-<link rel="apple-touch-icon" href="icon-180.png?v=x33">
+<link rel="preload" as="image" href="icon.svg?v=x40" type="image/svg+xml" fetchpriority="high">
+<link rel="manifest" href="manifest.webmanifest?v=4">
+<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="icon.svg?v=x40">
+<link rel="apple-touch-icon" href="pwa-180.png?v=4"><link rel="apple-touch-icon" sizes="152x152" href="pwa-152.png?v=4"><link rel="apple-touch-icon" sizes="167x167" href="pwa-167.png?v=4"><link rel="apple-touch-icon" sizes="180x180" href="pwa-180.png?v=4">
 
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="XMM AI">
 <link rel="stylesheet" href="styles.css?v=34">
-<link rel="stylesheet" href="redesign.css?v=29">
+<link rel="stylesheet" href="redesign.css?v=30">
 <link rel="stylesheet" href="code-ui.css?v=6">
-<link rel="stylesheet" href="video-ui.css?v=5" media="(max-width:1100px)">
-<link rel="stylesheet" href="companion.css?v=3" media="(max-width:1100px)">
-<link rel="stylesheet" href="voice-ui.css?v=4">
+<link rel="stylesheet" href="voice-ui.css?v=5">
 <link rel="stylesheet" href="widgets.css?v=4">
 <link rel="stylesheet" href="pro.css?v=6">
-<link rel="stylesheet" href="liquid.css?v=17" media="(max-width:1100px)">
 <link rel="stylesheet" href="settings-ui.css?v=4">
 <link rel="stylesheet" href="settings-plus.css?v=1">
-<link rel="stylesheet" href="final.css?v=11">
-<link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="tablet-fix.css?v=3"><link rel="stylesheet" href="mobile-fix.css?v=1"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=13">
+<link rel="stylesheet" href="final.css?v=12"><link rel="stylesheet" href="turbo.css?v=1"><link rel="stylesheet" href="maps.css?v=4">
+<link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=14"><link rel="stylesheet" href="cinema.css?v=3"><link rel="stylesheet" href="fix.css?v=88"><link rel="stylesheet" href="clone.css?v=97">
+<link rel="stylesheet" href="ipad.css?v=117"><link rel="stylesheet" href="xfix.css?v=1"><link rel="stylesheet" href="float.css?v=8"><link rel="stylesheet" href="zdark.css?v=2">
 
 
 
@@ -129,12 +171,33 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 
 <div class="aurora"></div>
 <div id="langTop"><select id="topLang" aria-label="Language"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
-<div id="splash"><div class="sp-inner"><img src="icon.svg?v=x33" alt="XMM AI" fetchpriority="high" decoding="sync"><h1>XMM AI</h1><p>by XMM Bayat</p></div><small>© XMMAI</small></div>
+<div id="cine" aria-hidden="true"><i class="ci-bar ci-t"></i><i class="ci-bar ci-b"></i><i class="ci-flare"></i>
+<div class="ci-c"><i class="ci-glow"></i><div class="ci-logo"><svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="200" fill="#f3f3f1"/><rect x="192" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/><rect x="296" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/></svg></div>
+<div class="ci-title">XMM AI</div><div class="ci-sub">by XMM Bayat</div></div>
+<i class="ci-grain"></i><i class="ci-vig"></i></div>
+<script>(function(){var c=document.getElementById("cine");if(!c)return;var R=document.documentElement,t0=Date.now(),last=0,K="xmm.cine.t";
+try{last=+localStorage.getItem(K)||0}catch(e){}
+var rm=false;try{rm=matchMedia("(prefers-reduced-motion:reduce)").matches}catch(e){}
+var warm=!rm&&last&&t0-last<6e5;c.className=rm?"rm":(warm?"warm":"cold");
+var min=rm?250:(warm?2600:5200),ready=document.readyState==="complete",done=0;
+function go(){if(done)return;done=1;c.classList.add("out");R.classList.add("cine-reveal");
+try{localStorage.setItem(K,String(Date.now()))}catch(e){}
+setTimeout(function(){try{c.remove()}catch(e){}R.classList.remove("cine-reveal")},rm?300:1500)}
+function chk(){if(ready&&Date.now()-t0>=min)go()}
+addEventListener("load",function(){ready=true;chk()});
+setTimeout(chk,min);
+setTimeout(function(){ready=true;chk()},9000);
+c.addEventListener("pointerdown",function(){ready=true;min=0;go()});
+addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ready=true;min=0;go()}});
+})();</script>
+<div class="cin-back" aria-hidden="true"><i class="cin-grade"></i><i class="cin-leak"></i><i class="cin-spot"></i></div>
+<div class="cin-front" aria-hidden="true"><i class="cin-grain"></i><i class="cin-vig"></i></div>
+
 
 <section class="shell" id="shell-chat">
   <aside class="side glass" id="sideChat">
     <div class="side-top">
-      <div class="brand"><img class="logo" src="icon.svg?v=x33" alt=""><span>XMM AI</span></div>
+      <div class="brand"><img class="logo" src="icon.svg?v=x40" alt=""><span>XMM AI</span></div>
       <div class="side-tools"><button class="icon-btn only-m" data-act="closeDrawer" data-ic="chev2" aria-label="Close"></button></div>
     </div>
     <nav class="side-nav" id="chatNav"></nav>
@@ -171,7 +234,7 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
         <div class="composer glass">
           <button class="icon-btn" id="attBtn" data-ic="plus" aria-label="Attach"></button>
           <textarea id="msg" rows="1" placeholder="Ask Anything" dir="auto"></textarea>
-          <button class="mode" id="modeBtn" data-ic="bolt"><span>XMM AI 2.5</span></button><button class="send" id="sendBtn" aria-label="Send"></button>
+          <button class="mode" id="modeBtn" data-ic="bolt"><span>XMMGPT 6.2</span></button><button class="send" id="sendBtn" aria-label="Send"></button>
         </div>
         <div class="foot">AI-generated content may be incorrect · © XMMAI. All rights reserved.</div>
         <!-- file input created only on intentional upload tile tap -->
@@ -193,7 +256,7 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
   <nav class="bnav-wrap only-m"><div class="bnav glass" id="chatBnav"></div><button class="circle glass" data-act="newchat" data-ic="plus" aria-label="New chat"></button></nav>
 </section>
 
-<div class="install glass" id="installBanner" hidden><img src="icon.svg?v=x33" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
+<div class="install glass" id="installBanner" hidden><img src="icon.svg?v=x40" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
 
 <div class="modal" id="settings" hidden><div class="sheet glass">
   <div class="sheet-h"><h3>Settings</h3><button class="icon-btn sm" data-act="closeSettings" data-ic="close" aria-label="Close"></button></div>
@@ -205,7 +268,7 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
   <button class="btn wide" id="logout" data-ic="close">Log out</button>
   <button class="btn glass danger wide" id="clearAll" data-ic="trash">Delete all chats</button>
   <button class="btn glass wide" data-act="install" data-ic="download">Install App</button>
-  <div class="brandline"><img src="icon.svg?v=x33" alt=""><span>XMM AI by XMMAI</span></div>
+  <div class="brandline"><img src="icon.svg?v=x40" alt=""><span>XMM AI by XMMAI</span></div>
   <div class="copy c">© XMMAI. All rights reserved.</div>
 </div></div>
 <div class="modal" id="installGuide" hidden><div class="sheet glass install-guide">
@@ -213,7 +276,7 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
   <div id="igBody"></div>
 </div></div>
 <div class="modal" id="welcome" hidden><form class="sheet glass welcome" id="welcomeForm" autocomplete="off">
-  <img src="icon.svg?v=x33" alt="">
+  <img src="icon.svg?v=x40" alt="">
   <h3>Welcome to XMM AI</h3>
   <p class="hint">What should I call you? Give me your name so I know you.</p>
   <input class="field" id="nameIn" placeholder="Your name" maxlength="40" dir="auto" autocapitalize="words" enterkeyhint="done">
@@ -232,12 +295,12 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 <div class="toast glass" id="toast" hidden></div>
 
 <script src="guard.js?v=3"></script>
-<script src="config.js?v=5"></script>
+<script src="config.js?v=16"></script>
 <script src="limit.js?v=5"></script>
-<script src="sun.js?v=3"></script>
-<script src="app.js?v=75"></script>
-<script src="widgets.js?v=9"></script>
-<script src="redesign.js?v=14"></script>
+<script src="sun.js?v=5"></script>
+<script src="app.js?v=93"></script>
+<script src="widgets.js?v=24"></script><script src="nav.js?v=21"></script><script src="places.js?v=3"></script><script src="boximg.js?v=2"></script>
+<script src="redesign.js?v=17"></script>
 <script src="summary.js?v=1"></script>
 <script src="morph.js?v=5"></script>
 <script src="imgrace.js?v=9"></script>
@@ -247,19 +310,15 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 <script src="lang.js"></script>
 <script src="pro.js?v=2"></script>
 <script src="settings-plus.js?v=2"></script>
-<script src="voice-ui.js?v=6"></script>
-<script src="twin.js?v=2"></script>
+<script src="voice-ui.js?v=7"></script>
+<script src="twin.js?v=3"></script><script src="turbo.js?v=1"></script>
 <script src="grok.js?v=9"></script>
 <script src="hold.js?v=3"></script>
-<script>(function(){
-var mq=matchMedia("(max-width:1100px), ((pointer:coarse) and (max-width:1400px))");
-if(!mq.matches||window.__xmmTabletUI)return;
-window.__xmmTabletUI=1;
-["glass.js?v=4","fx.js","space.js?v=3","grow.js?v=7","video-ui.js?v=9","companion.js?v=8","liquid.js?v=15"].forEach(function(src){
-  var s=document.createElement("script");s.src=src;s.defer=true;document.body.appendChild(s);
-});
-})();</script>
-<script>setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("out");setTimeout(function(){s&&s.remove()},200)}},600)</script>
+<script src="cinema.js?v=1" defer></script>
+<script src="unify.js?v=1"></script>
+<script src="fix.js?v=89"></script>
+<script src="clone.js?v=8"></script>
+<script src="ipad.js?v=116"></script><script src="zdark.js?v=2"></script>
 
 </body>
 </html>

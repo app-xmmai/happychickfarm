@@ -1,4 +1,4 @@
-/* companion.js — stretch (iOS 26+/Android 14+ phones), auto XMM AI 2.5 in Code, update popup, iPhone flag */
+/* companion.js — stretch (iOS 26+/Android 14+ phones), auto XMMGPT 6.2 in Code, update popup, iPhone flag */
 (function(){
 "use strict";
 var $=function(s,r){return (r||document).querySelector(s)};
@@ -72,12 +72,12 @@ stretchAllowed().then(function(ok){if(ok)initStretch()});
 var prevMode=null;
 function toEngine(){
  var a=api();if(!a.S)return;
- if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMM AI 2.5";
-  if(a.toast)a.toast("Code uses XMM AI 2.5")}
+ if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMMGPT 6.2";
+  if(a.toast)a.toast("Code uses XMMGPT 6.2")}
 }
 function fromEngine(){
  var a=api();if(!a.S||!prevMode)return;
- if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMM AI 1.2",x20:"XMM AI 2.0",x25:"XMM AI 2.5",sun62:"XMMGPT Sun 6.2"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMM AI 2.5"}
+ if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMMGPT 5.0",x20:"XMMGPT 5.2",x25:"XMMGPT 6.2",sun62:"XMMGPT Sun 6.2"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMMGPT 6.2"}
  prevMode=null;
 }
 var wasCode=false;
@@ -89,7 +89,7 @@ var KEY="xmm.whatsnew.v6";
 function showPopup(){
  if(ls.get(KEY)||window.XMM_SUN)return;
  var busy=function(id){var e=document.getElementById(id);return e&&!e.hidden&&getComputedStyle(e).display!=="none"};
- if(busy("login")||busy("welcome")||document.getElementById("splash")){setTimeout(showPopup,700);return}
+ if(busy("login")||busy("welcome")||document.getElementById("cine")){setTimeout(showPopup,700);return}
  var o=document.createElement("div");o.id="xwn";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label","New features");
  o.innerHTML='<div class="card"><button class="x" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><video class="bv" autoplay muted loop playsinline preload="auto" poster="update-banner.jpg?v=3" aria-label="New features"><source src="update-banner.mp4?v=3" type="video/mp4"><source src="update-banner.webm?v=3" type="video/webm"></video><div class="tx"><h3>New features!</h3><ul class="fl"><li><b>Liquid glass buttons</b><span>Highlighted buttons now look like Apple\u2019s liquid glass, with a soft bend at the corners.</span></li><li><b>Floating top bar and chat input</b><span>No header bar and no black lines. Your chat shows through the glass as it scrolls underneath.</span></li><li><b>Liquid bend animations</b><span>Top bar buttons grow big, shrink small and glow with new highlights. It happens when you slide them and also when you just tap them.</span></li><li><b>New glass icon</b><span>A slightly 3D, slightly see-through icon that loads instantly.</span></li><li><b>Fast on every browser</b><span>Built to run smoothly on Safari, Firefox and Chrome.</span></li></ul><button class="go" type="button">Let\u2019s go</button></div></div>';
  document.body.appendChild(o);

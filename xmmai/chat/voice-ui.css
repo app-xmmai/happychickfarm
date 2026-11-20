@@ -57,3 +57,12 @@
 #vo .glow .g1{transition:opacity .3s,transform .18s ease-out}
 #vo .x{width:44px;height:44px;border:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;opacity:.7}
 #vo.count .tm,#vo.wait .tm{opacity:1}
+
+#vo .face{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 112px);display:flex;justify-content:center;z-index:3;pointer-events:none}
+#vo .fb{position:relative;display:block;width:84px;height:84px;border-radius:50%;background:url(icon.svg) center/cover,#111;box-shadow:0 0 calc(24px + var(--lv,0)*40px) rgba(255,255,255,.25);transform:scale(calc(1 + var(--lv,0)*.12));transition:transform .1s linear;overflow:hidden}
+#vo .fb .e{position:absolute;top:34%;width:20px;height:26px;border-radius:50%;background:#fff;overflow:hidden;animation:voblink 4.5s infinite}
+#vo .fb .e.l{left:24%}#vo .fb .e.r{right:24%}
+#vo .fb .e u{position:absolute;left:50%;top:50%;width:11px;height:11px;margin:-5.5px;border-radius:50%;background:#000;transform:translate(calc(var(--ex,0)*4px),calc(var(--ey,0)*6px));transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+@keyframes voblink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+#vo .hint{bottom:calc(env(safe-area-inset-bottom,0px) + 206px)}
+#vo .log{padding-bottom:210px}

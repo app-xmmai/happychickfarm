@@ -304,7 +304,7 @@ html,body{
 
 /* v44: XMM icon tag on every image */
 .gtag{position:absolute;right:8px;bottom:8px;display:flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font:600 11px/1 system-ui,-apple-system,sans-serif;pointer-events:none}
-.gtag i{width:20px;height:20px;border-radius:50%;background:url(icon.svg?v=x30) center/cover}
+.gtag i{width:20px;height:20px;border-radius:50%;background:url(icon.svg?v=x40) center/cover}
 .genbox .gtag{opacity:0}.genbox.ok .gtag{opacity:1;transition:opacity .5s .3s}
 .sv-wrap{position:relative;display:grid;max-width:100%;max-height:100%}
 .sv-wrap img{max-height:calc(100dvh - 230px)}
