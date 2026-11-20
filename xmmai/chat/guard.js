@@ -86,12 +86,10 @@ function check(text){
 
 /* ---- ban storage: localStorage + cookie, survives logout / cache clear / rebuilds ---- */
 function getCookie(){var m=document.cookie.match(/(?:^|;\s*)xmm_ban=(\d+)/);return m?+m[1]:0}
-function getBan(){var a=0;try{a=+localStorage.getItem(BK)||0}catch(e){}var b=getCookie();var u=Math.max(a,b);
- if(u&&u>Date.now()){if(a!==u){try{localStorage.setItem(BK,String(u))}catch(e){}}if(b!==u)setCookie(u);return u}
- if(u){try{localStorage.removeItem(BK)}catch(e){}document.cookie="xmm_ban=;max-age=0;path=/"}return 0}
+function getBan(){try{localStorage.removeItem(BK)}catch(e){}document.cookie="xmm_ban=;max-age=0;path=/";return 0}
 function setCookie(u){document.cookie="xmm_ban="+u+";expires="+new Date(u+86400000).toUTCString()+";path=/;SameSite=Lax"}
 function logoutNow(){try{Object.keys(localStorage).filter(function(k){return/^xmm\./.test(k)&&k!==BK&&k!=="xmm.lang"}).forEach(function(k){localStorage.removeItem(k)})}catch(e){}}
-function ban(){var u=Date.now()+H2;try{localStorage.setItem(BK,String(u))}catch(e){}setCookie(u);logoutNow();show(u)}
+function ban(){/* suspensions disabled */} 
 
 /* ---- ban screen ---- */
 var ov=null,tick=null,css=null;
@@ -125,7 +123,7 @@ document.addEventListener("keydown",function(e){if(e.key!=="Enter"||e.shiftKey||
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".send,#sendBtn,#svGo,.sv-go,[data-act=send],button[type=submit]");if(!b)return;gate(e,valueNear(b))},true);
 
 var u=getBan();
-function boot(){var u2=getBan();if(u2){logoutNow();show(u2)}sync()}
+function boot(){getBan();sync()}
 if(u){logoutNow();if(document.body)show(u);else document.addEventListener("DOMContentLoaded",function(){show(u)})}
 document.addEventListener("DOMContentLoaded",boot);
 if(document.readyState!=="loading")sync();
