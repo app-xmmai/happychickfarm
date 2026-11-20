@@ -592,11 +592,11 @@ async function addFiles(files){for(const f of files){const isImg=f.type.startsWi
 let ctrl=null;
 function send(textOverride){
  if(S.busy){ctrl&&ctrl.abort();return}
- if(window.XMM_GUARD&&XMM_GUARD.banned())return;
+ /* ban check removed */
  {const c1=cur();if(c1&&c1.locked)return}
  if(S.att.some(x=>x.p!=null&&x.p<100))return;
  const input=$("#msg");const text=(typeof textOverride==="string"?textOverride:input.value).trim();if(!text&&!S.att.length)return;
- try{const v=window.XMM_GUARD&&XMM_GUARD.check(text);if(v){if(v==="ban"){input.value="";XMM_GUARD.ban();return}let c0=cur();if(!c0){c0={id:uid(),title:"New chat",msgs:[],locked:true};S.chats.unshift(c0);S.cur=c0.id}c0.locked=true;S.att=[];renderAtts();input.value="";autosize(input);saveChats();renderMsgs();renderList();return}}catch(_){}
+ /* guard check removed */
  try{if(window.XMM_SUN&&XMM_SUN.intercept(text)){input.value="";autosize(input);updateSend();return}}catch(_){}
  // Instant core-memory: name, remember that…, age, location, preferences
  try{autoMem(text)}catch(_){}
