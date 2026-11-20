@@ -213,7 +213,7 @@ function budgetFor(txt,hist){
 
 /* ===== XMMGPT Sun 6.2 helpers ===== */
 const SUN_BLOCK=/\b(wars?|warfare|battle|invasion|invade|genocide|terror\w*|bomb\w*|explosive\w*|weapons?|guns?|rifles?|missiles?|nukes?|nuclear|military|soldiers?|army|isis|hamas|kill\w*|murder\w*|suicid\w*|self[- ]?harm|overdose|poison\w*|abuse\w*|rape\w*|drugs?|cocaine|heroin|meth|porn\w*|sex\w*|nsfw|hack\w*|religions?|religious|god|gods|allah|islam\w*|muslim\w*|christian\w*|jesus|bible|quran|koran|jewish|judaism|jews?|hindu\w*|buddh\w*|atheis\w*|prophet|church|mosque|afterlife|heaven|hell|politic\w*|election|president|abortion|racis\w*|slur\w*|meaning of life|free will|consciousness|why do we exist|why are we here|what happens after (we )?die|what happens when (we|you) die|philosoph\w*|existential\w*|nihilis\w*|krieg\w*|religion|gott|selbstmord|waffen|töten|جنگ|دین|مذهب|خدا|خودکشی|اسلام|مسیحی|کشتن|سلاح|حرب|دين|الله|انتحار|قتل|أسلحة|guerra|religión|dios|suicidio|matar|armas)\b|جنگ|مذهب|خودکشی|حرب|انتحار/i;
-const sunSensitive=t=>SUN_BLOCK.test(String(t||""));
+const sunSensitive=t=>false;
 const sunTrivial=t=>{t=String(t||"").trim();return t.length<=14||/^[\d\s+\-*\/().,x×÷^=?]+$/.test(t)||/^(hi+|hello|hey|yo|hallo|salam|سلام|hola|thanks|thank you|ok|okay)[\s!.?]*$/i.test(t)};
 const sunCode=t=>isCodeReq(t)||/\b(code|coding|script|function|program|html|css|javascript|python|java|c\+\+|sql|bug|debug|algorithm|app|website|game)\b/i.test(String(t||""));
 const stripEmoji=t=>String(t||"").split("```").map((x,i)=>i%2?x:x.replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D\u20E3]/gu,"").replace(/[ \t]{2,}/g," ").replace(/ +([.,!?;:])/g,"$1")).join("```");
@@ -593,7 +593,7 @@ let ctrl=null;
 function send(textOverride){
  if(S.busy){ctrl&&ctrl.abort();return}
  /* ban check removed */
- {const c1=cur();if(c1&&c1.locked)return}
+ 
  if(S.att.some(x=>x.p!=null&&x.p<100))return;
  const input=$("#msg");const text=(typeof textOverride==="string"?textOverride:input.value).trim();if(!text&&!S.att.length)return;
  /* guard check removed */
@@ -624,7 +624,6 @@ async function ask(c){
   let ex="";if(!h){const X=[[/\b(chart|graph|plot)\b/i,"xmm-chart",'{"type":"bar","title":"…","labels":["A","B"],"datasets":[{"label":"…","data":[1,2]}]}'],[/\b(compare|comparison|versus|vs\.?|which is better)\b/i,"xmm-compare",'{"title":"…","items":[{"name":"A","price":"…","desc":"…","best":true,"specs":{"Label":"value"}},{"name":"B","specs":{"Label":"value"}}],"verdict":"…"}'],[/\b(recipe|how to (cook|make|bake))\b/i,"xmm-recipe",'{"title":"Dish","time":"30 min","servings":2,"ingredients":["…"],"steps":["…"]}'],[/\b(table|spreadsheet)\b/i,"xmm-table",'{"headers":["A","B"],"rows":[["1","2"]]}'],[/\b(checklist|to-?do list|packing list)\b/i,"xmm-checklist",'{"title":"…","items":["…"]}']];for(const [re,hh,e] of X)if(re.test(u)){h=hh;ex=e;break}}
   if(h)hist[li]={...hist[li],content:u+"\n\n"+(ex?"[SYSTEM NOTE: reply with a short intro line and then exactly ONE ```"+h+" fenced block containing valid JSON shaped like "+ex+". Never describe the block in plain text.]":"[SYSTEM NOTE: reply with a short intro line and then exactly ONE "+h+" block (valid JSON, up to 20 questions"+(h==="xmm-quiz"?", 4 options each, answer = 0-based index, with explanation":h==="xmm-ask"?", 2-5 short options each":"")+"). Never write the questions as plain text and never say you cannot start it.]")}}}
  const idx=c.msgs.length-1;ctrl=new AbortController();const t0=performance.now();
- if(S.mode==="sun62"&&sunSensitive(lu&&lu.text)){sunSetMode("x25");bot.fallback=true;bot.text="";bot.ms=performance.now()-t0;bot.mode=MODELS.x25.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend();return}
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
 const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";

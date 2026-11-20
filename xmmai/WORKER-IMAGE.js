@@ -19,7 +19,7 @@ export default {
 
     const origin = request.headers.get("Origin") || "";
     const okOrigin = !origin || origin.endsWith(".vercel.app") || origin.endsWith(".pages.dev") || origin.endsWith(".workers.dev") ||
-      origin.endsWith(".freedev.app") ||
+      origin.endsWith(".freedev.app") || origin==="https://xmm-ai.com" || origin==="https://www.xmm-ai.com" ||
       origin === "https://app-xmmai.github.io" || origin === "https://xmmcraft.qzz.io" || origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1");
     if (!okOrigin) return json(request, 403, { error: "Forbidden origin" });
     if (!env.AI) return json(request, 500, { error: "Workers AI binding missing: add a binding named AI" });

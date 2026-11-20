@@ -66,28 +66,7 @@ html.cf-pending body > *:not(
 </script>
 
 
-<script>
-(function(){
-  try{
-    var h=(location.hostname||"").toLowerCase().replace(/\.+$/,"");
-    if(!h)return;
-    var ok =
-      h==="xmm-ai.com" ||
-      h==="www.xmm-ai.com" ||
-      h==="localhost" ||
-      h==="127.0.0.1" ||
-      h==="0.0.0.0" ||
-      h.endsWith(".local") ||
-      /^192\.168\.\d+\.\d+$/.test(h) ||
-      /^10\.\d+\.\d+\.\d+$/.test(h);
-    if(ok)return;
-    var path=(location.pathname||"/")+(location.search||"")+(location.hash||"");
-    var dest="https://xmm-ai.com"+path;
-    /* hard redirect — do not rewrite DOM (avoids breaking the page) */
-    location.replace(dest);
-  }catch(e){}
-})();
-</script>
+
 
 
 <script>
@@ -110,18 +89,13 @@ html.cf-pending body > *:not(
 </script>
 
 
-<script>/* clean-install gate: first load of a new build wipes cache, SW, cookies, storage. Change B to force another wipe. */
-(function(){var B="b20261120-v185-FINAL";try{if(localStorage.getItem("xmm.build")===B)return;
-var done=function(){try{localStorage.clear();sessionStorage.clear()}catch(e){}
+<script>/* fresh-load: every load drops service workers, caches and cookies so users always get the newest site. Never hides the page, never redirects, never wipes chats or the saved name. */
+(function(){try{
+if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){x.unregister()})}).catch(function(){});
+if(window.caches)caches.keys().then(function(k){k.forEach(function(x){caches.delete(x)})}).catch(function(){});
 document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
-try{localStorage.setItem("xmm.build",B)}catch(e){}
-location.replace(location.pathname+(location.search?location.search+"&":"?")+"cb="+B+location.hash)};
-var p=[];
-if(navigator.serviceWorker)p.push(navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}));
-if(window.caches)p.push(caches.keys().then(function(k){return Promise.all(k.map(function(x){return caches.delete(x)}))}));
-if(window.indexedDB&&indexedDB.databases)p.push(indexedDB.databases().then(function(d){d.forEach(function(x){indexedDB.deleteDatabase(x.name)})}));
-document.documentElement.style.visibility="hidden";
-Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
+}catch(e){}})();</script>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
 <script>try{var _n=JSON.parse(localStorage.getItem("xmm.name")||'""');if(!String(_n||"").trim()||/[?&]login=1/.test(location.search)){location.replace("/login/"+(String(_n||"").trim()?"?force=1":""))}}catch(e){}</script>
 <meta charset="utf-8">
@@ -170,29 +144,6 @@ Promise.all(p).then(done,done);setTimeout(done,3000)}catch(e){}})();</script>
 
 <div class="aurora"></div>
 <div id="langTop"><select id="topLang" aria-label="Language"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select></div>
-<div id="cine" aria-hidden="true"><i class="ci-bar ci-t"></i><i class="ci-bar ci-b"></i><i class="ci-flare"></i>
-<div class="ci-c"><i class="ci-glow"></i><div class="ci-logo"><svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="200" fill="#f3f3f1"/><rect x="192" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/><rect x="296" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/></svg></div>
-<div class="ci-title">XMM AI</div><div class="ci-sub">by XMM Bayat</div></div>
-<i class="ci-grain"></i><i class="ci-vig"></i></div>
-<script>(function(){var c=document.getElementById("cine");if(!c)return;var R=document.documentElement,t0=Date.now(),last=0,K="xmm.cine.t";
-try{last=+localStorage.getItem(K)||0}catch(e){}
-var rm=false;try{rm=matchMedia("(prefers-reduced-motion:reduce)").matches}catch(e){}
-var warm=!rm&&last&&t0-last<6e5;c.className=rm?"rm":(warm?"warm":"cold");
-var min=rm?250:(warm?2600:5200),ready=document.readyState==="complete",done=0;
-function go(){if(done)return;done=1;c.classList.add("out");R.classList.add("cine-reveal");
-try{localStorage.setItem(K,String(Date.now()))}catch(e){}
-setTimeout(function(){try{c.remove()}catch(e){}R.classList.remove("cine-reveal")},rm?300:1500)}
-function chk(){if(ready&&Date.now()-t0>=min)go()}
-addEventListener("load",function(){ready=true;chk()});
-setTimeout(chk,min);
-setTimeout(function(){ready=true;chk()},9000);
-c.addEventListener("pointerdown",function(){ready=true;min=0;go()});
-addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ready=true;min=0;go()}});
-})();</script>
-<div class="cin-back" aria-hidden="true"><i class="cin-grade"></i><i class="cin-leak"></i><i class="cin-spot"></i></div>
-<div class="cin-front" aria-hidden="true"><i class="cin-grain"></i><i class="cin-vig"></i></div>
-
-
 <section class="shell" id="shell-chat">
   <aside class="side glass" id="sideChat">
     <div class="side-top">
