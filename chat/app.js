@@ -61,8 +61,8 @@ const cur=()=>S.chats.find(c=>c.id===S.cur);
 const hasMsgs=()=>{const c=cur();return !!(c&&c.msgs.length)};
 
 /* ---------- navigation ---------- */
-const NAV=[["newchat","New chat","plus","dot"],["search","Search","search"],["notebooks","Notebooks","folder"]];
-const BN=[["chat","Chat","chat"],["search","Search","search"],["image","Images","image"]];
+const NAV=[["newchat","New chat","plus","dot"],["imagine","Imagine","image"],["search","Search","search"],["notebooks","Notebooks","folder"]];
+const BN=[["chat","Chat","chat"],["search","Search","search"],["imagine","Imagine","image"]];
 function buildNav(id,items,onclick){const n=$(id);n.innerHTML=items.map(([k,l,i,c])=>`<button class="nav-i" data-k="${k}">${c==="dot"?`<span class="dot">${ic(i)}</span>`:ic(i)}<span>${l}</span></button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function buildBn(id,items,onclick){const n=$(id);n.innerHTML=`<span class="bn-pill"></span>`+items.map(([k,l,i])=>`<button class="bn" data-k="${k}" aria-label="${l}">${ic(i)}</button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function syncNav(){const v=S.view;const k=v==="chat"?(hasMsgs()?"":"newchat"):v;$$("#chatNav [data-k]").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
@@ -70,7 +70,7 @@ function syncNav(){const v=S.view;const k=v==="chat"?(hasMsgs()?"":"newchat"):v;
 function movePill(){const p=$("#chatBnav .bn-pill"),b=$("#chatBnav .bn.on");if(!p||!b||!b.offsetWidth)return;p.style.width=b.offsetWidth+"px";p.style.transform=`translateX(${b.offsetLeft}px)`;p.classList.add("rdy")}
 addEventListener("resize",movePill);
 const ORDER=["chat","search","notebooks"];let lastV="chat";
-function navClick(k){if(k==="image"){const x=$('#chatNav [data-act="image"]');x&&x.click();return}if(k==="newchat"){newChat();return}chatView(k)}
+function navClick(k){if(k==="imagine"||k==="image"){chatView("chat");try{window.XMM_IMAGINE&&XMM_IMAGINE()}catch(e){}return}if(k==="image"){const x=$('#chatNav [data-act="image"]');x&&x.click();return}if(k==="newchat"){newChat();return}chatView(k)}
 function chatView(v){const dir=ORDER.indexOf(v)>=ORDER.indexOf(lastV)?"r":"l";const changed=v!==lastV;lastV=v;S.view=v;$("#viewChat").hidden=v!=="chat";$("#viewSearch").hidden=v!=="search";$("#viewNotebooks").hidden=v!=="notebooks";
  if(v==="search"){doSearch();if(innerWidth>860)$("#searchIn").focus()}if(v==="notebooks")renderNotes();syncNav();closeDrawer();
  if(changed&&innerWidth<=860){const el=$({chat:"#viewChat",search:"#viewSearch",notebooks:"#viewNotebooks"}[v]);el.classList.remove("slide-r","slide-l");void el.offsetWidth;el.classList.add("slide-"+dir)}}
@@ -477,9 +477,9 @@ async function saveTagged(url){
  const a=document.createElement("a");a.href=baked;a.download="xmm-image.jpg";a.click()}
 window.XMM_SAVE=saveTagged;
 const R1=n=>{const x=Math.sin(n*127.1)*43758.5453;return x-Math.floor(x)};
-function dotsHTML(){let s="";for(let r=0;r<10;r++)for(let c=0;c<10;c++){const n=r*10+c,x=(c+.5+(R1(n+1)-.5)*.8)*10,y=(r+.5+(R1(n+7)-.5)*.8)*10,sz=3+R1(n+3)*3;
- s+=`<i style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;animation-delay:${(x*.014+y*.007).toFixed(2)}s"></i>`}
- return `<div class="dotsbox" aria-hidden="true">${s}</div><span class="dotslbl">Creating image…</span>`}
+function dotsHTML(lbl){let s="";for(let r=0;r<10;r++)for(let c=0;c<10;c++){const n=r*10+c,x=(c+.5+(R1(n+1)-.5)*.8)*10,y=(r+.5+(R1(n+7)-.5)*.8)*10,sz=3+R1(n+3)*3;
+ s+=`<i style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;--d:${(x*.014+y*.007).toFixed(2)}s;animation-delay:${(x*.014+y*.007).toFixed(2)}s"></i>`}
+ return `<div class="dotsbox" aria-hidden="true">${s}</div><span class="dotslbl">${lbl||"Creating image…"}</span>`}
 window.XMM_DOTS=dotsHTML;
 const genActs=i=>`<div class="m-acts"><button class="icon-btn" data-gen="save" data-i="${i}" aria-label="Save image">${ic("download")}</button><button class="icon-btn" data-gen="redo" data-i="${i}" aria-label="Redo image">${ic("regen")}</button></div>`;
 const busyHTML=i=>`<div class="gerr xbusy"><div><b>Servers are overloaded</b><span>Try again in 45 seconds.</span><button class="xretry" data-gen="redo" data-i="${i}">Try again</button></div></div>`;

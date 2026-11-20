@@ -135,3 +135,10 @@ html body #nv.aion .fabs .aib{background:rgba(168,85,247,.2)!important;color:#c0
 .xv-acts{z-index:3;display:flex;gap:6px}
 .xv-acts button{padding:7px 14px;border:0;border-radius:99px;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font:600 12.5px/1 inherit;cursor:pointer}
 .xv:fullscreen{aspect-ratio:auto;border-radius:0;background:#000}.xv:fullscreen video{object-fit:contain}
+
+/* wave must always play: beat reduced-motion / turbo / other "animation:none" rules */
+html body .dotsbox i,html.xmm-turbo body .dotsbox i{animation-name:dwave!important;animation-duration:2.4s!important;animation-timing-function:ease-in-out!important;animation-iteration-count:infinite!important;animation-delay:var(--d,0s)!important;animation-play-state:running!important}
+html body .xv-ring{animation-name:xvspin!important;animation-duration:.9s!important;animation-iteration-count:infinite!important;animation-timing-function:linear!important}
+.xv:not(.done){background:#2b2b31}
+.xv .xv-load{pointer-events:none}.xv .dotsbox{z-index:0}.xv .dotslbl{z-index:1;bottom:12px}
+body:not(.imagine-on) .gm{display:none!important}

@@ -51,14 +51,14 @@ function buildDrawer(){
  var d=$("#clDrawer");if(!d||d.__ip)return false;d.__ip=1;
  d.innerHTML='<div class="cl-dh"><span>XMM AI</span><button class="ip-circ" id="ipSearch" type="button" aria-label="Search">'+IC.search+'</button></div>'+
  '<div class="cl-ds" id="clDs">'+
- [["images","Images",IC.images],["scheduled","Scheduled",IC.sched],["library","Library",IC.lib],["customize","Customize",IC.cust],["explore","Explore",IC.explore]].map(function(n,i){return'<button class="cl-nr" data-ip="'+n[0]+'" style="--i:'+i+'">'+n[2]+'<span>'+n[1]+'</span></button>'}).join("")+
+ [["imagine","Imagine",IC.images],["scheduled","Scheduled",IC.sched],["library","Library",IC.lib],["customize","Customize",IC.cust],["explore","Explore",IC.explore]].map(function(n,i){return'<button class="cl-nr" data-ip="'+n[0]+'" style="--i:'+i+'">'+n[2]+'<span>'+n[1]+'</span></button>'}).join("")+
  '<div class="cl-rl" id="ipPinL" style="display:none">Pinned</div><div id="ipPinned"></div>'+
  '<div class="cl-rl">Recents</div><div id="clRecents"></div>'+
  '<button class="cl-all" id="clAll"><span>All chats</span></button></div>'+
  '<div class="cl-db"><button class="cl-nc ip-chat" id="clNc" type="button">'+IC.compose+'Chat</button><button class="cl-av" id="clAv" type="button" aria-label="Settings">X</button></div>';
  d.addEventListener("click",function(e){
   if(e.target.closest("#ipSearch")){B.classList.remove("cl-drawer");openPage("library",{focus:1});return}
-  var n=e.target.closest("[data-ip]");if(n){B.classList.remove("cl-drawer");openPage(n.dataset.ip)}
+  var n=e.target.closest("[data-ip]");if(n){B.classList.remove("cl-drawer");if(n.dataset.ip==="imagine"){try{closePage()}catch(_){}try{window.XMM_IMAGINE&&XMM_IMAGINE()}catch(_){}return}openPage(n.dataset.ip)}
  },true);
  var rc=$("#clRecents");
  new MutationObserver(function(){splitPins()}).observe(rc,{childList:true});

@@ -36,7 +36,9 @@ window.XMM_CONFIG = {
   VIDEO_COOLDOWN_MS: 300000,
   VIDEO_AI: [
     { name: "LTX Video", type: "gradio", base: "https://lightricks-ltx-video-distilled.hf.space", fn: "generate", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512,
-      data: ["{prompt}", "worst quality, inconsistent motion, blurry, jittery, distorted", null, null, "{h}", "{w}", 8, "{frames}", "{seed}", true, 1, true] }
+      data: ["{prompt}", "worst quality, inconsistent motion, blurry, jittery, distorted", null, null, "{h}", "{w}", 8, "{frames}", "{seed}", true, 1, true] },
+    { name: "LTX Video 2", type: "gradio", base: "https://lightricks-ltx-video.hf.space", fn: "", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512 },
+    { name: "Wan Fast",    type: "gradio", base: "https://multimodalart-wan2-1-fast.hf.space", fn: "", fps: 16, maxFrames: 81, maxSec: 5, w: 640, h: 480 }
   ],
   FREE_AI: [
     { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25, tpm: 100000 },

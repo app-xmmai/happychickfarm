@@ -169,7 +169,7 @@ function widget(type,body,partial){var cfg=fixJ(body);
  var fn=B[type];if(!fn)return bad(type);if(Array.isArray(cfg))cfg={items:cfg,images:cfg,sources:cfg,products:cfg,cards:cfg,questions:cfg};
  try{return fn(cfg)||bad(type)}catch(e){return bad(type)}}
 var ALIAS=/^(quiz|flashcards|chart|table|map|weather|timer|place|compare|recipe|checklist|ask|form|products|sources|currency|calendar|expand|suggest|confirm|writing|diet|homework|mcq|carousel|productinfo|directions|location)$/;
-B.video=function(c){var id=String(c.id||"v"+Math.random().toString(36).slice(2));return wrap("video",'<div class="xv" data-id="'+E(id)+'" data-p="'+E(c.prompt||"")+'" data-sec="'+(+c.sec||5)+'" data-t="'+(+c.t||0)+'"><div class="xv-load"><div class="xv-ring"></div><b>Making your video\u2026</b><small>This can take a minute or two</small></div></div>',c)};
+B.video=function(c){var id=String(c.id||"v"+Math.random().toString(36).slice(2));return wrap("video",'<div class="xv" data-id="'+E(id)+'" data-p="'+E(c.prompt||"")+'" data-sec="'+(+c.sec||5)+'" data-t="'+(+c.t||0)+'"><div class="xv-load">'+(window.XMM_DOTS?window.XMM_DOTS("Making your video\u2026"):'<div class="xv-ring"></div><small>Making your video\u2026</small>')+'</div></div>',c)};
 function mk(info,body,partial){var m=String(info).match(/^xmm[-:_ ]?(\w+)/i);if(m)return widget(m[1].toLowerCase(),body,partial);var w=String(info).split(/\s/)[0].toLowerCase();
  /* any model: accept ```quiz, ```json with a "type", etc. */
  if(ALIAS.test(w))return widget(w,body,partial);
