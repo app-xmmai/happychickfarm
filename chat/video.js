@@ -50,7 +50,7 @@ async function viaWorker(p,prompt,s,st,bid){var key=agKey();if(!key){var en=new 
  var H={Authorization:"Bearer "+key};
  try{var wid=jb&&jb.wid;
   if(!wid){st("Starting…");
-   var r=await fetch(AG+"/v1/videos",{method:"POST",headers:{Authorization:H.Authorization,"Content-Type":"application/json"},body:JSON.stringify({model:AM,prompt:String(prompt).slice(0,500),seconds:String(Math.min(12,Math.max(4,Math.round(+s||5)))),size:"720P",aspect_ratio:"16:9"})});
+   var r=await fetch(AG+"/v1/videos",{method:"POST",headers:{Authorization:H.Authorization,"Content-Type":"application/json"},body:JSON.stringify({model:AM,mode:"text",n:1,prompt:String(prompt).slice(0,500),seconds:String(Math.min(12,Math.max(4,Math.round(+s||5)))),size:"720P",aspect_ratio:"16:9"})});
    if(!r.ok){var tx="";try{tx=await r.text()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=hint(r.status===429||/1015/.test(tx)?"Agnes rate limit / quota reached "+agErr(tx):agErr(tx)||"Agnes error");throw er}
    var j=await r.json();wid=agId(j);if(!wid){var e2=new Error("HTTP 502");e2.detail="Agnes returned no video id";throw e2}
    wid=String(wid);if(bid)setJob(bid,{wid:wid,t:Date.now()})}

@@ -111,7 +111,7 @@ export default {
         const sec = Math.min(12, Math.max(4, Math.round(+b.seconds || 5)));
         const ratio = ["16:9", "21:9", "4:3", "1:1", "3:4", "9:16"].includes(b.aspect) ? b.aspect : "16:9";
 
-        const body = JSON.stringify({ model: MODEL, prompt, seconds: String(sec), size: "720P", aspect_ratio: ratio });
+        const body = JSON.stringify({ model: MODEL, mode: "text", n: 1, prompt, seconds: String(sec), size: "720P", aspect_ratio: ratio });
         // exactly ONE request to Agnes per video: no retries
         const r = await agnes(env, "/v1/videos", { method: "POST", headers: { "Content-Type": "application/json" }, body });
         if (!r.ok) {
