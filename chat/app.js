@@ -430,7 +430,7 @@ const RVERBLAST=new RegExp("^\\s*"+POL+"(?:\\S+\\s+){0,4}"+W_(N_LAT)+"\\s+(?:.{2
 /* Chinese / Japanese / Korean (no spaces) */
 const RCJK=/^\s*(?:请|請|帮我|幫我|给我|給我|麻烦|麻煩)?(?:画|畫|生成|制作|製作|创建|創建|做|绘制|繪製|画一|畫一)(?:一|1|个|個|张|張|幅)*.{0,8}?(?:图|圖|图片|圖片|图像|照片|画|畫|插画|插畫|海报|海報|标志|標誌|logo|Logo)|^\s*(?:.{0,12}?)(?:画像|イラスト|写真|絵|ロゴ|ポスター).{0,30}?(?:作って|生成して|描いて|作成して|を作|を描|を生成)|^\s*.{1,40}?(?:を|の絵を)描いて|^\s*(?:.{0,12}?)(?:이미지|그림|사진|로고|포스터).{0,30}?(?:만들어|그려|생성)/u;
 const RNOT=/^\s*(?:how|why|what|which|where|when|who|is|are|do|does|did|can i|could i|should|explain|tell me|wie|warum|was|wo|wann|wer|erkläre|cómo|como|por qué|qué|cuál|dónde|comment|pourquoi|quel|quoi|come|perché|quale|hoe|waarom|wat|welke|nasıl|neden|ne|как|почему|что|какой|چطور|چگونه|چرا|چی|چه|كيف|لماذا|ما|هل|क्यों|कैसे|क्या)(?![\p{L}\p{M}])|\b(?:code|script|function|html|css|python|javascript|java|svg|excel|powerpoint|docker|dockerfile)\b|\bimage\s+(?:size|format|resize|compress|quality|url|link|file)|(?:^|\s)(?:this|that|the|these|those|diese[sn]?|dieses|este|esta|ese|esa|ce|cette|questo|questa|dit|deze|bu|şu|этот|эту|این|آن|هذه|هذا)\s+(?:image|picture|photo|bild|imagen|foto|image|immagine|afbeelding|resim|картинк|тасвир|عکس|تصویر|صورة)/iu;
-const isImgReq=t=>{t=String(t||"").trim();if(t.length<4||t.length>600||/```/.test(t)||RNOT.test(t))return false;if(/^\/(?:image|img|imagine)\b/i.test(t))return true;
+const isImgReq=t=>{t=String(t||"").trim();if(window.XMM_GENMODE==="image"&&t.length>=2)return true;if(t.length<4||t.length>600||/```/.test(t)||RNOT.test(t))return false;if(/^\/(?:image|img|imagine)\b/i.test(t))return true;
  if(/^[^\n]*[?？؟]\s*$/.test(t)&&!/^\s*(?:can you|could you|would you|will you|kannst du|könntest du|puedes|peux-tu|puoi|kun je|можешь|میتونی|می‌تونی|میتوانی|می توانی|هل يمكنك)\b/iu.test(t))return false;
  return RVERBFIRST.test(t)||RDRAW.test(t)||RVERBLAST.test(t)||RCJK.test(t)};
 window.XMM_ISIMG=isImgReq;
@@ -596,6 +596,7 @@ function send(textOverride){
  {const c1=cur();if(c1&&c1.locked)return}
  if(S.att.some(x=>x.p!=null&&x.p<100))return;
  const input=$("#msg");const text=(typeof textOverride==="string"?textOverride:input.value).trim();if(!text&&!S.att.length)return;
+ if(window.XMM_GENMODE==="video"&&text&&window.XMM_VIDEO){if(XMM_VIDEO.start(text)){input.value="";autosize(input);updateSend()}return}
  try{const v=window.XMM_GUARD&&XMM_GUARD.check(text);if(v){if(v==="ban"){input.value="";XMM_GUARD.ban();return}let c0=cur();if(!c0){c0={id:uid(),title:"New chat",msgs:[],locked:true};S.chats.unshift(c0);S.cur=c0.id}c0.locked=true;S.att=[];renderAtts();input.value="";autosize(input);saveChats();renderMsgs();renderList();return}}catch(_){}
  try{if(window.XMM_SUN&&XMM_SUN.intercept(text)){input.value="";autosize(input);updateSend();return}}catch(_){}
  // Instant core-memory: name, remember that…, age, location, preferences

@@ -25,6 +25,19 @@ window.XMM_CONFIG = {
   // Box requests (quiz, chart, compare, recipe, table...) get up to 5000 tokens and only use servers whose tpm (estimated tokens per minute)
   // is at least BOX_MIN_TPM, biggest first. tpm = rpm x ~4000 tokens, a rough estimate: edit it if you learn the real limit.
   BOX_MIN_TPM: 8000,
+  // Keyless community image generators for the header picture of every box (quiz, recipe, compare...). Rotated; a failing one rests for a while.
+  // type "gradio" = a Hugging Face Space (base + fn), type "post" = POST {prompt,width,height} returning an image or JSON with a url.
+  IMG_AI: [
+    { name: "FLUX Space", type: "gradio", base: "https://black-forest-labs-flux-1-schnell.hf.space", fn: "infer" },
+    { name: "ZSky",       type: "post",   url: "https://api.zsky.ai/v1/generate" }
+  ],
+  // Video maker (the Video tab above the chat input): keyless Hugging Face Space, max VIDEO_MAX_SEC seconds, 1 video per VIDEO_COOLDOWN_MS on this device.
+  // "data" is the Space's input list; {prompt} {frames} {w} {h} {seed} are filled in. Edit it if the Space changes.
+  VIDEO_COOLDOWN_MS: 300000,
+  VIDEO_AI: [
+    { name: "LTX Video", type: "gradio", base: "https://lightricks-ltx-video-distilled.hf.space", fn: "generate", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512,
+      data: ["{prompt}", "worst quality, inconsistent motion, blurry, jittery, distorted", null, null, "{h}", "{w}", 8, "{frames}", "{seed}", true, 1, true] }
+  ],
   FREE_AI: [
     { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25, tpm: 100000 },
     { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1, tpm: 8000 },
