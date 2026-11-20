@@ -111,11 +111,10 @@ html.cf-pending body > *:not(
 
 
 <script>/* clean-install gate: first load of a new build wipes cache, SW, cookies, storage. Change B to force another wipe. */
-(function(){var B="b20261118a";try{if(localStorage.getItem("xmm.build")===B)return;
-var bk=null;try{bk=localStorage.getItem("xmm.ban")}catch(e){}var ck=(document.cookie.match(/(?:^|;\s*)xmm_ban=(\d+)/)||[])[1];if(!bk&&ck)bk=ck;
+(function(){var B="b20261120-v184";try{if(localStorage.getItem("xmm.build")===B)return;
 var done=function(){try{localStorage.clear();sessionStorage.clear()}catch(e){}
 document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
-try{localStorage.setItem("xmm.build",B);if(bk&&+bk>Date.now()){localStorage.setItem("xmm.ban",bk);document.cookie="xmm_ban="+bk+";expires="+new Date(+bk+86400000).toUTCString()+";path=/"}}catch(e){}
+try{localStorage.setItem("xmm.build",B)}catch(e){}
 location.replace(location.pathname+(location.search?location.search+"&":"?")+"cb="+B+location.hash)};
 var p=[];
 if(navigator.serviceWorker)p.push(navigator.serviceWorker.getRegistrations().then(function(r){return Promise.all(r.map(function(x){return x.unregister()}))}));
@@ -294,11 +293,11 @@ addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.k
 </div>
 <div class="toast glass" id="toast" hidden></div>
 
-<script src="guard.js?v=183"></script>
+<script src="guard.js?v=184"></script>
 <script src="config.js?v=183"></script>
 <script src="limit.js?v=5"></script>
 <script src="sun.js?v=5"></script>
-<script src="app.js?v=183"></script>
+<script src="app.js?v=184"></script>
 <script src="widgets.js?v=24"></script><script src="nav.js?v=21"></script><script src="places.js?v=3"></script><script src="boximg.js?v=2"></script>
 <script src="redesign.js?v=17"></script>
 <script src="summary.js?v=1"></script>

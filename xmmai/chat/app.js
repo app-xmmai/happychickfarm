@@ -747,7 +747,7 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
   document.body.appendChild(o)
 };S.mode=S_MODE_DEFAULT;$("#modeBtn span").textContent=MODELS[S_MODE_DEFAULT].short;
  $("#convo").addEventListener("click",e=>{const t=e.target.closest("[data-th]");if(t){t.classList.toggle("o");$("#tb"+t.dataset.th).classList.toggle("o")}});
- $("#logout").onclick=()=>{if(confirm("Log out? All chats on this device will be deleted.")){try{Object.keys(localStorage).filter(k=>/^xmm\./.test(k)&&k!=="xmm.lang"&&k!=="xmm.ban").forEach(k=>localStorage.removeItem(k))}catch{}try{indexedDB.deleteDatabase("xmmcode")}catch{}location.reload()}};
+ $("#logout").onclick=()=>{if(confirm("Log out? All chats on this device will be deleted.")){try{Object.keys(localStorage).filter(k=>/^xmm\./.test(k)&&k!=="xmm.lang").forEach(k=>localStorage.removeItem(k))}catch{}try{indexedDB.deleteDatabase("xmmcode")}catch{}location.reload()}};
  window.XMM_SUNAPI={send,cur,S,renderMsgs,saveChats,uid,toast,sunSetMode,MODELS,renderList,newChat,scrollDown};window.XMM_API={setName,groq,toast,showMenu,esc,md,ic,CFG,delChat,newChat,send,S,cur,renderMsgs};
  $("#settings").onclick=e=>{if(e.target.id==="settings")e.target.hidden=true};
  $("#installGuide").onclick=e=>{if(e.target.id==="installGuide")e.target.hidden=true};
