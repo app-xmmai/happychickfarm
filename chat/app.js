@@ -627,7 +627,7 @@ async function ask(c){
  if(window.XMM_SUN&&!XMM_SUN.allowed(S.mode)){sunSetMode("x25")}
  const mm=MODELS[S.mode]||MODELS.x25,sun=S.mode==="sun62",lite=S.mode==="sun62l",userTxt=String(lu&&lu.text||"");
 const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
- try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
+ try{let sys=sysPrompt()+(sun?"":EMOJIHINT)+MEMHINT+codeModeHint()+mm.p+(window.XMM_MCP?XMM_MCP.hint():"")+(hist.some(m=>Array.isArray(m.content))?" /no_think":"");const lastU=prior[prior.length-1];
   let vis=0;
   if(lastU&&lastU.role==="user"){let us=String(lastU.text||lastU.full||"").match(/https?:\/\/[^\s<>"')\]]+/g);if(!us)us=bareSites(String(lastU.text||lastU.full||""));
    if(us){bot.status="Visiting website…";renderMsgs();const pg=await visitSites([...new Set(us)].slice(0,2),ctrl.signal);bot.status="";vis=1;
@@ -655,7 +655,18 @@ const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
   if(left>0&&ctrl&&!ctrl.signal.aborted)await new Promise(r=>{const id=setTimeout(r,left);ctrl.signal.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});
   if(held&&!bot.text)bot.text=held;
   if(sun)bot.text=stripEmoji(bot.text);else if(lite&&!bot.__em)bot.text=stripEmoji(bot.text);
-  if(!bot.text)bot.text="…";paint()
+  if(!bot.text)bot.text="…";paint();
+  /* MCP tool loop: the AI may write an mcp-call block; run it in the browser and let the AI continue with the result */
+  if(window.XMM_MCP&&XMM_MCP.active()){let lastAcc=bot.text,shown="",n=0;
+   while(n++<5&&ctrl&&!ctrl.signal.aborted){const call=XMM_MCP.parse(lastAcc);if(!call)break;
+    const before=XMM_MCP.strip(lastAcc);shown+=(before?before+"\n\n":"")+"🔧 *"+call.server+" › "+call.tool+"*\n\n";
+    bot.text=shown;bot.status="Using "+call.tool+"…";renderMsgs();
+    const res=await XMM_MCP.run(call,ctrl.signal);bot.status="";
+    hist.push({role:"assistant",content:XMM_MCP.raw(call)},{role:"user",content:"[TOOL RESULT: "+call.server+" › "+call.tool+"]\n"+res+"\n[END TOOL RESULT]\nNow answer the user using this result. Call another tool only if it is really needed."});
+    let acc="";
+    await groq([{role:"system",content:sys+BUD.hint},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:BUD.max,temp:mm.temp,stream:true,signal:ctrl.signal,onDelta:t=>{acc=t;bot.text=shown+XMM_MCP.strip(acc);paint()}});
+    lastAcc=acc}
+   if(shown)bot.text=shown+XMM_MCP.strip(lastAcc);if(!bot.text||!bot.text.trim())bot.text="…";paint()}
   }
  catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
  bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
