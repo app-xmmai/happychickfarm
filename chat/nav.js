@@ -167,11 +167,14 @@ function upd(p){if(!coords.length||!el)return;var n=near(p),bi=n[0],bd=n[1];
   var rest=[p].concat(coords.slice(bi+1));casing.setLatLngs(rest);line.setLatLngs(rest);if(Date.now()-lastChev>2500){lastChev=Date.now();drawChev(rest)}}}
 function title(){return String(q).split(",")[0]}
 function weather(p){if(wxDone||!p)return;wxDone=true;fetch("https://api.open-meteo.com/v1/forecast?latitude="+p[0]+"&longitude="+p[1]+"&current=temperature_2m,weather_code").then(function(r){return r.json()}).then(function(j){var c=j.current;if(!c||!el)return;var w=c.weather_code,e=w===0?"☀️":w<3?"⛅":w<50?"☁️":w<70?"🌧️":w<80?"🌨️":w<95?"🌦️":"⛈️";var x=$(".wx");x.textContent=e+" "+Math.round(c.temperature_2m)+"°";x.classList.add("on")}).catch(function(){})}
+function faceRoute(){if(!me)return;var d=null;if(coords.length>1&&lastP){var nr=near(lastP),bi=nr[0],a,b;if(bi>=coords.length-1){a=coords[coords.length-2];b=coords[coords.length-1]}else{a=coords[bi];b=ahead(lastP,bi,25);if(b===a)b=coords[bi+1]}
+ d=nr[1]>35?brg(lastP,ahead(lastP,bi,40)):brg(a,b)}else if(lastHead!=null)d=lastHead;arrowTo(d)}
+setInterval(function(){if(el&&me)faceRoute()},1000);
 var arD=0;function arrowTo(d){if(d==null||isNaN(d)||!me)return;var e=me.getElement&&me.getElement();var a=e&&e.querySelector(".ar");if(!a)return;var diff=((d-arD)%360+540)%360-180;arD+=diff;a.style.transform="rotate("+arD+"deg)"}
 function onPos(pos){lastFix=Date.now();var p=[pos.coords.latitude,pos.coords.longitude];lastP=p;var hh=pos.coords.heading;if(typeof hh==="number"&&!isNaN(hh))lastHead=hh;weather(p);
  if(!me){me=L.marker(p,{icon:L.divIcon({className:"",html:'<div class="nv-me"><i></i><b class="ar"><svg viewBox="0 0 34 34" width="34" height="34"><circle cx="17" cy="17" r="15" fill="#0a84ff" stroke="#fff" stroke-width="2.5"/><path d="M17 7.5 25 25l-8-4.2L9 25z" fill="#fff"/></svg></b></div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:900}).addTo(map)}else me.setLatLng(p);
  if(!coords.length){if(!routing&&Date.now()-lastRoute>3000&&destLL)getRoute(p);else if(!destLL&&!routing&&Date.now()-lastRoute>3000)geo(q,function(d){destLL=d;getRoute(p)});return}
- upd(p);arrowTo(coords.length>1&&roadB!=null?roadB:lastHead);lastSpd=Math.round((pos.coords.speed||0)*3.6);var s=$(".spv");if(s)s.textContent=lastSpd;
+ upd(p);faceRoute();lastSpd=Math.round((pos.coords.speed||0)*3.6);var s=$(".spv");if(s)s.textContent=lastSpd;
  if(vm>0&&follow)map.setView(p,Math.max(map.getZoom(),vm===2?17:16),{animate:false});else if(driving&&follow)map.setView(p,Math.max(map.getZoom(),17),{animate:true});applyView()}
 function sh(){if(!el)return;var b=$(".sheet"),d=$(".drv"),h=(el.classList.contains("pre")?b:d).offsetHeight+8;el.style.setProperty("--sh",h+"px")}
 function setDest(d,inf){destLL=d;info=inf||info;if(!el||!map)return;if(dest)map.removeLayer(dest);dest=L.marker(d,{icon:opIcon(title()),zIndexOffset:500}).addTo(map);if(!lastP)map.setView(d,14);
