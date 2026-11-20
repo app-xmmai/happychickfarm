@@ -179,6 +179,8 @@ function onPos(pos){lastFix=Date.now();var p=[pos.coords.latitude,pos.coords.lon
  if(!coords.length){if(!routing&&Date.now()-lastRoute>3000&&destLL)getRoute(p);else if(!destLL&&!routing&&Date.now()-lastRoute>3000)geo(q,function(d){destLL=d;getRoute(p)});return}
  upd(p);faceRoute();lastSpd=Math.round((pos.coords.speed||0)*3.6);var s=$(".spv");if(s)s.textContent=lastSpd;
  if(vm>0&&follow&&vm!==3)map.setView(p,Math.max(map.getZoom(),16),{animate:true,duration:1,easeLinearity:1,noMoveStart:true});else if(driving&&follow&&vm!==3)map.setView(p,Math.max(map.getZoom(),17),{animate:true,duration:1,easeLinearity:1,noMoveStart:true});applyView()}
+function nvSize(){if(!el)return;var vv=window.visualViewport,h=Math.round((vv&&vv.height)||window.innerHeight||document.documentElement.clientHeight||0);if(h<200)return;el.style.setProperty("--nvh",h+"px");el.style.height=h+"px";el.style.bottom="auto";el.style.top="0";sh()}
+if(!window.__nvSizeOn){window.__nvSizeOn=1;var _nvr=function(){try{nvSize()}catch(e){}};window.addEventListener("resize",_nvr);window.addEventListener("orientationchange",function(){setTimeout(_nvr,150)});if(window.visualViewport)window.visualViewport.addEventListener("resize",_nvr)}
 function sh(){if(!el)return;var b=$(".sheet"),d=$(".drv"),h=(el.classList.contains("pre")?b:d).offsetHeight+8;el.style.setProperty("--sh",h+"px")}
 function setDest(d,inf){destLL=d;info=inf||info;if(!el||!map)return;if(dest)map.removeLayer(dest);dest=L.marker(d,{icon:opIcon(title()),zIndexOffset:500}).addTo(map);if(!lastP)map.setView(d,14);
  if(info){var sub=$(".nm small");if(sub){var rest=String(q).split(",").slice(1).join(",").trim()||String(info.full||"").split(",").slice(1,4).join(",").trim();sub.textContent=rest}
@@ -241,7 +243,7 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
  '<div class="rts"></div><div class="stats"><div><small>Distance</small><b class="s-km">--</b></div><div><small>Arrive</small><b class="s-eta">--</b></div><div style="display:none"><small>Hours</small><b class="s-hr"></b></div></div></div>'+
  '<div class="aip gl"><div class="aih"><span>Ask about the road</span><button class="aix" aria-label="Close AI">'+IC.x+'</button></div><div class="aio"></div><div class="aic"><button data-q="Is there another road I can take?">Other roads?</button><button data-q="How long until I arrive?">How long?</button><button data-q="What is my next turn?">Next turn?</button><button data-q="Is there a road to the destination?">Road available?</button></div><div class="air"><button class="mic" aria-label="Talk">'+IC.mic+'</button><input type="text" placeholder="Ask about the road…" enterkeyhint="send"></div></div>'+
  '<div class="drv gl"><div class="row"><div><b class="tm">--</b><small>time left</small></div><div><b class="km">--</b><small>distance</small></div><div><b class="eta">--</b><small>arrive</small></div><button class="ex">End</button></div></div>';
- document.body.appendChild(el);manDeg=0;
+ document.body.appendChild(el);nvSize();manDeg=0;
  (function(){var dl=el.querySelector(".dial"),mp=el.querySelector(".map"),st=null,pn=null;
   function ang(e){var r=dl.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))*180/Math.PI}
   dl.addEventListener("pointerdown",function(e){e.preventDefault();try{dl.setPointerCapture(e.pointerId)}catch(_){}st={a:ang(e),m:vm===3?manDeg:(vm?viewDeg:0),moved:0,t:Date.now()};el.classList.add("dg")});
