@@ -10,7 +10,9 @@ try{res=JSON.parse(localStorage.getItem(RK)||"{}")}catch(e){res={}}
 function saveRes(){try{var k=Object.keys(res);if(k.length>25)k.slice(0,k.length-25).forEach(function(x){delete res[x]});localStorage.setItem(RK,JSON.stringify(res))}catch(e){}}
 function last(){try{return+localStorage.getItem(LK)||0}catch(e){return 0}}
 function stamp(v){try{if(v)localStorage.setItem(LK,String(v));else localStorage.removeItem(LK)}catch(e){}}
-function left(){return Math.max(0,last()+CD()-Date.now())}
+function lockUntil(){try{return+localStorage.getItem("xmm.vidlock")||0}catch(e){return 0}}
+function lock(ms){try{localStorage.setItem("xmm.vidlock",String(Date.now()+ms))}catch(e){}}
+function left(){return Math.max(0,last()+CD()-Date.now(),lockUntil()-Date.now())}
 function fmt(ms){var s=Math.ceil(ms/1000);return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2)}
 function toast(t){try{(window.XMM_API&&XMM_API.toast||window.toast)(t)}catch(e){}}
 var dock=$(".dock"),msg=$("#msg");if(!dock||!msg)return;
@@ -25,9 +27,9 @@ function setMode(m){mode=m;window.XMM_GENMODE=m;document.body.setAttribute("data
 bar.onclick=function(e){var b=e.target.closest&&e.target.closest("button");if(!b)return;if(b.dataset.m){setMode(b.dataset.m);try{msg.focus()}catch(x){}}else if(b.dataset.s){sec=+b.dataset.s;paint();setMode(mode)}};
 setInterval(function(){var i=bar.querySelector(".gm-cd"),l=left();if(i)i.textContent=l>0?" · "+fmt(l):""},1000);
 /* start a video: adds the messages, the box then makes the clip */
-function start(text){var l=left();if(l>0){toast("Video limit: 1 video per minute. Wait "+fmt(l));return false}
+function start(text){var l=left();if(l>0){toast("Please wait "+fmt(l)+" before the next video (1 per minute; 10 min after an Agnes rate-limit).");return false}
  var A=window.XMM_API;if(!A)return false;var c=A.cur&&A.cur();if(!c&&A.S){c={id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:String(text).slice(0,40)||"New video",msgs:[]};A.S.chats.unshift(c);A.S.cur=c.id}if(!c)return false;
- var cfg={id:"v"+Date.now().toString(36),prompt:String(text).slice(0,300),sec:sec,t:Date.now()};
+ var cfg={id:"v"+Date.now().toString(36),prompt:String(text).slice(0,500),sec:sec,t:Date.now()};
  c.msgs.push({role:"user",text:text,full:text,atts:[],imgs:[]});c.msgs.push({role:"assistant",text:"```xmm-video\n"+JSON.stringify(cfg)+"\n```"});
  stamp(Date.now());A.saveChats&&A.saveChats();A.renderMsgs&&A.renderMsgs();A.renderList&&A.renderList();return true}
 var JK="xmm.vidjobs";
@@ -52,8 +54,8 @@ async function viaWorker(p,prompt,s,st,bid){var key=agKey();if(!key){var en=new 
    if(!r.ok){var tx="";try{tx=await r.text()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=hint(r.status===429||/1015/.test(tx)?"Agnes rate limit / quota reached "+agErr(tx):agErr(tx)||"Agnes error");throw er}
    var j=await r.json();wid=agId(j);if(!wid){var e2=new Error("HTTP 502");e2.detail="Agnes returned no video id";throw e2}
    wid=String(wid);if(bid)setJob(bid,{wid:wid,t:Date.now()})}
-  var t0=Date.now(),bad=0;
-  for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
+  var t0=Date.now(),bad=0,first=true;
+  for(;;){await new Promise(function(ok){setTimeout(ok,first?20000:6000)});first=false;if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
    st("Making the video…");var d=null;
    try{var q=await fetch(AG+"/agnesapi?video_id="+encodeURIComponent(wid)+"&model_name="+AM,{headers:H});
     if(q.status===404){var e5=new Error("HTTP 404");e5.detail="Video not found";throw e5}
@@ -112,9 +114,8 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
 function fail(b,t,tr){b.classList.remove("done");b.classList.add("bad");b.innerHTML='<div class="xv-load"><b>'+(t||"Couldn’t make the video")+'</b><small>'+(tr?String(tr).replace(/</g,"&lt;"):"No server responded. Try again later.")+'</small></div>'}
 function ecode(e){var m=String(e&&e.message||e),n=m.match(/HTTP (\d{3})/);if(n)return n[1];if(e&&e.name==="AbortError")return 408;if(/quota|busy|queue|limit/i.test(m))return 429;if(/No video/i.test(m))return 502;if(/fetch|network|closed|load failed/i.test(m))return 503;return 500}
 async function run(id,prompt,s){var p=prompt;
- try{if(window.XMM_EN)p=await window.XMM_EN(p)||p}catch(e){}try{if(window.XMM_SAFE)p=await window.XMM_SAFE(p)||p}catch(e){}
  try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})},id);res[id]=u;saveRes();setAll(id,function(b){try{show(b,u)}catch(x){}})}
- catch(e){var m="Error "+ecode(e),tr=e&&e.trace;stamp(0);setAll(id,function(b){fail(b,m,tr)})}
+ catch(e){var m="Error "+ecode(e),tr=e&&e.trace;if(/1015|rate limit|quota|429/i.test(String((e&&e.detail)||"")+String((e&&e.message)||"")))lock(600000);setAll(id,function(b){fail(b,m,tr)})}
  delete JOBS[id]}
 function hyd(){[].forEach.call(document.querySelectorAll(".xv:not([data-s])"),function(b){b.setAttribute("data-s","1");var id=b.dataset.id;
  if(res[id]){show(b,res[id]);return}
