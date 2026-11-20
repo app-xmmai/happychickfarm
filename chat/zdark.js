@@ -27,3 +27,7 @@
  z.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".zc");if(b)CARDS[+b.dataset.i][1]()});
  host.appendChild(z);
 })();
+
+/* sidebar toggle on PC (mobile keeps the push drawer) */
+(function(){try{if(localStorage.getItem("xmm.sb"))document.body.classList.add("cl-sbhide")}catch(_){}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#clMenu");if(!b||innerWidth<900)return;e.stopImmediatePropagation();e.preventDefault();var on=document.body.classList.toggle("cl-sbhide");try{localStorage.setItem("xmm.sb",on?"1":"")}catch(_){}},true)})();
