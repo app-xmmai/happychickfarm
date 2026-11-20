@@ -110,6 +110,8 @@ s.textContent+="#nv{--bg:rgba(255,255,255,.42);--chip:rgba(120,120,128,.16)}"+
 "#nv .res{border-radius:24px}#nv .rb{border-radius:50%}";
 s.textContent+=".nv-me .ar{position:absolute;left:-6px;top:-6px;width:34px;height:34px;display:block;transition:transform .6s ease-out;filter:drop-shadow(0 2px 5px rgba(0,0,0,.4))}#nv *,#nv .res *,.xp-pick *,.xw-place *{letter-spacing:normal!important;text-transform:none}#nv .drv b,#nv .stats b{font-variant-numeric:tabular-nums}";
 s.textContent+="#nv .m3d{display:none!important}";
+s.textContent+=".nv-me u{display:none}.nv-me .ar{position:absolute;left:-23px;top:-23px;width:68px;height:68px;transition:transform .9s cubic-bezier(.22,.8,.3,1);pointer-events:none}.nv-me .ar::before,.nv-me .ar::after{content:'';position:absolute;clip-path:polygon(50% 0,92% 96%,50% 74%,8% 96%)}.nv-me .ar::after{inset:0;background:rgba(255,255,255,.5)}.nv-me .ar::before{inset:5px;z-index:1;background:linear-gradient(180deg,rgba(10,132,255,.5),rgba(10,132,255,.28));-webkit-backdrop-filter:blur(10px) saturate(1.8);backdrop-filter:blur(10px) saturate(1.8)}#nv .leaflet-container:not(.leaflet-zoom-anim) .nv-meic{transition:transform 1s linear}";
+s.textContent+="#nv.rot .map{transition:transform .9s cubic-bezier(.22,.8,.3,1)}#nv.dg .map{transition:none}#nv .dial{position:absolute;z-index:1000;left:12px;bottom:calc(var(--sh,200px) + 86px);width:72px;height:72px;border-radius:50%;touch-action:none;display:grid;place-items:center}#nv .dial i{position:absolute;inset:6px;border-radius:50%;border:1.5px dashed var(--sep);display:block;transition:transform .2s}#nv .dial i b{position:absolute;left:50%;top:-9px;margin-left:-8px;width:16px;height:16px;border-radius:50%;background:#ff453a;color:#fff;font:700 10px/16px inherit;text-align:center}#nv .dial u{width:26px;height:26px;border-radius:50%;background:var(--chip);display:block}#nv:not(.pre) .dial{bottom:calc(var(--sh,200px) + 86px)}";
 s.textContent+="#nv.dk:not(.sat) .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.88) contrast(.92) saturate(.65)}#nv.dk:not(.sat) .m3d canvas{filter:invert(1) hue-rotate(180deg) brightness(.88) contrast(.92) saturate(.65)}";
 document.head.appendChild(s)}
 var LQ=[],LS=0;function load(cb){if(window.L&&LS===2)return cb();LQ.push(cb);if(LS)return;LS=1;var n=2,fin=false,go=function(){if(fin)return;if(--n>0)return;fin=true;LS=2;var q=LQ.splice(0);q.forEach(function(f){try{f()}catch(e){}})};var l=document.createElement("link");l.rel="stylesheet";l.href=L0+".min.css";l.onload=go;l.onerror=go;document.head.appendChild(l);var s=document.createElement("script");s.src=L0+".min.js";s.onload=go;s.onerror=function(){LS=0;LQ=[];alert("Could not load the map");close()};document.head.appendChild(s);setTimeout(function(){if(!fin&&window.L){n=1;go()}},2500)}
@@ -170,12 +172,13 @@ function weather(p){if(wxDone||!p)return;wxDone=true;fetch("https://api.open-met
 function faceRoute(){if(!me)return;var d=null;if(coords.length>1&&lastP){var nr=near(lastP),bi=nr[0],a,b;if(bi>=coords.length-1){a=coords[coords.length-2];b=coords[coords.length-1]}else{a=coords[bi];b=ahead(lastP,bi,25);if(b===a)b=coords[bi+1]}
  d=nr[1]>35?brg(lastP,ahead(lastP,bi,40)):brg(a,b)}else if(lastHead!=null)d=lastHead;arrowTo(d)}
 setInterval(function(){if(el&&me)faceRoute()},1000);
-var arD=0;function arrowTo(d){if(d==null||isNaN(d)||!me)return;var e=me.getElement&&me.getElement();var a=e&&e.querySelector(".ar");if(!a)return;var diff=((d-arD)%360+540)%360-180;arD+=diff;a.style.transform="rotate("+arD+"deg)"}
+var manDeg=0,arD=0,arSet=false;function paintArrow(){if(!me||!arSet)return;var e=me.getElement&&me.getElement();var a=e&&e.querySelector(".ar");if(a)a.style.transform="rotate("+(arD-(vm?viewDeg:0))+"deg)"}
+function arrowTo(d){if(d==null||isNaN(d))return;var diff=((d-arD)%360+540)%360-180;arD=arSet?arD+diff:d;arSet=true;paintArrow()}
 function onPos(pos){lastFix=Date.now();var p=[pos.coords.latitude,pos.coords.longitude];lastP=p;var hh=pos.coords.heading;if(typeof hh==="number"&&!isNaN(hh))lastHead=hh;weather(p);
- if(!me){me=L.marker(p,{icon:L.divIcon({className:"",html:'<div class="nv-me"><i></i><u></u></div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:900}).addTo(map)}else me.setLatLng(p);
+ if(!me){me=L.marker(p,{icon:L.divIcon({className:"nv-meic",html:'<div class="nv-me"><i></i><b class="ar"></b></div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:900}).addTo(map)}else me.setLatLng(p);
  if(!coords.length){if(!routing&&Date.now()-lastRoute>3000&&destLL)getRoute(p);else if(!destLL&&!routing&&Date.now()-lastRoute>3000)geo(q,function(d){destLL=d;getRoute(p)});return}
  upd(p);faceRoute();lastSpd=Math.round((pos.coords.speed||0)*3.6);var s=$(".spv");if(s)s.textContent=lastSpd;
- if(vm>0&&follow)map.setView(p,Math.max(map.getZoom(),vm===2?17:16),{animate:false});else if(driving&&follow)map.setView(p,Math.max(map.getZoom(),17),{animate:true});applyView()}
+ if(vm>0&&follow&&vm!==3)map.setView(p,Math.max(map.getZoom(),16),{animate:true,duration:1,easeLinearity:1,noMoveStart:true});else if(driving&&follow&&vm!==3)map.setView(p,Math.max(map.getZoom(),17),{animate:true,duration:1,easeLinearity:1,noMoveStart:true});applyView()}
 function sh(){if(!el)return;var b=$(".sheet"),d=$(".drv"),h=(el.classList.contains("pre")?b:d).offsetHeight+8;el.style.setProperty("--sh",h+"px")}
 function setDest(d,inf){destLL=d;info=inf||info;if(!el||!map)return;if(dest)map.removeLayer(dest);dest=L.marker(d,{icon:opIcon(title()),zIndexOffset:500}).addTo(map);if(!lastP)map.setView(d,14);
  if(info){var sub=$(".nm small");if(sub){var rest=String(q).split(",").slice(1).join(",").trim()||String(info.full||"").split(",").slice(1,4).join(",").trim();sub.textContent=rest}
@@ -232,13 +235,22 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
  '<div class="top"><div class="wx gl"></div><div class="sbar gl">'+IC.search+'<input type="text" placeholder="Search Maps" enterkeyhint="search"><button class="av" aria-label="Close">'+'✕'+'</button></div><div class="res gl"></div>'+
  '<div class="turn gl"><div class="ti">'+IC.arr+'</div><div class="tt"><small>Starting…</small><b>Calculating route…</b></div></div><div class="rcl gl"><i></i><span>Calculating route…</span></div></div>'+
  '<div class="spd gl"><b class="spv">0</b><small>KM/H</small></div>'+
- '<div class="fabs gl"><button class="cmp" aria-label="View angle">'+IC.cmp+'</button><button class="lyr" aria-label="Map style">'+IC.lyr+'</button><button class="aib" aria-label="Ask AI">'+IC.ai+'</button><button class="txb" aria-label="Type to AI">'+IC.txt+'</button><button class="rc" aria-label="My location">'+IC.loc+'</button><button class="zi" aria-label="Zoom in">+</button><button class="zo" aria-label="Zoom out">−</button></div>'+
+ '<div class="dial gl" aria-label="Rotate view"><i><b>N</b></i><u></u></div><div class="fabs gl"><button class="cmp" aria-label="View angle">'+IC.cmp+'</button><button class="lyr" aria-label="Map style">'+IC.lyr+'</button><button class="aib" aria-label="Ask AI">'+IC.ai+'</button><button class="txb" aria-label="Type to AI">'+IC.txt+'</button><button class="rc" aria-label="My location">'+IC.loc+'</button><button class="zi" aria-label="Zoom in">+</button><button class="zo" aria-label="Zoom out">−</button></div>'+
  '<div class="sheet gl"><div class="hd"><button class="rb shr" aria-label="Share">'+IC.share+'</button><div class="nm"><b></b><small></small></div><button class="rb cls" aria-label="Close">'+IC.x+'</button></div>'+
  '<div class="acts"><button class="st">'+IC.car+'<b>--</b></button><a class="call off" role="button">'+IC.call+'Call</a><a class="web off" target="_blank" rel="noopener" role="button">'+IC.web+'Website</a></div>'+
  '<div class="rts"></div><div class="stats"><div><small>Distance</small><b class="s-km">--</b></div><div><small>Arrive</small><b class="s-eta">--</b></div><div style="display:none"><small>Hours</small><b class="s-hr"></b></div></div></div>'+
  '<div class="aip gl"><div class="aih"><span>Ask about the road</span><button class="aix" aria-label="Close AI">'+IC.x+'</button></div><div class="aio"></div><div class="aic"><button data-q="Is there another road I can take?">Other roads?</button><button data-q="How long until I arrive?">How long?</button><button data-q="What is my next turn?">Next turn?</button><button data-q="Is there a road to the destination?">Road available?</button></div><div class="air"><button class="mic" aria-label="Talk">'+IC.mic+'</button><input type="text" placeholder="Ask about the road…" enterkeyhint="send"></div></div>'+
  '<div class="drv gl"><div class="row"><div><b class="tm">--</b><small>time left</small></div><div><b class="km">--</b><small>distance</small></div><div><b class="eta">--</b><small>arrive</small></div><button class="ex">End</button></div></div>';
- document.body.appendChild(el);$(".nm b").textContent=title();
+ document.body.appendChild(el);manDeg=0;
+ (function(){var dl=el.querySelector(".dial"),mp=el.querySelector(".map"),st=null,pn=null;
+  function ang(e){var r=dl.getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))*180/Math.PI}
+  dl.addEventListener("pointerdown",function(e){e.preventDefault();try{dl.setPointerCapture(e.pointerId)}catch(_){}st={a:ang(e),m:vm===3?manDeg:(vm?viewDeg:0),moved:0,t:Date.now()};el.classList.add("dg")});
+  dl.addEventListener("pointermove",function(e){if(!st)return;var da=ang(e)-st.a;da=((da+540)%360)-180;if(Math.abs(da)>3)st.moved=1;if(!st.moved)return;manDeg=st.m-da;if(vm!==3){setVM(3)}applyView()});
+  function end(){if(!st)return;var s=st;st=null;el.classList.remove("dg");if(!s.moved){if(vm)setVM(0);else{manDeg=0}}}
+  dl.addEventListener("pointerup",end);dl.addEventListener("pointercancel",end);
+  mp.addEventListener("pointerdown",function(e){if(vm!==3||e.target.closest&&e.target.closest(".leaflet-control"))return;pn={x:e.clientX,y:e.clientY,id:e.pointerId};try{mp.setPointerCapture(e.pointerId)}catch(_){}});
+  mp.addEventListener("pointermove",function(e){if(!pn||pn.id!==e.pointerId||vm!==3)return;var dx=e.clientX-pn.x,dy=e.clientY-pn.y;pn.x=e.clientX;pn.y=e.clientY;var r=manDeg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);var vx=dx*c-dy*s,vy=dx*s+dy*c;follow=false;map.panBy([-vx,-vy],{animate:false})});
+  var up=function(e){if(pn&&pn.id===e.pointerId)pn=null};mp.addEventListener("pointerup",up);mp.addEventListener("pointercancel",up)})();$(".nm b").textContent=title();
  var inp=$(".sbar input");inp.value=title();inp.addEventListener("keydown",function(e){if(e.key==="Enter"){inp.blur();search(inp.value)}});inp.addEventListener("focus",function(){inp.select();if(!RES.length)showCats()});inp.addEventListener("input",function(){var r=$(".res");if(r&&r.classList.contains("cats")){r.classList.remove("on","cats");r.innerHTML=""}});
  $(".sbar .av").onclick=close;$(".cls").onclick=close;$(".rts").onclick=function(e){var b=e.target.closest&&e.target.closest("button");if(!b)return;useRoute(+b.dataset.i);if(!driving)fit();upd(lastP||coords[0])};$(".ex").onclick=close;
  $(".shr").onclick=function(){var u="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);if(navigator.share)navigator.share({title:title(),url:u}).catch(function(){});else if(navigator.clipboard){navigator.clipboard.writeText(u);status(true,"Link copied");setTimeout(function(){status(false)},1500)}};
@@ -247,7 +259,7 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
  $(".cmp").onclick=function(){setVM((vm+1)%2)};$(".aib").onclick=function(){if(recOn){aiStop();return}aiOpen()};$(".txb").onclick=aiTxt;$(".aix").onclick=aiClose;$(".turn").onclick=function(){if(aiShow)aiHide()};$(".mic").onclick=aiMic;[].forEach.call(el.querySelectorAll(".aic button"),function(b){b.onclick=function(){aiAsk(b.getAttribute("data-q"))}});var ai_in=$(".air input");ai_in.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();ai_in.blur();aiAsk(ai_in.value)}});ai_in.addEventListener("focus",aiStop);
   $(".zi").onclick=function(){if(m3on&&m3)m3.zoomIn();else map.zoomIn()};$(".zo").onclick=function(){if(m3on&&m3)m3.zoomOut();else map.zoomOut()};$(".lyr").onclick=cycleTheme;
  if(window.ResizeObserver){ro=new ResizeObserver(sh);ro.observe($(".sheet"));ro.observe($(".drv"))}setTimeout(sh,60);
- load(function(){if(!el)return;map=L.map($(".map"),{zoomControl:false,attributionControl:true,preferCanvas:true,tap:false,zoomSnap:.5,fadeAnimation:false,markerZoomAnimation:false,inertia:true}).setView([52.1,5.3],6);
+ load(function(){if(!el)return;map=L.map($(".map"),{zoomControl:false,attributionControl:true,preferCanvas:true,tap:false,zoomSnap:.5,fadeAnimation:true,markerZoomAnimation:false,inertia:true}).setView([52.1,5.3],6);
   tl=mkTile(th).addTo(map);
   var iv=function(){if(map){map.invalidateSize();if(el&&el.classList.contains("pre")&&line&&!lastP)fit()}};setTimeout(iv,0);setTimeout(iv,250);setTimeout(iv,800);
   onRz=function(){setTimeout(iv,120)};window.addEventListener("resize",onRz);window.addEventListener("orientationchange",onRz);if(window.visualViewport)window.visualViewport.addEventListener("resize",onRz);if(window.ResizeObserver){ro2=new ResizeObserver(iv);ro2.observe($(".map"))}
@@ -260,16 +272,16 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
 
 /* view angle: 0 north up, 1 heading up, 2 road ahead (3D tilt, route pointing up) */
 function smoothV(d){var diff=((d-viewDeg)%360+540)%360-180;viewDeg+=diff;return viewDeg}
-function applyView(){if(!el)return;var m=$(".map");if(!m)return;var d=0;if(vm===1)d=lastHead!=null?lastHead:(roadB!=null?roadB:0);else if(vm===2)d=roadB!=null?roadB:(lastHead!=null?lastHead:0);d=vm?smoothV(d):0;if(!vm)viewDeg=0;
+function applyView(){if(!el)return;var m=$(".map");if(!m)return;var d=0;if(vm===3)d=manDeg;else if(vm===1)d=lastHead!=null?lastHead:(roadB!=null?roadB:0);else if(vm===2)d=roadB!=null?roadB:(lastHead!=null?lastHead:0);if(vm===3)viewDeg=d;else d=vm?smoothV(d):0;if(!vm)viewDeg=0;
  var tl=vm===2?42:0,ty=vm===2?Math.round(el.clientHeight*.2):(vm===1?Math.round(el.clientHeight*.12):0);
  el.style.setProperty("--un",d+"deg");el.style.setProperty("--sy",tl?(1/Math.cos(tl*Math.PI/180)).toFixed(3):"1");
  m.style.transform="translateY("+ty+"px) perspective(1000px) rotateX("+tl+"deg) rotate("+(-d)+"deg)";
- var c=$(".cmp .cn");if(c)c.style.transform="rotate("+(-d)+"deg)"}
-function setVM(n){if(!map||!el)return;vm=n;var c=map.getCenter(),z=map.getZoom();el.classList.toggle("rot",vm>0);el.classList.toggle("tilt",vm===2);map.invalidateSize({animate:false});
- if(vm>0){map.dragging.disable();map.touchZoom.disable();map.doubleClickZoom.disable();follow=true;var t=lastP||[c.lat,c.lng];map.setView(t,Math.max(z,vm===2?17:16),{animate:false})}
+ var c=$(".cmp .cn");if(c)c.style.transform="rotate("+(-d)+"deg)";var dl=$(".dial i");if(dl)dl.style.transform="rotate("+(-d)+"deg)";paintArrow()}
+function setVM(n){if(!map||!el)return;vm=n;var c=map.getCenter(),z=map.getZoom();el.classList.toggle("rot",vm>0);el.classList.toggle("tilt",false);map.invalidateSize({animate:false});
+ if(vm>0){map.dragging.disable();map.touchZoom.disable();map.doubleClickZoom.disable();if(vm!==3)follow=true;var t=lastP||[c.lat,c.lng];if(vm!==3)map.setView(t,Math.max(z,16),{animate:false})}
  else{map.dragging.enable();map.touchZoom.enable();map.doubleClickZoom.enable();map.setView(c,z,{animate:false});viewDeg=0;if(!driving&&line)fit()}
- var b=$(".cmp");if(b){b.classList.remove("m1","m2");if(vm)b.classList.add("m"+vm)}
- applyView();status(true,["North up","Heading up","Road ahead · 3D"][vm]);setTimeout(function(){status(false)},1300)}
+ var b=$(".cmp");if(b){b.classList.remove("m1","m2");if(vm&&vm<3)b.classList.add("m"+vm)}
+ applyView();status(true,["North up","Heading up","","Free view"][vm]);setTimeout(function(){status(false)},1300)}
 /* ---- AI road assistant: talk (voice) or type, reply in text ---- */
 var SRC=window.SpeechRecognition||window.webkitSpeechRecognition;
 function aiLang(){var m={en:"en-US",fa:"fa-IR",ar:"ar-SA",de:"de-DE",es:"es-ES",fr:"fr-FR",nl:"nl-NL",tr:"tr-TR"},l="en";try{l=localStorage.getItem("xmm.lang")||"en"}catch(e){}return m[l]||(l.length>2?l:navigator.language||"en-US")}
