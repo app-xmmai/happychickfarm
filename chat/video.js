@@ -57,7 +57,7 @@ async function call(p,fn,data,st,signal){var r=await fetch(p.base+"/gradio_api/c
  throw new Error("The server closed the connection")}
 async function viaGradio(p,prompt,s,st){var fps=p.fps||24,nf=Math.min(p.maxFrames||121,Math.max(9,Math.round(s*fps/8)*8+1));
  var ac=new AbortController(),to=setTimeout(function(){ac.abort()},360000),err;
- try{try{var pl=await plan(p,prompt,s,nf,ac.signal);return await call(p,pl.fn,pl.data,st,ac.signal)}catch(e){err=e;if(ac.signal.aborted)throw e}
+ try{try{var pac=new AbortController(),pt=setTimeout(function(){pac.abort()},15000),pl;try{pl=await plan(p,prompt,s,nf,pac.signal)}finally{clearTimeout(pt)}return await call(p,pl.fn,pl.data,st,ac.signal)}catch(e){err=e;if(ac.signal.aborted)throw e}
   if(p.data&&p.fn){var data=p.data.map(function(x){if(x==="{frames}")return nf;if(x==="{w}")return p.w||704;if(x==="{h}")return p.h||512;if(x==="{seed}")return rnd();return typeof x==="string"?x.replace("{prompt}",prompt):x});return await call(p,p.fn,data,st,ac.signal)}
   throw err}
  finally{clearTimeout(to)}}
@@ -68,7 +68,17 @@ async function viaPoll(p,prompt,s,st){var ac=new AbortController(),to=setTimeout
   var ct=r.headers.get("content-type")||"";if(!/video|octet/.test(ct))throw new Error("No video came back");var b=await r.blob();if(!b.size)throw new Error("No video came back");
   return URL.createObjectURL(b.type&&/video/.test(b.type)?b:new Blob([b],{type:"video/mp4"}))}
  finally{clearTimeout(to)}}
-async function gen(prompt,s,st){var P=PV(),err;for(var i=0;i<P.length;i++){try{st("Starting "+P[i].name+"…");var sx=Math.min(s,P[i].maxSec||5);return P[i].type==="pollinations"?await viaPoll(P[i],prompt,sx,st):await viaGradio(P[i],prompt,sx,st)}catch(e){err=err||e}}throw err||new Error("No video server")}
+var DISC=null;
+async function disc(){if(DISC)return DISC;var out=[],urls=["https://huggingface.co/api/spaces?search=video&sdk=gradio&sort=likes&direction=-1&limit=60&expand[]=runtime","https://huggingface.co/api/spaces?search=video&sdk=gradio&sort=likes&direction=-1&limit=60"];
+ for(var u=0;u<urls.length&&!out.length;u++){try{var r=await fetch(urls[u]);if(!r.ok)continue;var L=await r.json();
+  L.forEach(function(x){var id=x.id||"",st=x.runtime&&x.runtime.stage;if(!/\/.+/.test(id)||/avatar|foley|lip|upscal|edit|interpol|i2v|image-to|img2|v2v|audio|talk|face|swap|caption|detect/i.test(id)||!/ltx|wan|cogvideo|hunyuan|video|animate|mochi|svd/i.test(id))return;
+   if(st&&st!=="RUNNING")return;out.push({name:id,type:"gradio",base:"https://"+id.toLowerCase().replace(/[._\/]/g,function(c){return c==="/"?"-":"-"})+".hf.space",fn:"",fps:24,maxFrames:97,maxSec:5,w:640,h:480})})}catch(e){}}
+ return DISC=out.slice(0,8)}
+async function gen(prompt,s,st){var P=PV(),err,trace=[];
+ async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e));return null}}
+ for(var i=0;i<P.length;i++){var u=await tryp(P[i]);if(u)return u}
+ st("Looking for a free server…");var D=await disc();for(var j=0;j<D.length;j++){var u2=await tryp(D[j]);if(u2)return u2}
+ var ee=err||new Error("No video server");ee.trace=trace.join(" · ");throw ee}
 /* ---- boxes ---- */
 function setAll(id,fn){(JOBS[id]||[]).forEach(function(b){if(b.isConnected)fn(b)})}
 /* ---- the XMM tag: the AI icon looks around, then a box pops out of its head saying xmm-ai.com. Same drawing for live playback and for the saved file. ---- */
@@ -110,12 +120,12 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
  if(t.dataset.xv==="fs"){var f=b.requestFullscreen||b.webkitRequestFullscreen;if(f)f.call(b);else toast("Full screen is not supported here");return}
  if(t.dataset.xv==="save"){if(t.disabled)return;t.disabled=true;var o=t.textContent;t.textContent="Saving…";toast("Adding the XMM tag, about "+(+b.dataset.sec||5)+" seconds…");
   bake(b.getAttribute("data-url")).then(function(){toast("Saved")}).catch(function(x){toast(String(x&&x.message||x).slice(0,90))}).then(function(){t.disabled=false;t.textContent=o})}});
-function fail(b,t){b.classList.remove("done");b.classList.add("bad");b.innerHTML='<div class="xv-load"><b>'+(t||"Couldn’t make the video")+'</b><small>No server responded. Try again later.</small></div>'}
+function fail(b,t,tr){b.classList.remove("done");b.classList.add("bad");b.innerHTML='<div class="xv-load"><b>'+(t||"Couldn’t make the video")+'</b><small>'+(tr?String(tr).replace(/</g,"&lt;"):"No server responded. Try again later.")+'</small></div>'}
 function ecode(e){var m=String(e&&e.message||e),n=m.match(/HTTP (\d{3})/);if(n)return n[1];if(e&&e.name==="AbortError")return 408;if(/quota|busy|queue|limit/i.test(m))return 429;if(/No video/i.test(m))return 502;if(/fetch|network|closed|load failed/i.test(m))return 503;return 500}
 async function run(id,prompt,s){var p=prompt;
  try{if(window.XMM_EN)p=await window.XMM_EN(p)||p}catch(e){}try{if(window.XMM_SAFE)p=await window.XMM_SAFE(p)||p}catch(e){}
- try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})});res[id]=u;saveRes();setAll(id,function(b){show(b,u)})}
- catch(e){var m="Error "+ecode(e);stamp(0);setAll(id,function(b){fail(b,m)})}
+ try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})});res[id]=u;saveRes();setAll(id,function(b){try{show(b,u)}catch(x){}})}
+ catch(e){var m="Error "+ecode(e),tr=e&&e.trace;stamp(0);setAll(id,function(b){fail(b,m,tr)})}
  delete JOBS[id]}
 function hyd(){[].forEach.call(document.querySelectorAll(".xv:not([data-s])"),function(b){b.setAttribute("data-s","1");var id=b.dataset.id;
  if(res[id]){show(b,res[id]);return}
