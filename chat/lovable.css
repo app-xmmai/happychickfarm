@@ -6,7 +6,8 @@
  --lv-ink:#f4f4f6;--lv-sub:#a9a9b4;--lv-comp:#15151b;--lv-comp-b:#2a2a33;
  --lv-sh:0 24px 70px rgba(0,0,0,.55);--lv-btn:#23232b;--lv-btn-t:#d6d6dc;--lv-send:#2f7bff;
  --lv-card:rgba(20,20,28,.72);--lv-card-b:rgba(255,255,255,.09);--lv-zi:#1a1a22;
- --lv-bg:radial-gradient(60% 42% at 50% 108%,#d4399f 0,transparent 72%),radial-gradient(45% 50% at -5% 100%,#b81f78 0,transparent 70%),radial-gradient(45% 50% at 105% 100%,#b81f78 0,transparent 70%),radial-gradient(50% 38% at -8% 52%,#1d3fd1 0,transparent 70%),radial-gradient(50% 38% at 108% 52%,#1d3fd1 0,transparent 70%),radial-gradient(36% 26% at 50% 82%,#3b59d6 0,transparent 75%),#08080d;
+ --lv-bg:radial-gradient(62% 46% at 50% 112%,rgba(190,50,150,1) 0%,rgba(190,50,150,0.82) 14%,rgba(190,50,150,0.58) 28%,rgba(190,50,150,0.36) 42%,rgba(190,50,150,0.18) 58%,rgba(190,50,150,0.07) 74%,rgba(190,50,150,0.02) 88%,rgba(190,50,150,0) 100%),radial-gradient(52% 56% at -6% 104%,rgba(160,30,110,1) 0%,rgba(160,30,110,0.82) 14%,rgba(160,30,110,0.58) 28%,rgba(160,30,110,0.36) 42%,rgba(160,30,110,0.18) 58%,rgba(160,30,110,0.07) 74%,rgba(160,30,110,0.02) 88%,rgba(160,30,110,0) 100%),radial-gradient(52% 56% at 106% 104%,rgba(160,30,110,1) 0%,rgba(160,30,110,0.82) 14%,rgba(160,30,110,0.58) 28%,rgba(160,30,110,0.36) 42%,rgba(160,30,110,0.18) 58%,rgba(160,30,110,0.07) 74%,rgba(160,30,110,0.02) 88%,rgba(160,30,110,0) 100%),radial-gradient(58% 44% at -10% 52%,rgba(30,64,200,1) 0%,rgba(30,64,200,0.82) 14%,rgba(30,64,200,0.58) 28%,rgba(30,64,200,0.36) 42%,rgba(30,64,200,0.18) 58%,rgba(30,64,200,0.07) 74%,rgba(30,64,200,0.02) 88%,rgba(30,64,200,0) 100%),radial-gradient(58% 44% at 110% 52%,rgba(30,64,200,1) 0%,rgba(30,64,200,0.82) 14%,rgba(30,64,200,0.58) 28%,rgba(30,64,200,0.36) 42%,rgba(30,64,200,0.18) 58%,rgba(30,64,200,0.07) 74%,rgba(30,64,200,0.02) 88%,rgba(30,64,200,0) 100%),radial-gradient(44% 32% at 50% 84%,rgba(70,92,214,1) 0%,rgba(70,92,214,0.82) 14%,rgba(70,92,214,0.58) 28%,rgba(70,92,214,0.36) 42%,rgba(70,92,214,0.18) 58%,rgba(70,92,214,0.07) 74%,rgba(70,92,214,0.02) 88%,rgba(70,92,214,0) 100%),#08080d;
+ --lv-bgc:linear-gradient(rgba(8,8,13,.58),rgba(8,8,13,.58)),var(--lv-bg);
 }
 html[data-cl-theme=light]:root{
  --cl-bg:#faf9f5;--cl-bg2:#f0eee6;--cl-card:#ffffff;--cl-card2:#ebe9e1;--cl-sheet:#f5f4ef;
@@ -16,14 +17,13 @@ html[data-cl-theme=light]:root{
  --lv-ink:#1c1c1c;--lv-sub:#5f5f68;--lv-comp:#ffffff;--lv-comp-b:rgba(20,20,40,.06);
  --lv-sh:0 24px 70px rgba(40,70,180,.28),0 2px 8px rgba(0,0,0,.05);--lv-btn:#f1f0ee;--lv-btn-t:#3a3a40;--lv-send:#1c1c1c;
  --lv-card:rgba(255,255,255,.78);--lv-card-b:rgba(20,20,40,.06);--lv-zi:#eceeff;
- --lv-bg:radial-gradient(60% 42% at 50% 108%,#ff8be0 0,transparent 72%),radial-gradient(45% 50% at -5% 100%,#ff3d98 0,transparent 70%),radial-gradient(45% 50% at 105% 100%,#ff3d98 0,transparent 70%),radial-gradient(50% 38% at -8% 52%,#4a82ff 0,transparent 70%),radial-gradient(50% 38% at 108% 52%,#4a82ff 0,transparent 70%),radial-gradient(36% 26% at 50% 82%,#a9c0ff 0,transparent 75%),#fcfbf8;
+ --lv-bg:radial-gradient(62% 46% at 50% 112%,rgba(255,139,224,1) 0%,rgba(255,139,224,0.82) 14%,rgba(255,139,224,0.58) 28%,rgba(255,139,224,0.36) 42%,rgba(255,139,224,0.18) 58%,rgba(255,139,224,0.07) 74%,rgba(255,139,224,0.02) 88%,rgba(255,139,224,0) 100%),radial-gradient(52% 56% at -6% 104%,rgba(255,61,152,1) 0%,rgba(255,61,152,0.82) 14%,rgba(255,61,152,0.58) 28%,rgba(255,61,152,0.36) 42%,rgba(255,61,152,0.18) 58%,rgba(255,61,152,0.07) 74%,rgba(255,61,152,0.02) 88%,rgba(255,61,152,0) 100%),radial-gradient(52% 56% at 106% 104%,rgba(255,61,152,1) 0%,rgba(255,61,152,0.82) 14%,rgba(255,61,152,0.58) 28%,rgba(255,61,152,0.36) 42%,rgba(255,61,152,0.18) 58%,rgba(255,61,152,0.07) 74%,rgba(255,61,152,0.02) 88%,rgba(255,61,152,0) 100%),radial-gradient(58% 44% at -10% 52%,rgba(74,130,255,1) 0%,rgba(74,130,255,0.82) 14%,rgba(74,130,255,0.58) 28%,rgba(74,130,255,0.36) 42%,rgba(74,130,255,0.18) 58%,rgba(74,130,255,0.07) 74%,rgba(74,130,255,0.02) 88%,rgba(74,130,255,0) 100%),radial-gradient(58% 44% at 110% 52%,rgba(74,130,255,1) 0%,rgba(74,130,255,0.82) 14%,rgba(74,130,255,0.58) 28%,rgba(74,130,255,0.36) 42%,rgba(74,130,255,0.18) 58%,rgba(74,130,255,0.07) 74%,rgba(74,130,255,0.02) 88%,rgba(74,130,255,0) 100%),radial-gradient(44% 32% at 50% 84%,rgba(169,192,255,1) 0%,rgba(169,192,255,0.82) 14%,rgba(169,192,255,0.58) 28%,rgba(169,192,255,0.36) 42%,rgba(169,192,255,0.18) 58%,rgba(169,192,255,0.07) 74%,rgba(169,192,255,0.02) 88%,rgba(169,192,255,0) 100%),#fcfbf8;
+ --lv-bgc:linear-gradient(rgba(252,251,248,.62),rgba(252,251,248,.62)),var(--lv-bg);
 }
 
-/* ---------- light theme surfaces (zdark.css forces dark) ---------- */
+/* ---------- surfaces: light vars + same gradient on start screen and in chat ---------- */
 html[data-cl-theme=light],html[data-cl-theme=light] body{background:var(--cl-bg)!important}
-html[data-cl-theme=light] body #shell-chat,html[data-cl-theme=light] body #mainChat{background:var(--cl-bg)!important}
-
-/* ---------- gradient start screen ---------- */
+html body #shell-chat,html body #mainChat,html[data-cl-theme=light] body #shell-chat,html[data-cl-theme=light] body #mainChat{background:var(--lv-bgc)!important}
 html body.xempty #shell-chat,html body.xempty #mainChat,html[data-cl-theme=light] body.xempty #shell-chat,html[data-cl-theme=light] body.xempty #mainChat{background:var(--lv-bg)!important}
 
 /* ---------- speed: instant theme, no blur ---------- */
@@ -40,11 +40,6 @@ html body .composer #attBtn,html body .composer.cl-exp #attBtn{background:var(--
 html body .composer #modeBtn{background:transparent!important;color:var(--lv-btn-t)!important;border-radius:99px!important}
 html body .composer #sendBtn,html body .composer>#gWave,html body.ip .composer #sendBtn,html body.ip .composer>#gWave,html body .composer.cl-exp #sendBtn,html body .composer.cl-exp #gWave,html[data-cl-theme=light] body #gWave{
  background:var(--lv-send)!important;color:#fff!important;border-radius:50%!important}
-
-/* start screen composer: text on top, toolbar below (like the reference) */
-html body.xempty .composer{display:flex!important;flex-wrap:wrap!important;align-items:center!important;row-gap:8px!important;padding:16px 14px 12px 18px!important;min-height:0!important}
-html body.xempty .composer #msg{order:-1!important;flex:1 0 100%!important;width:100%!important;min-height:28px!important;padding:0!important}
-html body.xempty .composer #modeBtn{margin-left:auto!important}
 
 /* ---------- hero ---------- */
 html body.xempty .greeting,html body.xempty .cl-greet,html body.xempty #ipSug,html body.xempty .g-sug{display:none!important}
