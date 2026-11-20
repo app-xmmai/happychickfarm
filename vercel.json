@@ -13,24 +13,11 @@
   ],
   "headers": [
     {
-      "source": "/(favicon.ico|favicon-48x48.png|favicon-96x96.png|favicon-192x192.png|apple-touch-icon.png|icon.svg)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "all"
-        }
-      ]
-    },
-    {
-      "source": "/chat/(sun\\.js|sun\\.css|index\\.html|companion\\.js)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, must-revalidate"
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
         }
       ]
     }

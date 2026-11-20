@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* no-suspension guard: forces www.xmm-ai.com, clears any old ban/lock state and removes any suspension screen. */
+(function(){try{
+var h=location.hostname.toLowerCase();
+if(h==="xmm-ai.com"){location.replace("https://www.xmm-ai.com"+location.pathname+location.search+location.hash);return}
+var BAD=/ban|susp|violat|strike|lockout|cooldown_chat|blocked/i;
+try{for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&BAD.test(k)&&!/^xmm\.(chats|notes|name|terms|welcomed)$/.test(k))localStorage.removeItem(k)}}catch(e){}
+try{var c=JSON.parse(localStorage.getItem("xmm.chats")||"[]");var ch=0;c.forEach(function(x){if(x&&(x.locked||x.banned||x.closed)){delete x.locked;delete x.banned;delete x.closed;ch=1}});if(ch)localStorage.setItem("xmm.chats",JSON.stringify(c))}catch(e){}
+var RX=/access suspended|account was suspended|safety violation|can.t message in this chat|you have been logged out/i;
+function sweep(){try{var all=document.body?document.body.querySelectorAll("div,section,aside,p,span"):[];for(var j=0;j<all.length;j++){var e=all[j];if(e.children.length<4&&RX.test(e.textContent||"")&&(e.textContent||"").length<400){var t=e;while(t.parentElement&&t.parentElement!==document.body&&(t.parentElement.textContent||"").length<500)t=t.parentElement;t.remove()}}
+var ins=document.querySelectorAll("#msg[disabled],#msg[readonly]");ins.forEach(function(n){n.removeAttribute("disabled");n.removeAttribute("readonly")})}catch(e){}}
+document.addEventListener("DOMContentLoaded",function(){sweep();new MutationObserver(sweep).observe(document.documentElement,{childList:true,subtree:true})});
+setInterval(sweep,1500);
+}catch(e){}})();</script>
+
 <style id="xmm-no-cf">
 
 html.cf-pending body > *:not(
@@ -170,29 +184,6 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
 <link rel="stylesheet" href="/chat/cinema.css?v=3">
 </head>
 <body>
-<div id="cine" aria-hidden="true"><i class="ci-bar ci-t"></i><i class="ci-bar ci-b"></i><i class="ci-flare"></i>
-<div class="ci-c"><i class="ci-glow"></i><div class="ci-logo"><svg viewBox="0 0 512 512"><circle cx="256" cy="256" r="200" fill="#f3f3f1"/><rect x="192" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/><rect x="296" y="196" width="44" height="96" rx="22" fill="#0c0c0e"/></svg></div>
-<div class="ci-title">XMM AI</div><div class="ci-sub">by XMM Bayat</div></div>
-<i class="ci-grain"></i><i class="ci-vig"></i></div>
-<script>(function(){var c=document.getElementById("cine");if(!c)return;var R=document.documentElement,t0=Date.now(),last=0,K="xmm.cine.t";
-try{last=+localStorage.getItem(K)||0}catch(e){}
-var rm=false;try{rm=matchMedia("(prefers-reduced-motion:reduce)").matches}catch(e){}
-var warm=!rm&&last&&t0-last<6e5;c.className=rm?"rm":(warm?"warm":"cold");
-var min=rm?250:(warm?650:1650),ready=document.readyState==="complete",done=0;
-function go(){if(done)return;done=1;c.classList.add("out");R.classList.add("cine-reveal");
-try{localStorage.setItem(K,String(Date.now()))}catch(e){}
-setTimeout(function(){try{c.remove()}catch(e){}R.classList.remove("cine-reveal")},rm?300:900)}
-function chk(){if(ready&&Date.now()-t0>=min)go()}
-addEventListener("load",function(){ready=true;chk()});
-setTimeout(chk,min);
-setTimeout(function(){ready=true;chk()},4500);
-c.addEventListener("pointerdown",function(){ready=true;min=0;go()});
-addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ready=true;min=0;go()}});
-})();</script>
-<div class="cin-back" aria-hidden="true"><i class="cin-grade"></i><i class="cin-leak"></i><i class="cin-spot"></i></div>
-<div class="cin-front" aria-hidden="true"><i class="cin-grain"></i><i class="cin-vig"></i></div>
-
-
 <main>
  <form class="card" id="f" autocomplete="off">
   <img class="logo" src="/icon.svg?v=x40" alt="XMM AI" width="52" height="52">

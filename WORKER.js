@@ -43,6 +43,8 @@ export default {
 
     const origin = request.headers.get("Origin") || "";
     const allowed = [
+      "https://xmm-ai.com",
+      "https://www.xmm-ai.com",
       "https://xmmai.vercel.app",
       "https://xmm-ai.pages.dev",
       "https://xmmai.freedev.app",
