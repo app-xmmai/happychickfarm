@@ -33,6 +33,8 @@ window.XMM_CONFIG = {
   ],
   // Video maker (the Video tab above the chat input): keyless Hugging Face Space, max VIDEO_MAX_SEC seconds, 1 video per VIDEO_COOLDOWN_MS on this device.
   // "data" is the Space's input list; {prompt} {frames} {w} {h} {seed} are filled in. Edit it if the Space changes.
+  // Agnes video Worker (Cloudflare). Tried first for every video; if it fails, the free servers below take over.
+  VIDEO_WORKER: "https://xmmai-video.xbm-bayat.workers.dev",
   VIDEO_COOLDOWN_MS: 300000,
   // Optional free keys that raise the daily limit (the main cause of Error 429). Leave "" to use the anonymous tier.
   VIDEO_HF_TOKEN: "",      // free token from huggingface.co/settings/tokens

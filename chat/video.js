@@ -4,7 +4,7 @@ var $=function(s){return document.querySelector(s)};
 function C(){return(window.XMM_API&&window.XMM_API.CFG)||{}}
 var DEF=[{name:"LTX Video",type:"gradio",base:"https://lightricks-ltx-video-distilled.hf.space",fn:"generate",fps:24,maxFrames:121,maxSec:5,w:704,h:512,
  data:["{prompt}","worst quality, inconsistent motion, blurry, jittery, distorted",null,null,"{h}","{w}",8,"{frames}","{seed}",true,1,true]}];
-function PV(){return C().VIDEO_AI&&C().VIDEO_AI.length?C().VIDEO_AI:DEF}
+function PV(){var L=C().VIDEO_AI&&C().VIDEO_AI.length?C().VIDEO_AI:DEF;return C().VIDEO_WORKER?[{name:"Agnes",type:"worker",maxSec:7}].concat(L):L}
 function CD(){return C().VIDEO_COOLDOWN_MS||300000}
 function MAXS(){return Math.min(7,Math.max.apply(null,PV().map(function(p){return p.maxSec||5})))}
 var LK="xmm.vidlast",RK="xmm.vidres",mode="chat",sec=5,res={},JOBS={};
@@ -74,8 +74,14 @@ async function disc(){if(DISC)return DISC;var out=[],urls=["https://huggingface.
   L.forEach(function(x){var id=x.id||"",st=x.runtime&&x.runtime.stage;if(!/\/.+/.test(id)||/avatar|foley|lip|upscal|edit|interpol|i2v|image-to|img2|v2v|audio|talk|face|swap|caption|detect/i.test(id)||!/ltx|wan|cogvideo|hunyuan|video|animate|mochi|svd/i.test(id))return;
    if(st&&st!=="RUNNING")return;out.push({name:id,type:"gradio",base:"https://"+id.toLowerCase().replace(/[._\/]/g,function(c){return c==="/"?"-":"-"})+".hf.space",fn:"",fps:24,maxFrames:97,maxSec:5,w:640,h:480})})}catch(e){}}
  return DISC=out.slice(0,8)}
+async function viaWorker(p,prompt,s,st){var base=String(C().VIDEO_WORKER).replace(/\/+$/,"");st("Starting…");
+ var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});if(!r.ok)throw new Error("HTTP "+r.status);
+ var j=await r.json();if(!j.id)throw new Error("HTTP 502");var t0=Date.now();
+ for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
+  st("Making the video…");var q=await fetch(base+"/video?id="+encodeURIComponent(j.id));if(!q.ok)throw new Error("HTTP "+q.status);var d=await q.json();
+  if(d.status==="done"&&d.url)return d.url;if(d.status==="failed")throw new Error("HTTP "+(d.code||502))}}
 async function gen(prompt,s,st){var P=PV(),err,trace=[];
- async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e));return null}}
+ async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="worker"?await viaWorker(p,prompt,sx,st):p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e));return null}}
  for(var i=0;i<P.length;i++){var u=await tryp(P[i]);if(u)return u}
  st("Looking for a free server…");var D=await disc();for(var j=0;j<D.length;j++){var u2=await tryp(D[j]);if(u2)return u2}
  var ee=err||new Error("No video server");ee.trace=trace.join(" · ");throw ee}
