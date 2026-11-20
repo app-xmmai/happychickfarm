@@ -75,13 +75,15 @@ async function disc(){if(DISC)return DISC;var out=[],urls=["https://huggingface.
    if(st&&st!=="RUNNING")return;out.push({name:id,type:"gradio",base:"https://"+id.toLowerCase().replace(/[._\/]/g,function(c){return c==="/"?"-":"-"})+".hf.space",fn:"",fps:24,maxFrames:97,maxSec:5,w:640,h:480})})}catch(e){}}
  return DISC=out.slice(0,8)}
 async function viaWorker(p,prompt,s,st){var base=String(C().VIDEO_WORKER).replace(/\/+$/,"");st("Starting…");
- var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});if(!r.ok)throw new Error("HTTP "+r.status);
- var j=await r.json();if(!j.id)throw new Error("HTTP 502");var t0=Date.now();
+ var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});
+ if(!r.ok){var eb=null;try{eb=await r.json()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=eb&&(eb.source?eb.source+": ":"")+(eb&&eb.error||"");throw er}
+ var j=await r.json();if(!j.id){var e2=new Error("HTTP 502");e2.detail="no video id";throw e2}var t0=Date.now(),bad=0;
  for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
-  st("Making the video…");var q=await fetch(base+"/video?id="+encodeURIComponent(j.id));if(!q.ok)throw new Error("HTTP "+q.status);var d=await q.json();
-  if(d.status==="done"&&d.url)return d.url;if(d.status==="failed")throw new Error("HTTP "+(d.code||502))}}
+  st("Making the video…");var d=null;try{var q=await fetch(base+"/video?id="+encodeURIComponent(j.id));if(q.ok)d=await q.json();else{bad++;if(bad>8){var e3=new Error("HTTP "+q.status);e3.detail="status check failed";throw e3}}}catch(x){if(x&&x.detail)throw x;bad++;if(bad>8)throw x}
+  if(!d)continue;bad=0;
+  if(d.status==="done"&&d.url)return d.url;if(d.status==="failed"){var e4=new Error("HTTP "+(d.code||502));e4.detail=d.error||"failed";throw e4}}}
 async function gen(prompt,s,st){var P=PV(),err,trace=[];
- async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="worker"?await viaWorker(p,prompt,sx,st):p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e));return null}}
+ async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="worker"?await viaWorker(p,prompt,sx,st):p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e)+(e&&e.detail?" ("+String(e.detail).slice(0,70)+")":""));return null}}
  for(var i=0;i<P.length;i++){var u=await tryp(P[i]);if(u)return u}
  st("Looking for a free server…");var D=await disc();for(var j=0;j<D.length;j++){var u2=await tryp(D[j]);if(u2)return u2}
  var ee=err||new Error("No video server");ee.trace=trace.join(" · ");throw ee}

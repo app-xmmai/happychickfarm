@@ -13,8 +13,8 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://127.0.0.1:5500"
 ];
-const CREATE_LIMIT = { max: 4, windowMs: 10 * 60 * 1000 };   // 4 new videos / 10 min / IP
-const STATUS_LIMIT = { max: 200, windowMs: 10 * 60 * 1000 }; // 200 status checks / 10 min / IP
+const CREATE_LIMIT = { max: 12, windowMs: 10 * 60 * 1000 };  // 12 new videos / 10 min / IP
+const STATUS_LIMIT = { max: 600, windowMs: 10 * 60 * 1000 }; // 600 status checks / 10 min / IP
 
 const hits = new Map(); // free, in-memory, per Worker instance (best effort)
 function limited(ip, kind, lim) {
@@ -82,7 +82,7 @@ function errText(r) {
 export default {
   async fetch(req, env) {
     const origin = req.headers.get("Origin") || "";
-    const okOrigin = ALLOWED_ORIGINS.includes(origin);
+    const okOrigin = ALLOWED_ORIGINS.includes(origin) || /^https:\/\/([\w-]+\.)*(vercel\.app|pages\.dev|workers\.dev|xmm-ai\.com)$/.test(origin);
     const url = new URL(req.url);
 
     if (req.method === "OPTIONS") {
@@ -102,7 +102,7 @@ export default {
       /* ---- create a video job ---- */
       if (req.method === "POST") {
         const wait = limited(ip, "create", CREATE_LIMIT);
-        if (wait) return send({ error: "Too many videos. Try again later.", code: 429, retryAfter: wait }, 429, o, { "Retry-After": String(wait) });
+        if (wait) return send({ error: "Too many videos from your connection. Try again later.", code: 429, source: "worker", retryAfter: wait }, 429, o, { "Retry-After": String(wait) });
 
         let b = {}; try { b = await req.json(); } catch (e) {}
         const prompt = String(b.prompt || "").trim().slice(0, 500);
@@ -110,14 +110,17 @@ export default {
         const sec = Math.min(12, Math.max(4, Math.round(+b.seconds || 5)));
         const ratio = ["16:9", "21:9", "4:3", "1:1", "3:4", "9:16"].includes(b.aspect) ? b.aspect : "16:9";
 
-        const r = await agnes(env, "/v1/videos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model: MODEL, prompt, seconds: String(sec), size: "720P", aspect_ratio: ratio })
-        });
+        const body = JSON.stringify({ model: MODEL, prompt, seconds: String(sec), size: "720P", aspect_ratio: ratio });
+        let r = null;
+        for (let i = 0; i < 3; i++) {
+          r = await agnes(env, "/v1/videos", { method: "POST", headers: { "Content-Type": "application/json" }, body });
+          if (r.ok || (r.status !== 429 && r.status < 500)) break;
+          await new Promise(res => setTimeout(res, 1500 * (i + 1))); // Agnes is busy: wait and try again
+        }
         if (!r.ok) {
           const code = r.status === 429 ? 429 : r.status === 401 || r.status === 403 ? 502 : r.status >= 500 ? 502 : 400;
-          return send({ error: errText(r) || "Agnes error", code, upstream: r.status }, code, o);
+          const why = r.status === 429 ? "Agnes rate limit / quota reached" : r.status === 401 || r.status === 403 ? "Agnes key rejected" : "Agnes error";
+          return send({ error: why + (errText(r) ? ": " + errText(r) : ""), code, source: "agnes", upstream: r.status }, code, o);
         }
         const id = pickId(r.json);
         if (!id) return send({ error: "Agnes returned no video id", code: 502 }, 502, o);
