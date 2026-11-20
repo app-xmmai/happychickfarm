@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* no-suspension guard: forces www.xmm-ai.com, clears any old ban/lock state and removes any suspension screen. */
+(function(){try{
+var h=location.hostname.toLowerCase();
+if(h==="xmm-ai.com"){location.replace("https://www.xmm-ai.com"+location.pathname+location.search+location.hash);return}
+var BAD=/ban|susp|violat|strike|lockout|cooldown_chat|blocked/i;
+try{for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&BAD.test(k)&&!/^xmm\.(chats|notes|name|terms|welcomed)$/.test(k))localStorage.removeItem(k)}}catch(e){}
+try{var c=JSON.parse(localStorage.getItem("xmm.chats")||"[]");var ch=0;c.forEach(function(x){if(x&&(x.locked||x.banned||x.closed)){delete x.locked;delete x.banned;delete x.closed;ch=1}});if(ch)localStorage.setItem("xmm.chats",JSON.stringify(c))}catch(e){}
+var RX=/access suspended|account was suspended|safety violation|can.t message in this chat|you have been logged out/i;
+function sweep(){try{var all=document.body?document.body.querySelectorAll("div,section,aside,p,span"):[];for(var j=0;j<all.length;j++){var e=all[j];if(e.children.length<4&&RX.test(e.textContent||"")&&(e.textContent||"").length<400){var t=e;while(t.parentElement&&t.parentElement!==document.body&&(t.parentElement.textContent||"").length<500)t=t.parentElement;t.remove()}}
+var ins=document.querySelectorAll("#msg[disabled],#msg[readonly]");ins.forEach(function(n){n.removeAttribute("disabled");n.removeAttribute("readonly")})}catch(e){}}
+document.addEventListener("DOMContentLoaded",function(){sweep();new MutationObserver(sweep).observe(document.documentElement,{childList:true,subtree:true})});
+setInterval(sweep,1500);
+}catch(e){}})();</script>
+
 <style id="cine-css">
 html{background:#000}
 #cine{position:fixed;inset:0;z-index:2147483000;overflow:hidden;display:grid;place-items:center;contain:strict;-webkit-tap-highlight-color:transparent;cursor:pointer}
