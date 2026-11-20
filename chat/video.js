@@ -1,8 +1,7 @@
-/* Create bar above the chat input: Chat | Image | Video. Video = Agnes (agnes-video-2.5-flash) through the Cloudflare Worker, 1 per minute. */
+/* Create bar above the chat input: Chat | Image | Video. Video = Agnes (agnes-video-2.5-flash) straight from the browser, 1 per minute. */
 (function(){
 var $=function(s){return document.querySelector(s)};
 function C(){return(window.XMM_API&&window.XMM_API.CFG)||{}}
-function WK(){return String(C().VIDEO_WORKER||"https://xmmai-video.xbm-bayat.workers.dev").replace(/\/+$/,"")}
 function PV(){return[{name:"Agnes",type:"worker",maxSec:7}]}
 function CD(){return C().VIDEO_COOLDOWN_MS||60000}
 function MAXS(){return Math.min(7,Math.max.apply(null,PV().map(function(p){return p.maxSec||5})))}
@@ -35,23 +34,36 @@ var JK="xmm.vidjobs";
 function jobs(){try{return JSON.parse(localStorage.getItem(JK)||"{}")}catch(e){return{}}}
 function setJob(id,v){var o=jobs(),n=Date.now();if(v)o[id]=v;else delete o[id];for(var k in o)if(n-(o[k].t||0)>864e5)delete o[k];try{localStorage.setItem(JK,JSON.stringify(o))}catch(e){}}
 function hint(d){d=String(d||"");return /1015/.test(d)?"Agnes is rate-limiting this server (1015). Wait a few minutes, then try again.":d}
-/* ONE request to Agnes per video. A reload resumes the same job (or shows the same error) instead of sending a new request. */
-async function viaWorker(p,prompt,s,st,bid){var base=WK();var jb=bid?jobs()[bid]:null;
+/* ONE request to Agnes per video, straight from the browser (no Cloudflare). A reload resumes the same job (or shows the same error). */
+var AG="https://apihub.agnes-ai.com",AM="agnes-video-2.5-flash";
+function agKey(){return String(C().AGNES_KEY||"").trim()}
+function agId(j){if(!j)return null;var d=j.data&&typeof j.data==="object"?j.data:{};return j.video_id||j.id||j.task_id||d.video_id||d.id||d.task_id||null}
+function agUrl(o,n){n=n||0;if(!o||n>5)return null;if(typeof o==="string")return /^https?:\/\//i.test(o)&&/(\.mp4|\.webm|\.mov|\/video)/i.test(o)?o:null;
+ if(Array.isArray(o)){for(var i=0;i<o.length;i++){var u=agUrl(o[i],n+1);if(u)return u}return null}
+ if(typeof o==="object"){var ks=["video_url","url","output","video","result","data","content"];for(var k=0;k<ks.length;k++)if(o[ks[k]]!=null){var u2=agUrl(o[ks[k]],n+1);if(u2)return u2}for(var key in o){var u3=agUrl(o[key],n+1);if(u3)return u3}}return null}
+function agErr(t){var j=null;try{j=JSON.parse(t)}catch(e){}j=j||{};var m=(j.error&&(j.error.message||j.error))||j.message||j.detail||t||"";return String(m).slice(0,200)}
+async function viaWorker(p,prompt,s,st,bid){var key=agKey();if(!key){var en=new Error("HTTP 500");en.detail="No Agnes key set (AGNES_KEY in config.js)";throw en}
+ var jb=bid?jobs()[bid]:null;
  if(jb&&jb.fail){var ef=new Error("HTTP "+(jb.code||429));ef.detail=jb.fail;throw ef}
+ var H={Authorization:"Bearer "+key};
  try{var wid=jb&&jb.wid;
   if(!wid){st("Starting…");
-   var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});
-   if(!r.ok){var eb=null;try{eb=await r.json()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=hint(eb&&eb.error||"");throw er}
-   var j=await r.json();if(!j.id){var e2=new Error("HTTP 502");e2.detail="no video id";throw e2}
-   wid=j.id;if(bid)setJob(bid,{wid:wid,t:Date.now()})}
+   var r=await fetch(AG+"/v1/videos",{method:"POST",headers:{Authorization:H.Authorization,"Content-Type":"application/json"},body:JSON.stringify({model:AM,prompt:String(prompt).slice(0,500),seconds:String(Math.min(12,Math.max(4,Math.round(+s||5)))),size:"720P",aspect_ratio:"16:9"})});
+   if(!r.ok){var tx="";try{tx=await r.text()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=hint(r.status===429||/1015/.test(tx)?"Agnes rate limit / quota reached "+agErr(tx):agErr(tx)||"Agnes error");throw er}
+   var j=await r.json();wid=agId(j);if(!wid){var e2=new Error("HTTP 502");e2.detail="Agnes returned no video id";throw e2}
+   wid=String(wid);if(bid)setJob(bid,{wid:wid,t:Date.now()})}
   var t0=Date.now(),bad=0;
   for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
    st("Making the video…");var d=null;
-   try{var q=await fetch(base+"/video?id="+encodeURIComponent(wid));if(q.ok)d=await q.json();else{bad++;if(bad>8){var e3=new Error("HTTP "+q.status);e3.detail="status check failed";throw e3}}}catch(x){if(x&&x.detail)throw x;bad++;if(bad>8)throw x}
+   try{var q=await fetch(AG+"/agnesapi?video_id="+encodeURIComponent(wid)+"&model_name="+AM,{headers:H});
+    if(q.status===404){var e5=new Error("HTTP 404");e5.detail="Video not found";throw e5}
+    if(q.ok)d=await q.json();else{bad++;if(bad>8){var e3=new Error("HTTP "+q.status);e3.detail="status check failed";throw e3}}}catch(x){if(x&&x.detail)throw x;bad++;if(bad>8)throw x}
    if(!d)continue;bad=0;
-   if(d.status==="done"&&d.url){if(bid)setJob(bid,null);return d.url}
-   if(d.status==="failed"){var e4=new Error("HTTP "+(d.code||502));e4.detail=hint(d.error||"failed");throw e4}}
- }catch(e){if(bid)setJob(bid,{fail:e.detail||String(e.message||e),code:+(String(e.message).match(/\d{3}/)||[0])[0]||502,t:Date.now()});throw e}}
+   var dd=d.data&&typeof d.data==="object"?d.data:{},stt=String(d.status||dd.status||d.state||dd.state||"").toLowerCase(),u=agUrl(d);
+   if(/fail|error|cancel|reject|timeout|expired/.test(stt)){var e4=new Error("HTTP 502");e4.detail=hint(String((d.error&&(d.error.message||d.error))||d.message||dd.error||dd.message||"Generation failed").slice(0,200));throw e4}
+   if(u&&(!stt||/done|complete|succe|finish|ready|success/.test(stt))){if(bid)setJob(bid,null);return u}}
+ }catch(e){if(bid&&!(e&&e.name==="TypeError"))setJob(bid,{fail:e.detail||String(e.message||e),code:+(String(e.message).match(/\d{3}/)||[0])[0]||502,t:Date.now()});
+  if(e&&e.name==="TypeError"&&!e.detail)e.detail="Browser could not reach Agnes (network or CORS blocked)";throw e}}
 /* Agnes only (agnes-video-2.5-flash): no other servers. */
 async function gen(prompt,s,st,bid){
  try{st("Starting Agnes…");return await viaWorker(null,prompt,Math.min(s,7),st,bid)}
