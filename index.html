@@ -54,7 +54,7 @@
 <title>XMM AI – Your smart assistant</title>
 <link rel="canonical" href="https://xmmai.vercel.app/">
 <meta name="description" content="XMM AI: your smart assistant. Chat, analyze images, create images and write with one fast AI, instantly.">
-<meta name="theme-color" content="#202020">
+<meta name="theme-color" content="#070708">
 <meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -177,6 +177,53 @@ header .btn{height:36px;border-radius:99px;padding:0 18px}
 .hero2 .row{display:flex;gap:12px;flex-wrap:wrap}
 .hero2 .pic2{display:grid;place-items:center}.hero2 .pic2 img{width:min(100%,340px);aspect-ratio:1;border-radius:22%;display:block}
 @media(max-width:760px){.hero2{grid-template-columns:1fr;gap:28px;padding:40px 0 30px;text-align:left}.hero2 .pic2 img{width:min(70%,260px)}}
+
+/* ---- v2: dark product look ---- */
+:root{--bg:#070708;--ln:#1f1f24;--card:#0e0e11;--mu:#8e8e97}
+html,body{background:#070708}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+header{background:rgba(7,7,8,.72)!important;position:sticky!important;top:0;z-index:30;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid #141418!important}
+header .w{height:68px!important;max-width:1180px}
+.brand{font-weight:600;letter-spacing:0;font-size:17px}
+.brand img{border-radius:8px}
+.nv{margin:0 auto 0 26px!important;gap:2px!important}
+.lk{background:transparent!important;color:#9a9aa3!important;padding:8px 14px;border-radius:8px;font-size:14px}
+.lk:hover{color:#fff!important;background:transparent!important}
+select{background:transparent!important;border:1px solid #26262c!important;border-radius:99px!important;color:#c9c9d0}
+header .btn{background:#f6f6f8!important;color:#0a0a0b!important;border:0!important;height:38px!important;border-radius:99px!important;padding:0 20px!important;font-weight:550}
+.zh{position:relative;text-align:center;padding:56px 20px 80px;overflow:hidden}
+.zh:before{content:"";position:absolute;left:50%;top:-140px;width:980px;max-width:140vw;height:720px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(47,123,255,.17),rgba(47,123,255,0) 72%);pointer-events:none}
+.zh-art{position:relative;width:min(320px,72vw);height:210px;margin:0 auto 14px}
+.zh h1{position:relative;font:400 clamp(40px,6.4vw,72px)/1.12 Inter,-apple-system,"Segoe UI",system-ui,sans-serif;letter-spacing:-.022em}
+.zh h1 span{display:block;color:#fff}.zh h1 .b{color:#1b84ff}
+.zs{position:relative;max-width:33em;margin:22px auto 32px;color:#74747d;font-size:clamp(15px,1.6vw,18px);line-height:1.6}
+.zb{position:relative;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.zbtn{display:inline-flex;align-items:center;justify-content:center;height:50px;padding:0 30px;border-radius:99px;font:500 16px Inter,-apple-system,"Segoe UI",system-ui,sans-serif;text-decoration:none;background:#f6f6f8;color:#0a0a0b;border:1px solid #f6f6f8;transition:transform .18s ease,opacity .18s}
+.zbtn:hover{transform:translateY(-1px);opacity:.94}
+.zbtn.o{background:transparent;color:#f6f6f8;border-color:#3a3a42}.zbtn.o:hover{border-color:#6a6a74}
+.zst{position:relative;display:flex;gap:10px 26px;justify-content:center;flex-wrap:wrap;margin-top:44px;color:#5f5f68;font-size:13px}
+.zst span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#1b84ff;margin-right:9px;vertical-align:1px;opacity:.8}
+.one{padding:30px 0 40px}
+.one h2{font-weight:400!important;font-size:clamp(30px,4vw,44px)!important;color:#f2f2f5!important;letter-spacing:-.015em}
+.one h2 i{font-style:normal;color:#1b84ff}
+.tab{color:#8e8e97!important;height:38px;font-size:14px}.tab[aria-selected=true]{background:#1a1a1f!important;color:#fff!important}
+.cd{background:#0d0d10!important;border:1px solid #1f1f24!important;border-radius:24px!important;transition:border-color .2s,transform .2s}
+.cd:hover{border-color:#34343c!important;transform:translateY(-2px)}
+.mock{background:radial-gradient(120% 120% at 50% 0%,#15151a,#0a0a0c)!important;border:1px solid #17171b;border-radius:18px!important}
+.cd h3{font-weight:500!important;color:#f0f0f3!important}
+.go i{border-color:#2a2a30!important;background:#131317}.go:hover i{background:#1d1d23!important}
+form.ask{background:#0a0a0c!important;border-color:#2a2a30!important}
+.ask .wv{background:#1b84ff!important}.ask .wv svg{stroke:#fff}
+.chip{background:#17171b!important;border:1px solid #222228;color:#d4d4da}
+.sr .c{background:#1b1b20!important}
+.pic{background:#0d0d10!important;border:1px solid #1f1f24}
+.dlb h3,.dlh,.dk h2{font-weight:400!important;color:#f2f2f5!important}
+.row .btn{background:#f6f6f8;color:#0a0a0b;border:0;border-radius:99px!important;padding:0 20px}
+.row .btn.o{background:transparent;color:#f6f6f8;border:1px solid #3a3a42}
+details{border-color:#1b1b20!important}
+.ex{border:1px solid #2e2e35!important;border-radius:99px!important}
+footer{border-color:#141418!important}
+@media(max-width:560px){.zh{padding-top:30px}.zh-art{height:170px}.zst{margin-top:32px}}
 </style>
 </head>
 <body>
@@ -184,7 +231,16 @@ header .btn{height:36px;border-radius:99px;padding:0 18px}
 <select id="lang" aria-label="Language"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select>
 <a class="btn js-open" href="/chat/?lens=clone" data-t="signin">Sign in</a></div></header>
 <main>
-<div class="w"><div class="hero2"><div><h1>XMM AI</h1><p class="sub">Fast, free, local and private.</p><div class="row"><a class="btn big js-open" href="/chat/?lens=clone" data-t="signin">Sign in</a><a class="btn big o" href="#one" data-t="see">See features</a></div></div><div class="pic2"><img src="/icon.svg?v=x40" alt="XMM AI" width="340" height="340"></div></div></div>
+<section class="zh"><div class="zh-art" aria-hidden="true"><svg viewBox="0 0 320 210" width="100%" height="100%"><defs>
+<linearGradient id="za" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ab4ff"/><stop offset=".45" stop-color="#b48cff"/><stop offset=".75" stop-color="#ff9a6b"/><stop offset="1" stop-color="#46e3c8"/></linearGradient>
+<linearGradient id="zb" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46e3c8"/><stop offset=".5" stop-color="#7ab4ff"/><stop offset="1" stop-color="#f2f2f5"/></linearGradient>
+<filter id="zf" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6"/></filter><filter id="zg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="20"/></filter></defs>
+<g opacity=".55" filter="url(#zg)"><path d="M62 28H132L262 182H192Z" fill="url(#za)"/><path d="M258 28H188L58 182H128Z" fill="url(#zb)"/></g>
+<g filter="url(#zf)"><path d="M62 28H132L262 182H192Z" fill="url(#za)"/><path d="M258 28H188L58 182H128Z" fill="url(#zb)" opacity=".92"/></g></svg></div>
+<h1><span class="b" data-t="hz1">Your smart assistant</span><span data-t="hz2">One simple app</span></h1>
+<p class="zs" data-t="hzs">Chat, analyze images, create visuals and write code with one fast AI. Your chats stay on this device.</p>
+<div class="zb"><a class="zbtn o" href="#one" data-t="see">See features</a><a class="zbtn js-open" href="/chat/?lens=clone" data-t="hzc">Start chatting</a></div>
+<div class="zst"><span>Private by design</span><span>Works offline-first</span><span>Free to use</span></div></section>
 
 <section class="one" id="one"><div class="w"><h2 data-t="one">One XMM AI for <i>every part</i> of your day</h2>
 <div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-tab="work" data-t="work">Work</button><button class="tab" role="tab" aria-selected="false" data-tab="life" data-t="life">Life</button><button class="tab" role="tab" aria-selected="false" data-tab="school" data-t="school">School</button></div>
@@ -234,6 +290,7 @@ Object.assign(T.de,{h1:"Melde dich bei <i>XMM AI</i> an",sub:"Chatte, finde Antw
 Object.assign(T.es,{h1:"Inicia sesión en <i>XMM AI</i>",sub:"Chatea para encontrar respuestas, crear contenido y completar tareas con IA. Tus chats se quedan en este dispositivo.",ph:"Pregunta a XMM AI"});
 Object.assign(T.ar,{h1:"سجّل الدخول إلى <i>XMM AI</i>",sub:"دردش للعثور على إجابات وإنشاء محتوى وإنجاز المهام بالذكاء الاصطناعي. تبقى محادثاتك على هذا الجهاز.",ph:"اسأل XMM AI"});
 Object.assign(T.fa,{h1:"وارد <i>XMM AI</i> شوید",sub:"گفتگو کنید تا پاسخ بگیرید، محتوا بسازید و کارها را با هوش مصنوعی انجام دهید. گفتگوهای شما روی همین دستگاه می‌مانند.",ph:"از XMM AI بپرسید"});
+Object.assign(T.en,{hz1:'Your smart assistant',hz2:'One simple app',hzs:'Chat, analyze images, create visuals and write code with one fast AI. Your chats stay on this device.',hzc:'Start chatting',one:'Choose what <i>you want</i> to do'});
 var TABS={
 en:{work:["Think through projects, summarize information, and keep work moving forward in one conversation.","Upload a screenshot or chart and ask for the key points, fast.","Draft content, generate images, and turn ideas into polished work faster."],
 life:["Plan trips, get recipe ideas, and talk things through any time of day.","Upload a photo and ask what it is, how it works, or what to do next.","Make images, write messages, and translate between languages."],

@@ -61,8 +61,8 @@ const cur=()=>S.chats.find(c=>c.id===S.cur);
 const hasMsgs=()=>{const c=cur();return !!(c&&c.msgs.length)};
 
 /* ---------- navigation ---------- */
-const NAV=[["newchat","New chat","plus","dot"],["imagine","Imagine","image"],["search","Search","search"],["notebooks","Notebooks","folder"]];
-const BN=[["chat","Chat","chat"],["search","Search","search"],["imagine","Imagine","image"]];
+const NAV=[["newchat","New chat","plus","dot"],["search","Search","search"],["notebooks","Notebooks","folder"]];
+const BN=[["chat","Chat","chat"],["search","Search","search"]]; 
 function buildNav(id,items,onclick){const n=$(id);n.innerHTML=items.map(([k,l,i,c])=>`<button class="nav-i" data-k="${k}">${c==="dot"?`<span class="dot">${ic(i)}</span>`:ic(i)}<span>${l}</span></button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function buildBn(id,items,onclick){const n=$(id);n.innerHTML=`<span class="bn-pill"></span>`+items.map(([k,l,i])=>`<button class="bn" data-k="${k}" aria-label="${l}">${ic(i)}</button>`).join("");n.onclick=e=>{const b=e.target.closest("[data-k]");if(b)onclick(b.dataset.k)}}
 function syncNav(){const v=S.view;const k=v==="chat"?(hasMsgs()?"":"newchat"):v;$$("#chatNav [data-k]").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
@@ -70,7 +70,7 @@ function syncNav(){const v=S.view;const k=v==="chat"?(hasMsgs()?"":"newchat"):v;
 function movePill(){const p=$("#chatBnav .bn-pill"),b=$("#chatBnav .bn.on");if(!p||!b||!b.offsetWidth)return;p.style.width=b.offsetWidth+"px";p.style.transform=`translateX(${b.offsetLeft}px)`;p.classList.add("rdy")}
 addEventListener("resize",movePill);
 const ORDER=["chat","search","notebooks"];let lastV="chat";
-function navClick(k){if(k==="imagine"||k==="image"){chatView("chat");try{window.XMM_IMAGINE&&XMM_IMAGINE()}catch(e){}return}if(k==="image"){const x=$('#chatNav [data-act="image"]');x&&x.click();return}if(k==="newchat"){newChat();return}chatView(k)}
+function navClick(k){if(k==="image"){const x=$('#chatNav [data-act="image"]');x&&x.click();return}if(k==="newchat"){newChat();return}chatView(k)}
 function chatView(v){const dir=ORDER.indexOf(v)>=ORDER.indexOf(lastV)?"r":"l";const changed=v!==lastV;lastV=v;S.view=v;$("#viewChat").hidden=v!=="chat";$("#viewSearch").hidden=v!=="search";$("#viewNotebooks").hidden=v!=="notebooks";
  if(v==="search"){doSearch();if(innerWidth>860)$("#searchIn").focus()}if(v==="notebooks")renderNotes();syncNav();closeDrawer();
  if(changed&&innerWidth<=860){const el=$({chat:"#viewChat",search:"#viewSearch",notebooks:"#viewNotebooks"}[v]);el.classList.remove("slide-r","slide-l");void el.offsetWidth;el.classList.add("slide-"+dir)}}
@@ -596,7 +596,6 @@ function send(textOverride){
  {const c1=cur();if(c1&&c1.locked)return}
  if(S.att.some(x=>x.p!=null&&x.p<100))return;
  const input=$("#msg");const text=(typeof textOverride==="string"?textOverride:input.value).trim();if(!text&&!S.att.length)return;
- if(window.XMM_GENMODE==="video"&&text&&window.XMM_VIDEO){if(XMM_VIDEO.start(text)){input.value="";autosize(input);updateSend()}return}
  try{const v=window.XMM_GUARD&&XMM_GUARD.check(text);if(v){if(v==="ban"){input.value="";XMM_GUARD.ban();return}let c0=cur();if(!c0){c0={id:uid(),title:"New chat",msgs:[],locked:true};S.chats.unshift(c0);S.cur=c0.id}c0.locked=true;S.att=[];renderAtts();input.value="";autosize(input);saveChats();renderMsgs();renderList();return}}catch(_){}
  try{if(window.XMM_SUN&&XMM_SUN.intercept(text)){input.value="";autosize(input);updateSend();return}}catch(_){}
  // Instant core-memory: name, remember that…, age, location, preferences

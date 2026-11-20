@@ -31,10 +31,6 @@ window.XMM_CONFIG = {
     { name: "FLUX Space", type: "gradio", base: "https://black-forest-labs-flux-1-schnell.hf.space", fn: "infer" },
     { name: "ZSky",       type: "post",   url: "https://api.zsky.ai/v1/generate" }
   ],
-  // Video maker (Video tab): ONLY Agnes (model agnes-video-2.5-flash), called straight from the browser. No Cloudflare, no other servers.
-  // WARNING: this key is public to anyone who opens the site (View Source). Anyone can copy it and use your Agnes credits.
-  AGNES_KEY: "sk-xSKhpn0J0ynYW9zV3SbAk18Bl6YLqh5LmB8sBoICBxpcGw50",
-  VIDEO_COOLDOWN_MS: 60000,   // 1 video per minute per device
   FREE_AI: [
     { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25, tpm: 100000 },
     { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1, tpm: 8000 },

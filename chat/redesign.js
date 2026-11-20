@@ -16,7 +16,7 @@ function init(){
  var wm=document.createElement("div");wm.className="xwm serif";wm.textContent="XMM AI";
  var nav=document.createElement("div");nav.className="xnav";
  [["chats","Chats",function(){click('#chatNav [data-k="newchat"]')}],
-  ["img","Imagine",function(){try{window.XMM_IMAGINE&&XMM_IMAGINE()}catch(e){}}],["code","Code",function(){click("#sideCode")}]].forEach(function(n){
+  ["code","Code",function(){click("#sideCode")}]].forEach(function(n){
   var b=document.createElement("button");b.type="button";b.innerHTML=P(IC[n[0]])+'<span>'+n[1]+'</span>';
   b.onclick=function(e){e.stopPropagation();n[2]();if(mob())setSide(false)};nav.appendChild(b)});
  side.insertBefore(nav,side.firstChild);side.insertBefore(wm,side.firstChild);
