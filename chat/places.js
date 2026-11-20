@@ -8,7 +8,7 @@ function getPos(){if(POS)return Promise.resolve(POS);if(POSP)return POSP;
  POSP=new Promise(function(res){if(!navigator.geolocation)return res(null);var done=0,f=function(p){if(done)return;done=1;res(p)};setTimeout(function(){f(null)},1800);
   try{navigator.geolocation.getCurrentPosition(function(p){POS=[p.coords.latitude,p.coords.longitude];f(POS)},function(){f(null)},{maximumAge:600000,timeout:1700})}catch(e){f(null)}});return POSP}
 function hav(a,b){var r=Math.PI/180,dl=(b[0]-a[0])*r,dg=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dg/2)*Math.sin(dg/2);return 12742*Math.asin(Math.sqrt(x))}
-function url(q,n,pos,box,bnd){var u="https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&extratags=1&limit="+n+"&q="+encodeURIComponent(q);
+function url(q,n,pos,box,bnd){var u="https://nominatim.openstreetmap.org/search?format=jsonv2&accept-language=en&addressdetails=1&extratags=1&limit="+n+"&q="+encodeURIComponent(q);
  if(box)u+="&viewbox="+box.join(",")+"&bounded=1";else if(pos){var d=bnd?.18:.6;u+="&viewbox="+[pos[1]-d,pos[0]+d,pos[1]+d,pos[0]-d].join(",")+"&bounded="+(bnd?1:0)}return u}
 function fetchJ(u){return fetch(u).then(function(r){return r.json()}).catch(function(){return[]})}
 function search(q,pos,bnd){var key=q+"|"+(bnd?"b":"")+"|"+(pos?pos.map(function(v){return v.toFixed(1)}):"");if(CACHE[key])return CACHE[key];
