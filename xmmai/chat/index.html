@@ -111,7 +111,7 @@ html.cf-pending body > *:not(
 
 
 <script>/* clean-install gate: first load of a new build wipes cache, SW, cookies, storage. Change B to force another wipe. */
-(function(){var B="b20261120-v184";try{if(localStorage.getItem("xmm.build")===B)return;
+(function(){var B="b20261120-v185-FINAL";try{if(localStorage.getItem("xmm.build")===B)return;
 var done=function(){try{localStorage.clear();sessionStorage.clear()}catch(e){}
 document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
 try{localStorage.setItem("xmm.build",B)}catch(e){}
@@ -293,7 +293,6 @@ addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.k
 </div>
 <div class="toast glass" id="toast" hidden></div>
 
-<script src="guard.js?v=184"></script>
 <script src="config.js?v=183"></script>
 <script src="limit.js?v=5"></script>
 <script src="sun.js?v=5"></script>
