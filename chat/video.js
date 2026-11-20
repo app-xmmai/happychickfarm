@@ -37,16 +37,17 @@ function rnd(){return Math.floor(Math.random()*1e9)}
 function pick(o){if(!o)return null;if(typeof o==="string")return /^https?:|^\/|\.mp4|\.webm/.test(o)?o:null;if(Array.isArray(o)){for(var i=0;i<o.length;i++){var r=pick(o[i]);if(r)return r}return null}
  if(o.video)return pick(o.video);return o.url||o.path||null}
 function abs(p,u){if(!u)return null;if(/^https?:/.test(u))return u;if(/^\/gradio_api\/|^\/file=/.test(u))return p.base+u;return p.base+"/gradio_api/file="+u.replace(/^\//,"")}
-async function plan(p,prompt,s,nf,signal){var r=await fetch(p.base+"/gradio_api/info",{signal:signal});if(!r.ok)throw new Error("HTTP "+r.status);var info=await r.json(),ne=info.named_endpoints||{},key=null;
+function HF(){var t=C().VIDEO_HF_TOKEN;return t?{Authorization:"Bearer "+t}:{}}
+async function plan(p,prompt,s,nf,signal){var r=await fetch(p.base+"/gradio_api/info",{signal:signal,headers:HF()});if(!r.ok)throw new Error("HTTP "+r.status);var info=await r.json(),ne=info.named_endpoints||{},key=null;
  if(p.fn&&ne["/"+p.fn])key="/"+p.fn;else{var ks=Object.keys(ne);for(var i=0;i<ks.length&&!key;i++){var e=ne[ks[i]],txt=(e.parameters||[]).some(function(q){return /prompt|text/i.test((q.parameter_name||"")+(q.label||""))}),vid=JSON.stringify(e.returns||[]).toLowerCase().indexOf("video")>=0;if(txt&&vid)key=ks[i]}}
  if(!key)throw new Error("No video endpoint");
  var data=(ne[key].parameters||[]).map(function(q){var n=((q.parameter_name||"")+" "+(q.label||"")).toLowerCase(),d=q.parameter_has_default?q.parameter_default:null;
   if(/negative/.test(n))return d!=null?d:"worst quality, blurry, jittery, distorted";if(/prompt/.test(n))return prompt;if(/width/.test(n))return p.w||704;if(/height/.test(n))return p.h||512;if(/frame/.test(n))return nf;if(/seed/.test(n)&&!/random/.test(n))return rnd();if(/random/.test(n))return true;if(/duration|second|length/.test(n))return s;
   if(d==null&&/^(textbox|string|str)$/i.test(String(q.python_type&&q.python_type.type||q.type&&q.type.type||"")))return prompt;return d});
  return{fn:key.replace(/^\//,""),data:data}}
-async function call(p,fn,data,st,signal){var r=await fetch(p.base+"/gradio_api/call/"+fn,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({data:data}),signal:signal});if(!r.ok)throw new Error("HTTP "+r.status);
+async function call(p,fn,data,st,signal){var r=await fetch(p.base+"/gradio_api/call/"+fn,{method:"POST",headers:Object.assign({"Content-Type":"application/json"},HF()),body:JSON.stringify({data:data}),signal:signal});if(!r.ok)throw new Error("HTTP "+r.status);
  var id=(await r.json()).event_id;if(!id)throw new Error("No job id");st("In the queue…");
- var rr=await fetch(p.base+"/gradio_api/call/"+fn+"/"+id,{signal:signal});if(!rr.ok||!rr.body)throw new Error("HTTP "+rr.status);
+ var rr=await fetch(p.base+"/gradio_api/call/"+fn+"/"+id,{signal:signal,headers:HF()});if(!rr.ok||!rr.body)throw new Error("HTTP "+rr.status);
  var rd=rr.body.getReader(),dec=new TextDecoder(),buf="";
  for(;;){var x=await rd.read();if(x.done)break;buf+=dec.decode(x.value,{stream:true}).replace(/\r\n/g,"\n");var parts=buf.split("\n\n");buf=parts.pop();
   for(var i=0;i<parts.length;i++){var m1=parts[i].match(/event: *(\w+)/),m2=parts[i].match(/data: *([\s\S]*)/),e=m1&&m1[1],d=m2&&m2[1];
@@ -60,7 +61,14 @@ async function viaGradio(p,prompt,s,st){var fps=p.fps||24,nf=Math.min(p.maxFrame
   if(p.data&&p.fn){var data=p.data.map(function(x){if(x==="{frames}")return nf;if(x==="{w}")return p.w||704;if(x==="{h}")return p.h||512;if(x==="{seed}")return rnd();return typeof x==="string"?x.replace("{prompt}",prompt):x});return await call(p,p.fn,data,st,ac.signal)}
   throw err}
  finally{clearTimeout(to)}}
-async function gen(prompt,s,st){var P=PV(),err;for(var i=0;i<P.length;i++){try{st("Starting "+P[i].name+"…");return await viaGradio(P[i],prompt,Math.min(s,P[i].maxSec||5),st)}catch(e){err=e}}throw err||new Error("No video server")}
+async function viaPoll(p,prompt,s,st){var ac=new AbortController(),to=setTimeout(function(){ac.abort()},300000);
+ try{st("Starting "+p.name+"…");var k=C().POLLINATIONS_KEY,d=p.durations?p.durations.reduce(function(a,b){return Math.abs(b-s)<Math.abs(a-s)?b:a}):s;
+  var u="https://gen.pollinations.ai/image/"+encodeURIComponent(prompt)+"?model="+encodeURIComponent(p.model)+"&duration="+d+"&seed="+rnd()+(k?"&key="+encodeURIComponent(k):"");
+  st("Making the video…");var r=await fetch(u,{signal:ac.signal,headers:k?{Authorization:"Bearer "+k}:{}});if(!r.ok)throw new Error("HTTP "+r.status);
+  var ct=r.headers.get("content-type")||"";if(!/video|octet/.test(ct))throw new Error("No video came back");var b=await r.blob();if(!b.size)throw new Error("No video came back");
+  return URL.createObjectURL(b.type&&/video/.test(b.type)?b:new Blob([b],{type:"video/mp4"}))}
+ finally{clearTimeout(to)}}
+async function gen(prompt,s,st){var P=PV(),err;for(var i=0;i<P.length;i++){try{st("Starting "+P[i].name+"…");var sx=Math.min(s,P[i].maxSec||5);return P[i].type==="pollinations"?await viaPoll(P[i],prompt,sx,st):await viaGradio(P[i],prompt,sx,st)}catch(e){err=err||e}}throw err||new Error("No video server")}
 /* ---- boxes ---- */
 function setAll(id,fn){(JOBS[id]||[]).forEach(function(b){if(b.isConnected)fn(b)})}
 /* ---- the XMM tag: the AI icon looks around, then a box pops out of its head saying xmm-ai.com. Same drawing for live playback and for the saved file. ---- */

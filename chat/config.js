@@ -34,9 +34,15 @@ window.XMM_CONFIG = {
   // Video maker (the Video tab above the chat input): keyless Hugging Face Space, max VIDEO_MAX_SEC seconds, 1 video per VIDEO_COOLDOWN_MS on this device.
   // "data" is the Space's input list; {prompt} {frames} {w} {h} {seed} are filled in. Edit it if the Space changes.
   VIDEO_COOLDOWN_MS: 300000,
+  // Optional free keys that raise the daily limit (the main cause of Error 429). Leave "" to use the anonymous tier.
+  VIDEO_HF_TOKEN: "",      // free token from huggingface.co/settings/tokens
+  POLLINATIONS_KEY: "",    // free key from enter.pollinations.ai
   VIDEO_AI: [
     { name: "LTX Video", type: "gradio", base: "https://lightricks-ltx-video-distilled.hf.space", fn: "generate", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512,
       data: ["{prompt}", "worst quality, inconsistent motion, blurry, jittery, distorted", null, null, "{h}", "{w}", 8, "{frames}", "{seed}", true, 1, true] },
+    { name: "Pollinations Grok", type: "pollinations", model: "grok-video", maxSec: 5 },
+    { name: "Pollinations LTX",  type: "pollinations", model: "ltx-2", maxSec: 5 },
+    { name: "Pollinations Wan",  type: "pollinations", model: "wan", maxSec: 5 },
     { name: "LTX Video 2", type: "gradio", base: "https://lightricks-ltx-video.hf.space", fn: "", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512 },
     { name: "Wan Fast",    type: "gradio", base: "https://multimodalart-wan2-1-fast.hf.space", fn: "", fps: 16, maxFrames: 81, maxSec: 5, w: 640, h: 480 }
   ],
