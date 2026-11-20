@@ -65,12 +65,12 @@ var ILLEGAL=[
 /(how (do i|to|can i)|help me) .{0,20}(hack|crack|ddos|phish|steal|dox|doxx|stalk|blackmail|extort|launder|swat|poison|kill|murder|stab|shoot|kidnap|traffic)\b.{0,40}(account|password|wifi|bank|card|person|someone|wife|husband|girlfriend|boyfriend|neighbou?r|people|money|him|her|them)/,
 /(write|make|create|build|give me) .{0,20}(malware|ransomware|keylogger|ddos|botnet|virus|trojan|exploit|phishing (page|site|email)|stealer|rat\b)/,
 /\b(child|human|sex) traffick/,/\bhitman\b|\bhire a killer\b/,/(how to|ways to) (commit )?(suicide|kill myself|self harm)\b/,
-/\b(porn|pornography|nude pics?|nudes|sex chat|sexting|dirty talk|erotic (story|roleplay)|nsfw|hentai|xxx|blowjob|handjob|anal sex|orgy|masturbat\w*|cum\b|dildo)\b/,
-/\b(have sex|sex with me|fuck me|sleep with me|send nudes|talk dirty|sexual roleplay|sex roleplay)\b/,
-/(بمب|مواد منفجره|متامفتامین|شیشه|هروئین|کراک|کوکائین)\b.{0,25}(بساز|ساخت|درست کن|بخر|بفروش)|(ساخت|درست کردن) .{0,15}(بمب|مواد منفجره|مواد مخدر|شیشه|هروئین|سم)|(هک کردن|هک) .{0,20}(اکانت|حساب|پسورد|رمز|اینستاگرام)|(سکس|پورن|سکسی|فیلم سکسی|داستان سکسی|عکس برهنه|لخت)/,
-/(صنع|اصنع|كيف اصنع|طريقة صنع) .{0,15}(قنبلة|متفجرات|مخدرات|سم)|(سكس|اباحي|اباحية|صور عارية|قصة جنسية)/,
-/(wie (baue|mache|stelle) ich) .{0,20}(bombe|sprengstoff|drogen|meth)|(porno|nacktbilder|sexgeschichte)/,
-/(como (hacer|fabricar|preparar)) .{0,20}(bomba|explosivo|droga|metanfetamina|veneno)|(porno|fotos desnud|historia sexual)/
+
+
+/(بمب|مواد منفجره|متامفتامین|شیشه|هروئین|کراک|کوکائین)\b.{0,25}(بساز|ساخت|درست کن|بخر|بفروش)|(ساخت|درست کردن) .{0,15}(بمب|مواد منفجره|مواد مخدر|شیشه|هروئین|سم)|(هک کردن|هک) .{0,20}(اکانت|حساب|پسورد|رمز|اینستاگرام)/,
+/(صنع|اصنع|كيف اصنع|طريقة صنع) .{0,15}(قنبلة|متفجرات|مخدرات|سم)/,
+/(wie (baue|mache|stelle) ich) .{0,20}(bombe|sprengstoff|drogen|meth)/,
+/(como (hacer|fabricar|preparar)) .{0,20}(bomba|explosivo|droga|metanfetamina|veneno)/
 ];
 function hit(list,t,raw){for(var i=0;i<list.length;i++){if(list[i].test(t)||list[i].test(raw))return true}return false}
 function wordHit(t,raw){
