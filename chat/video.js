@@ -28,7 +28,7 @@ bar.onclick=function(e){var b=e.target.closest&&e.target.closest("button");if(!b
 setInterval(function(){var i=bar.querySelector(".gm-cd"),l=left();if(i)i.textContent=l>0?" · "+fmt(l):""},1000);
 /* start a video: adds the messages, the box then makes the clip */
 function start(text){var l=left();if(l>0){toast("Video limit: 1 video every 5 minutes. Wait "+fmt(l));return false}
- var A=window.XMM_API;if(!A)return false;var c=A.cur&&A.cur();if(!c){A.newChat&&A.newChat();c=A.cur&&A.cur()}if(!c)return false;
+ var A=window.XMM_API;if(!A)return false;var c=A.cur&&A.cur();if(!c&&A.S){c={id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:String(text).slice(0,40)||"New video",msgs:[]};A.S.chats.unshift(c);A.S.cur=c.id}if(!c)return false;
  var cfg={id:"v"+Date.now().toString(36),prompt:String(text).slice(0,300),sec:sec,t:Date.now()};
  c.msgs.push({role:"user",text:text,full:text,atts:[],imgs:[]});c.msgs.push({role:"assistant",text:"```xmm-video\n"+JSON.stringify(cfg)+"\n```"});
  stamp(Date.now());A.saveChats&&A.saveChats();A.renderMsgs&&A.renderMsgs();A.renderList&&A.renderList();return true}
