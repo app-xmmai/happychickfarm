@@ -117,5 +117,5 @@ var tm=0;new MutationObserver(function(){if(tm)return;tm=setTimeout(function(){t
 function imagine(on){bar.hidden=!on;document.body.classList.toggle("imagine-on",!!on);setMode(on?"image":"chat")}
 window.XMM_IMAGINE=function(){try{var A=window.XMM_API;A&&A.newChat&&A.newChat()}catch(e){}try{document.body.classList.remove("cl-drawer","drawer","side-open")}catch(e){}imagine(true);setTimeout(function(){try{msg.focus()}catch(e){}},80)};
 document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest('#clNc,.xfab,[data-act="newchat"],#chatNav [data-k="newchat"],.xnav [data-ch]');if(t&&!t.closest("#clDrawer .cl-ds"))imagine(false)},true);
-window.XMM_VIDEO={start:start,left:left,setMode:setMode,imagine:imagine};
+window.XMM_VIDEO={start:start,left:left,setMode:setMode,imagine:imagine,setSec:function(n){sec=+n;paint()},lens:lens,fmt:fmt};
 })();
