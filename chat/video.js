@@ -102,11 +102,12 @@ document.addEventListener("click",function(e){var t=e.target.closest&&e.target.c
  if(t.dataset.xv==="fs"){var f=b.requestFullscreen||b.webkitRequestFullscreen;if(f)f.call(b);else toast("Full screen is not supported here");return}
  if(t.dataset.xv==="save"){if(t.disabled)return;t.disabled=true;var o=t.textContent;t.textContent="Saving…";toast("Adding the XMM tag, about "+(+b.dataset.sec||5)+" seconds…");
   bake(b.getAttribute("data-url")).then(function(){toast("Saved")}).catch(function(x){toast(String(x&&x.message||x).slice(0,90))}).then(function(){t.disabled=false;t.textContent=o})}});
-function fail(b,t){b.classList.remove("done");b.classList.add("bad");b.innerHTML='<div class="xv-load"><b>'+(t||"Couldn’t make the video")+'</b><small>Try again later. Free servers have limited capacity.</small></div>'}
+function fail(b,t){b.classList.remove("done");b.classList.add("bad");b.innerHTML='<div class="xv-load"><b>'+(t||"Couldn’t make the video")+'</b><small>No server responded. Try again later.</small></div>'}
+function ecode(e){var m=String(e&&e.message||e),n=m.match(/HTTP (\d{3})/);if(n)return n[1];if(e&&e.name==="AbortError")return 408;if(/quota|busy|queue|limit/i.test(m))return 429;if(/No video/i.test(m))return 502;if(/fetch|network|closed|load failed/i.test(m))return 503;return 500}
 async function run(id,prompt,s){var p=prompt;
  try{if(window.XMM_EN)p=await window.XMM_EN(p)||p}catch(e){}try{if(window.XMM_SAFE)p=await window.XMM_SAFE(p)||p}catch(e){}
  try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})});res[id]=u;saveRes();setAll(id,function(b){show(b,u)})}
- catch(e){var m=String(e&&e.message||e).slice(0,140);stamp(0);setAll(id,function(b){fail(b,m)})}
+ catch(e){var m="Error "+ecode(e);stamp(0);setAll(id,function(b){fail(b,m)})}
  delete JOBS[id]}
 function hyd(){[].forEach.call(document.querySelectorAll(".xv:not([data-s])"),function(b){b.setAttribute("data-s","1");var id=b.dataset.id;
  if(res[id]){show(b,res[id]);return}
