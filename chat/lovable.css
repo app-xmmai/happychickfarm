@@ -164,3 +164,5 @@ html body #zhero .zc span{display:none!important;padding:12px 14px!important;fon
  html body.cl-sbhide #shell-chat>#mainChat,html body.cl-sbhide.xempty #shell-chat>#mainChat{left:8px!important}
  html body.cl-sbhide #viewChat .dock,html body.cl-sbhide.xempty #viewChat.empty .dock,html body.cl-sbhide #zhero{left:8px!important}
 }
+
+/* v197: 7k output limit, auto provider switch + continue on cut-off, stronger code mode (plan + reasoning) */

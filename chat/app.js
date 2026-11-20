@@ -97,8 +97,8 @@ const GROQ = (CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim()) || "https://api.g
 const USE_PROXY = !!(CFG.GROQ_PROXY && String(CFG.GROQ_PROXY).trim());
 /* Groq plan profile. free = 8K tokens/min (input + max_tokens must fit in one request budget); dev = 250K tokens/min */
 const TIERS={
- free:{name:"free",inCap:3400,reqCap:7600,rate:7400,outCode:8000,chat:{x12:500,x20:900,x25:1200,sun62:1400}},
- dev:{name:"dev",inCap:60000,reqCap:120000,rate:240000,outCode:16000,chat:{x12:1500,x20:3000,x25:8000,sun62:12000}}};
+ free:{name:"free",inCap:3400,reqCap:10400,rate:7400,outCode:7000,chat:{x12:500,x20:900,x25:1200,sun62:1400}},
+ dev:{name:"dev",inCap:60000,reqCap:120000,rate:240000,outCode:7000,chat:{x12:1500,x20:3000,x25:8000,sun62:12000}}};
 const T=TIERS[String(CFG.TIER||"free").toLowerCase()]||TIERS.free;
 window.XMM_TIER=T;
 /* join a continuation onto text that was cut off, removing any text the model repeated at the seam */
@@ -202,12 +202,12 @@ function budgetFor(txt,hist){
  const code=/```|\bfunction\b.*\{|<\/?[a-z]+>/i.test(t);
  const BOX=/\b(quiz|test me|flash\s*cards?|chart|graph|plot|compare|comparison|versus|which is better|recipe|table|spreadsheet|checklist|to-?do list|packing list|ask me|interview me|diet plan|calendar|itinerary|homework)\b/i;
  let max,hint="",cont=false;
- if(BOX.test(t)&&!hasImg)return{max:5000,hint:"",cont:false,box:true};
- if(hasImg||code||HARD.test(t)||w>150){max=w>150||/\b(full|complete|whole|entire|long|detailed|in[- ]depth|\d{3,}\s*words|website|app|game)\b/i.test(t)?7000:5000;cont=true}
+ if(BOX.test(t)&&!hasImg)return{max:7000,hint:"",cont:false,box:true};
+ if(hasImg||code||HARD.test(t)||w>150){max=w>150||/\b(full|complete|whole|entire|long|detailed|in[- ]depth|\d{3,}\s*words|website|app|game)\b/i.test(t)?7000:7000;cont=true}
  else if(GREET.test(t)&&w<=8){max=300;hint=" Reply in one or two short sentences."}
  else if(QUICK.test(t)&&w<=14){max=500;hint=" Keep the reply short and direct (a few sentences)."}
  else if(w<=6&&!MID.test(t)){max=500;hint=" Keep the reply short and direct (a few sentences)."}
- else if(MID.test(t)||w>40){max=Math.min(5000,Math.max(2000,1200+w*35))}
+ else if(MID.test(t)||w>40){max=Math.min(7000,Math.max(2000,1200+w*35))}
  else{max=Math.min(2500,Math.max(1000,700+w*40))}
  return{max,hint,cont}}
 
@@ -258,11 +258,13 @@ async function groqBase(messages,o={}){
  throw last}
 async function groq(messages,o={}){
  const meta={};let out=await groqBase(messages,{...o,meta});
- if(!o.autoCont)return out;
- for(let i=0;i<6&&meta.finish==="length"&&!(o.signal&&o.signal.aborted);i++){
-  const base=out;meta.finish="";
-  const more=await groqBase([...messages,{role:"assistant",content:base.slice(-3000)},{role:"user",content:"Your last message hit the length limit. Continue EXACTLY where you stopped, as the same message. Do not repeat anything and add no intro."}],{...o,meta,raw:true,onDelta:(t,th)=>{o.onDelta&&o.onDelta(stitch(base,t,12),th)}});
-  out=stitch(base,more,12);if(!more||more.length<3)break}
+ if(o.autoCont===false||!(o.autoCont||(o.maxTokens||0)>=2000)||o.json)return out;
+ let dry=0;
+ for(let i=0;i<8&&meta.finish==="length"&&!(o.signal&&o.signal.aborted);i++){
+  const base=out,from=window.__xmmBackup||"";meta.finish="";
+  try{toast("Output was cut off: switching provider and continuing")}catch(e){}
+  const more=await groqBase([...messages,{role:"assistant",content:base.slice(-3500)},{role:"user",content:"Your last message was cut off by the length limit. Continue EXACTLY where you stopped, as the same message. The very last characters were: «"+base.slice(-80).replace(/\n/g,"⏎")+"». Do not repeat anything and add no intro."}],{...o,meta,raw:true,switchFrom:from,onDelta:(t,th)=>{o.onDelta&&o.onDelta(stitch(base,t,12),th)}});
+  out=stitch(base,more,12);if(!more||more.length<3){if(++dry>=2)break}else dry=0}
  return out}
 const SVC_MSG=c=>new Error("Error ("+c+"): It looks like our service is not available right now. Please try again, and if you're from Iran, please use a VPN.");
 /* ---- request size + rate guard: Groq free tier allows ~7000 input tokens/min, keep every request under ~4800 ---- */
@@ -304,10 +306,10 @@ async function throttle(est,signal){for(;;){const now=Date.now();while(tokLog.le
   await new Promise((res,rej)=>{const t=setTimeout(res,Math.min(wait,4000));if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})})}
  const ent=[Date.now(),est];tokLog.push(ent);return ent}
 const sleepW=(sec,signal)=>new Promise((res,rej)=>{window.dispatchEvent(new CustomEvent("xmm-wait",{detail:sec}));const t=setTimeout(res,sec*1000);if(signal)signal.addEventListener("abort",()=>{clearTimeout(t);rej(new DOMException("Aborted","AbortError"))},{once:true})});
-async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false}={}){
+async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,onDelta,signal,maxTokens,temp,tight=false,cap,meta,raw=false,reason}={}){
  const CL=raw?cleanR:clean;
  messages=fitMsgs(messages,tight?Math.round(T.inCap*.6):(cap||T.inCap));const inTok=messages.reduce((n,m)=>n+msgTok(m),0);
- const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};if(/gpt-oss/i.test(model))body.reasoning_effort="low";
+ const body={model,messages,temperature:temp||.7,stream,max_tokens:Math.min(maxTokens||800,16384)};if(/gpt-oss/i.test(model))body.reasoning_effort=reason||"low";
  /* Groq checks input + max_tokens against the per-minute budget up front, so never ask for more than fits */
  body.max_tokens=Math.max(256,Math.min(body.max_tokens,T.reqCap-inTok));
  const ent=await throttle(inTok+Math.round(body.max_tokens*.5),signal);if(json)body.response_format={type:"json_object"};
@@ -334,13 +336,13 @@ async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,o
 const FREE_AI=(CFG.FREE_AI&&CFG.FREE_AI.length?CFG.FREE_AI:[]);
 const isLimit=e=>!!e&&!e.fatal&&(/too many requests|rate limit|per minute|\b429\b/i.test(e.message||"")||e.status===429);
 const textOnly=ms=>ms.every(m=>typeof m.content==="string");
-async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw,box}){
+async function freeAsk(p,messages,{json,onDelta,signal,maxTokens,temp,raw,box,meta}){
  const CL=raw?cleanR:clean,k=tmo(10000,signal);
  try{const ms=fitMsgs(messages,12000).slice(-14).map(m=>({role:m.role,content:m.content}));
   if(json)ms.unshift({role:"system",content:"Reply with valid JSON only."});
-  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,box?5000:2000),stream:false}),signal:k.ac.signal});
+  const r=await fetch(p.url,{method:"POST",headers:{"Content-Type":"application/json",...(p.key?{Authorization:"Bearer "+p.key}:{})},body:JSON.stringify({model:p.model,messages:ms,temperature:temp||.7,max_tokens:Math.min(maxTokens||800,7000),stream:false}),signal:k.ac.signal});
   if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;e.ra=+(r.headers.get("Retry-After")||0);throw e}const j=await r.json();const t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
-  if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);onDelta&&onDelta(out,"");return out}
+  if(!t||typeof t!=="string"||!t.trim())throw new Error("empty");const out=CL(t);if(meta)meta.finish=(j.choices[0].finish_reason||"");onDelta&&onDelta(out,"");return out}
  finally{k.done()}}
 /* rotating pool: each request starts at the next free server; a server that is full / failing sits out (cooldown) while the others take over */
 const BOX_MIN_TPM=CFG.BOX_MIN_TPM||8000;
@@ -351,6 +353,7 @@ async function groq1(messages,o={}){
  if(FREE_AI.length&&textOnly(messages)){
   const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i)&&(!o.box||(FREE_AI[i].tpm||0)>=BOX_MIN_TPM))order.push(i)}fRot=(fRot+1)%n;
   if(o.box)order.sort((a,b)=>(FREE_AI[b].tpm||0)-(FREE_AI[a].tpm||0));
+  if(o.switchFrom){const bad=order.filter(i=>FREE_AI[i].name===o.switchFrom),good=order.filter(i=>FREE_AI[i].name!==o.switchFrom);order.length=0;order.push(...good,...bad)}
   for(const i of order.slice(0,3)){
    if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
    const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
@@ -358,7 +361,7 @@ async function groq1(messages,o={}){
    catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
    finally{st.busy--}}
   if(Date.now()-fNote>30000){fNote=Date.now();try{toast("Server 1 failed, using server 2")}catch(e){}}}
- return groqMain(messages,o)}
+ window.__xmmBackup="Groq";return groqMain(messages,o)}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */

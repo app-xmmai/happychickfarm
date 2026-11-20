@@ -1,7 +1,7 @@
 window.__xmmCodeSandbox='xmmcode';
 /* XMM: local login + Code agent (multi-file project, live preview, auto-fix, ZIP / .html export) */
 (()=>{
-const $=s=>document.querySelector(s),API=()=>window.XMM_API,T=window.XMM_TIER||{name:"free",inCap:3400,outCode:8000},E=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"<".replace("<","&lt;"),">":"&gt;"}[c]));
+const $=s=>document.querySelector(s),API=()=>window.XMM_API,T=window.XMM_TIER||{name:"free",inCap:3400,outCode:7000},E=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"<".replace("<","&lt;"),">":"&gt;"}[c]));
 const ls={g:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 /* ---- login: tap, type a username, done ---- */
 const L=$("#login");
@@ -35,15 +35,19 @@ function openSess(id){let s=id&&st.list.find(x=>x.id===id);if(!s){s=st.list.find
 document.addEventListener("click",e=>{const t=e.target;if(!t.closest)return;const d=t.closest("[data-cdots]");
  if(d){e.stopPropagation();const id=d.dataset.cdots;API().showMenu(d,[{label:"Delete code chat",danger:1,fn:()=>{st.list=st.list.filter(s=>s.id!==id);idb("del",id);if(st.cur===id)st.cur=null;saveAll();side()}}],"right");return}
  const i=t.closest("[data-cid]");if(i){const sc=document.getElementById("scrim");if(sc)sc.click();open(i.dataset.cid)}},true);
-const SYS=`You are XMM Code. Output only files. /no_think
-HARD LIMIT: total output under 3500 characters when possible. Prefer under 2500.
+const SYS=`You are XMM Code, a senior full-stack engineer who reasons carefully before writing. /no_think
+Write complete, correct, production-quality code that works the first time.
 RULES
-- First chars = <file path="...">. No intro. After files: one short sentence.
-- Ultra-short code. No comments. No blank lines. Minify structure. One index.html with inline CSS+JS.
-- Must finish completely: always end with </html> then </file>. Never stop mid-file.
-- Games/apps: minimal canvas or DOM, rAF loop, score, restart. Cut all decoration.
-- Must work on touch screens: use pointer events (not mouse-only), big tap targets, on-screen buttons for keyboard controls.
-FORMAT: <file path="index.html">...</file> only. No markdown.`;
+- First chars = <file path="...">. No long intro. After the files: one short sentence.
+- Real working logic only: no placeholders, no TODOs, no stubs, no "rest of code here". Every feature the user asked for must be implemented.
+- Think through data structures, state, edge cases (empty input, bad input, resize, rapid clicks, offline) and handle them. Validate inputs, never crash.
+- Clean structure: small named functions, const/let, clear names, one source of truth for state, no globals leaking, escape any user text put into HTML.
+- Efficient: avoid needless re-renders and O(n^2) work, use requestAnimationFrame for animation, debounce heavy handlers.
+- Polished UI: responsive layout, accessible (labels, focus, contrast), touch-friendly pointer events, big tap targets, on-screen buttons for keyboard-only controls.
+- Single index.html with inline CSS+JS unless the user asks for more files. Use well-known CDN libraries only when they clearly help.
+- Budget is about 7000 tokens: be dense but never sacrifice correctness. Always end with </html> then </file>. Never stop mid-file.
+- When editing an existing project, change only what is needed and keep everything else working.
+FORMAT: <file path="index.html">...</file> only. No markdown fences.`;
 const SYS_MIN='XMM Code. Output <file path="name">contents</file> only. Ultra short. No fences. /no_think';
 const TOK=s=>window.XMM_TOK?XMM_TOK(s):Math.ceil(String(s).length/3);
 const Q=s=>E(s).replace(/"/g,"&quot;");
@@ -195,11 +199,16 @@ async function run(text,auto){text=(text||"").trim();const note=attNote();if((!t
  let pT=0,pLast="",lastLive=0;const paint=t=>{pLast=t;if(pT)return;pT=setTimeout(()=>{pT=0;paint0(pLast)},90)};
  const paint0=t=>{const f=parse(t);{const now=performance.now();if(now-lastLive>900&&Object.keys(f).length){lastLive=now;Object.assign(files,f);if(!page||files[page]==null)page=firstPage();if(page&&/<body/i.test(files[page]||"")){tab="preview";tabs();show(true)}}}const n=Object.keys(f).length;if(b)b.innerHTML=n?'<span class="think"><i></i><i></i><i></i>&nbsp;Building…</span>':((API().md(prose(t))||"")||'<span class="think"><i></i><i></i><i></i>&nbsp;Building…</span>');const lg=$("#cdLog");if(lg)lg.scrollTop=1e9};
  try{if(API().S&&API().S.mode==="sun62"&&lastU.trim().length>14&&!/^[\d\s+\-*\/().,x=?]+$/.test(lastU.trim())){if(b)b.innerHTML='<span class="think"><i></i><i></i><i></i>&nbsp;Thinking…</span>';await new Promise(r=>{const id=setTimeout(r,120000);ctrl.signal.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});if(ctrl.signal.aborted)throw new DOMException("Aborted","AbortError")}
-  await API().groq(msgs(),{model,stream:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,onDelta:t=>{full=t;paint(t)}});
+  let plan="";
+  if(!auto&&lastU.trim().length>40){const st0=step("Planning the architecture…");
+   try{plan=String(await API().groq([{role:"system",content:"You are a staff engineer. Reason step by step, then output a compact build plan: 1) exact features, 2) data/state model, 3) key functions, 4) edge cases and bugs to avoid, 5) UI layout. Max 220 words. No code. /no_think"},{role:"user",content:lastU.slice(0,1500)}],{model,stream:false,signal:ctrl.signal,maxTokens:700,temp:.2,reason:"medium"})||"").slice(0,1800);st0.innerHTML="<b>✓</b> Plan ready"}catch(e){if(e&&e.name==="AbortError")throw e;st0.innerHTML="Plan skipped"}}
+  const msgsP=()=>{const m=msgs();if(plan)m[0]={role:"system",content:m[0].content+"\n\nBUILD PLAN (follow it, fix any flaw you notice):\n"+plan};return m};
+  await API().groq(msgsP(),{model,stream:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,reason:"medium",autoCont:false,onDelta:t=>{full=t;paint(t)}});
   clearTimeout(pT);pT=0;paint0(full);
   let dry=0;
   for(let i=0;i<14&&unclosed(full);i++){const base=full,nm=openTag(base)||"file",st=step("Continuing "+nm+" (part "+(i+2)+")…");
-   await API().groq(cont(base),{model,stream:true,raw:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,onDelta:t=>{full=window.XMM_STITCH(base,t);paint(full)}});
+   const from=window.__xmmBackup||"";try{API().toast("Output was cut off: switching provider and continuing")}catch(e){}
+   await API().groq(cont(base),{model,stream:true,raw:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,switchFrom:from,autoCont:false,onDelta:t=>{full=window.XMM_STITCH(base,t);paint(full)}});
    st.innerHTML="<b>✓</b> Continued "+E(nm);if(full.length-base.length<4){if(++dry>=2)break}else dry=0}
   clearTimeout(pT);pT=0;paint0(full);
   const f=parse(full),n=Object.keys(f);Object.assign(files,f);fails=applyEdits(parseEdits(full));touchify(Object.keys(files));touched=n.length>0||/<edit\s+path\s*=/.test(full);
@@ -247,7 +256,7 @@ async function runFromChat(text){
  ensureSess();
  if(!(root&&root.isConnected)){opening=false;/* preview removed */}
  const t=String(text||"").trim();
- return run(t+"\n\nREQUIREMENTS: ONE self-contained index.html only. Ultra-short code. No comments. Must fully finish before any token limit. Complete runnable file with closed tags.")
+ return run(t+"\n\nREQUIREMENTS: ONE self-contained index.html. Complete, powerful, working code with real logic and edge-case handling. Fit within about 7000 tokens and finish with closed tags.")
 }
 window.XMM_CODE={open,close,artifacts:arts,isOpen:()=>false,ingest:ingestChatUpload,ingestAll:ingestChatUploads,runFromChat};setTimeout(side,0);
 })();
