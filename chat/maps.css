@@ -16,3 +16,9 @@
 /* thumbnails: beat global chat img rules so photos always fill the box */
 html body .xw-thw img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border-radius:0!important;aspect-ratio:auto!important;margin:0!important}
 html body .xw-thw{background:rgba(128,128,128,.18)}
+/* Apple Maps style place card */
+.xw-place{border-radius:22px!important;box-shadow:0 4px 20px rgba(0,0,0,.14)}
+.xp-t b{font-size:20px!important;letter-spacing:normal}
+.xp-go{border-radius:26px!important;height:50px!important;font-size:16px!important}
+.xp-gm{border-radius:26px!important;height:50px!important}
+.xp-row{border-radius:16px}
