@@ -147,18 +147,24 @@ function closeDrawer(){B.classList.remove("cl-drawer")}
 function buildDrawer(){
  var sh=$("#shell-chat");if(!sh||$("#clDrawer"))return;
  var d=el("div");d.id="clDrawer";
- d.innerHTML='<div class="cl-dh">XMM AI</div><div class="cl-ds" id="clDs">'+
-  '<button class="cl-nr" data-n="chats" style="--i:0">'+IC.chats+'<span>Chats</span></button>'+
-  '<div class="cl-rl" style="--i:1">Recents</div><div id="clRecents"></div>'+
+ d.innerHTML='<div class="cl-dh"><span class="cl-logo"></span></div>'+
+  '<button class="cl-ws" id="clWs" type="button"><span class="cl-wa">X</span><span class="cl-wn">xmm\'s workspace</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></svg></button>'+
+  '<div class="cl-ds" id="clDs">'+
+  '<button class="cl-nr on" data-n="chats" style="--i:0">'+IC.compose+'<span>New</span></button>'+
+  '<button class="cl-nr" data-n="search" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span></button>'+
+  '<button class="cl-nr" data-n="projects" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>Projects</span></button>'+
+  '<div class="cl-rl" style="--i:3">Recents</div><div id="clRecents"></div>'+
   '<button class="cl-all" id="clAll"><span>All chats</span>'+IC.chev+'</button></div>'+
   '<div class="cl-db"><button class="cl-av" id="clAv" type="button" aria-label="Settings">X</button><button class="cl-nc" id="clNc" type="button">'+IC.plus+'New chat</button></div>';
  sh.insertBefore(d,sh.firstChild);
  d.addEventListener("click",function(e){
+  if(e.target.closest("#clWs")){closeDrawer();openSettings();return}
   var n=e.target.closest(".cl-nr");
   if(n){var k=n.dataset.n;
    if(k==="chats"){try{API().newChat()}catch(_){}closeDrawer();return}
    closeDrawer();
    if(k==="projects"){var b=$('.sidenav2 [data-k="notebooks"]');if(b)b.click()}
+   else if(k==="search"){var sb=$('.sidenav2 [data-k="search"]')||$("#sideSearch");if(sb)sb.click()}
    else if(k==="code"){var c=$("#sideCode");if(c)c.click()}
    else if(k==="artifacts"){var s=$('#seg [data-m="code"]');if(s)s.click()}
    return}

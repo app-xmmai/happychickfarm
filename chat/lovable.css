@@ -3,10 +3,10 @@
 
 /* ---------- tokens ---------- */
 :root{
- --lv-ink:#f4f4f6;--lv-sub:#a9a9b4;--lv-comp:#15151b;--lv-comp-b:#2a2a33;
- --lv-sh:0 24px 70px rgba(0,0,0,.55);--lv-btn:#23232b;--lv-btn-t:#d6d6dc;--lv-send:#2f7bff;
+ --lv-ink:#f4f4f6;--lv-sub:#a9a9b4;--lv-comp:#262626;--lv-comp-b:rgba(255,255,255,.16);--lv-side:#161616;--lv-line:rgba(255,255,255,.1);--lv-panel:#212121;--lv-send-t:#111;
+ --lv-sh:0 24px 70px rgba(0,0,0,.55);--lv-btn:#23232b;--lv-btn-t:#d6d6dc;--lv-send:#ececec;
  --lv-card:rgba(20,20,28,.72);--lv-card-b:rgba(255,255,255,.09);--lv-zi:#1a1a22;
- --lv-bg:radial-gradient(62% 46% at 50% 112%,rgba(190,50,150,1) 0%,rgba(190,50,150,0.82) 14%,rgba(190,50,150,0.58) 28%,rgba(190,50,150,0.36) 42%,rgba(190,50,150,0.18) 58%,rgba(190,50,150,0.07) 74%,rgba(190,50,150,0.02) 88%,rgba(190,50,150,0) 100%),radial-gradient(52% 56% at -6% 104%,rgba(160,30,110,1) 0%,rgba(160,30,110,0.82) 14%,rgba(160,30,110,0.58) 28%,rgba(160,30,110,0.36) 42%,rgba(160,30,110,0.18) 58%,rgba(160,30,110,0.07) 74%,rgba(160,30,110,0.02) 88%,rgba(160,30,110,0) 100%),radial-gradient(52% 56% at 106% 104%,rgba(160,30,110,1) 0%,rgba(160,30,110,0.82) 14%,rgba(160,30,110,0.58) 28%,rgba(160,30,110,0.36) 42%,rgba(160,30,110,0.18) 58%,rgba(160,30,110,0.07) 74%,rgba(160,30,110,0.02) 88%,rgba(160,30,110,0) 100%),radial-gradient(58% 44% at -10% 52%,rgba(30,64,200,1) 0%,rgba(30,64,200,0.82) 14%,rgba(30,64,200,0.58) 28%,rgba(30,64,200,0.36) 42%,rgba(30,64,200,0.18) 58%,rgba(30,64,200,0.07) 74%,rgba(30,64,200,0.02) 88%,rgba(30,64,200,0) 100%),radial-gradient(58% 44% at 110% 52%,rgba(30,64,200,1) 0%,rgba(30,64,200,0.82) 14%,rgba(30,64,200,0.58) 28%,rgba(30,64,200,0.36) 42%,rgba(30,64,200,0.18) 58%,rgba(30,64,200,0.07) 74%,rgba(30,64,200,0.02) 88%,rgba(30,64,200,0) 100%),radial-gradient(44% 32% at 50% 84%,rgba(70,92,214,1) 0%,rgba(70,92,214,0.82) 14%,rgba(70,92,214,0.58) 28%,rgba(70,92,214,0.36) 42%,rgba(70,92,214,0.18) 58%,rgba(70,92,214,0.07) 74%,rgba(70,92,214,0.02) 88%,rgba(70,92,214,0) 100%),#08080d;
+ --lv-bg:radial-gradient(50% 26% at 50% 20%,rgba(28,28,30,.85),rgba(28,28,30,0) 100%),radial-gradient(60% 36% at -8% 40%,rgba(70,110,240,.55),rgba(70,110,240,0) 100%),radial-gradient(60% 36% at 108% 40%,rgba(70,110,240,.55),rgba(70,110,240,0) 100%),radial-gradient(34% 22% at 50% 60%,rgba(80,115,235,.6),rgba(80,115,235,0) 100%),linear-gradient(180deg,#1c1c1e 0%,#1d1d20 14%,#26357c 26%,#3f6ae0 36%,#6f86ee 44%,#c985ec 50%,#f67ede 56%,#ff56a8 66%,#ff2d70 78%,#ff3f5a 90%,#ff6a3a 100%);
  --lv-bgc:linear-gradient(rgba(8,8,13,.58),rgba(8,8,13,.58)),var(--lv-bg);
 }
 html[data-cl-theme=light]:root{
@@ -14,7 +14,7 @@ html[data-cl-theme=light]:root{
  --cl-txt:#1f1e1d;--cl-mut:#76756f;--cl-line:rgba(0,0,0,.08);
  --cl-glass:rgba(0,0,0,.055);--cl-glass2:rgba(0,0,0,.045);--cl-glass-b:rgba(0,0,0,.08);
  --cl-inv:#1f1e1d;--cl-invt:#fff;--cl-acc:#ff7a4d;--ip-card:#ffffff;color-scheme:light;
- --lv-ink:#1c1c1c;--lv-sub:#5f5f68;--lv-comp:#ffffff;--lv-comp-b:rgba(20,20,40,.06);
+ --lv-ink:#1c1c1c;--lv-sub:#5f5f68;--lv-comp:#ffffff;--lv-side:#f3f2ee;--lv-line:rgba(0,0,0,.09);--lv-panel:#ffffff;--lv-send-t:#fff;--lv-comp-b:rgba(20,20,40,.06);
  --lv-sh:0 24px 70px rgba(40,70,180,.28),0 2px 8px rgba(0,0,0,.05);--lv-btn:#f1f0ee;--lv-btn-t:#3a3a40;--lv-send:#1c1c1c;
  --lv-card:rgba(255,255,255,.78);--lv-card-b:rgba(20,20,40,.06);--lv-zi:#eceeff;
  --lv-bg:radial-gradient(62% 46% at 50% 112%,rgba(255,139,224,1) 0%,rgba(255,139,224,0.82) 14%,rgba(255,139,224,0.58) 28%,rgba(255,139,224,0.36) 42%,rgba(255,139,224,0.18) 58%,rgba(255,139,224,0.07) 74%,rgba(255,139,224,0.02) 88%,rgba(255,139,224,0) 100%),radial-gradient(52% 56% at -6% 104%,rgba(255,61,152,1) 0%,rgba(255,61,152,0.82) 14%,rgba(255,61,152,0.58) 28%,rgba(255,61,152,0.36) 42%,rgba(255,61,152,0.18) 58%,rgba(255,61,152,0.07) 74%,rgba(255,61,152,0.02) 88%,rgba(255,61,152,0) 100%),radial-gradient(52% 56% at 106% 104%,rgba(255,61,152,1) 0%,rgba(255,61,152,0.82) 14%,rgba(255,61,152,0.58) 28%,rgba(255,61,152,0.36) 42%,rgba(255,61,152,0.18) 58%,rgba(255,61,152,0.07) 74%,rgba(255,61,152,0.02) 88%,rgba(255,61,152,0) 100%),radial-gradient(58% 44% at -10% 52%,rgba(74,130,255,1) 0%,rgba(74,130,255,0.82) 14%,rgba(74,130,255,0.58) 28%,rgba(74,130,255,0.36) 42%,rgba(74,130,255,0.18) 58%,rgba(74,130,255,0.07) 74%,rgba(74,130,255,0.02) 88%,rgba(74,130,255,0) 100%),radial-gradient(58% 44% at 110% 52%,rgba(74,130,255,1) 0%,rgba(74,130,255,0.82) 14%,rgba(74,130,255,0.58) 28%,rgba(74,130,255,0.36) 42%,rgba(74,130,255,0.18) 58%,rgba(74,130,255,0.07) 74%,rgba(74,130,255,0.02) 88%,rgba(74,130,255,0) 100%),radial-gradient(44% 32% at 50% 84%,rgba(169,192,255,1) 0%,rgba(169,192,255,0.82) 14%,rgba(169,192,255,0.58) 28%,rgba(169,192,255,0.36) 42%,rgba(169,192,255,0.18) 58%,rgba(169,192,255,0.07) 74%,rgba(169,192,255,0.02) 88%,rgba(169,192,255,0) 100%),#fcfbf8;
@@ -39,7 +39,7 @@ html body .composer #msg::placeholder{color:var(--lv-sub)!important;opacity:.85}
 html body .composer #attBtn,html body .composer.cl-exp #attBtn{background:var(--lv-btn)!important;color:var(--lv-btn-t)!important;border-radius:50%!important}
 html body .composer #modeBtn{background:transparent!important;color:var(--lv-btn-t)!important;border-radius:99px!important}
 html body .composer #sendBtn,html body .composer>#gWave,html body.ip .composer #sendBtn,html body.ip .composer>#gWave,html body .composer.cl-exp #sendBtn,html body .composer.cl-exp #gWave,html[data-cl-theme=light] body #gWave{
- background:var(--lv-send)!important;color:#fff!important;border-radius:50%!important}
+ background:var(--lv-send)!important;color:var(--lv-send-t)!important;border-radius:50%!important}
 
 /* ---------- hero ---------- */
 html body.xempty .greeting,html body.xempty .cl-greet,html body.xempty #ipSug,html body.xempty .g-sug{display:none!important}
@@ -73,4 +73,51 @@ html body.xempty #zhero{display:block}
  html:not(.is-tablet) #zhero h1 br{display:none}
  html:not(.is-tablet) #zhero .zs{font-size:17px}
  html:not(.is-tablet) #zhero .zg{bottom:auto;top:calc(50% + 92px)}
+}
+
+/* ================= v195: Lovable sidebar + app shell + bottom panel ================= */
+#clDrawer{background:var(--lv-side)!important;color:var(--cl-txt)}
+.cl-dh{height:auto!important;padding:calc(env(safe-area-inset-bottom,0px)*0 + 14px) 16px 4px!important;font:0/0 sans-serif!important}
+.cl-logo{display:block;width:24px;height:24px;border-radius:9px 9px 9px 3px;background:conic-gradient(from 200deg,#ff6a3a,#ff2d70,#c24bff,#4a82ff,#ff6a3a)}
+.cl-ws{display:flex;align-items:center;gap:10px;width:calc(100% - 16px);margin:8px 8px 10px;height:40px;padding:0 10px 0 6px;border-radius:10px;border:1px solid var(--lv-line);background:transparent;color:var(--cl-txt);font:500 14px var(--cl-sans);cursor:pointer}
+.cl-wa{width:22px;height:22px;border-radius:6px;background:#d9480f;color:#fff;display:grid;place-items:center;font:600 12px var(--cl-sans);flex:none}
+.cl-wn{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cl-ws svg{opacity:.6;flex:none}
+.cl-ds{padding:0 0 90px!important}
+.cl-nr,.cl-ci{height:34px!important;width:calc(100% - 16px)!important;margin:0 8px;padding:0 10px!important;gap:12px!important;border-radius:9px;font:500 14px var(--cl-sans)!important}
+.cl-nr svg{width:18px!important;height:18px!important}
+.cl-nr.on,.cl-ci.on{background:var(--cl-glass)!important}
+.cl-nr:hover,.cl-ci:hover{background:var(--cl-glass2)}
+.cl-ci{font-weight:400!important}
+.cl-ci svg{display:none!important}
+.cl-ci::before{content:"";width:11px;height:11px;border:1.6px solid currentColor;border-radius:3px;transform:rotate(45deg);opacity:.75;flex:none;margin:0 3px}
+.cl-rl{padding:22px 18px 6px!important;font:500 13px var(--cl-sans)!important;color:var(--cl-mut)!important}
+.cl-all{padding:0 18px!important;height:34px!important;font-size:13.5px!important}
+.cl-db{background:none!important;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 14px)!important}
+.cl-av{width:32px!important;height:32px!important;font-size:13px!important;background:#c2185b!important;color:#fff!important;border:0!important}
+.cl-nc{display:none!important}
+
+@media(min-width:900px){
+ :root{--dw:256px}
+ html:not(.xx),html body{background:var(--lv-side)!important}
+ html[data-cl-theme=light],html[data-cl-theme=light] body{background:var(--lv-side)!important}
+ html body #shell-chat,html[data-cl-theme=light] body #shell-chat,html body.xempty #shell-chat,html[data-cl-theme=light] body.xempty #shell-chat{background:var(--lv-side)!important}
+ #clDrawer{visibility:visible!important;opacity:1!important;transform:none!important;z-index:2}
+ html body #shell-chat>#mainChat,html body.cl-drawer #shell-chat>#mainChat,html body.xempty #shell-chat>#mainChat{
+  left:var(--dw)!important;top:8px!important;right:8px!important;width:auto!important;height:calc(var(--vvh,100%) - 16px)!important;
+  transform:none!important;border-radius:16px!important;border:1px solid var(--lv-line)!important;box-shadow:none!important;overflow:hidden!important}
+ html body #shell-chat>#mainChat::after{display:none!important}
+ #clMenu{display:none!important}
+ html body #viewChat .dock,html body.xempty #viewChat .dock,html body.xempty #viewChat.empty .dock{left:var(--dw)!important;right:8px!important;width:auto!important;margin:0!important}
+ html body #zhero{left:var(--dw)!important;right:8px!important;top:8px!important;bottom:8px!important;border-radius:16px;overflow:hidden}
+ html body.xempty #viewChat .dock,html body.xempty #viewChat.empty .dock{top:calc(50% - 20px)!important}
+ html body #zhero .zh{bottom:calc(50% + 44px)!important}
+ html body #zhero h1{font:600 clamp(26px,2.4vw,32px)/1.15 var(--cl-sans)!important;letter-spacing:-.02em}
+ /* bottom panel with idea cards */
+ html body #zhero .zg{left:48px!important;right:48px!important;top:auto!important;bottom:0!important;transform:none!important;width:auto!important;max-width:none!important;margin:0!important;
+  padding:20px 24px 24px!important;background:var(--lv-panel);border-radius:24px 24px 0 0;gap:14px!important;grid-template-columns:repeat(6,1fr)}
+ #zhero .zg::before{content:"Start with an idea";grid-column:1/-1;font:500 14px var(--cl-sans);color:var(--lv-sub)}
+ #zhero .zc{padding:0!important;border-radius:14px!important;overflow:hidden;align-items:stretch;gap:0;background:var(--cl-card2);border:1px solid var(--lv-line)}
+ #zhero .zc .zi{height:96px!important;border-radius:0!important}
+ #zhero .zc span{display:block!important;padding:11px 14px;text-align:left!important;font:500 14px var(--cl-sans)!important}
 }
