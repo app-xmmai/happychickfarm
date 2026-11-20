@@ -21,7 +21,7 @@
    '<svg viewBox="0 0 120 80"><rect x="24" y="12" width="72" height="58" rx="8" fill="#232329"/><rect x="24" y="12" width="72" height="14" rx="8" fill="'+B+'"/><g fill="'+L+'"><rect x="32" y="34" width="10" height="8" rx="2"/><rect x="48" y="34" width="10" height="8" rx="2"/><rect x="64" y="34" width="10" height="8" rx="2"/><rect x="80" y="34" width="10" height="8" rx="2"/><rect x="32" y="48" width="10" height="8" rx="2"/><rect x="48" y="48" width="10" height="8" rx="2" fill="#fff"/><rect x="64" y="48" width="10" height="8" rx="2"/></g></svg>']
  ];
  var z=document.createElement("div");z.id="zhero";
- var h='<div class="zin"><div class="zk"><i></i>XMM AI</div><h1>Create anything<br>you can <b>imagine</b></h1><div class="zg">';
+ var h='<div class="zin"><h1>Create anything<br>you can <b>imagine</b></h1><div class="zg">';
  CARDS.forEach(function(c,i){h+='<button type="button" class="zc" data-i="'+i+'"><div class="zi">'+c[2]+'</div><span>'+c[0]+'</span></button>'});
  z.innerHTML=h+'</div></div>';
  z.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".zc");if(b)CARDS[+b.dataset.i][1]()});
