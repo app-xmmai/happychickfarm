@@ -13,9 +13,10 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://127.0.0.1:5500"
 ];
-const CREATE_LIMIT = { max: 12, windowMs: 10 * 60 * 1000 };  // 12 new videos / 10 min / IP
+const CREATE_LIMIT = { max: 1, windowMs: 60 * 1000 };        // 1 new video / minute / IP
 const STATUS_LIMIT = { max: 600, windowMs: 10 * 60 * 1000 }; // 600 status checks / 10 min / IP
 
+const statusCache = new Map(); // id -> {t, body}
 const hits = new Map(); // free, in-memory, per Worker instance (best effort)
 function limited(ip, kind, lim) {
   const now = Date.now(), k = kind + ":" + ip;
@@ -111,15 +112,11 @@ export default {
         const ratio = ["16:9", "21:9", "4:3", "1:1", "3:4", "9:16"].includes(b.aspect) ? b.aspect : "16:9";
 
         const body = JSON.stringify({ model: MODEL, prompt, seconds: String(sec), size: "720P", aspect_ratio: ratio });
-        let r = null;
-        for (let i = 0; i < 3; i++) {
-          r = await agnes(env, "/v1/videos", { method: "POST", headers: { "Content-Type": "application/json" }, body });
-          if (r.ok || (r.status !== 429 && r.status < 500)) break;
-          await new Promise(res => setTimeout(res, 1500 * (i + 1))); // Agnes is busy: wait and try again
-        }
+        // exactly ONE request to Agnes per video: no retries
+        const r = await agnes(env, "/v1/videos", { method: "POST", headers: { "Content-Type": "application/json" }, body });
         if (!r.ok) {
           const code = r.status === 429 ? 429 : r.status === 401 || r.status === 403 ? 502 : r.status >= 500 ? 502 : 400;
-          const why = r.status === 429 ? "Agnes rate limit / quota reached" : r.status === 401 || r.status === 403 ? "Agnes key rejected" : "Agnes error";
+          const why = r.status === 429 || /1015/.test(r.text) ? "Agnes rate limit / quota reached" : r.status === 401 || r.status === 403 ? "Agnes key rejected" : "Agnes error";
           return send({ error: why + (errText(r) ? ": " + errText(r) : ""), code, source: "agnes", upstream: r.status }, code, o);
         }
         const id = pickId(r.json);
@@ -135,10 +132,13 @@ export default {
         const id = url.searchParams.get("id") || "";
         if (!/^[\w.:-]{4,160}$/.test(id)) return send({ error: "Bad id", code: 400 }, 400, o);
 
+        const cached = statusCache.get(id);
+        if (cached && Date.now() - cached.t < 3000) return send(cached.body, 200, o);
+        const reply = (body) => { statusCache.set(id, { t: Date.now(), body }); if (statusCache.size > 500) statusCache.delete(statusCache.keys().next().value); return send(body, 200, o); };
         const r = await agnes(env, "/agnesapi?video_id=" + encodeURIComponent(id) + "&model_name=" + MODEL, { method: "GET" });
         if (!r.ok) {
-          if (r.status === 404) return send({ status: "failed", error: "Video not found", code: 404 }, 200, o);
-          return send({ status: "pending", note: "Agnes busy (" + r.status + ")" }, 200, o); // keep polling
+          if (r.status === 404) return reply({ status: "failed", error: "Video not found", code: 404 });
+          return reply({ status: "pending", note: "Agnes busy (" + r.status + ")" }); // keep polling
         }
         const j = r.json || {};
         const d = j.data && typeof j.data === "object" ? j.data : {};
@@ -146,10 +146,10 @@ export default {
         const u = findUrl(j);
         if (/fail|error|cancel|reject|timeout|expired/.test(st)) {
           const m = (j.error && (j.error.message || j.error)) || j.message || d.error || d.message || "Generation failed";
-          return send({ status: "failed", error: String(m).slice(0, 200), code: 502 }, 200, o);
+          return reply({ status: "failed", error: String(m).slice(0, 200), code: 502 });
         }
-        if (u && (!st || /done|complete|succe|finish|ready|success/.test(st))) return send({ status: "done", url: u }, 200, o);
-        return send({ status: "pending" }, 200, o);
+        if (u && (!st || /done|complete|succe|finish|ready|success/.test(st))) return reply({ status: "done", url: u });
+        return reply({ status: "pending" });
       }
 
       return send({ error: "Method not allowed", code: 405 }, 405, o);

@@ -31,23 +31,9 @@ window.XMM_CONFIG = {
     { name: "FLUX Space", type: "gradio", base: "https://black-forest-labs-flux-1-schnell.hf.space", fn: "infer" },
     { name: "ZSky",       type: "post",   url: "https://api.zsky.ai/v1/generate" }
   ],
-  // Video maker (the Video tab above the chat input): keyless Hugging Face Space, max VIDEO_MAX_SEC seconds, 1 video per VIDEO_COOLDOWN_MS on this device.
-  // "data" is the Space's input list; {prompt} {frames} {w} {h} {seed} are filled in. Edit it if the Space changes.
-  // Agnes video Worker (Cloudflare). Tried first for every video; if it fails, the free servers below take over.
+  // Video maker (Video tab): ONLY Agnes (model agnes-video-2.5-flash) through this Cloudflare Worker. No other servers.
   VIDEO_WORKER: "https://xmmai-video.xbm-bayat.workers.dev",
-  VIDEO_COOLDOWN_MS: 300000,
-  // Optional free keys that raise the daily limit (the main cause of Error 429). Leave "" to use the anonymous tier.
-  VIDEO_HF_TOKEN: "",      // free token from huggingface.co/settings/tokens
-  POLLINATIONS_KEY: "",    // free key from enter.pollinations.ai
-  VIDEO_AI: [
-    { name: "LTX Video", type: "gradio", base: "https://lightricks-ltx-video-distilled.hf.space", fn: "generate", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512,
-      data: ["{prompt}", "worst quality, inconsistent motion, blurry, jittery, distorted", null, null, "{h}", "{w}", 8, "{frames}", "{seed}", true, 1, true] },
-    { name: "Pollinations Grok", type: "pollinations", model: "grok-video", maxSec: 5 },
-    { name: "Pollinations LTX",  type: "pollinations", model: "ltx-2", maxSec: 5 },
-    { name: "Pollinations Wan",  type: "pollinations", model: "wan", maxSec: 5 },
-    { name: "LTX Video 2", type: "gradio", base: "https://lightricks-ltx-video.hf.space", fn: "", fps: 24, maxFrames: 121, maxSec: 5, w: 704, h: 512 },
-    { name: "Wan Fast",    type: "gradio", base: "https://multimodalart-wan2-1-fast.hf.space", fn: "", fps: 16, maxFrames: 81, maxSec: 5, w: 640, h: 480 }
-  ],
+  VIDEO_COOLDOWN_MS: 60000,   // 1 video per minute per device
   FREE_AI: [
     { name: "LLM7",         url: "https://api.llm7.io/v1/chat/completions", model: "gpt-4.1-nano-2025-04-14", key: "unused", rpm: 25, tpm: 100000 },
     { name: "Pollinations", url: "https://text.pollinations.ai/openai", model: "openai-fast", key: "", conc: 1, tpm: 8000 },

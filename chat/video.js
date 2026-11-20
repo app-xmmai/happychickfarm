@@ -1,11 +1,10 @@
-/* Create bar above the chat input: Chat | Image | Video. Video = keyless community generator (Hugging Face Space), 1 per 5 min, short clips. */
+/* Create bar above the chat input: Chat | Image | Video. Video = Agnes (agnes-video-2.5-flash) through the Cloudflare Worker, 1 per minute. */
 (function(){
 var $=function(s){return document.querySelector(s)};
 function C(){return(window.XMM_API&&window.XMM_API.CFG)||{}}
-var DEF=[{name:"LTX Video",type:"gradio",base:"https://lightricks-ltx-video-distilled.hf.space",fn:"generate",fps:24,maxFrames:121,maxSec:5,w:704,h:512,
- data:["{prompt}","worst quality, inconsistent motion, blurry, jittery, distorted",null,null,"{h}","{w}",8,"{frames}","{seed}",true,1,true]}];
-function PV(){var L=C().VIDEO_AI&&C().VIDEO_AI.length?C().VIDEO_AI:DEF;return C().VIDEO_WORKER?[{name:"Agnes",type:"worker",maxSec:7}].concat(L):L}
-function CD(){return C().VIDEO_COOLDOWN_MS||300000}
+function WK(){return String(C().VIDEO_WORKER||"https://xmmai-video.xbm-bayat.workers.dev").replace(/\/+$/,"")}
+function PV(){return[{name:"Agnes",type:"worker",maxSec:7}]}
+function CD(){return C().VIDEO_COOLDOWN_MS||60000}
 function MAXS(){return Math.min(7,Math.max.apply(null,PV().map(function(p){return p.maxSec||5})))}
 var LK="xmm.vidlast",RK="xmm.vidres",mode="chat",sec=5,res={},JOBS={};
 try{res=JSON.parse(localStorage.getItem(RK)||"{}")}catch(e){res={}}
@@ -27,66 +26,36 @@ function setMode(m){mode=m;window.XMM_GENMODE=m;document.body.setAttribute("data
 bar.onclick=function(e){var b=e.target.closest&&e.target.closest("button");if(!b)return;if(b.dataset.m){setMode(b.dataset.m);try{msg.focus()}catch(x){}}else if(b.dataset.s){sec=+b.dataset.s;paint();setMode(mode)}};
 setInterval(function(){var i=bar.querySelector(".gm-cd"),l=left();if(i)i.textContent=l>0?" · "+fmt(l):""},1000);
 /* start a video: adds the messages, the box then makes the clip */
-function start(text){var l=left();if(l>0){toast("Video limit: 1 video every 5 minutes. Wait "+fmt(l));return false}
+function start(text){var l=left();if(l>0){toast("Video limit: 1 video per minute. Wait "+fmt(l));return false}
  var A=window.XMM_API;if(!A)return false;var c=A.cur&&A.cur();if(!c&&A.S){c={id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:String(text).slice(0,40)||"New video",msgs:[]};A.S.chats.unshift(c);A.S.cur=c.id}if(!c)return false;
  var cfg={id:"v"+Date.now().toString(36),prompt:String(text).slice(0,300),sec:sec,t:Date.now()};
  c.msgs.push({role:"user",text:text,full:text,atts:[],imgs:[]});c.msgs.push({role:"assistant",text:"```xmm-video\n"+JSON.stringify(cfg)+"\n```"});
  stamp(Date.now());A.saveChats&&A.saveChats();A.renderMsgs&&A.renderMsgs();A.renderList&&A.renderList();return true}
-/* ---- generator (Gradio queue API of a Hugging Face Space) ---- */
-function rnd(){return Math.floor(Math.random()*1e9)}
-function pick(o){if(!o)return null;if(typeof o==="string")return /^https?:|^\/|\.mp4|\.webm/.test(o)?o:null;if(Array.isArray(o)){for(var i=0;i<o.length;i++){var r=pick(o[i]);if(r)return r}return null}
- if(o.video)return pick(o.video);return o.url||o.path||null}
-function abs(p,u){if(!u)return null;if(/^https?:/.test(u))return u;if(/^\/gradio_api\/|^\/file=/.test(u))return p.base+u;return p.base+"/gradio_api/file="+u.replace(/^\//,"")}
-function HF(){var t=C().VIDEO_HF_TOKEN;return t?{Authorization:"Bearer "+t}:{}}
-async function plan(p,prompt,s,nf,signal){var r=await fetch(p.base+"/gradio_api/info",{signal:signal,headers:HF()});if(!r.ok)throw new Error("HTTP "+r.status);var info=await r.json(),ne=info.named_endpoints||{},key=null;
- if(p.fn&&ne["/"+p.fn])key="/"+p.fn;else{var ks=Object.keys(ne);for(var i=0;i<ks.length&&!key;i++){var e=ne[ks[i]],txt=(e.parameters||[]).some(function(q){return /prompt|text/i.test((q.parameter_name||"")+(q.label||""))}),vid=JSON.stringify(e.returns||[]).toLowerCase().indexOf("video")>=0;if(txt&&vid)key=ks[i]}}
- if(!key)throw new Error("No video endpoint");
- var data=(ne[key].parameters||[]).map(function(q){var n=((q.parameter_name||"")+" "+(q.label||"")).toLowerCase(),d=q.parameter_has_default?q.parameter_default:null;
-  if(/negative/.test(n))return d!=null?d:"worst quality, blurry, jittery, distorted";if(/prompt/.test(n))return prompt;if(/width/.test(n))return p.w||704;if(/height/.test(n))return p.h||512;if(/frame/.test(n))return nf;if(/seed/.test(n)&&!/random/.test(n))return rnd();if(/random/.test(n))return true;if(/duration|second|length/.test(n))return s;
-  if(d==null&&/^(textbox|string|str)$/i.test(String(q.python_type&&q.python_type.type||q.type&&q.type.type||"")))return prompt;return d});
- return{fn:key.replace(/^\//,""),data:data}}
-async function call(p,fn,data,st,signal){var r=await fetch(p.base+"/gradio_api/call/"+fn,{method:"POST",headers:Object.assign({"Content-Type":"application/json"},HF()),body:JSON.stringify({data:data}),signal:signal});if(!r.ok)throw new Error("HTTP "+r.status);
- var id=(await r.json()).event_id;if(!id)throw new Error("No job id");st("In the queue…");
- var rr=await fetch(p.base+"/gradio_api/call/"+fn+"/"+id,{signal:signal,headers:HF()});if(!rr.ok||!rr.body)throw new Error("HTTP "+rr.status);
- var rd=rr.body.getReader(),dec=new TextDecoder(),buf="";
- for(;;){var x=await rd.read();if(x.done)break;buf+=dec.decode(x.value,{stream:true}).replace(/\r\n/g,"\n");var parts=buf.split("\n\n");buf=parts.pop();
-  for(var i=0;i<parts.length;i++){var m1=parts[i].match(/event: *(\w+)/),m2=parts[i].match(/data: *([\s\S]*)/),e=m1&&m1[1],d=m2&&m2[1];
-   if(e==="generating"||e==="heartbeat")st("Making the video…");
-   if(e==="error")throw new Error(d&&d!=="null"?String(d).slice(0,140):"The server is busy or out of free quota");
-   if(e==="complete"){var u=abs(p,pick(JSON.parse(d)));if(u)return u;throw new Error("No video came back")}}}
- throw new Error("The server closed the connection")}
-async function viaGradio(p,prompt,s,st){var fps=p.fps||24,nf=Math.min(p.maxFrames||121,Math.max(9,Math.round(s*fps/8)*8+1));
- var ac=new AbortController(),to=setTimeout(function(){ac.abort()},360000),err;
- try{try{var pac=new AbortController(),pt=setTimeout(function(){pac.abort()},15000),pl;try{pl=await plan(p,prompt,s,nf,pac.signal)}finally{clearTimeout(pt)}return await call(p,pl.fn,pl.data,st,ac.signal)}catch(e){err=e;if(ac.signal.aborted)throw e}
-  if(p.data&&p.fn){var data=p.data.map(function(x){if(x==="{frames}")return nf;if(x==="{w}")return p.w||704;if(x==="{h}")return p.h||512;if(x==="{seed}")return rnd();return typeof x==="string"?x.replace("{prompt}",prompt):x});return await call(p,p.fn,data,st,ac.signal)}
-  throw err}
- finally{clearTimeout(to)}}
-async function viaPoll(p,prompt,s,st){var ac=new AbortController(),to=setTimeout(function(){ac.abort()},300000);
- try{st("Starting "+p.name+"…");var k=C().POLLINATIONS_KEY,d=p.durations?p.durations.reduce(function(a,b){return Math.abs(b-s)<Math.abs(a-s)?b:a}):s;
-  var u="https://gen.pollinations.ai/image/"+encodeURIComponent(prompt)+"?model="+encodeURIComponent(p.model)+"&duration="+d+"&seed="+rnd()+(k?"&key="+encodeURIComponent(k):"");
-  st("Making the video…");var r=await fetch(u,{signal:ac.signal,headers:k?{Authorization:"Bearer "+k}:{}});if(!r.ok)throw new Error("HTTP "+r.status);
-  var ct=r.headers.get("content-type")||"";if(!/video|octet/.test(ct))throw new Error("No video came back");var b=await r.blob();if(!b.size)throw new Error("No video came back");
-  return URL.createObjectURL(b.type&&/video/.test(b.type)?b:new Blob([b],{type:"video/mp4"}))}
- finally{clearTimeout(to)}}
-var DISC=null;
-async function disc(){if(DISC)return DISC;var out=[],urls=["https://huggingface.co/api/spaces?search=video&sdk=gradio&sort=likes&direction=-1&limit=60&expand[]=runtime","https://huggingface.co/api/spaces?search=video&sdk=gradio&sort=likes&direction=-1&limit=60"];
- for(var u=0;u<urls.length&&!out.length;u++){try{var r=await fetch(urls[u]);if(!r.ok)continue;var L=await r.json();
-  L.forEach(function(x){var id=x.id||"",st=x.runtime&&x.runtime.stage;if(!/\/.+/.test(id)||/avatar|foley|lip|upscal|edit|interpol|i2v|image-to|img2|v2v|audio|talk|face|swap|caption|detect/i.test(id)||!/ltx|wan|cogvideo|hunyuan|video|animate|mochi|svd/i.test(id))return;
-   if(st&&st!=="RUNNING")return;out.push({name:id,type:"gradio",base:"https://"+id.toLowerCase().replace(/[._\/]/g,function(c){return c==="/"?"-":"-"})+".hf.space",fn:"",fps:24,maxFrames:97,maxSec:5,w:640,h:480})})}catch(e){}}
- return DISC=out.slice(0,8)}
-async function viaWorker(p,prompt,s,st){var base=String(C().VIDEO_WORKER).replace(/\/+$/,"");st("Starting…");
- var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});
- if(!r.ok){var eb=null;try{eb=await r.json()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=eb&&(eb.source?eb.source+": ":"")+(eb&&eb.error||"");throw er}
- var j=await r.json();if(!j.id){var e2=new Error("HTTP 502");e2.detail="no video id";throw e2}var t0=Date.now(),bad=0;
- for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
-  st("Making the video…");var d=null;try{var q=await fetch(base+"/video?id="+encodeURIComponent(j.id));if(q.ok)d=await q.json();else{bad++;if(bad>8){var e3=new Error("HTTP "+q.status);e3.detail="status check failed";throw e3}}}catch(x){if(x&&x.detail)throw x;bad++;if(bad>8)throw x}
-  if(!d)continue;bad=0;
-  if(d.status==="done"&&d.url)return d.url;if(d.status==="failed"){var e4=new Error("HTTP "+(d.code||502));e4.detail=d.error||"failed";throw e4}}}
-async function gen(prompt,s,st){var P=PV(),err,trace=[];
- async function tryp(p){try{st("Starting "+p.name+"…");var sx=Math.min(s,p.maxSec||5);return p.type==="worker"?await viaWorker(p,prompt,sx,st):p.type==="pollinations"?await viaPoll(p,prompt,sx,st):await viaGradio(p,prompt,sx,st)}catch(e){err=err||e;trace.push(String(p.name).slice(0,22)+" "+ecode(e)+(e&&e.detail?" ("+String(e.detail).slice(0,70)+")":""));return null}}
- for(var i=0;i<P.length;i++){var u=await tryp(P[i]);if(u)return u}
- st("Looking for a free server…");var D=await disc();for(var j=0;j<D.length;j++){var u2=await tryp(D[j]);if(u2)return u2}
- var ee=err||new Error("No video server");ee.trace=trace.join(" · ");throw ee}
+var JK="xmm.vidjobs";
+function jobs(){try{return JSON.parse(localStorage.getItem(JK)||"{}")}catch(e){return{}}}
+function setJob(id,v){var o=jobs(),n=Date.now();if(v)o[id]=v;else delete o[id];for(var k in o)if(n-(o[k].t||0)>864e5)delete o[k];try{localStorage.setItem(JK,JSON.stringify(o))}catch(e){}}
+function hint(d){d=String(d||"");return /1015/.test(d)?"Agnes is rate-limiting this server (1015). Wait a few minutes, then try again.":d}
+/* ONE request to Agnes per video. A reload resumes the same job (or shows the same error) instead of sending a new request. */
+async function viaWorker(p,prompt,s,st,bid){var base=WK();var jb=bid?jobs()[bid]:null;
+ if(jb&&jb.fail){var ef=new Error("HTTP "+(jb.code||429));ef.detail=jb.fail;throw ef}
+ try{var wid=jb&&jb.wid;
+  if(!wid){st("Starting…");
+   var r=await fetch(base+"/video",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,seconds:s})});
+   if(!r.ok){var eb=null;try{eb=await r.json()}catch(x){}var er=new Error("HTTP "+r.status);er.detail=hint(eb&&eb.error||"");throw er}
+   var j=await r.json();if(!j.id){var e2=new Error("HTTP 502");e2.detail="no video id";throw e2}
+   wid=j.id;if(bid)setJob(bid,{wid:wid,t:Date.now()})}
+  var t0=Date.now(),bad=0;
+  for(;;){await new Promise(function(ok){setTimeout(ok,4000)});if(Date.now()-t0>420000){var te=new Error("timeout");te.name="AbortError";throw te}
+   st("Making the video…");var d=null;
+   try{var q=await fetch(base+"/video?id="+encodeURIComponent(wid));if(q.ok)d=await q.json();else{bad++;if(bad>8){var e3=new Error("HTTP "+q.status);e3.detail="status check failed";throw e3}}}catch(x){if(x&&x.detail)throw x;bad++;if(bad>8)throw x}
+   if(!d)continue;bad=0;
+   if(d.status==="done"&&d.url){if(bid)setJob(bid,null);return d.url}
+   if(d.status==="failed"){var e4=new Error("HTTP "+(d.code||502));e4.detail=hint(d.error||"failed");throw e4}}
+ }catch(e){if(bid)setJob(bid,{fail:e.detail||String(e.message||e),code:+(String(e.message).match(/\d{3}/)||[0])[0]||502,t:Date.now()});throw e}}
+/* Agnes only (agnes-video-2.5-flash): no other servers. */
+async function gen(prompt,s,st,bid){
+ try{st("Starting Agnes…");return await viaWorker(null,prompt,Math.min(s,7),st,bid)}
+ catch(e){e.trace="Agnes "+ecode(e)+(e&&e.detail?" — "+String(e.detail).slice(0,160):"");throw e}}
 /* ---- boxes ---- */
 function setAll(id,fn){(JOBS[id]||[]).forEach(function(b){if(b.isConnected)fn(b)})}
 /* ---- the XMM tag: the AI icon looks around, then a box pops out of its head saying xmm-ai.com. Same drawing for live playback and for the saved file. ---- */
@@ -132,7 +101,7 @@ function fail(b,t,tr){b.classList.remove("done");b.classList.add("bad");b.innerH
 function ecode(e){var m=String(e&&e.message||e),n=m.match(/HTTP (\d{3})/);if(n)return n[1];if(e&&e.name==="AbortError")return 408;if(/quota|busy|queue|limit/i.test(m))return 429;if(/No video/i.test(m))return 502;if(/fetch|network|closed|load failed/i.test(m))return 503;return 500}
 async function run(id,prompt,s){var p=prompt;
  try{if(window.XMM_EN)p=await window.XMM_EN(p)||p}catch(e){}try{if(window.XMM_SAFE)p=await window.XMM_SAFE(p)||p}catch(e){}
- try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})});res[id]=u;saveRes();setAll(id,function(b){try{show(b,u)}catch(x){}})}
+ try{var u=await gen(p,s,function(t){setAll(id,function(b){var sm=b.querySelector(".dotslbl,.xv-load small");if(sm)sm.textContent=t})},id);res[id]=u;saveRes();setAll(id,function(b){try{show(b,u)}catch(x){}})}
  catch(e){var m="Error "+ecode(e),tr=e&&e.trace;stamp(0);setAll(id,function(b){fail(b,m,tr)})}
  delete JOBS[id]}
 function hyd(){[].forEach.call(document.querySelectorAll(".xv:not([data-s])"),function(b){b.setAttribute("data-s","1");var id=b.dataset.id;
