@@ -5,8 +5,8 @@ var CASP=/caspian\s*mall|caspian\s*complex|کاسپین\s*مال|مجتمع\s*(�
 var ANZ=[49.30,37.58,49.66,37.34]; /* Bandar Anzali box: left,top,right,bottom */
 function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function getPos(){if(POS)return Promise.resolve(POS);if(POSP)return POSP;
- POSP=new Promise(function(res){if(!navigator.geolocation)return res(null);var done=0,f=function(p){if(done)return;done=1;res(p)};setTimeout(function(){f(null)},1800);
-  try{navigator.geolocation.getCurrentPosition(function(p){POS=[p.coords.latitude,p.coords.longitude];f(POS)},function(){f(null)},{maximumAge:600000,timeout:1700})}catch(e){f(null)}});return POSP}
+ POSP=new Promise(function(res){if(!navigator.geolocation)return res(null);var done=0,f=function(p){if(done)return;done=1;res(p)};setTimeout(function(){f(null)},3000);
+  try{navigator.geolocation.getCurrentPosition(function(p){POS=[p.coords.latitude,p.coords.longitude];f(POS)},function(){f(null)},{maximumAge:900000,timeout:2900})}catch(e){f(null)}});return POSP}
 function hav(a,b){var r=Math.PI/180,dl=(b[0]-a[0])*r,dg=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dg/2)*Math.sin(dg/2);return 12742*Math.asin(Math.sqrt(x))}
 function url(q,n,pos,box,bnd){var u="https://nominatim.openstreetmap.org/search?format=jsonv2&accept-language=en&addressdetails=1&extratags=1&limit="+n+"&q="+encodeURIComponent(q);
  if(box)u+="&viewbox="+box.join(",")+"&bounded=1";else if(pos){var d=bnd?.18:.6;u+="&viewbox="+[pos[1]-d,pos[0]+d,pos[1]+d,pos[0]-d].join(",")+"&bounded="+(bnd?1:0)}return u}

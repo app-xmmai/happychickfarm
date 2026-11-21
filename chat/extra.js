@@ -1,4 +1,4 @@
-/* extra.js: "See more" for long answers + /map/<location> route */
+/* extra.js: "See more" for long answers + map-in-app */
 (function(){
 var open=new Set(),T=0;
 function clamp(){T=0;document.querySelectorAll(".m-bot").forEach(function(m){var b=m.querySelector(".body");if(!b||b.querySelector(".genbox"))return;var id=m.getAttribute("data-i");var btn=m.querySelector(":scope>.xm-btn");
@@ -14,16 +14,15 @@ window.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.
 /* splash */
 function hideXl(){var x=document.getElementById("xl");if(!x||x.className)return;var w=Math.max(0,3000-(Date.now()-(window.__xlT||0)));setTimeout(function(){x.className="out";setTimeout(function(){x.remove()},450)},w)}
 if(document.readyState==="complete")hideXl();else addEventListener("load",hideXl);setTimeout(hideXl,3200);
-/* /map/<location> */
-var prev="/chat/",pending=null;
-function slug(q){return encodeURIComponent(String(q).trim().replace(/\s+/g,"-"))}
+/* map opens inside the main app (URL stays /chat/). Old /map/<place> links are converted. */
+var pending=null,loading=false,seen=false;
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-xe=nav]");if(b)pending=b.getAttribute("data-q")},true);
-setInterval(function(){var nv=document.getElementById("nv"),onMap=/^\/map\//.test(location.pathname);
- if(nv&&!onMap&&!loading){var i=nv.querySelector(".sbar input"),q=(i&&i.value.trim())||pending||"";if(q){prev=location.pathname;try{history.pushState({map:1},"","/map/"+slug(q))}catch(e){}}}
- else if(!nv&&onMap&&!loading){try{history.replaceState(null,"",prev.indexOf("/map/")===0?"/chat/":prev)}catch(e){}pending=null}},250);
-addEventListener("popstate",function(){if(!/^\/map\//.test(location.pathname)&&document.getElementById("nv")&&window.XMM_NAV)window.XMM_NAV.close()});
-var loading=false;
-function boot(){var m=location.pathname.match(/^\/map\/(.+)$/);if(!m)return;var q;try{q=decodeURIComponent(m[1]).replace(/-+/g," ").trim()}catch(e){q=m[1]}if(!q)return;loading=true;
+setInterval(function(){var nv=document.getElementById("nv");
+ if(nv&&!seen){seen=true;try{history.pushState({map:1},"",location.href)}catch(e){}}
+ else if(!nv&&seen){seen=false;pending=null}},250);
+addEventListener("popstate",function(){if(document.getElementById("nv")&&window.XMM_NAV)window.XMM_NAV.close()});
+function boot(){var m=location.pathname.match(/^\/map\/(.+)$/);if(!m)return;var q;try{q=decodeURIComponent(m[1]).replace(/-+/g," ").trim()}catch(e){q=m[1]}
+ try{history.replaceState(null,"","/chat/?lens=clone")}catch(e){}if(!q)return;loading=true;
  var n=0,t=setInterval(function(){if(window.XMM_NAV&&window.XMM_NAV.open){clearInterval(t);pending=q;window.XMM_NAV.open(q,null);setTimeout(function(){loading=false},1500)}else if(++n>80){clearInterval(t);loading=false}},100)}
 if(document.readyState==="complete")boot();else addEventListener("load",boot);
 })();
