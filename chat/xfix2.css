@@ -115,3 +115,16 @@ html body #nv .air input,html body #nv .aic button{border-radius:12px!important}
 html body #nv .leaflet-control-attribution,html body #nv .nv-attr{background:#17171b!important;color:#9b9ba5!important}
 html body #nv .leaflet-control-attribution a{color:#9b9ba5!important}
 html body #nv .fade{background:#0b0b10!important}
+
+/* v8: galaxy back, no bars at top/header, smaller input + buttons */
+html,html body{background:#000!important}
+#xmmBg,canvas#xmmBg{display:block!important}
+html body #clTop#clTop,html body #clTop#clTop#clTop,html body #viewChat,html body .dock,html body #mainChat,html body #main{background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important}
+html body #clTop::before,html body #clTop::after,html body #viewChat::before,html body #viewChat::after{display:none!important;content:none!important;background:none!important}
+html body #viewChat .composer.composer.composer,html body.ip #viewChat .composer.composer.composer,html body #viewChat .dock .composer.composer.composer{border-radius:16px!important;padding:2px 4px!important;min-height:0!important;background:#1a1a1f!important}
+html body #viewChat .composer #msg{font-size:14px!important;padding:4px 4px!important;line-height:1.3!important;min-height:0!important}
+html body #attBtn#attBtn#attBtn#attBtn,html body #sendBtn#sendBtn#sendBtn,html body #gMic#gMic#gMic,html body #gWave#gWave#gWave,html body #modeBtn#modeBtn#modeBtn{width:26px!important;height:26px!important;min-width:26px!important;min-height:26px!important;border-radius:10px!important;padding:0!important}
+html body #sendBtn svg,html body #gMic svg,html body #gWave svg,html body #attBtn svg{width:14px!important;height:14px!important}
+html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ{width:30px!important;height:30px!important;min-width:30px!important;border-radius:10px!important}
+html body .cl-b svg{width:15px!important;height:15px!important}
+html body .cl-db button#clNc#clNc#clNc,html body .cl-db button#clAv#clAv#clAv{height:34px!important;border-radius:10px!important;font-size:13px!important}
