@@ -269,7 +269,7 @@ function open(query,ll){close();q=query;destLL=ll||null;info=null;started=false;
   if(destLL)setDest(destLL);
   geoFull(q,function(i){if(!el)return;if(!destLL)setDest(i.ll,i);else setDest(destLL,i)},function(){if(!destLL)status(true,"Place not found")});
   navigator.geolocation.getCurrentPosition(function(p){if(el&&!lastP)onPos(p)},function(){},{enableHighAccuracy:false,maximumAge:120000,timeout:5000});
-  wid=navigator.geolocation.watchPosition(onPos,function(e){status(true,e.code===1?"Allow location in settings":"Can't get your location")},{enableHighAccuracy:true,maximumAge:0,timeout:15000});tick=setInterval(function(){if(!el||Date.now()-lastFix<1000)return;try{navigator.geolocation.getCurrentPosition(function(p){if(el)onPos(p)},function(){},{enableHighAccuracy:true,maximumAge:0,timeout:1500})}catch(e){}},1000)})}
+  wid=navigator.geolocation.watchPosition(onPos,function(e){status(true,e.code===1?"Allow location in settings":"Can't get your location")},{enableHighAccuracy:true,maximumAge:0,timeout:15000});tick=setInterval(function(){if(!el||Date.now()-lastFix<900)return;try{navigator.geolocation.getCurrentPosition(function(p){if(el)onPos(p)},function(){},{enableHighAccuracy:true,maximumAge:0,timeout:1500})}catch(e){}},1000)})}
 
 
 /* view angle: 0 north up, 1 heading up, 2 road ahead (3D tilt, route pointing up) */

@@ -79,3 +79,5 @@ html body #mainChat #viewChat .dock .composer,html body.xempty #mainChat #viewCh
 html body:not(.xempty) #zhero{display:none!important}
 /* cards removed (title stays) */
 html body #zhero .zg,html body #zhero .zc,html body .g-sug,html body .sug-cards{display:none!important}
+/* removed: suggestion chips / voice tip under the chat input */
+html body #ipSug,html body .ip-sug,html body .cl-tip,html body #chips:empty{display:none!important}

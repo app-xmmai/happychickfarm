@@ -164,7 +164,17 @@ function fixJ(b){var t=String(b).trim();var tries=[t];
  t=t.replace(/[\u201C\u201D]/g,'"').replace(/[\u2018\u2019]/g,"'");tries.push(t);
  var a=t.search(/[\[{]/),z=Math.max(t.lastIndexOf("}"),t.lastIndexOf("]"));if(a>=0&&z>a)t=t.slice(a,z+1);tries.push(t);
  t=t.replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g,'$1"$2":');tries.push(t);
+ var nc=t.replace(/(^|[\s,{\[])\/\/[^\n]*/g,"$1");tries.push(nc);
+ tries.push(nc.replace(/'([^'\\\n]*(?:\\.[^'\\\n]*)*)'/g,function(m,x){return'"'+x.replace(/"/g,'\\"')+'"'}));
+ tries.push(rep(nc));
  for(var i=0;i<tries.length;i++){try{return JSON.parse(tries[i].replace(/,\s*([}\]])/g,"$1"))}catch(_){}}return null}
+/* repair: escape raw newlines inside strings, drop trailing junk, close unfinished strings/brackets (cut-off replies) */
+function rep(t){var o="",st=[],q=false,e=false;for(var i=0;i<t.length;i++){var c=t[i];
+ if(q){if(e){e=false;o+=c}else if(c==="\\"){e=true;o+=c}else if(c==='"'){q=false;o+=c}else if(c==="\n"){o+="\\n"}else if(c==="\r"||c==="\t"){o+=c==="\t"?"\\t":""}else o+=c;continue}
+ if(c==='"'){q=true;o+=c;continue}if(c==="{"||c==="["){st.push(c);o+=c;continue}
+ if(c==="}"||c==="]"){if(st.length&&((c==="}"&&st[st.length-1]==="{")||(c==="]"&&st[st.length-1]==="["))){st.pop();o+=c;if(!st.length)break}continue}o+=c}
+ if(q)o+='"';o=o.replace(/[,:\s]+$/,"");if(/"\s*:\s*$/.test(o))o+="null";
+ while(st.length){var k=st.pop();o=o.replace(/,\s*$/,"")+(k==="{"?"}":"]")}return o}
 function bad(type){return'<div class="xw xw-fail"><b>Couldn\u2019t build this '+E(type)+' box</b><small>Ask me again and I\u2019ll redo it.</small></div>'}
 function widget(type,body,partial){var cfg=fixJ(body);
  if(!cfg){return partial?'<div class="xw xw-skel"><span></span>Building '+E(type)+'\u2026</div>':bad(type)}
