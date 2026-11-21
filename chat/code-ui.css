@@ -141,13 +141,33 @@ html body #code .cd-in .icon-btn.lg{background:rgba(255,255,255,.1)!important;-w
 @media(prefers-reduced-motion:reduce){html body .lg.lg,#code .seg .lg-thumb{transition:none;animation:none}}
 @media(prefers-reduced-transparency:reduce){html body .lg.lg{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:#2c2c2f!important}}
 
-/* ---- live "what is it writing" panel + clickable file steps ---- */
-#code .cd-live{margin-top:10px;border-radius:14px;overflow:hidden;background:#0c0c0e;border:1px solid rgba(255,255,255,.09)}
-#code .cd-live-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;font:600 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#a9b4c2;background:rgba(255,255,255,.05);cursor:pointer}
-#code .cd-live-h span:last-child{opacity:.7;font-weight:500}
-#code .cd-live pre{margin:0;padding:10px 12px;max-height:250px;overflow:hidden;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d6deeb;white-space:pre-wrap;word-break:break-all;text-align:left;direction:ltr}
-#code .cd-cur{display:inline-block;width:7px;height:13px;margin-left:2px;vertical-align:-2px;background:#7cc4ff;animation:cdBlink 1s steps(2) infinite}
-@keyframes cdBlink{50%{opacity:0}}
+/* ---- live coding panel (professional real-time steps + code viewer) ---- */
+.cd-live,.m-bot .cd-live{margin:10px 0;border-radius:16px;overflow:hidden;background:#0c0c0e;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.cd-live-hd{display:flex;align-items:center;gap:10px;padding:10px 14px;font:600 13px/1.3 system-ui,sans-serif;color:#c8d0dc;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03))}
+.cd-live-ic{font-size:16px}
+.cd-live-pct{margin-left:auto;font:600 12px ui-monospace,monospace;color:#7cc4ff;opacity:.9}
+.cd-live-bar{height:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.cd-live-bar>i{display:block;height:100%;background:linear-gradient(90deg,#5b9dff,#a78bfa);transition:width .25s ease}
+.cd-live-code{margin:0;padding:12px 14px;max-height:220px;overflow:auto;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d6deeb;white-space:pre-wrap;word-break:break-word;text-align:left;direction:ltr;background:#08080a}
+.cd-live-code .t-k{color:#c792ea}.cd-live-code .t-s{color:#c3e88d}.cd-live-code .t-n{color:#f78c6c}.cd-live-code .t-f{color:#82aaff}.cd-live-code .t-c{color:#546e7a}
+.cd-live-stps{padding:8px 12px 10px;display:flex;flex-direction:column;gap:4px}
+.stp{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:10px;font:500 12.5px/1.35 system-ui,sans-serif;color:rgba(255,255,255,.72);transition:background .15s}
+.stp.active{background:rgba(91,157,255,.12);color:#e8f0ff}
+.stp.done{color:rgba(255,255,255,.55)}
+.stp-ic{flex:0 0 18px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:rgba(255,255,255,.08)}
+.stp.done .stp-ic{background:rgba(52,211,153,.2);color:#34d399}
+.stp.active .stp-ic{background:rgba(91,157,255,.25);color:#7cc4ff;animation:cdSpin 1s linear infinite}
+@keyframes cdSpin{to{transform:rotate(360deg)}}
+.stp-ex{margin:6px 0 2px 26px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.35);font:12px/1.45 ui-monospace,monospace;color:#b8c0cc;max-height:180px;overflow:auto}
+.cd-files{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cd-fcard{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);cursor:default}
+.cd-fic{font-size:22px}
+.cd-fcard b{display:block;font:600 13px system-ui;color:#e8eef6}
+.cd-fcard small{font:12px system-ui;color:rgba(255,255,255,.5)}
+.cd-fdl,.cd-fzip{margin-left:auto;padding:8px 14px;border-radius:999px;border:0;background:rgba(91,157,255,.2);color:#9ec5ff;font:600 12px system-ui;cursor:pointer}
+.cd-fdl:active,.cd-fzip:active{transform:scale(.96)}
+.cd-fzip{width:100%;margin-top:4px;text-align:center;background:rgba(167,139,250,.18);color:#c4b5fd}
+#code .cd-live{margin-top:10px}
 #code .stp[data-f]{cursor:pointer}
 #code .stp[data-f]:hover{text-decoration:underline}
 

@@ -1,15 +1,16 @@
 /* XMMGPT Sun 6.2 event: say "sun" to the AI, answer the quiz, unlock the model. After the event it becomes Sun 6.2 Lite. */
 (function(){"use strict";
-var EVENT_END=new Date("2026-12-16T00:00:00").getTime(),USE_MS=30*864e5,KEY="xmm.sun.unlock";
+var EVENT_END=new Date("2026-12-16T00:00:00").getTime(),KEY="xmm.sun.unlock",GKEY="xmm.galaxy.unlock";
 function A(){return window.XMM_SUNAPI}
 function now(){return Date.now()}
-function eventOn(){return now()<EVENT_END}
+function eventOn(){return true}
+function galOk(){try{return !!localStorage.getItem(GKEY)}catch(e){return false}}
 function unlockedAt(){try{return +JSON.parse(localStorage.getItem(KEY))||0}catch(e){return 0}}
-function fullOk(){var u=unlockedAt();return !!u&&now()<u+USE_MS}
-function list(){var l=[];if(fullOk()||eventOn())l.push("sun62");l.push("sun62l");return l.concat(["x25","x20","x12"])}
-function locked(k){return k==="sun62"&&!fullOk()}
-function allowed(k){if(k==="sun62")return fullOk();if(k==="sun62l")return true;return true}
-function hint(){A().toast("Locked. Event: tell the AI \u201Csun\u201D to unlock it.")}
+function fullOk(){return !!unlockedAt()}
+function list(){var l=[];if(galOk())l.push("x7g");if(fullOk())l.push("sun62");l.push("sun62l");return l.concat(["x25","x20","x12"])}
+function locked(k){return (k==="sun62"&&!fullOk())||(k==="x7g"&&!galOk())}
+function allowed(k){if(k==="sun62")return fullOk();if(k==="x7g")return galOk();if(k==="sun62l")return true;return true}
+function hint(){A().toast("Locked.")}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
 /* ---- quiz card ---- */
@@ -54,18 +55,24 @@ function confetti(){var cv=document.createElement("canvas");cv.className="sun-co
   if(alive&&el<5200)requestAnimationFrame(f);else cv.remove()})(t0)}
 
 
-/* ---- new features pop up (all devices) ---- */
-/* shows on EVERY load/reload until the user claims (unlocks) the model; nothing is remembered about dismissing it */
-function showWN(){if(!eventOn()||fullOk()||document.querySelector(".sunwn"))return;
+/* ---- galaxy unlock ---- */
+function unlockGalaxy(){try{localStorage.setItem(GKEY,String(now()))}catch(_){}
+ var o=document.createElement("div");o.className="sunpop";
+ o.innerHTML='<div class="sp-card"><div class="sp-gal"></div><h3>Congrats!</h3><p>You have unlocked <b>XMMGPT-7 Galaxy</b>, our most powerful model. Cold, but the strongest at coding.</p><button type="button" class="sp-go">Try it now</button></div>';
+ document.body.appendChild(o);requestAnimationFrame(function(){requestAnimationFrame(function(){o.classList.add("in")})});confetti();
+ o.querySelector(".sp-go").onclick=function(){A().sunSetMode("x7g");closeAnim(o)};
+ o.addEventListener("click",function(e){if(e.target===o)closeAnim(o)})}
+/* ---- Easter egg pop up: no hints ---- */
+function showWN(){if((fullOk()&&galOk())||document.querySelector(".sunwn"))return;
+ try{if(sessionStorage.getItem("xmm.egg.seen"))return}catch(e){}
  var busy=function(id){var e=document.getElementById(id);return e&&!e.hidden&&getComputedStyle(e).display!=="none"};
  if(busy("login")||busy("welcome")||document.getElementById("cine")||/\/login/.test(location.pathname)){setTimeout(showWN,150);return}
+ try{sessionStorage.setItem("xmm.egg.seen","1")}catch(e){}
  var o=document.createElement("div");o.className="sunpop sunwn";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");
- o.innerHTML='<div class="sp-card"><div class="sp-sun"></div><h3>New features!</h3><ul class="sp-fl"><li><b>XMMGPT Sun 6.2 event</b><span>Wanna play a game? Get a reward!</span></li><li><b>Smoother animations</b><span>The upload menu and model switcher now open and close smoothly.</span></li></ul><button type="button" class="sp-go">Let\u2019s play!</button><button type="button" class="sp-later">Maybe later</button></div>';
+ o.innerHTML='<div class="sp-card"><div class="sp-sun"></div><h3>New Easter eggs!</h3><ul class="sp-fl"><li><b>XMMGPT-7 Galaxy is here</b></li><li><b>XMMGPT Sun 6.2 is here</b></li></ul><p>Find them!</p><button type="button" class="sp-go">Okay</button></div>';
  document.body.appendChild(o);requestAnimationFrame(function(){requestAnimationFrame(function(){o.classList.add("in")})});
- function done(){}
- o.querySelector(".sp-go").onclick=function(){done();closeAnim(o,function(){play()})};
- o.querySelector(".sp-later").onclick=function(){done();closeAnim(o)};
- o.addEventListener("click",function(e){if(e.target===o){done();closeAnim(o)}})}
+ o.querySelector(".sp-go").onclick=function(){closeAnim(o)};
+ o.addEventListener("click",function(e){if(e.target===o)closeAnim(o)})}
 setTimeout(showWN,250);
-window.XMM_SUN={list:list,locked:locked,allowed:allowed,hint:hint,card:card,intercept:intercept,play:play,eventOn:eventOn,fullOk:fullOk,closeAnim:closeAnim};
+window.XMM_SUN={galOk:galOk,unlockGalaxy:unlockGalaxy,list:list,locked:locked,allowed:allowed,hint:hint,card:card,intercept:intercept,play:play,eventOn:eventOn,fullOk:fullOk,closeAnim:closeAnim};
 })();

@@ -35,18 +35,21 @@ function openSess(id){let s=id&&st.list.find(x=>x.id===id);if(!s){s=st.list.find
 document.addEventListener("click",e=>{const t=e.target;if(!t.closest)return;const d=t.closest("[data-cdots]");
  if(d){e.stopPropagation();const id=d.dataset.cdots;API().showMenu(d,[{label:"Delete code chat",danger:1,fn:()=>{st.list=st.list.filter(s=>s.id!==id);idb("del",id);if(st.cur===id)st.cur=null;saveAll();side()}}],"right");return}
  const i=t.closest("[data-cid]");if(i){const sc=document.getElementById("scrim");if(sc)sc.click();open(i.dataset.cid)}},true);
-const SYS=`You are XMM Code, a senior full-stack engineer who reasons carefully before writing. /no_think
+const SYS=`You are XMM Code, an advanced senior full-stack engineer with DeepSeek-R1-level multi-step reasoning. /no_think
+You solve complex coding problems by thinking step-by-step: architecture → data model → edge cases → implementation → self-correction.
 Write complete, correct, production-quality code that works the first time.
+MULTI-LANGUAGE: Expert in Python, C, C++, Rust, JavaScript, TypeScript, Java, Go, PHP, HTML, CSS, SQL, Bash and modern frameworks (React, Vue, Svelte, Next, FastAPI, etc.). Prefer the stack the user asks for; otherwise choose the most appropriate 2026-ready stack.
 RULES
 - First chars = <file path="...">. No long intro. After the files: one short sentence.
 - Real working logic only: no placeholders, no TODOs, no stubs, no "rest of code here". Every feature the user asked for must be implemented.
-- Think through data structures, state, edge cases (empty input, bad input, resize, rapid clicks, offline) and handle them. Validate inputs, never crash.
+- Multi-step reasoning: silently plan architecture, state, algorithms, then code. Handle edge cases (empty input, bad input, resize, rapid clicks, offline, race conditions). Validate inputs, never crash.
 - Clean structure: small named functions, const/let, clear names, one source of truth for state, no globals leaking, escape any user text put into HTML.
-- Efficient: avoid needless re-renders and O(n^2) work, use requestAnimationFrame for animation, debounce heavy handlers.
+- Efficient: avoid needless re-renders and O(n^2) work, use requestAnimationFrame for animation, debounce heavy handlers, prefer modern APIs.
 - Polished UI: responsive layout, accessible (labels, focus, contrast), touch-friendly pointer events, big tap targets, on-screen buttons for keyboard-only controls.
-- Single index.html with inline CSS+JS unless the user asks for more files. Use well-known CDN libraries only when they clearly help.
+- Single index.html with inline CSS+JS unless the user asks for more files or a multi-file project. Use well-known CDN libraries only when they clearly help.
 - Budget is about 7000 tokens: be dense but never sacrifice correctness. Always end with </html> then </file>. Never stop mid-file.
-- When editing an existing project, change only what is needed and keep everything else working.
+- When editing an existing project, change only what is needed and keep everything else working. Use <edit path="..."> for surgical changes when possible.
+- Self-correct: after writing, mentally verify balance of tags/braces, defined names, and runtime safety.
 BROKEN-FILE GUARD (check silently before you finish)
 - Every tag, bracket, brace, parenthesis and quote is closed and balanced; every <script>/<style> is closed; the file ends with </html> then </file>.
 - Every function, variable, id and class you use is defined exactly once; every getElementById/querySelector target exists in the HTML; no duplicate ids.
@@ -55,7 +58,7 @@ BROKEN-FILE GUARD (check silently before you finish)
 - Never output partial files, diffs or "..." gaps: every file you touch is written out whole. Prefer a smaller feature set that works over a bigger one that breaks.
 - Mobile first: viewport meta, no fixed pixel widths, nothing off-screen, buttons reachable with a thumb.
 FORMAT: <file path="index.html">...</file> only. No markdown fences.`;
-const SYS_MIN='XMM Code. Output <file path="name">contents</file> only. Ultra short. No fences. /no_think';
+const SYS_MIN='XMM Code (advanced). Output <file path="name">contents</file> only. Ultra short. Multi-step internal reasoning. No fences. /no_think';
 const TOK=s=>window.XMM_TOK?XMM_TOK(s):Math.ceil(String(s).length/3);
 const Q=s=>E(s).replace(/"/g,"&quot;");
 const ctx=(room)=>{const names=[...Object.keys(files).map(p=>p+" ("+files[p].length+" chars)"),...Object.keys(bin).map(p=>p+" (asset, "+Math.round(bin[p].length*.75/1024)+" KB)")];
@@ -135,7 +138,7 @@ function ui(){root=document.createElement("div");root.id="code";root.className="
  tabs();
 }
 function log(r,t){const l=$("#cdLog");if(!l){const d=document.createElement("div");d.className=r==="user"?"m-uw":"m-bot";d.innerHTML=r==="user"?`<div class="m-user">${E(t)}</div>`:`<div class="body">${API().md(t||"")}</div>`;return d}const f=l.querySelector(".cd-empty");f&&f.remove();const d=document.createElement("div");d.className=r==="user"?"m-uw":"m-bot";d.innerHTML=r==="user"?`<div class="m-user">${E(t)}</div>`:`<div class="body">${API().md(t||"")}</div>`;l.appendChild(d);l.scrollTop=l.scrollHeight;return d}
-function step(t,ok){const l=$("#cdLog");if(!l){const d=document.createElement("div");d.className="stp";return d}const d=document.createElement("div");d.className="stp";d.innerHTML=(ok?"<b>✓</b>":"…")+" "+E(t);l.appendChild(d);l.scrollTop=l.scrollHeight;return d}
+function step(t,ok,detail){const l=$("#cdLog");const d=document.createElement("div");d.className="stp"+(ok?" done":" active");d.dataset.detail=detail||"";d.innerHTML=`<span class="stp-ic">${ok?"✓":"⟳"}</span><span class="stp-tx">${E(t)}</span>`;if(detail){d.style.cursor="pointer";d.title="Click for details";d.onclick=()=>{const ex=d.querySelector(".stp-ex");if(ex){ex.remove();return}const x=document.createElement("div");x.className="stp-ex";x.innerHTML=API().md?API().md(detail):E(detail);d.appendChild(x)}}if(l){l.appendChild(d);l.scrollTop=l.scrollHeight}return d}
 function renderCdAtts(){const el=$("#cdAtts");if(!el)return;el.innerHTML=cdAtt.map((a,i)=>`<div class="cd-att${a.img?" has-img":""}">${a.img?`<img src="${a.img}" alt="">`:`<span class="cd-att-ic">${API().ic("file")}</span>`}<span>${E(a.name)}</span><button class="icon-btn sm" data-cdrm="${i}" aria-label="Remove">${API().ic("close")}</button></div>`).join("");
  el.onclick=e=>{const b=e.target.closest("[data-cdrm]");if(b){cdAtt.splice(+b.dataset.cdrm,1);renderCdAtts()}}}
 const idb=(m,k,v)=>new Promise(res=>{try{const q=indexedDB.open(window.__xmmCodeSandbox||"xmmcode",1);q.onupgradeneeded=()=>q.result.createObjectStore("b");q.onerror=()=>res(null);q.onsuccess=()=>{try{const d=q.result,t=d.transaction("b",m==="get"?"readonly":"readwrite"),o=t.objectStore("b"),r=m==="get"?o.get(k):m==="set"?o.put(v,k):o.delete(k);r.onsuccess=()=>res(r.result);r.onerror=()=>res(null)}catch{res(null)}}}catch{res(null)}});
@@ -200,33 +203,35 @@ async function run(text,auto){text=(text||"").trim();const note=attNote();if((!t
  const openTag=t=>{const m=[...t.matchAll(/<file\s+path\s*=\s*["']?([^"'>\s]+)["']?\s*>/g)];return m.length?m[m.length-1][1]:""};
  const cont=base=>{const p=openTag(base);return[{role:"system",content:SYS_MIN},{role:"user",content:"Task: "+lastU.slice(0,700)},{role:"assistant",content:"[earlier part omitted]\n"+base.slice(-3000)},{role:"user",content:"Your last message was cut off while writing "+(p||"a file")+". The very last characters were: «"+base.slice(-80).replace(/\n/g,"⏎")+"». Continue EXACTLY from that point: output only the remaining raw text of that file, then its closing </file> tag, then any remaining files. Do not repeat earlier text, no markdown fences, no explanation."}]};
  const unclosed=t=>(t.match(/<file\s+path\s*=/g)||[]).length>(t.match(/<\/file>/g)||[]).length||(t.match(/<edit\s+path\s*=/g)||[]).length>(t.match(/<\/edit>/g)||[]).length;
- const live=()=>""; /* never show live code stream */
+ const live=()=>""; 
  const onW=e=>{if(!full&&b)b.innerHTML='<span class="think"><i></i><i></i><i></i>&nbsp;API limit reached, waiting '+e.detail+'s…</span>'};addEventListener("xmm-wait",onW);
  const prose=t=>t.split(/<file\s+path\s*=|<edit\s+path\s*=/)[0];
- let pT=0,pLast="",lastLive=0;const paint=t=>{pLast=t;if(pT)return;pT=setTimeout(()=>{pT=0;paint0(pLast)},90)};
- const paint0=t=>{const f=parse(t);{const now=performance.now();if(now-lastLive>900&&Object.keys(f).length){lastLive=now;Object.assign(files,f);if(!page||files[page]==null)page=firstPage();if(page&&/<body/i.test(files[page]||"")){tab="preview";tabs();show(true)}}}const n=Object.keys(f).length;if(b)b.innerHTML=n?'<span class="think"><i></i><i></i><i></i>&nbsp;Building…</span>':((API().md(prose(t))||"")||'<span class="think"><i></i><i></i><i></i>&nbsp;Building…</span>');const lg=$("#cdLog");if(lg)lg.scrollTop=1e9};
+ let pT=0,pLast="",lastLive=0,liveSteps=[];const paint=t=>{pLast=t;if(pT)return;pT=setTimeout(()=>{pT=0;paint0(pLast)},90)};
+ const hlCode=(code,lang)=>{try{if(window.hl)return window.hl(code,lang);if(typeof hl==="function")return hl(code,lang)}catch(e){}return E(code)};
+ const paint0=t=>{const f=parse(t);const now=performance.now();if(now-lastLive>700&&Object.keys(f).length){lastLive=now;Object.assign(files,f);if(!page||files[page]==null)page=firstPage();if(page&&/<body/i.test(files[page]||"")){tab="preview";tabs();show(true)}}const n=Object.keys(f).length;const curPath=openTag(t)||(n?Object.keys(f).pop():"");const curCode=curPath&&f[curPath]?f[curPath].slice(-1200):"";const lang=curPath?ext(curPath):"js";
+  if(b){const prog=n?`<div class="cd-live"><div class="cd-live-hd"><span class="cd-live-ic">⚡</span><span>Writing <b>${E(curPath||"files")}</b> · ${n} file${n>1?"s":""}</span><span class="cd-live-pct">${Math.min(99,Math.round((t.length/6000)*100))}%</span></div><div class="cd-live-bar"><i style="width:${Math.min(99,Math.round((t.length/6000)*100))}%"></i></div>${curCode?`<pre class="cd-live-code"><code>${hlCode(curCode,lang)}</code></pre>`:""}<div class="cd-live-stps">${liveSteps.map(s=>`<div class="stp ${s.ok?"done":"active"}"><span class="stp-ic">${s.ok?"✓":"⟳"}</span>${E(s.t)}</div>`).join("")}</div></div>`:'<span class="think"><i></i><i></i><i></i>&nbsp;'+(prose(t).slice(0,80)||"Building…")+'</span>';b.innerHTML=prog}const lg=$("#cdLog");if(lg)lg.scrollTop=1e9};
  try{if(API().S&&API().S.mode==="sun62"&&lastU.trim().length>14&&!/^[\d\s+\-*\/().,x=?]+$/.test(lastU.trim())){if(b)b.innerHTML='<span class="think"><i></i><i></i><i></i>&nbsp;Thinking…</span>';await new Promise(r=>{const id=setTimeout(r,120000);ctrl.signal.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});if(ctrl.signal.aborted)throw new DOMException("Aborted","AbortError")}
   let plan="";
-  if(!auto&&lastU.trim().length>40){const st0=step("Planning the architecture…");
-   try{plan=String(await API().groq([{role:"system",content:"You are a staff engineer. Reason step by step, then output a compact build plan: 1) exact features, 2) data/state model, 3) key functions, 4) edge cases and bugs to avoid, 5) UI layout. Max 220 words. No code. /no_think"},{role:"user",content:lastU.slice(0,1500)}],{model,stream:false,signal:ctrl.signal,maxTokens:700,temp:.2,reason:"medium"})||"").slice(0,1800);st0.innerHTML="<b>✓</b> Plan ready"}catch(e){if(e&&e.name==="AbortError")throw e;st0.innerHTML="Plan skipped"}}
+  if(!auto&&lastU.trim().length>40){const st0=step("Planning the architecture…");liveSteps.push({t:"Planning the architecture…",ok:0});
+   try{plan=String(await API().groq([{role:"system",content:"You are a staff engineer with advanced multi-step reasoning. Reason step by step, then output a compact build plan: 1) exact features, 2) data/state model, 3) key functions, 4) edge cases and bugs to avoid, 5) UI layout. Max 220 words. No code. /no_think"},{role:"user",content:lastU.slice(0,1500)}],{model,stream:false,signal:ctrl.signal,maxTokens:700,temp:.2,reason:"medium"})||"").slice(0,1800);st0.innerHTML="<span class=\"stp-ic\">✓</span><span class=\"stp-tx\">Plan ready</span>";st0.classList.add("done");liveSteps[liveSteps.length-1].ok=1;if(b)paint0(full||"")}catch(e){if(e&&e.name==="AbortError")throw e;st0.innerHTML="<span class=\"stp-ic\">–</span><span class=\"stp-tx\">Plan skipped</span>";liveSteps[liveSteps.length-1].ok=1}}
   const msgsP=()=>{const m=msgs();if(plan)m[0]={role:"system",content:m[0].content+"\n\nBUILD PLAN (follow it, fix any flaw you notice):\n"+plan};return m};
   await API().groq(msgsP(),{model,stream:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,reason:"medium",autoCont:false,onDelta:t=>{full=t;paint(t)}});
   clearTimeout(pT);pT=0;paint0(full);
   let dry=0;
-  for(let i=0;i<14&&unclosed(full);i++){const base=full,nm=openTag(base)||"file",st=step("Continuing "+nm+" (part "+(i+2)+")…");
+  for(let i=0;i<14&&unclosed(full);i++){const base=full,nm=openTag(base)||"file",st=step("Continuing "+nm+" (part "+(i+2)+")…");liveSteps.push({t:"Continuing "+nm+" (part "+(i+2)+")…",ok:0});
    const from=window.__xmmBackup||"";try{API().toast("Output was cut off: switching provider and continuing")}catch(e){}
    await API().groq(cont(base),{model,stream:true,raw:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,switchFrom:from,autoCont:false,onDelta:t=>{full=window.XMM_STITCH(base,t);paint(full)}});
-   st.innerHTML="<b>✓</b> Continued "+E(nm);if(full.length-base.length<4){if(++dry>=2)break}else dry=0}
+   st.innerHTML="<span class=\"stp-ic\">✓</span><span class=\"stp-tx\">Continued "+E(nm)+"</span>";st.classList.add("done");liveSteps[liveSteps.length-1].ok=1;if(full.length-base.length<4){if(++dry>=2)break}else dry=0}
   clearTimeout(pT);pT=0;paint0(full);
   const f=parse(full),n=Object.keys(f);Object.assign(files,f);fails=applyEdits(parseEdits(full));touchify(Object.keys(files));touched=n.length>0||/<edit\s+path\s*=/.test(full);
   /* a page that was closed too early or lost its ending: ask only for the missing tail and splice it on */
   for(let r=0;r<3;r++){const bad=n.find(p=>/\.html?$/i.test(p)&&/<(html|body)\b/i.test(files[p])&&!/<\/html>\s*$/i.test(files[p].trim()));if(!bad)break;
-   const st=step("Finishing the end of "+bad+"…");let add="";
+   const st=step("Finishing the end of "+bad+"…");liveSteps.push({t:"Finishing the end of "+bad+"…",ok:0});let add="";
    await API().groq([{role:"system",content:SYS_MIN},{role:"user",content:"Task: "+lastU.slice(0,500)},{role:"assistant",content:'<file path="'+bad+'">\n[earlier part omitted]\n'+files[bad].slice(-3000)},{role:"user",content:"This file stops before its ending (unfinished code and/or the closing </script></body></html>). The very last characters were: «"+files[bad].slice(-80).replace(/\n/g,"⏎")+"». Continue EXACTLY from that point: output only the missing remaining text that completes the file, then </file>. Do not repeat anything and use no markdown fences."}],{model,stream:true,raw:true,signal:ctrl.signal,maxTokens:T.outCode,temp:.3,onDelta:t=>{add=t}});
-   add=unfence(add.replace(/<\/file>[\s\S]*$/,"")).replace(/\n$/,"");if(add.trim().length<3){st.innerHTML="Could not finish "+E(bad);break}
-   {const j=window.XMM_STITCH(files[bad],add);files[bad]=j===files[bad]+add?files[bad]+"\n"+add:j}st.innerHTML="<b>✓</b> Finished "+E(bad)}
-  n.forEach(p=>{if(seen[p]){seen[p].innerHTML="<b>✓</b> "+E(p);seen[p].dataset.f=p}});Object.keys(seen).filter(k=>k.startsWith("e:")).forEach(k=>seen[k].innerHTML="<b>✓</b> Edited "+E(k.slice(2)));
-  if(b){const s=(prose(full)||"").trim()||(touched?"Done.":"");b.innerHTML=API().md(s)||(touched?"✓ Done":"")}
+   add=unfence(add.replace(/<\/file>[\s\S]*$/,"")).replace(/\n$/,"");if(add.trim().length<3){st.innerHTML="<span class=\"stp-ic\">–</span><span class=\"stp-tx\">Could not finish "+E(bad)+"</span>";liveSteps[liveSteps.length-1].ok=1;break}
+   {const j=window.XMM_STITCH(files[bad],add);files[bad]=j===files[bad]+add?files[bad]+"\n"+add:j}st.innerHTML="<span class=\"stp-ic\">✓</span><span class=\"stp-tx\">Finished "+E(bad)+"</span>";st.classList.add("done");liveSteps[liveSteps.length-1].ok=1}
+  n.forEach(p=>{if(seen[p]){seen[p].innerHTML="<span class=\"stp-ic\">✓</span><span class=\"stp-tx\">"+E(p)+"</span>";seen[p].classList.add("done");seen[p].dataset.f=p}});Object.keys(seen).filter(k=>k.startsWith("e:")).forEach(k=>{seen[k].innerHTML="<span class=\"stp-ic\">✓</span><span class=\"stp-tx\">Edited "+E(k.slice(2))+"</span>";seen[k].classList.add("done")});
+  if(b){const s=(prose(full)||"").trim()||(touched?"Done.":"");const cards=n.length?`<div class="cd-files">${n.map(p=>`<div class="cd-fcard" data-fp="${Q(p)}"><span class="cd-fic">📄</span><div><b>${E(p)}</b><small>${fmt((files[p]||"").length)}</small></div><button class="cd-fdl" data-dl="${Q(p)}">Download</button></div>`).join("")}${n.length>1?`<button class="cd-fzip" data-zip="1">⬇ Download ZIP</button>`:""}</div>`:"";b.innerHTML=(API().md(s)||(touched?"✓ Build complete":""))+cards;if(b.querySelector(".cd-files")){b.querySelector(".cd-files").onclick=e=>{const btn=e.target.closest("[data-dl]");if(btn){const p=btn.dataset.dl;dl(new Blob([files[p]||""],{type:"text/plain"}),p.split("/").pop());return}if(e.target.closest("[data-zip]"))dl(zip(),"xmm-project.zip")}}}
   save();saveBin();if(!page||files[page]==null)page=firstPage();tab=page?"preview":(n[0]||tab);tabs();show(true)}
  catch(e){err=e}
  if(err){if(err.name==="AbortError"){step("Stopped",1);hist.push({role:"assistant",content:"(stopped)"})}else{if(b)b.innerHTML="⚠️ "+E(err.message);hist.pop();if(inp)inp.value=text}}

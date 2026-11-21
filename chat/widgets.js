@@ -25,6 +25,7 @@ var RE_H=new RegExp("("+String.raw`#[^\n]*|\/\*[\s\S]*?\*\/|\/\/[^\n]*|--[^\n]*`
 function hl(code,lang){var re=/^(py|python|sh|bash|shell|zsh|yaml|yml|rb|ruby|toml|r|perl|sql|ini|dockerfile|makefile|txt|text|)$/i.test(lang||"")?RE_H:RE_C;re.lastIndex=0;var out="",last=0,m;
  while((m=re.exec(code))){if(m[0]==="")break;out+=E(code.slice(last,m.index));var c=m[1]!=null?"c":m[2]!=null?"s":m[3]!=null?"k":m[4]!=null?"n":"f";out+='<span class="t-'+c+'">'+E(m[0])+'</span>';last=m.index+m[0].length}
  return out+E(code.slice(last))}
+window.hl=hl;
 function code(lang,body,partial){body=body.replace(/\n$/,"");var l=(lang||"").replace(/[^\w+#.-]/g,"").slice(0,16);
  return'<div class="xw xw-code"><div class="xw-ch"><span>'+E(l||"code")+'</span><button class="xw-copy" data-xw="copy">'+CP+'<i>Copy code</i></button></div><pre><code>'+hl(body,l)+'</code></pre></div>'}
 
