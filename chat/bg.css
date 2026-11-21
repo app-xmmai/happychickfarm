@@ -60,3 +60,18 @@ html body #clDrawer .cl-nr,html body #clDrawer .cl-ci{min-width:0}
 html body #clDrawer .cl-nr span,html body #clDrawer .cl-ci>span:not(.cl-dots){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 @media(max-width:360px){html body #clDrawer .cl-db{padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 10px)!important;gap:8px!important}html body #clDrawer #clNc{padding:0 12px!important;font-size:14px!important}}
 @media(max-height:560px){html body #clDrawer .cl-nr{height:38px!important}html body #clDrawer .cl-ci{height:34px!important}}
+
+/* ===== center cards/title + chat input in the chat area (they were double-offset by the sidebar width) ===== */
+html body #zhero{position:absolute!important;left:0!important;right:0!important;width:auto!important;max-width:none!important;margin:0!important;display:flex!important;justify-content:center!important}
+html body #zhero .zg,html body #zhero .zin{margin-left:auto!important;margin-right:auto!important;justify-content:center!important;max-width:100%}
+html body #mainChat .dock{position:absolute!important;left:0!important;right:0!important;width:auto!important;max-width:none!important;margin:0!important;transform:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;box-sizing:border-box}
+html body #mainChat .dock .composer{width:100%!important;max-width:720px!important;margin:0 auto!important}
+
+/* ===== flicker fix: no big blurred areas over the animated canvas; no row re-animations ===== */
+html body #clDrawer,html body .cl-db,html body .cl-ds,html body #clTop,html body #sideChat{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #clDrawer{background:rgba(0,0,0,.28)!important}
+html body #mainChat button,html body #clDrawer button{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #clDrawer *{animation:none!important}
+html body .composer{-webkit-backdrop-filter:blur(3px)!important;backdrop-filter:blur(3px)!important;isolation:isolate}
+html body #mainChat #viewChat .dock,html body.xempty #mainChat #viewChat .dock,html.is-tablet body.xempty #mainChat #viewChat .dock{position:absolute!important;left:0!important;right:0!important;width:auto!important;max-width:none!important;margin:0!important;transform:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;padding-left:24px!important;padding-right:24px!important;box-sizing:border-box!important}
+html body #mainChat #viewChat .dock .composer,html body.xempty #mainChat #viewChat .dock .composer{width:100%!important;max-width:720px!important;margin:0 auto!important}

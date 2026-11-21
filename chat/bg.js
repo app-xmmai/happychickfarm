@@ -9,8 +9,8 @@ var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 var ptr={x:-999,y:-999,down:false,moved:0,counted:false,pushed:false,hover:false},par={x:0,y:0,tx:0,ty:0};
 var KEY="xmm.gal.n";
 function gal(){try{return +localStorage.getItem(KEY)||0}catch(e){return 0}}
-function size(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;x.setTransform(D,0,0,D,0,0);
- var area=W*H,n=Math.round(Math.max(2200,Math.min(4200,area/320)));
+function size(){D=Math.min(devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;x.setTransform(D,0,0,D,0,0);
+ var area=W*H,n=Math.round(Math.max(1800,Math.min(3000,area/420)));
  P=[];
  /* rings: many concentric ellipses that fill the whole screen (like the reference), plus a dense core */
  var rings=20;
@@ -41,13 +41,13 @@ function frame(now){raf=requestAnimationFrame(frame);if(document.hidden)return;
  x.fillStyle="#fff";
  for(var i=0;i<F.length;i++){var f=F[i];f.hx+=f.dr;if(f.hx>W+5)f.hx=-5;if(f.hx<-5)f.hx=W+5;
   f.px=f.hx+f.dx+par.x*f.z*-10;f.py=f.hy+f.dy+par.y*f.z*-10;force(f);phys(f);
-  x.globalAlpha=.25+.75*Math.abs(Math.sin(t*f.v+f.p));x.beginPath();x.arc(f.px,f.py,f.s*.7,0,PI2);x.fill()}
+  x.globalAlpha=.25+.75*Math.abs(Math.sin(t*f.v+f.p));var fs=f.s*1.1;x.fillRect(f.px-fs/2,f.py-fs/2,fs,fs)}
  /* galaxy: elliptical rings rotating at different speeds */
  for(i=0;i<P.length;i++){var p=P[i],a=p.th+p.w*t*(reduce?0:1),X=Math.cos(a)*p.r*R,Z=Math.sin(a)*p.r*R*tilt;
   p.px=cx+X*cr-Z*sr+p.dx;p.py=cy+X*sr+Z*cr+p.dy;
   if(p.px<-30||p.px>W+30||p.py<-30||p.py>H+30){p.vx*=.9;p.vy*=.9;continue}
   force(p);phys(p);
-  x.globalAlpha=Math.min(1,(.3+.7*Math.abs(Math.sin(t*p.v+p.p)))*(1.1-p.r*.35));x.fillStyle=p.c;x.beginPath();x.arc(p.px,p.py,p.s*(1.15-p.r*.3),0,PI2);x.fill()}
+  x.globalAlpha=Math.min(1,(.3+.7*Math.abs(Math.sin(t*p.v+p.p)))*(1.1-p.r*.35));x.fillStyle=p.c;var ps=p.s*(1.15-p.r*.3)*1.5;x.fillRect(p.px-ps/2,p.py-ps/2,ps,ps)}
  /* shooting stars */
  if(!reduce&&rnd()<.004){var dd=rnd()<.5?1:-1;SH.push({x:dd>0?rnd()*W*.5:W*.5+rnd()*W*.5,y:rnd()*H*.4,vx:dd*(7+rnd()*5),vy:2.5+rnd()*3,l:1})}
  for(i=SH.length-1;i>=0;i--){var s=SH[i];s.x+=s.vx;s.y+=s.vy;s.l-=.018;
