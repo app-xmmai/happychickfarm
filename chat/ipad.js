@@ -55,7 +55,7 @@ function buildDrawer(){
  '<div class="cl-rl" id="ipPinL" style="display:none">Pinned</div><div id="ipPinned"></div>'+
  '<div class="cl-rl">Recents</div><div id="clRecents"></div>'+
  '<button class="cl-all" id="clAll"><span>All chats</span></button></div>'+
- '<div class="cl-db"><button class="cl-nc ip-chat" id="clNc" type="button">'+IC.compose+'Chat</button><button class="cl-av" id="clAv" type="button" aria-label="Settings">X</button></div>';
+ '<div class="cl-db"><button class="cl-nc ip-chat" id="clNc" type="button">'+IC.compose+'New chat</button><button class="cl-av" id="clAv" type="button" aria-label="Settings">X</button></div>';
  d.addEventListener("click",function(e){
   if(e.target.closest("#ipSearch")){B.classList.remove("cl-drawer");openPage("library",{focus:1});return}
   var n=e.target.closest("[data-ip]");if(n){B.classList.remove("cl-drawer");if(n.dataset.ip==="imagine"){try{closePage()}catch(_){}try{window.XMM_IMAGINE&&XMM_IMAGINE()}catch(_){}return}openPage(n.dataset.ip)}

@@ -6,3 +6,10 @@ html:root body #shell-chat,html:root body #mainChat,html:root body #viewChat,htm
 .aurora{display:none!important}
 .sunpop .sp-gal{width:84px;height:84px;margin:0 auto 10px;border-radius:50%;background:radial-gradient(circle,#fff 0 6%,#bcd8ff 14%,rgba(120,150,255,.5) 34%,rgba(0,0,0,0) 70%);box-shadow:0 0 40px rgba(140,170,255,.55);animation:galSpin 6s linear infinite}
 @keyframes galSpin{to{transform:rotate(360deg)}}
+
+/* ===== sidebar bottom bar fix: New chat button back + round, unsquished profile button ===== */
+html body #clDrawer .cl-db{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 14px)!important}
+html body #clDrawer .cl-db #clAv,html body #clDrawer .cl-db .cl-av{flex:0 0 44px!important;width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;min-height:44px!important;aspect-ratio:1/1!important;border-radius:50%!important;padding:0!important;margin:0!important;display:grid!important;place-items:center!important;line-height:1!important;font:600 16px var(--cl-sans,system-ui)!important;overflow:hidden}
+html body #clDrawer .cl-db #clNc,html body #clDrawer .cl-db .cl-nc{display:flex!important;visibility:visible!important;opacity:1!important;flex:1 1 auto!important;min-width:0!important;height:44px!important;border-radius:22px!important;padding:0 18px!important;align-items:center!important;justify-content:center!important;gap:9px!important;white-space:nowrap;font:600 15px var(--cl-sans,system-ui)!important;background:#fff!important;color:#000!important;border:0!important;box-shadow:0 6px 22px rgba(0,0,0,.35)!important;cursor:pointer}
+html body #clDrawer .cl-db #clNc svg{width:18px!important;height:18px!important;flex:none;display:block!important}
+html body #clDrawer .cl-db #clNc:hover{transform:translateY(-1px)}
