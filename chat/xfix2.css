@@ -138,3 +138,17 @@ html body .cl-db:not(#_a):not(#_b){display:flex!important;align-items:center!imp
 html body .cl-db button#clNc#clNc#clNc{flex:1 1 auto!important;min-width:0!important;height:44px!important;min-height:44px!important;padding:0 16px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;font-size:15px!important;white-space:nowrap!important;border-radius:12px!important}
 html body .cl-db button#clAv#clAv#clAv{flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:grid!important;place-items:center!important;font-size:15px!important;border-radius:12px!important}
 html body .cl-db button#clNc svg{flex:none!important;width:16px!important;height:16px!important}
+
+/* v10: map buttons = pills, icon buttons bare (invisible hitbox) */
+html body #nv .sbar{border-radius:999px!important;padding:0 8px 0 16px!important}
+html body #nv .sbar button,html body #nv .sbar .av,html body #nv .rb,html body #nv .aih button{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:999px!important;color:#f4f4f6!important}
+html body #nv .rb{width:38px!important;height:38px!important}
+html body #nv .fabs{border-radius:999px!important;padding:4px 0!important}
+html body #nv .fabs button,html body #nv .fabs button:active,html body #nv .fabs .cmp,html body #nv .fabs .cmp.m1,html body #nv .fabs .aib{background:transparent!important;border-radius:999px!important;box-shadow:none!important;color:#f4f4f6!important}
+html body #nv .fabs button+button{border-top:0!important}
+html body #nv .fabs .cmp.m2,html body #nv .fabs .aib{color:#3b82f6!important}
+html body #nv .acts>*{border-radius:999px!important;height:48px!important;flex-direction:row!important;gap:8px!important}
+html body #nv .acts .st{border-radius:999px!important}
+html body #nv .turn{border-radius:999px!important}
+html body #nv .drv .ex,html body #nv .aic button,html body #nv .air input,html body #nv .mic,html body #nv .wx,html body #nv .rcl,html body #nv .spd{border-radius:999px!important}
+html body #nv .sheet,html body #nv .drv{border-radius:26px!important}

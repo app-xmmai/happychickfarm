@@ -11,9 +11,9 @@ new MutationObserver(function(){if(!T)T=setTimeout(clamp,350)}).observe(document
 var prev="/chat/",pending=null;
 function slug(q){return encodeURIComponent(String(q).trim().replace(/\s+/g,"-"))}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-xe=nav]");if(b)pending=b.getAttribute("data-q")},true);
-new MutationObserver(function(){var nv=document.getElementById("nv");var onMap=/^\/map\//.test(location.pathname);
- if(nv&&!onMap&&pending){prev=location.pathname;try{history.pushState({map:1},"","/map/"+slug(pending))}catch(e){}}
- else if(!nv&&onMap&&!loading){try{history.replaceState(null,"",prev.indexOf("/map/")===0?"/chat/":prev)}catch(e){}pending=null}}).observe(document.body,{childList:true});
+setInterval(function(){var nv=document.getElementById("nv"),onMap=/^\/map\//.test(location.pathname);
+ if(nv&&!onMap&&!loading){var i=nv.querySelector(".sbar input"),q=(i&&i.value.trim())||pending||"";if(q){prev=location.pathname;try{history.pushState({map:1},"","/map/"+slug(q))}catch(e){}}}
+ else if(!nv&&onMap&&!loading){try{history.replaceState(null,"",prev.indexOf("/map/")===0?"/chat/":prev)}catch(e){}pending=null}},250);
 addEventListener("popstate",function(){if(!/^\/map\//.test(location.pathname)&&document.getElementById("nv")&&window.XMM_NAV)window.XMM_NAV.close()});
 var loading=false;
 function boot(){var m=location.pathname.match(/^\/map\/(.+)$/);if(!m)return;var q;try{q=decodeURIComponent(m[1]).replace(/-+/g," ").trim()}catch(e){q=m[1]}if(!q)return;loading=true;
