@@ -96,3 +96,14 @@ html body .composer,html body .dock .composer{background:rgba(255,255,255,.07)!i
 html body .composer *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 /* small buttons: light blur */
 html body #clTop button,html body #mainChat .topbar button,html body #clDrawer #clNc,html body #clDrawer #clAv,html body #clDrawer .ip-circ{-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important}
+
+/* ===== MOBILE FIX: chat input buttons (+, mic, voice) clickable and not white ===== */
+html body .composer,html body .dock .composer{transform:none!important;contain:none!important;isolation:auto!important;touch-action:manipulation}
+html body #zhero,html body #zhero *{pointer-events:none!important}
+html body #viewChat .dock{z-index:60!important;pointer-events:none!important}
+html body #viewChat .dock>*{pointer-events:auto!important}
+html body .composer button,html body .composer .g-ib,html body .composer .icon-btn{pointer-events:auto!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;position:relative;z-index:2;background:rgba(255,255,255,.1)!important;background-color:rgba(255,255,255,.1)!important;background-image:none!important;color:#fff!important;border:1px solid rgba(255,255,255,.16)!important;box-shadow:none!important;opacity:1!important;visibility:visible!important}
+html body .composer button:active{background:rgba(255,255,255,.22)!important}
+html body .composer button svg,html body .composer button svg *{pointer-events:none!important;color:#fff!important;stroke:#fff!important;opacity:1!important}
+html body .composer button svg [fill]:not([fill=none]){fill:#fff!important}
+html body .composer #gWave,html body .composer .g-wave{background:#2f7bff!important;border-color:#2f7bff!important}
