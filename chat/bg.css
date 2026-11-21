@@ -81,3 +81,18 @@ html body:not(.xempty) #zhero{display:none!important}
 html body #zhero .zg,html body #zhero .zc,html body .g-sug,html body .sug-cards{display:none!important}
 /* removed: suggestion chips / voice tip under the chat input */
 html body #ipSug,html body .ip-sug,html body .cl-tip,html body #chips:empty{display:none!important}
+
+/* ===== remove the purple/pink/orange glow at the bottom (and its breathing animation) ===== */
+html body .shell::before,html body .shell::after,html body #zhero::before,html body #zhero::after,html body #shell-chat::before,html body #shell-chat::after,html body #mainChat::before,html body .dock::before,html body .dock::after,html body #viewChat::before,html body #viewChat::after,html body .cl-vglow,html body .cin-back,html body .cin-front,html body .cin-vig{display:none!important;animation:none!important;background:none!important;content:none!important}
+html body.xempty #shell-chat,html body.xempty #mainChat,html body.xempty #viewChat,html body #mainChat,html body #viewChat{background:transparent!important;background-image:none!important}
+
+/* ===== chat input: no blur / no animations => no flicker ===== */
+html body .composer,html body .dock .composer{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(20,20,28,.55)!important;transition:none!important;animation:none!important;will-change:auto!important;transform:none!important}
+html body .composer *,html body .dock *{animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body .composer textarea,html body #msg{transition:none!important}
+
+/* ===== blur back on the chat input (one single blur layer, nothing nested => stable) ===== */
+html body .composer,html body .dock .composer{background:rgba(255,255,255,.07)!important;-webkit-backdrop-filter:blur(10px) saturate(140%)!important;backdrop-filter:blur(10px) saturate(140%)!important;border:1px solid rgba(255,255,255,.16)!important;transform:translateZ(0)!important;isolation:isolate;contain:paint}
+html body .composer *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* small buttons: light blur */
+html body #clTop button,html body #mainChat .topbar button,html body #clDrawer #clNc,html body #clDrawer #clAv,html body #clDrawer .ip-circ{-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important}
