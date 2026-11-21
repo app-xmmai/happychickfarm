@@ -33,3 +33,18 @@ html body .composer textarea,html body #msg{background:transparent!important;col
 html body .composer button{border:0!important;background:rgba(255,255,255,.08)!important}
 html body .composer #sendBtn{background:rgba(255,255,255,.16)!important}
 html body #sideChat input,html body #clDrawer input{background:var(--gl-bg)!important;-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur)}
+
+/* ===== no flicker: only the composer itself blurs (nested backdrop-filters flicker over the animated canvas) ===== */
+html body .composer *,html body .composer button,html body #clTop button,html body #clPill,html body #clPill button{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body .composer{transform:translateZ(0);will-change:auto!important;transition:none!important}
+html body #xmmBg{will-change:transform}
+
+/* ===== sidebar: hidden when closed, smooth open/close ===== */
+html body #clDrawer{transition:transform .45s cubic-bezier(.22,.8,.24,1),opacity .35s ease,visibility 0s linear .45s!important;transform:translateX(-24px);opacity:0;visibility:hidden}
+html body.cl-drawer #clDrawer{transform:none;opacity:1;visibility:visible;transition:transform .45s cubic-bezier(.22,.8,.24,1),opacity .35s ease,visibility 0s!important}
+/* PC + tablets: sidebar sits next to the normal chat page (chat resizes, stays usable, no dark overlay) */
+@media(min-width:700px){
+ html body #mainChat{transition:left .45s cubic-bezier(.22,.8,.24,1)!important}
+ html body.cl-drawer #mainChat{transform:none!important;left:var(--dw)!important;border-radius:0!important;box-shadow:none!important;border-left:1px solid rgba(255,255,255,.1)!important}
+ html body.cl-drawer #mainChat::after{opacity:0!important;pointer-events:none!important}
+}

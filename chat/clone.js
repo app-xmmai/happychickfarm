@@ -126,7 +126,7 @@ function buildTop(){
  var t=el("div");t.id="clTop";
  t.innerHTML='<button class="cl-b" id="clMenu" type="button" aria-label="Sidebar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></button><span class="cl-sp"></span><div class="cl-pill" id="clPill"><button id="clNew" type="button" aria-label="New chat">'+IC.compose+'</button><button id="clMore" type="button" aria-label="More">'+IC.dots+'</button></div>';
  m.insertBefore(t,m.firstChild);
- $("#clMenu").onclick=function(){B.classList.contains("cl-drawer")?closeDrawer():openDrawer()};
+ $("#clMenu").onclick=function(){B.classList.contains("cl-drawer")?closeDrawer(1):openDrawer()};
  $("#clNew").onclick=function(){try{API().newChat()}catch(e){}closeDrawer()};
  $("#clMore").onclick=function(e){e.stopPropagation();moreMenu(this)};
 }
@@ -143,7 +143,7 @@ function moreMenu(btn){
 
 /* ---------- drawer ---------- */
 function openDrawer(){var m=$("#msg");if(m)m.blur();B.classList.add("cl-drawer");rebuildRecents()}
-function closeDrawer(){B.classList.remove("cl-drawer")}
+function closeDrawer(f){if(!f&&innerWidth>=700)return;B.classList.remove("cl-drawer")}
 function buildDrawer(){
  var sh=$("#shell-chat");if(!sh||$("#clDrawer"))return;
  var d=el("div");d.id="clDrawer";
@@ -186,7 +186,7 @@ function buildDrawer(){
   try{API().showMenu(ci,items,"right")}catch(_){}},520)});
  ["pointerup","pointermove","pointercancel","pointerleave"].forEach(function(ev){d.addEventListener(ev,function(){clearTimeout(lt)})});
  /* tapping the pushed main view closes */
- $("#mainChat").addEventListener("click",function(e){if(B.classList.contains("cl-drawer")){e.preventDefault();e.stopPropagation();closeDrawer()}},true);
+ $("#mainChat").addEventListener("click",function(e){if(innerWidth>=700)return;if(B.classList.contains("cl-drawer")){e.preventDefault();e.stopPropagation();closeDrawer()}},true);
  /* swipe gestures */
  var sx=0,sy=0,tr=false;
  document.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;tr=true},{passive:true});
@@ -266,7 +266,7 @@ function tick(){
  rebuildRecentsLite();decorate();
 }
 var lastCount=-1;
-function rebuildRecentsLite(){var n=$$("#chatList .chat-i").length,s=(API().S&&API().S.cur)||"";var key=n+"|"+s;if(key!==lastCount){lastCount=key;rebuildRecents()}}
+function rebuildRecentsLite(){var n=$$("#chatList .chat-i").length,s=(API().S&&API().S.cur)||"";var key=n+"|"+s;var bx=$("#clRecents");if(key!==lastCount||(bx&&bx.__h===undefined)){lastCount=key;rebuildRecents()}}
 
 /* ---------- visual viewport (keyboard) ---------- */
 function vv(){var h=window.visualViewport?Math.round(visualViewport.height):innerHeight;H.style.setProperty("--vvh",h+"px");if(window.visualViewport&&visualViewport.offsetTop>0)window.scrollTo(0,0)}
@@ -511,7 +511,7 @@ window.addEventListener("click",function(e){
  var d=t.closest('[data-act="openDrawer"],[data-act="toggleSide"]');if(d){stop();openDrawer();return}
  var gw=t.closest("#gWave");if(gw&&!gw.__cl){stop();openVoice()}
 },true);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"){if(B.classList.contains("cl-drawer"))closeDrawer();closeSheets()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){if(B.classList.contains("cl-drawer"))closeDrawer(1);closeSheets()}});
 
 /* old settings modal -> new sheet */
 var oldSet=document.getElementById("settings");
