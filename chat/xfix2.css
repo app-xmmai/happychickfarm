@@ -128,3 +128,13 @@ html body #sendBtn svg,html body #gMic svg,html body #gWave svg,html body #attBt
 html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ{width:30px!important;height:30px!important;min-width:30px!important;border-radius:10px!important}
 html body .cl-b svg{width:15px!important;height:15px!important}
 html body .cl-db button#clNc#clNc#clNc,html body .cl-db button#clAv#clAv#clAv{height:34px!important;border-radius:10px!important;font-size:13px!important}
+
+/* v9: input a bit bigger; sidebar bottom buttons not squished */
+html body #viewChat .composer.composer.composer,html body.ip #viewChat .composer.composer.composer,html body #viewChat .dock .composer.composer.composer{padding:6px 8px!important;border-radius:18px!important;min-height:48px!important}
+html body #viewChat .composer #msg{font-size:15px!important;padding:6px 6px!important;line-height:1.35!important}
+html body #attBtn#attBtn#attBtn#attBtn,html body #sendBtn#sendBtn#sendBtn,html body #gMic#gMic#gMic,html body #gWave#gWave#gWave,html body #modeBtn#modeBtn#modeBtn{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;border-radius:11px!important}
+html body #sendBtn svg,html body #gMic svg,html body #gWave svg,html body #attBtn svg{width:16px!important;height:16px!important}
+html body .cl-db:not(#_a):not(#_b){display:flex!important;align-items:center!important;gap:10px!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))!important;box-sizing:border-box!important}
+html body .cl-db button#clNc#clNc#clNc{flex:1 1 auto!important;min-width:0!important;height:44px!important;min-height:44px!important;padding:0 16px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;font-size:15px!important;white-space:nowrap!important;border-radius:12px!important}
+html body .cl-db button#clAv#clAv#clAv{flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:grid!important;place-items:center!important;font-size:15px!important;border-radius:12px!important}
+html body .cl-db button#clNc svg{flex:none!important;width:16px!important;height:16px!important}
