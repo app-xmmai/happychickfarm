@@ -10,6 +10,26 @@ html:root body #shell-chat,html:root body #mainChat,html:root body #viewChat,htm
 /* ===== sidebar bottom bar fix: New chat button back + round, unsquished profile button ===== */
 html body #clDrawer .cl-db{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 14px)!important}
 html body #clDrawer .cl-db #clAv,html body #clDrawer .cl-db .cl-av{flex:0 0 44px!important;width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;min-height:44px!important;aspect-ratio:1/1!important;border-radius:50%!important;padding:0!important;margin:0!important;display:grid!important;place-items:center!important;line-height:1!important;font:600 16px var(--cl-sans,system-ui)!important;overflow:hidden}
-html body #clDrawer .cl-db #clNc,html body #clDrawer .cl-db .cl-nc{display:flex!important;visibility:visible!important;opacity:1!important;flex:1 1 auto!important;min-width:0!important;height:44px!important;border-radius:22px!important;padding:0 18px!important;align-items:center!important;justify-content:center!important;gap:9px!important;white-space:nowrap;font:600 15px var(--cl-sans,system-ui)!important;background:#fff!important;color:#000!important;border:0!important;box-shadow:0 6px 22px rgba(0,0,0,.35)!important;cursor:pointer}
+html body #clDrawer .cl-db #clNc,html body #clDrawer .cl-db .cl-nc{display:flex!important;visibility:visible!important;opacity:1!important;flex:1 1 auto!important;min-width:0!important;height:44px!important;border-radius:22px!important;padding:0 18px!important;align-items:center!important;justify-content:center!important;gap:9px!important;white-space:nowrap;font:600 15px var(--cl-sans,system-ui)!important;background:rgba(255,255,255,.06)!important;color:#fff!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:none!important;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);cursor:pointer}
 html body #clDrawer .cl-db #clNc svg{width:18px!important;height:18px!important;flex:none;display:block!important}
 html body #clDrawer .cl-db #clNc:hover{transform:translateY(-1px)}
+
+/* ===== glass: transparent buttons / sidebar / input with a small blur so the galaxy shows through ===== */
+html body{--gl-bg:rgba(255,255,255,.06);--gl-bg-h:rgba(255,255,255,.12);--gl-bd:rgba(255,255,255,.14);--gl-blur:blur(3px) saturate(130%)}
+html body #clDrawer,html body #sideChat,html body .cl-db,html body .cl-ds,html body #clTop{background:transparent!important;background-color:transparent!important;-webkit-backdrop-filter:var(--gl-blur)!important;backdrop-filter:var(--gl-blur)!important}
+html body #clDrawer{border-right:1px solid var(--gl-bd)!important;background:rgba(0,0,0,.12)!important}
+html body #clDrawer .cl-db,html body #clDrawer .cl-ds{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:none!important}
+html body :is(button,.btn,.icon-btn,.circle,.chip,.sug,.pl,.mode,.send,.xp-b,.cl-b,.cl-nc,.cl-av,.cl-pill,.cl-nr,.cl-ci,#clNew,#clMore,#clMenu,#attBtn,#gMic,#sendBtn,#modeBtn,.composer button,.xp-thumb):not(.cl-nr):not(.cl-ci){
+ background:var(--gl-bg)!important;background-color:var(--gl-bg)!important;background-image:none!important;color:#fff!important;border:1px solid var(--gl-bd)!important;box-shadow:none!important;
+ -webkit-backdrop-filter:var(--gl-blur)!important;backdrop-filter:var(--gl-blur)!important}
+html body :is(button,.btn,.icon-btn,.cl-b,.cl-nc,.cl-av,.cl-pill,#clNew,#clMore,#clMenu,#attBtn,#gMic,#sendBtn,#modeBtn,.composer button):not(.cl-nr):not(.cl-ci):hover{background:var(--gl-bg-h)!important}
+html body .cl-nr,html body .cl-ci{background:transparent!important}
+html body .cl-nr:hover,html body .cl-ci:hover{background:var(--gl-bg)!important;-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur)}
+html body #clDrawer .cl-db #clNc{color:#fff!important;border:1px solid var(--gl-bd)!important;box-shadow:none!important}
+html body #clDrawer .cl-db #clNc svg{stroke:#fff}
+/* chat input */
+html body .composer,html body #viewChat .composer,html body .cl-comp{background:rgba(255,255,255,.05)!important;background-image:none!important;border:1px solid var(--gl-bd)!important;box-shadow:none!important;-webkit-backdrop-filter:var(--gl-blur)!important;backdrop-filter:var(--gl-blur)!important}
+html body .composer textarea,html body #msg{background:transparent!important;color:#fff!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body .composer button{border:0!important;background:rgba(255,255,255,.08)!important}
+html body .composer #sendBtn{background:rgba(255,255,255,.16)!important}
+html body #sideChat input,html body #clDrawer input{background:var(--gl-bg)!important;-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur)}
