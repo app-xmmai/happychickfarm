@@ -75,3 +75,43 @@ html body .cl-db button#clNc#clNc#clNc,html body .cl-db button#clNc#clNc#clNc:ho
 html body .cl-db button#clAv#clAv#clAv,html body .cl-db button#clAv#clAv#clAv:hover,html body .cl-db button#clAv#clAv#clAv:active{
  background:#2f2f35!important;background-color:#2f2f35!important;background-image:none!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:10px!important;color:#fff!important;-webkit-text-fill-color:#fff;opacity:1!important;visibility:visible!important;box-shadow:none!important}
 html body .cl-db button#clNc#clNc#clNc svg{stroke:#fff!important;color:#fff!important}
+
+/* v7: smaller input + buttons, rounder squares, solid app, redesigned solid map, See more */
+html body,html{background:#0b0b10!important}
+#xmmBg,canvas#xmmBg{display:none!important}
+html body #clDrawer,html body #clTop#clTop,html body #viewChat,html body .dock,html body #clDrawer .cl-db:not(#_a){background:#0b0b10!important}
+html body #viewChat .composer.composer.composer,html body.ip #viewChat .composer.composer.composer,html body #viewChat .dock .composer.composer.composer{border-radius:18px!important;min-height:0!important;padding:4px 6px!important;background:#1a1a1f!important}
+html body #viewChat .composer #msg{font-size:15px!important;min-height:0!important;padding:6px 4px!important;line-height:1.35!important}
+html body #attBtn#attBtn#attBtn#attBtn{width:30px!important;height:30px!important;min-width:30px!important;border-radius:12px!important}
+html body #sendBtn#sendBtn#sendBtn,html body #gMic#gMic#gMic,html body #gWave#gWave#gWave,html body #modeBtn#modeBtn#modeBtn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;border-radius:12px!important;padding:0!important}
+html body #sendBtn svg,html body #gMic svg,html body #gWave svg,html body #attBtn svg{width:16px!important;height:16px!important}
+html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ{width:34px!important;height:34px!important;min-width:34px!important;border-radius:12px!important}
+html body .cl-b svg{width:17px!important;height:17px!important}
+html body .cl-db button#clNc#clNc#clNc,html body .cl-db button#clAv#clAv#clAv{height:38px!important;border-radius:12px!important}
+html body #ipPlus#ipPlus,html body .menu.menu.menu.pop,html body .menu.menu.menu{border-radius:16px!important}
+/* See more */
+html body .m-bot .body.xm-clamp{max-height:420px!important;overflow:hidden!important}
+html body .xm-btn{display:inline-block;margin:6px 0 0;padding:7px 14px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:#2a2a2d;color:#fff;font:600 13px inherit;cursor:pointer}
+/* ===== Map UI: solid, clean ===== */
+html body #nv#nv,html body #nv#nv *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #nv#nv{--bg:#17171b;--fg:#f4f4f6;--mu:#9b9ba5;--sep:#2c2c33;--chip:#26262c;--blue:#3b82f6;background:#0b0b10}
+html body #nv .gl{background:#17171b!important;border:1px solid #2c2c33!important;box-shadow:0 6px 20px rgba(0,0,0,.45)!important;color:#f4f4f6}
+html body #nv .sbar{border-radius:16px!important;height:46px!important}
+html body #nv .sbar .av,html body #nv .rb,html body #nv .aih button,html body #nv .mic,html body #nv .spd{border-radius:12px!important}
+html body #nv .sheet,html body #nv .drv{left:10px!important;right:10px!important;border-radius:22px!important;padding:10px 16px 16px!important}
+html body #nv .sheet::before{width:34px!important;height:4px!important;background:#3a3a42!important}
+html body #nv .nm b{font-size:20px!important;letter-spacing:-.2px}
+html body #nv .acts>*{border-radius:14px!important;height:50px!important;background:#26262c!important;color:#f4f4f6!important}
+html body #nv .acts .st{background:#3b82f6!important;color:#fff!important}
+html body #nv .stats{border-top:1px solid #2c2c33!important}
+html body #nv .stats>div+div{border-left:1px solid #2c2c33!important}
+html body #nv .fabs{border-radius:16px!important}
+html body #nv .fabs button{color:#f4f4f6!important}
+html body #nv .fabs button+button{border-top:1px solid #2c2c33!important}
+html body #nv .turn{border-radius:18px!important;background:#2563eb!important}
+html body #nv .wx,html body #nv .rcl{border-radius:12px!important}
+html body #nv .aip{border-radius:20px!important}
+html body #nv .air input,html body #nv .aic button{border-radius:12px!important}
+html body #nv .leaflet-control-attribution,html body #nv .nv-attr{background:#17171b!important;color:#9b9ba5!important}
+html body #nv .leaflet-control-attribution a{color:#9b9ba5!important}
+html body #nv .fade{background:#0b0b10!important}

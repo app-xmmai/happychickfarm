@@ -21,5 +21,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/map/(.*)",
+      "destination": "/chat/index.html"
+    }
   ]
 }
