@@ -1,6 +1,6 @@
 /* bg.js: full-screen interactive space background — rotating elliptical star rings + core, like the login galaxy.
    Hover = stars drift away from the cursor, press/drag = strong push + swirl, mouse/tilt = parallax.
-   Stars orbit the AI bubble. Drag stars on the empty background 3 times -> unlocks XMMGPT-7 Galaxy. */
+   Drag stars on the empty background 3 times -> unlocks XMMGPT-7 Galaxy. */
 (function(){"use strict";
 var old=document.getElementById("xmmBg");if(old)old.remove();
 var cv=document.createElement("canvas");cv.id="xmmBg";document.body.insertBefore(cv,document.body.firstChild);
@@ -53,12 +53,6 @@ function frame(now){raf=requestAnimationFrame(frame);if(document.hidden)return;
  for(i=SH.length-1;i>=0;i--){var s=SH[i];s.x+=s.vx;s.y+=s.vy;s.l-=.018;
   var gg=x.createLinearGradient(s.x,s.y,s.x-s.vx*10,s.y-s.vy*10);gg.addColorStop(0,"rgba(255,255,255,"+Math.max(0,s.l)+")");gg.addColorStop(1,"rgba(255,255,255,0)");
   x.globalAlpha=1;x.strokeStyle=gg;x.lineWidth=1.6;x.beginPath();x.moveTo(s.x,s.y);x.lineTo(s.x-s.vx*10,s.y-s.vy*10);x.stroke();if(s.l<=0)SH.splice(i,1)}
- /* stars orbiting the AI bubble */
- var b=bubble();
- if(b){var pad=10,w=b.width+pad*2,h=b.height+pad*2,per=2*(w+h);x.fillStyle="#fff";
-  for(i=0;i<O.length;i++){var o=O[i];o.u=(o.u+o.v*(reduce?0:16))%1;var d=o.u*per,px,py,off=Math.sin(t*1.3+o.p)*3;
-   if(d<w){px=b.left-pad+d;py=b.top-pad-off}else if(d<w+h){px=b.right+pad+off;py=b.top-pad+(d-w)}else if(d<2*w+h){px=b.right+pad-(d-w-h);py=b.bottom+pad+off}else{px=b.left-pad-off;py=b.bottom+pad-(d-2*w-h)}
-   x.globalAlpha=.25;x.beginPath();x.arc(px,py,o.s*3,0,PI2);x.fill();x.globalAlpha=.5+.5*Math.sin(t*2+o.p);x.beginPath();x.arc(px,py,o.s,0,PI2);x.fill()}}
  x.globalAlpha=1}
 /* interaction */
 function empty(e){var t=e.target;if(!t||!t.closest)return false;
