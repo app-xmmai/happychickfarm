@@ -53,3 +53,25 @@ html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ,html body .circle.c
 html[data-cl-theme=light] body .cl-b.cl-b.cl-b,html[data-cl-theme=light] body .ip-circ.ip-circ.ip-circ,html[data-cl-theme=light] body .circle.circle.circle{background:#ecebe7!important}
 /* + and ⋯ stay bare */
 html body #attBtn#attBtn#attBtn#attBtn,html body #clMore#clMore#clMore#clMore{background:transparent!important;border:0!important;border-radius:10px!important}
+
+/* v5: menu items = plain text (no boxes/lines); header new-chat clean; sidebar New chat solid */
+html body #ipPlus#ipPlus button,html body #ipPlus#ipPlus button:hover,html body #ipPlus#ipPlus button:active,html body #ipPlus#ipPlus button:focus,
+html body .menu.pop:not(#_a):not(#_b) button,html body .menu.pop:not(#_a):not(#_b) button:hover,html body .menu.pop:not(#_a):not(#_b) button:active,html body .menu.pop:not(#_a):not(#_b) button:focus,
+html body .menu:not(#_a):not(#_b) button,html body .menu:not(#_a):not(#_b) button:hover,html body .menu:not(#_a):not(#_b) button:active{
+ background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-top:0!important;border-bottom:0!important;border-radius:0!important;box-shadow:none!important;outline:none!important}
+html body #ipPlus#ipPlus button::before,html body #ipPlus#ipPlus button::after,html body .menu:not(#_a):not(#_b) button::before,html body .menu:not(#_a):not(#_b) button::after{display:none!important;content:none!important}
+html body #ipPlus#ipPlus,html body .menu.pop:not(#_a):not(#_b){padding:6px!important}
+/* header: no frame around the new-chat / ⋯ group */
+html body #clPill#clPill,html body #clPill#clPill>*{background:transparent!important;border:0!important;box-shadow:none!important;outline:none!important}
+html body #clNew#clNew#clNew,html body #clNew#clNew#clNew:hover,html body #clNew#clNew#clNew:active,html body #clNew#clNew#clNew:focus{background:transparent!important;border:0!important;box-shadow:none!important;outline:none!important;color:#e8e8ea!important}
+html body #clNew#clNew#clNew::before,html body #clNew#clNew#clNew::after,html body #clPill#clPill::before,html body #clPill#clPill::after{display:none!important;content:none!important}
+/* sidebar New chat + profile: solid, not see-through over recents */
+html body #clDrawer .cl-db{background:#07070b!important;border-top:1px solid rgba(255,255,255,.08)!important}
+html body #clDrawer .cl-db #clNc#clNc,html body #clDrawer .cl-db #clAv#clAv{background:#2a2a2d!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:10px!important;color:#fff!important}
+
+/* v6: bottom sidebar bar — solid bar, solid New chat + profile buttons */
+html body .cl-db:not(#_a):not(#_b){background:#0b0b10!important;background-color:#0b0b10!important;border-top:1px solid rgba(255,255,255,.1)!important;opacity:1!important}
+html body .cl-db button#clNc#clNc#clNc,html body .cl-db button#clNc#clNc#clNc:hover,html body .cl-db button#clNc#clNc#clNc:active,
+html body .cl-db button#clAv#clAv#clAv,html body .cl-db button#clAv#clAv#clAv:hover,html body .cl-db button#clAv#clAv#clAv:active{
+ background:#2f2f35!important;background-color:#2f2f35!important;background-image:none!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:10px!important;color:#fff!important;-webkit-text-fill-color:#fff;opacity:1!important;visibility:visible!important;box-shadow:none!important}
+html body .cl-db button#clNc#clNc#clNc svg{stroke:#fff!important;color:#fff!important}
