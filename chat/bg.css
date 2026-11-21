@@ -77,3 +77,5 @@ html body #mainChat #viewChat .dock,html body.xempty #mainChat #viewChat .dock,h
 html body #mainChat #viewChat .dock .composer,html body.xempty #mainChat #viewChat .dock .composer{width:100%!important;max-width:720px!important;margin:0 auto!important}
 /* hero (title + cards) only on an empty chat; hidden as soon as a message is sent */
 html body:not(.xempty) #zhero{display:none!important}
+/* cards removed (title stays) */
+html body #zhero .zg,html body #zhero .zc,html body .g-sug,html body .sug-cards{display:none!important}
