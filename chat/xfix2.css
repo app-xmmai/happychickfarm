@@ -1,6 +1,8 @@
-/* v2: + and ⋯ menus = plain clickable text; solid (no glass) buttons, menus and settings; ⋯ button colour fixed for Safari */
-html body #ipPlus,html body .menu,html body .menu.pop{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:#252527!important}
-html[data-cl-theme=light] body #ipPlus,html[data-cl-theme=light] body .menu,html[data-cl-theme=light] body .menu.pop{background:#fff!important}
+/* xfix2: + and ⋯ menus = plain clickable text on blurred glass; + and ⋯ buttons = bare icons; settings solid */
+:root{--xb:blur(20px) saturate(1.5)}
+/* menus: blur back */
+html body #ipPlus,html body .menu,html body .menu.pop{-webkit-backdrop-filter:var(--xb)!important;backdrop-filter:var(--xb)!important;background:rgba(37,37,39,.62)!important}
+html[data-cl-theme=light] body #ipPlus,html[data-cl-theme=light] body .menu,html[data-cl-theme=light] body .menu.pop{background:rgba(255,255,255,.7)!important}
 html body #ipPlus button,html body .menu button,html body .menu.pop button,
 html body #ipPlus button:hover,html body .menu button:hover,html body .menu.pop button:hover,
 html body #ipPlus button:active,html body .menu button:active,html body .menu.pop button:active,
@@ -8,16 +10,23 @@ html body #ipPlus button:focus,html body .menu button:focus,html body .menu.pop 
  background:transparent!important;background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:none!important;
  -webkit-tap-highlight-color:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;filter:none!important}
 html body #ipPlus button:active,html body .menu button:active{opacity:.55}
-/* solid buttons: no glass */
-html body .cl-b,html body.ip .cl-b,html body .cl-pill button,html body.ip .cl-pill button,html body .ip-circ,html body .ip-pill,html body .circle,html body .icon-btn,html body .composer button{
- -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-html body .cl-b,html body.ip .cl-b,html body .ip-circ,html body .ip-pill{background:#2a2a2d!important;color:#fff!important;-webkit-text-fill-color:#fff}
-html[data-cl-theme=light] body .cl-b,html[data-cl-theme=light] body.ip .cl-b,html[data-cl-theme=light] body .ip-circ,html[data-cl-theme=light] body .ip-pill{background:#ecebe7!important;color:#1f1e1d!important;-webkit-text-fill-color:#1f1e1d}
-/* ⋯ button: icon always drawn in the button colour (Safari showed it white) */
-html body #clMore,html body .cl-b#clMore{color:#fff!important;-webkit-text-fill-color:#fff;opacity:1!important;filter:none!important;mix-blend-mode:normal!important}
-html[data-cl-theme=light] body #clMore{color:#1f1e1d!important;-webkit-text-fill-color:#1f1e1d}
-html body #clMore svg,html body #clMore svg *{fill:currentColor!important;stroke:none!important;color:inherit!important;opacity:1!important}
-html body #clMore svg{filter:none!important;-webkit-filter:none!important}
+/* round buttons: blurred glass back */
+html body .cl-b,html body.ip .cl-b,html body .cl-pill button,html body.ip .cl-pill button,html body .ip-circ,html body .ip-pill,html body .circle,html body .icon-btn{
+ -webkit-backdrop-filter:var(--xb)!important;backdrop-filter:var(--xb)!important}
+html body .cl-b,html body.ip .cl-b,html body .ip-circ,html body .ip-pill{background:rgba(42,42,45,.6)!important;color:#fff!important;-webkit-text-fill-color:#fff}
+html[data-cl-theme=light] body .cl-b,html[data-cl-theme=light] body.ip .cl-b,html[data-cl-theme=light] body .ip-circ,html[data-cl-theme=light] body .ip-pill{background:rgba(236,235,231,.7)!important;color:#1f1e1d!important;-webkit-text-fill-color:#1f1e1d}
+/* top bar blur back */
+html body #clTop#clTop,html body #clPill#clPill{-webkit-backdrop-filter:var(--xb)!important;backdrop-filter:var(--xb)!important}
+/* + and ⋯: bare icons, no box */
+html body #attBtn#attBtn#attBtn,html body #attBtn#attBtn#attBtn:hover,html body #attBtn#attBtn#attBtn:active,html body #attBtn#attBtn#attBtn:focus,
+html body #clMore#clMore#clMore,html body #clMore#clMore#clMore:hover,html body #clMore#clMore#clMore:active,html body #clMore#clMore#clMore:focus,html body #clMore#clMore#clMore:focus-visible{
+ background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;outline:none!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;filter:none!important;-webkit-filter:none!important;mix-blend-mode:normal!important;
+ will-change:auto!important;-webkit-appearance:none;appearance:none;color:#e8e8ea!important;-webkit-text-fill-color:#e8e8ea;opacity:1!important;
+ -webkit-tap-highlight-color:transparent!important;touch-action:manipulation;position:relative}
+html body #attBtn#attBtn#attBtn::before,html body #clMore#clMore#clMore::before{content:"";position:absolute;inset:-8px;background:transparent}
+html body #attBtn#attBtn#attBtn:active,html body #clMore#clMore#clMore:active{opacity:.55!important}
+html body #clMore#clMore#clMore svg,html body #clMore#clMore#clMore svg *{fill:currentColor!important;stroke:none!important;opacity:1!important}
 /* settings: solid, no glass */
 html body #ipPage,html body #ipPage *,html body #settings,html body #settings .sheet,html body #settings .sheet *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html body #ipPage{background:#1a1a1c!important}
@@ -26,3 +35,21 @@ html body #ipPage .ip-grp,html body #ipPage .cl-grp,html body #ipPage .ip-row{ba
 html[data-cl-theme=light] body #ipPage .ip-grp,html[data-cl-theme=light] body #ipPage .cl-grp,html[data-cl-theme=light] body #ipPage .ip-row{background-color:#fff!important}
 html body #ipPage .ip-circ,html body #ipPage .ip-chip{background:#2a2a2d!important}
 html[data-cl-theme=light] body #ipPage .ip-circ,html[data-cl-theme=light] body #ipPage .ip-chip{background:#ecebe7!important}
+
+/* v4: NO blur anywhere; square-ish (rounded-corner) composer and buttons; solid surfaces */
+html body *:not(#_a):not(#_b):not(#_c):not(#_d),html body *:not(#_a):not(#_b):not(#_c):not(#_d)::before,html body *:not(#_a):not(#_b):not(#_c):not(#_d)::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #ipPlus#ipPlus,html body .menu.menu.menu.pop,html body .menu.menu.menu{background:#232326!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;box-shadow:0 8px 24px rgba(0,0,0,.5)!important}
+html[data-cl-theme=light] body #ipPlus#ipPlus,html[data-cl-theme=light] body .menu.menu.menu.pop,html[data-cl-theme=light] body .menu.menu.menu{background:#fff!important;border-color:rgba(0,0,0,.1)!important}
+/* chat input: professional rounded square */
+html body #viewChat .composer.composer.composer,html body #viewChat .dock .composer.composer.composer,html body.ip #viewChat .composer.composer.composer,html body #viewChat .composer.cl-exp.composer.composer{
+ background:#1d1d20!important;background-color:#1d1d20!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:14px!important;box-shadow:0 2px 10px rgba(0,0,0,.35)!important;padding:8px 8px!important}
+html body #viewChat .composer.composer.composer::before,html body #viewChat .composer.composer.composer::after{display:none!important;content:none!important}
+html[data-cl-theme=light] body #viewChat .composer.composer.composer{background:#fff!important;border-color:rgba(0,0,0,.14)!important}
+html body #viewChat .composer.composer.composer #msg{border-radius:0!important;background:transparent!important}
+/* buttons: rounded squares */
+html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ,html body .ip-chip.ip-chip.ip-chip,html body .circle.circle.circle,html body .icon-btn.icon-btn.icon-btn,html body .cl-nc.cl-nc.cl-nc,html body .cl-av.cl-av.cl-av,html body .cl-pill.cl-pill.cl-pill,html body .cl-pill.cl-pill button,html body .chip.chip.chip,html body .sug.sug.sug,html body .xnew.xnew.xnew,html body .btn.btn.btn,html body .ip-pill.ip-pill.ip-pill,
+html body #sendBtn#sendBtn#sendBtn,html body #gMic#gMic#gMic,html body #gWave#gWave#gWave,html body #modeBtn#modeBtn#modeBtn,html body #clNew#clNew#clNew,html body #clMenu#clMenu#clMenu,html body #clNc#clNc#clNc,html body #clAv#clAv#clAv{border-radius:10px!important}
+html body .cl-b.cl-b.cl-b,html body .ip-circ.ip-circ.ip-circ,html body .circle.circle.circle,html body .ip-pill.ip-pill.ip-pill,html body #clMenu#clMenu#clMenu,html body #clNew#clNew#clNew{background:#2a2a2d!important}
+html[data-cl-theme=light] body .cl-b.cl-b.cl-b,html[data-cl-theme=light] body .ip-circ.ip-circ.ip-circ,html[data-cl-theme=light] body .circle.circle.circle{background:#ecebe7!important}
+/* + and ⋯ stay bare */
+html body #attBtn#attBtn#attBtn#attBtn,html body #clMore#clMore#clMore#clMore{background:transparent!important;border:0!important;border-radius:10px!important}

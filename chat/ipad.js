@@ -116,7 +116,7 @@ function openPlus(btn){
 }
 ["pointerdown","pointerup","mousedown","mouseup","touchstart","touchend","click"].forEach(function(ev){window.addEventListener(ev,function(e){
  var a=e.target.closest&&e.target.closest("#attBtn");
- if(a){e.stopImmediatePropagation();e.stopPropagation();if(ev!=="touchstart")e.preventDefault&&e.cancelable&&e.preventDefault();if(ev==="click"){$("#ipPlus")?closePlus():openPlus(a)}return}
+ if(a){e.stopImmediatePropagation();e.stopPropagation();if(ev!=="touchstart")e.preventDefault&&e.cancelable&&e.preventDefault();if(ev==="pointerup"){if(e.button===0||e.button==null){window.__plT=Date.now();$("#ipPlus")?closePlus():openPlus(a)}}else if(ev==="click"){if(Date.now()-(window.__plT||0)>700){$("#ipPlus")?closePlus():openPlus(a)}}return}
  if(ev==="click"&&!e.target.closest("#ipPlus"))closePlus();
 },true)});
 
