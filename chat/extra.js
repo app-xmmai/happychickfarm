@@ -7,6 +7,9 @@ function clamp(){T=0;document.querySelectorAll(".m-bot").forEach(function(m){var
  else if(!btn&&b.classList.contains("xm-clamp")&&b.scrollHeight<=440){b.classList.remove("xm-clamp")}})}
 document.addEventListener("click",function(e){var x=e.target.closest&&e.target.closest(".xm-btn");if(!x)return;e.preventDefault();var m=x.parentNode,id=m.getAttribute("data-i"),b=m.querySelector(".body");if(open.has(id)){open.delete(id);b.classList.add("xm-clamp");x.textContent="See more"}else{open.add(id);b.classList.remove("xm-clamp");x.textContent="See less"}},true);
 new MutationObserver(function(){if(!T)T=setTimeout(clamp,350)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+/* splash */
+function hideXl(){var x=document.getElementById("xl");if(!x||x.className)return;var w=Math.max(0,700-(Date.now()-(window.__xlT||0)));setTimeout(function(){x.className="out";setTimeout(function(){x.remove()},450)},w)}
+if(/^\/map\//.test(location.pathname)){var xi=setInterval(function(){var nv=document.getElementById("nv");if(nv&&nv.querySelector(".leaflet-tile")){clearInterval(xi);hideXl()}},200);setTimeout(function(){clearInterval(xi);hideXl()},7000)}else{if(document.readyState==="complete")hideXl();else addEventListener("load",hideXl);setTimeout(hideXl,6000)}
 /* /map/<location> */
 var prev="/chat/",pending=null;
 function slug(q){return encodeURIComponent(String(q).trim().replace(/\s+/g,"-"))}

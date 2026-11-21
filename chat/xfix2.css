@@ -152,3 +152,13 @@ html body #nv .acts .st{border-radius:999px!important}
 html body #nv .turn{border-radius:999px!important}
 html body #nv .drv .ex,html body #nv .aic button,html body #nv .air input,html body #nv .mic,html body #nv .wx,html body #nv .rcl,html body #nv .spd{border-radius:999px!important}
 html body #nv .sheet,html body #nv .drv{border-radius:26px!important}
+
+/* v11: bigger map pill, no chips inside */
+html body #nv .fabs:not(#_a){right:10px!important;padding:8px 0!important;border-radius:999px!important}
+html body #nv .fabs button:not(#_a):not(#_b),html body #nv .fabs button.cmp:not(#_a):not(#_b),html body #nv .fabs .aib:not(#_a):not(#_b){width:58px!important;height:58px!important;background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:999px!important;font-size:30px!important}
+html body #nv .fabs button svg{width:26px!important;height:26px!important}
+
+/* v12: original button size, bigger pill */
+html body #nv .fabs button:not(#_a):not(#_b),html body #nv .fabs button.cmp:not(#_a):not(#_b),html body #nv .fabs .aib:not(#_a):not(#_b){width:46px!important;height:46px!important;font-size:24px!important}
+html body #nv .fabs button svg{width:auto!important;height:auto!important}
+html body #nv .fabs:not(#_a){padding:16px 12px!important;gap:6px!important;align-items:center!important;right:8px!important;border-radius:999px!important}
