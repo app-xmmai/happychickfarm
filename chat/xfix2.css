@@ -1,0 +1,28 @@
+/* v2: + and ⋯ menus = plain clickable text; solid (no glass) buttons, menus and settings; ⋯ button colour fixed for Safari */
+html body #ipPlus,html body .menu,html body .menu.pop{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:#252527!important}
+html[data-cl-theme=light] body #ipPlus,html[data-cl-theme=light] body .menu,html[data-cl-theme=light] body .menu.pop{background:#fff!important}
+html body #ipPlus button,html body .menu button,html body .menu.pop button,
+html body #ipPlus button:hover,html body .menu button:hover,html body .menu.pop button:hover,
+html body #ipPlus button:active,html body .menu button:active,html body .menu.pop button:active,
+html body #ipPlus button:focus,html body .menu button:focus,html body .menu.pop button:focus,html body .menu.pop button:focus-visible{
+ background:transparent!important;background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:none!important;
+ -webkit-tap-highlight-color:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;filter:none!important}
+html body #ipPlus button:active,html body .menu button:active{opacity:.55}
+/* solid buttons: no glass */
+html body .cl-b,html body.ip .cl-b,html body .cl-pill button,html body.ip .cl-pill button,html body .ip-circ,html body .ip-pill,html body .circle,html body .icon-btn,html body .composer button{
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body .cl-b,html body.ip .cl-b,html body .ip-circ,html body .ip-pill{background:#2a2a2d!important;color:#fff!important;-webkit-text-fill-color:#fff}
+html[data-cl-theme=light] body .cl-b,html[data-cl-theme=light] body.ip .cl-b,html[data-cl-theme=light] body .ip-circ,html[data-cl-theme=light] body .ip-pill{background:#ecebe7!important;color:#1f1e1d!important;-webkit-text-fill-color:#1f1e1d}
+/* ⋯ button: icon always drawn in the button colour (Safari showed it white) */
+html body #clMore,html body .cl-b#clMore{color:#fff!important;-webkit-text-fill-color:#fff;opacity:1!important;filter:none!important;mix-blend-mode:normal!important}
+html[data-cl-theme=light] body #clMore{color:#1f1e1d!important;-webkit-text-fill-color:#1f1e1d}
+html body #clMore svg,html body #clMore svg *{fill:currentColor!important;stroke:none!important;color:inherit!important;opacity:1!important}
+html body #clMore svg{filter:none!important;-webkit-filter:none!important}
+/* settings: solid, no glass */
+html body #ipPage,html body #ipPage *,html body #settings,html body #settings .sheet,html body #settings .sheet *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #ipPage{background:#1a1a1c!important}
+html[data-cl-theme=light] body #ipPage{background:#f7f6f3!important}
+html body #ipPage .ip-grp,html body #ipPage .cl-grp,html body #ipPage .ip-row{background-color:#27272a!important}
+html[data-cl-theme=light] body #ipPage .ip-grp,html[data-cl-theme=light] body #ipPage .cl-grp,html[data-cl-theme=light] body #ipPage .ip-row{background-color:#fff!important}
+html body #ipPage .ip-circ,html body #ipPage .ip-chip{background:#2a2a2d!important}
+html[data-cl-theme=light] body #ipPage .ip-circ,html[data-cl-theme=light] body #ipPage .ip-chip{background:#ecebe7!important}
