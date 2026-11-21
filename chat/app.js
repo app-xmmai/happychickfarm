@@ -443,7 +443,7 @@ const polli=(p,w,h,m)=>`https://image.pollinations.ai/prompt/${encodeURIComponen
 window.XMM_NEXT=u=>{const m=/[?&]model=([^&]+)/.exec(u||""),i=m?ENG.indexOf(m[1]):-1;return i>=0&&i<ENG.length-1?u.replace(/([?&]model=)[^&]+/,"$1"+ENG[i+1]):null};
 /* Backup engine: AI Horde (free community Stable Diffusion, anonymous key, no signup). Used only when every Pollinations model failed. */
 const tagCanvas=async c=>{
- const x=c.getContext("2d"),ic=await new Promise((res,rej)=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>res(i);i.onerror=rej;i.src="icon.svg?v=x40"});
+ const x=c.getContext("2d"),ic=await new Promise((res,rej)=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>res(i);i.onerror=rej;i.src="icon.svg?v=gpu6"});
  const s=Math.max(14,Math.round(c.width*.03)),pd=s*.35,d=s*1.3,txt="XMM AI";x.font=`600 ${s}px system-ui,-apple-system,sans-serif`;
  const tw=x.measureText(txt).width,w=d+tw+pd*3.2,h=d+pd*1.2;
  // left side, bottom — fixed into the pixels

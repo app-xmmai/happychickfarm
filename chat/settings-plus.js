@@ -11,7 +11,7 @@ const fld=(l,el,h)=>{const d=mk("div","pf","<label>"+l+"</label>");d.appendChild
 
 /* ---- profile header: app icon circle + name + pencil ---- */
 const head=mk("div","sp-prof");
-head.innerHTML='<div class="sp-circ"><img src="icon.svg?v=x40" alt=""></div><div class="sp-nm"><span class="sp-n"></span><button type="button" class="sp-pen" aria-label="Edit name"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div>';
+head.innerHTML='<div class="sp-circ"><img src="icon.svg?v=gpu6" alt=""></div><div class="sp-nm"><span class="sp-n"></span><button type="button" class="sp-pen" aria-label="Edit name"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div>';
 sh.insertBefore(head,sh.querySelector(".sbody"));
 const nSpan=head.querySelector(".sp-n"),pen=head.querySelector(".sp-pen"),nm=head.querySelector(".sp-nm");
 const curName=()=>String(g("xmm.name","")||"").trim();

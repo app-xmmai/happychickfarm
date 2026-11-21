@@ -12,8 +12,8 @@ window.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.
  var had=document.documentElement.classList.contains("xm-galaxy");try{localStorage.setItem("xmm.galaxy","1")}catch(_){}document.documentElement.classList.add("xm-galaxy");
  if(document.getElementById("xgp"))return;var d=document.createElement("div");d.id="xgp";d.innerHTML='<div class="xgc"><div class="xgi">\u{1F30C}</div><b>You got Galaxy Mode!</b><small>'+(had?"Space background is already on.":"Space background unlocked.")+'</small><button type="button">Awesome</button></div>';d.onclick=function(e){if(e.target===d||e.target.tagName==="BUTTON")d.remove()};document.body.appendChild(d)},true);
 /* splash */
-function hideXl(){var x=document.getElementById("xl");if(!x||x.className)return;var w=Math.max(0,700-(Date.now()-(window.__xlT||0)));setTimeout(function(){x.className="out";setTimeout(function(){x.remove()},450)},w)}
-if(/^\/map\//.test(location.pathname)){var xi=setInterval(function(){var nv=document.getElementById("nv");if(nv&&nv.querySelector(".leaflet-tile")){clearInterval(xi);hideXl()}},200);setTimeout(function(){clearInterval(xi);hideXl()},7000)}else{if(document.readyState==="complete")hideXl();else addEventListener("load",hideXl);setTimeout(hideXl,6000)}
+function hideXl(){var x=document.getElementById("xl");if(!x||x.className)return;var w=Math.max(0,3000-(Date.now()-(window.__xlT||0)));setTimeout(function(){x.className="out";setTimeout(function(){x.remove()},450)},w)}
+if(document.readyState==="complete")hideXl();else addEventListener("load",hideXl);setTimeout(hideXl,3200);
 /* /map/<location> */
 var prev="/chat/",pending=null;
 function slug(q){return encodeURIComponent(String(q).trim().replace(/\s+/g,"-"))}
