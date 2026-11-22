@@ -179,7 +179,7 @@ function killX(p){if(p&&p._lqX){var x=p._lqX;p._lqX=null;x.style.opacity="0";x.s
 function addX(p,a,close){
  var r=a.getBoundingClientRect(),x=document.createElement("button");x.type="button";x.className="lq-x";x.setAttribute("aria-label","Close");
  x.innerHTML="<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round'><path d='M6 6l12 12M18 6L6 18'/></svg>";
- x.style.cssText="left:"+r.left+"px;top:"+r.top+"px;width:"+r.width+"px;height:"+r.height+"px";
+ var d=Math.round(Math.min(r.width,r.height)||40);x.style.cssText="left:"+(r.left+(r.width-d)/2)+"px;top:"+(r.top+(r.height-d)/2)+"px;width:"+d+"px;height:"+d+"px;min-width:"+d+"px;aspect-ratio:1/1;flex:none;border-radius:50%";
  x.onclick=function(e){e.stopPropagation();close()};document.body.appendChild(x);p._lqX=x;
  if(x.animate&&!RM)x.animate([{transform:"rotate(-90deg) scale(.6)",opacity:0},{transform:"none",opacity:1}],{duration:420,easing:EZ})}
 function morphIn(p,a,close){

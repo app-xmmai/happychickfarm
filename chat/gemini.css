@@ -225,3 +225,20 @@ html:root:root body :is(.icon-btn,.cl-b,.ip-circ,#clMenu,#clNew,#clMore):focus,h
 html:root:root body :is(.icon-btn,.cl-b,.ip-circ) svg{flex:none;max-width:60%;max-height:60%}
 html:root:root body .sbar{gap:8px;flex-wrap:nowrap;min-width:0}
 html:root:root body .sbar .sin{min-width:0;flex:1 1 auto}
+
+/* v11: floating X + anchors always true circles */
+html:root:root body .lq-x{aspect-ratio:1/1!important;border-radius:50%!important;padding:0!important}
+html:root:root body :is(.cl-b,.ip-circ,#clMenu,#clNew,#clMore,#clAv,#gmMenu,#ipSearch){width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important}
+
+/* v12: settings page (ip-*) — flat rows inside one rounded card, clean round X */
+html:root:root:root:root body .ip-row,html:root:root:root:root body button.ip-row{
+ background:none!important;background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important;margin:0!important;outline:0!important}
+html:root:root:root:root body .ip-row:active{background:rgba(255,255,255,.06)!important}
+html:root:root:root:root body .ip-grp{border-radius:20px!important;overflow:hidden!important;border:0!important;box-shadow:none!important;background:#2a2a2d!important}
+html:root:root:root:root body .ip-row+.ip-row::before{display:block!important;content:""!important;left:62px!important;right:16px!important;height:1px!important;background:rgba(255,255,255,.08)!important}
+html:root:root:root:root body .ip-h .ip-circ,html:root:root:root:root body .ip-h button.ip-circ{
+ width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;
+ flex:0 0 40px!important;aspect-ratio:1/1!important;border-radius:50%!important;border:0!important;box-shadow:none!important;padding:0!important;
+ background:rgba(255,255,255,.12)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root:root:root body .lq-x{width:40px!important;height:40px!important;min-width:40px!important;border:0!important;box-shadow:none!important}
