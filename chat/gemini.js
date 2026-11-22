@@ -26,7 +26,8 @@ function galCheck(){try{var m=$("#msg");if(m&&/\bgalaxy\b/i.test(m.value)&&windo
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey&&e.target&&e.target.id==="msg")galCheck()},true);
 document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("#sendBtn"))galCheck()},true);
 /* Siri-style edge glow while any pop-up is open */
-var gl=document.createElement("div");gl.id="gmSiri";document.body.appendChild(gl);
-setInterval(function(){gl.classList.toggle("on",!!document.querySelector(".sunpop,#xgp"))},250);
+var gl=document.createElement("div");gl.id="gmSiri";gl.innerHTML='<svg viewBox="0 0 900 120" preserveAspectRatio="none"><defs><linearGradient id="gmWg" x1="0" x2="1"><stop offset="0" stop-color="#4285f4"/><stop offset=".3" stop-color="#2fd0ff"/><stop offset=".55" stop-color="#7b5cff"/><stop offset=".8" stop-color="#d96cf0"/><stop offset="1" stop-color="#ff6fa5"/></linearGradient></defs><path class="w w1" d="M0 60 Q 150 34 300 60 T 600 60 T 900 60 T 1200 60 T 1500 60 T 1800 60"/><path class="w w2" d="M0 70 Q 150 44 300 70 T 600 70 T 900 70 T 1200 70 T 1500 70 T 1800 70"/><path class="w w3" d="M0 80 Q 150 54 300 80 T 600 80 T 900 80 T 1200 80 T 1500 80 T 1800 80"/></svg>';document.body.appendChild(gl);
+var gT=0,gSeen=false;
+setInterval(function(){var has=!!document.querySelector(".sunpop,#xgp");if(has&&!gSeen){gSeen=true;gl.classList.add("on");clearTimeout(gT);gT=setTimeout(function(){gl.classList.remove("on")},1000)}else if(!has)gSeen=false},120);
 setInterval(tick,600);tick();
 })();

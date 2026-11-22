@@ -181,3 +181,26 @@ html:root:root body .cl-mi:has(svg),html:root:root body .cl-mi[data-k="x7g"]{bor
 #gmSiri.on{opacity:1}
 #gmSiri::before,#gmSiri::after{content:"";position:absolute;inset:0;padding:4px;background:conic-gradient(from var(--gma),#4285f4,#2fd0ff,#7b5cff,#d96cf0,#ff6fa5,#ffb347,#4285f4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:gmSpinA 4.5s linear infinite}
 #gmSiri::after{padding:30px;filter:blur(26px);opacity:.85}
+
+/* v8: Siri wave lines (1s, auto-hide) */
+#gmSiri{box-shadow:none!important;height:34vh;top:auto!important;bottom:0;inset:auto 0 0 0!important;opacity:0;transform:translateY(24px);transition:opacity .35s ease,transform .5s cubic-bezier(.22,1,.36,1)!important;will-change:opacity,transform}
+#gmSiri.on{opacity:1;transform:none}
+#gmSiri::before,#gmSiri::after{display:none!important}
+#gmSiri svg{position:absolute;left:0;bottom:0;width:100%;height:100%;overflow:hidden}
+#gmSiri .w{fill:none;stroke:url(#gmWg);stroke-linecap:round;width:200%;filter:drop-shadow(0 0 8px rgba(123,92,255,.8));will-change:transform}
+#gmSiri .w1{stroke-width:3;animation:gmWv 1.1s linear infinite}
+#gmSiri .w2{stroke-width:2;opacity:.75;animation:gmWv 1.5s linear infinite reverse}
+#gmSiri .w3{stroke-width:1.5;opacity:.5;animation:gmWv 2s linear infinite}
+@keyframes gmWv{from{transform:translateX(0)}to{transform:translateX(-600px)}}
+
+/* v8: smoother galaxy unlock popup */
+.sunpop{transition:opacity .45s cubic-bezier(.22,1,.36,1)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);will-change:opacity}
+.sp-card{transform:translateY(32px) scale(.9)!important;opacity:0;transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .45s ease!important;will-change:transform,opacity}
+.sunpop.in .sp-card{transform:none!important;opacity:1}
+.sunpop.out .sp-card{transform:translateY(14px) scale(.96)!important;opacity:0;transition:transform .3s ease,opacity .25s ease!important}
+#xgp{animation:xgIn .45s cubic-bezier(.16,1,.3,1)}
+#xgp .xgc{animation:xgCard .6s cubic-bezier(.16,1,.3,1)}
+@keyframes xgIn{from{opacity:0}to{opacity:1}}
+@keyframes xgCard{from{opacity:0;transform:translateY(32px) scale(.9)}to{opacity:1;transform:none}}
+html,html body{transition:background-color .8s ease}
+html #xmmBg{animation:xgIn 1s ease}
