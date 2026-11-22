@@ -269,7 +269,7 @@ var lastCount=-1;
 function rebuildRecentsLite(){var n=$$("#chatList .chat-i").length,s=(API().S&&API().S.cur)||"";var key=n+"|"+s;var bx=$("#clRecents");if(key!==lastCount||(bx&&bx.__h===undefined)){lastCount=key;rebuildRecents()}}
 
 /* ---------- visual viewport (keyboard) ---------- */
-function vv(){var h=window.visualViewport?Math.round(visualViewport.height):innerHeight;H.style.setProperty("--vvh",h+"px");if(window.visualViewport&&visualViewport.offsetTop>0)window.scrollTo(0,0)}
+function vv(){var h=window.visualViewport?Math.round(visualViewport.height):innerHeight;var d=innerHeight-h;if(d>0&&d<=60)h=innerHeight;/* iOS app mode reports a viewport ~status-bar shorter -> useless strip at the bottom; real keyboards are far bigger than 60px */H.style.setProperty("--vvh",h+"px");if(window.visualViewport&&visualViewport.offsetTop>0)window.scrollTo(0,0)}
 vv();if(window.visualViewport){visualViewport.addEventListener("resize",vv);visualViewport.addEventListener("scroll",vv)}addEventListener("resize",vv);addEventListener("orientationchange",function(){setTimeout(vv,200)});
 
 /* ---------- messages decoration ---------- */
