@@ -323,7 +323,7 @@ async function groqMain(messages,{model=CFG.TEXT_MODEL,stream=false,json=false,o
   if(r.status===400&&body.max_tokens>2000){let t="";try{t=await r.clone().text()}catch{}if(/max_tokens|max_completion|too large|context/i.test(t)){body.max_tokens=2000;r=await go()}}}
  catch(e){clearTimeout(tm);if(timedOut){const x=SVC_MSG("timeout");x.retry=true;throw x}if(e.name==="AbortError")throw e;const x=SVC_MSG("network");x.retry=true;throw x}
  if(!r.ok){clearTimeout(tm);let t="";try{t=(await r.json()).error.message}catch{}
-  if([403,451,408,500,502,503,504,520,521,522,523,524,525,526].includes(r.status)){const x=SVC_MSG(r.status);x.retry=true;throw x}
+  if([403,451,408,500,502,503,504,520,521,522,523,524,525,526].includes(r.status)){const x=SVC_MSG(r.status);x.retry=true;x.status=r.status;throw x}
   const e=new Error(r.status===401?(USE_PROXY?"The Cloudflare Worker rejected the request. Check the GROQ_API_KEY secret on the Worker.":"The API key was rejected. Put a valid Groq key in config.js (GROQ_KEY)."):(r.status===429?"Too many requests right now. Wait a few seconds and try again.":`Error (${r.status})${t?": "+t:""}`));if(r.status===401)e.fatal=true;e.retry=[400,404,413,429].includes(r.status);throw e}
  if(!stream){try{const j=await r.json();clearTimeout(tm);const _t=j.choices[0].message.content||"";ent[1]=inTok+tokEst(_t);if(meta)meta.finish=j.choices[0].finish_reason;return CL(_t)}catch(e){clearTimeout(tm);if(timedOut){const x=SVC_MSG("timeout");x.retry=true;throw x}throw e}}
  arm(60000);
@@ -361,7 +361,17 @@ async function groq1(messages,o={}){
    catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
    finally{st.busy--}}
   if(Date.now()-fNote>30000){fNote=Date.now();try{toast("Server 1 failed, using server 2")}catch(e){}}}
- window.__xmmBackup="Groq";return groqMain(messages,o)}
+ window.__xmmBackup="Groq";
+ try{return await groqMain(messages,o)}
+ catch(e){
+  /* 403/451 = Groq blocked this region/edge (common for Persian users): ignore cooldowns and force every free backup AI */
+  if(e&&(e.status===403||e.status===451)&&FREE_AI.length&&textOnly(messages)&&!(o.signal&&o.signal.aborted)){
+   for(let i=0;i<FREE_AI.length;i++){
+    if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
+    try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}catch(x){if(o.signal&&o.signal.aborted)throw x}
+   }
+  }
+  throw e}}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */

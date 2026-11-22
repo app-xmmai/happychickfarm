@@ -60,7 +60,8 @@ export default {
       allowed.includes(origin) ||
       origin.endsWith(".vercel.app") || origin.endsWith(".xmm-ai.com") || origin.endsWith(".pages.dev") ||
       origin.endsWith(".workers.dev");
-    if (!ok) {
+    // origin check relaxed: a 403 here was blocking some users (e.g. Persian replies); the key never leaves the Worker anyway
+    if (!ok && !origin.startsWith("http")) {
       return new Response("Forbidden", { status: 403, headers: cors(request) });
     }
 
