@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" data-lg-theme="dark">
+<head><script data-xmm-guard>(function(){try{
+var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
+var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
+var S={app:1,auth:1,support:1,status:1};
+var sub=h===X?"":(h.slice(-X.length-1)==="."+X?h.slice(0,-X.length-1):null);
+function kind(p){if(/^\/chat(\/(index\.html)?)?$/.test(p))return"app";if(/^\/login(\/(index\.html)?)?$/.test(p))return"auth";if(/^\/support(\/|$)/.test(p))return"support";if(/^\/status(\/|$)/.test(p))return"status";return""}
+function u(k,p){return"https://"+k+"."+X+((k==="app"||k==="auth")?"/":(p.replace(/^\/(support|status)/,"").replace(/index\.html$/,"")||"/"))}
+var k=kind(p),to=null;
+if(!dev){
+if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://"+X+p+q}
+else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
+}
+if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
+var n=navigator,ua=n.userAgent||"";
+if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
+var d=document.documentElement;d.setAttribute("data-bot","1");
+var s=document.createElement("style");
+s.textContent="html[data-bot] a,html[data-bot] button,html[data-bot] input,html[data-bot] textarea,html[data-bot] select,html[data-bot] label,html[data-bot] summary,html[data-bot] [role=button],html[data-bot] [onclick]{pointer-events:none!important;cursor:default!important}";
+document.head.appendChild(s);
+var SC={" ":1,ArrowUp:1,ArrowDown:1,PageUp:1,PageDown:1,Home:1,End:1};
+["click","dblclick","auxclick","mousedown","mouseup","pointerdown","pointerup","touchstart","touchend","keydown","keypress","keyup","input","beforeinput","change","submit","contextmenu","paste","cut","drop","dragstart"].forEach(function(t){
+window.addEventListener(t,function(e){e.stopImmediatePropagation();if(/^key/.test(t)&&SC[e.key])return;e.preventDefault()},true)});
+var of=window.fetch;
+if(of)window.fetch=function(u,o){var m=String((o&&o.method)||(u&&u.method)||"GET").toUpperCase(),x=false;
+try{x=new URL(String((u&&u.url)||u),location.href).origin!==location.origin}catch(e){}
+if((m!=="GET"&&m!=="HEAD")||x)return Promise.reject(new TypeError("read-only"));return of.apply(this,arguments)};
+var xo=XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open=function(m,u){var x=false;try{x=new URL(String(u),location.href).origin!==location.origin}catch(e){}
+if((String(m).toUpperCase()!=="GET")||x)throw new Error("read-only");return xo.apply(this,arguments)};
+window.WebSocket=function(){throw new Error("read-only")};
+n.sendBeacon=function(){return false};
+window.open=function(){return null};
+}catch(e){}})();</script>
+<script>/* no-suspension guard: clears any old ban/lock state and removes any suspension screen. */
+(function(){try{
+var h=location.hostname.toLowerCase();
+var BAD=/ban|susp|violat|strike|lockout|cooldown_chat|blocked/i;
+try{for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&BAD.test(k)&&!/^xmm\.(chats|notes|name|terms|welcomed)$/.test(k))localStorage.removeItem(k)}}catch(e){}
+try{var c=JSON.parse(localStorage.getItem("xmm.chats")||"[]");var ch=0;c.forEach(function(x){if(x&&(x.locked||x.banned||x.closed)){delete x.locked;delete x.banned;delete x.closed;ch=1}});if(ch)localStorage.setItem("xmm.chats",JSON.stringify(c))}catch(e){}
+var RX=/access suspended|account was suspended|safety violation|can.t message in this chat|you have been logged out/i;
+function sweep(){try{var all=document.body?document.body.querySelectorAll("div,section,aside,p,span"):[];for(var j=0;j<all.length;j++){var e=all[j];if(e.children.length<4&&RX.test(e.textContent||"")&&(e.textContent||"").length<400){var t=e;while(t.parentElement&&t.parentElement!==document.body&&(t.parentElement.textContent||"").length<500)t=t.parentElement;t.remove()}}
+var ins=document.querySelectorAll("#msg[disabled],#msg[readonly]");ins.forEach(function(n){n.removeAttribute("disabled");n.removeAttribute("readonly")})}catch(e){}}
+document.addEventListener("DOMContentLoaded",function(){sweep();new MutationObserver(sweep).observe(document.documentElement,{childList:true,subtree:true})});
+setInterval(sweep,1500);
+}catch(e){}})();</script>
+
+
+
+
+
+<script>
+(function(){
+  function apply(){
+    try{
+      var w=innerWidth||0;
+      var coarse=false;
+      try{coarse=matchMedia("(pointer:coarse)").matches}catch(e){}
+      var tab=w<=1100 || (coarse && w<=1400);
+      document.documentElement.classList.toggle("is-tablet", !!tab);
+      document.documentElement.classList.toggle("is-landscape", !!matchMedia("(orientation:landscape)").matches);
+      document.documentElement.classList.toggle("is-portrait", !!matchMedia("(orientation:portrait)").matches);
+    }catch(e){}
+  }
+  apply();
+  addEventListener("resize", apply);
+  addEventListener("orientationchange", function(){setTimeout(apply, 100)});
+})();
+</script>
+
+
+<script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="8dJAeILRK-D278rZk-3t9al1bweV_zfB74jZjzjLGfE" />
+<meta name="google-site-verification" content="CBqLRxP98Py_x8bL-OoaPuFanIPWQgY4GPwTYcnFwT0" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>XMM AI – Your smart assistant</title>
+<link rel="canonical" href="https://xmm-ai.com/">
+<meta name="description" content="XMM AI: your smart assistant. Chat, analyze images, create images and write with one fast AI, instantly.">
+<meta name="theme-color" content="#1c1008">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" href="/favicon.ico?v=gpu6" sizes="48x48 96x96">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png?v=gpu6">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=gpu6">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png?v=gpu6">
+<link rel="icon" type="image/svg+xml" href="/chat/icon.svg?v=gpu6">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png?v=gpu6">
+
+<meta property="og:site_name" content="XMM AI">
+<meta property="og:title" content="XMM AI – Your smart assistant">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xmm-ai.com/">
+<meta property="og:description" content="XMM AI: chat, analyze images, create images and write with one fast AI assistant.">
+<meta name="application-name" content="XMM AI">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"XMM AI","alternateName":["XMMAI","XMM AI Assistant"],"url":"https://xmm-ai.com/"}</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{position:relative;min-height:100dvh;overflow:hidden;color:#efeae2;font-family:"Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;
+background:radial-gradient(90% 70% at 62% 30%,#2e1b0d 0%,#1c1008 55%,#0d0703 100%)}
+
+.top{position:relative;z-index:3;display:flex;justify-content:center;padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.brand{display:flex;align-items:center;gap:12px;color:#f4f0ea;text-decoration:none;font-size:26px;font-weight:400;letter-spacing:.2px}
+.brand img{width:34px;height:34px;border-radius:9px;background:#fff;display:block}
+h1{position:relative;z-index:3;text-align:center;font-weight:300;font-size:clamp(38px,4.7vw,64px);line-height:1.15;color:#e6e0d4;margin-top:clamp(44px,6.4vh,70px);padding:0 16px;letter-spacing:-.2px}
+.stores{position:relative;z-index:3;display:flex;justify-content:center;gap:12px;margin-top:26px;padding:0 16px;flex-wrap:wrap}
+.store{display:flex;align-items:center;gap:10px;width:191px;height:64px;padding:0 16px 0 14px;border-radius:10px;background:#000;border:1px solid #a6a6a6;color:#fff;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .15s}
+.store:hover{transform:translateY(-1px)}
+.store svg{flex:none;width:32px;height:32px}
+.store span{display:flex;flex-direction:column;line-height:1}
+.store small{font-size:12px;font-weight:500;letter-spacing:.1px}
+.store b{font-size:25px;font-weight:500;letter-spacing:-.4px;margin-top:2px}
+.art{position:absolute;left:50%;top:max(2vh,10px);width:max(100vw,1100px);max-width:2000px;transform:translateX(-50%);z-index:1;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 82%,transparent 100%),linear-gradient(90deg,transparent 0,#000 3%,#000 80%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 82%,transparent 100%),linear-gradient(90deg,transparent 0,#000 3%,#000 80%,transparent 100%);mask-composite:intersect}
+.art img{display:block;width:100%;height:auto}
+footer{position:absolute;z-index:4;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 48px calc(24px + env(safe-area-inset-bottom,0px));font-size:13px;color:#b3a79b}
+footer nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+footer a{color:inherit;text-decoration:none}footer a:hover{color:#fff}
+footer .ic{display:flex;gap:26px;margin-right:2px;align-items:center}
+footer svg{width:16px;height:16px;fill:currentColor}
+@media(max-width:900px){.art{top:130px}footer{flex-direction:column;align-items:flex-start;padding:0 20px calc(18px + env(safe-area-inset-bottom,0px));gap:8px}footer nav{gap:16px}}
+@media(max-width:520px){.art{top:150px;width:1100px;left:38%}.brand{font-size:23px}.store{width:calc(50% - 8px);min-width:160px}.store b{font-size:22px}}
+@media(prefers-reduced-motion:no-preference){h1,.stores,.art{animation:fi .7s ease both}.stores{animation-delay:.08s}.art{animation:none}}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<script>if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)location.replace("https://app.xmm-ai.com/?lens=clone");</script>
+<div class="top"><a class="brand" href="/"><img src="/chat/icon.svg?v=gpu6" alt="" width="34" height="34"><span>XMM AI</span></a></div>
+<h1>Your smart assistant.</h1>
+<div class="stores">
+<a class="store" href="https://app.xmm-ai.com/?lens=clone"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23M16 4.5c3.5 3.4 5 7.2 5 11.5s-1.5 8.1-5 11.5c-3.5-3.4-5-7.2-5-11.5s1.5-8.1 5-11.5z"/></svg><span><small>Open in your</small><b>Browser</b></span></a>
+<a class="store" href="/qr"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.5" width="16" height="25" rx="3.5"/><path d="M16 10v9M12.5 15.5L16 19l3.5-3.5"/></svg><span><small>Install the</small><b>App</b></span></a>
+</div>
+<div class="art" aria-hidden="true"><img src="/media/hero.jpg" width="1248" height="832" alt="" fetchpriority="high" decoding="async"></div>
+<footer>
+<nav><span class="ic"><a href="https://x.com/company_xmmAI" target="_blank" rel="noopener noreferrer" aria-label="X (@company_xmmAI)"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a><a href="https://discord.gg/GkFdGC65B" target="_blank" rel="noopener noreferrer" aria-label="Discord"><svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg></a></span><a href="https://support.xmm-ai.com/">FAQ</a><a href="https://support.xmm-ai.com/">Support</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="https://status.xmm-ai.com/">Status</a><a href="/child-safety">Child Safety</a></nav>
+<div>Made with care. &copy; 2026 XMMAI.</div>
+</footer>
+
+</body>
+</html>

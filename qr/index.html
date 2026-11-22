@@ -1,14 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head><script data-xmm-guard>(function(){try{
-var h=location.hostname.toLowerCase();
-if(h!=="xmm-ai.com"&&h!=="localhost"&&h!=="127.0.0.1"&&h!=="[::1]"&&location.protocol!=="file:"){
-document.documentElement.style.visibility="hidden";
-location.replace("https://xmm-ai.com"+location.pathname+location.search+location.hash);
-return}
+var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
+var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
+var S={app:1,auth:1,support:1,status:1};
+var sub=h===X?"":(h.slice(-X.length-1)==="."+X?h.slice(0,-X.length-1):null);
+function kind(p){if(/^\/chat(\/(index\.html)?)?$/.test(p))return"app";if(/^\/login(\/(index\.html)?)?$/.test(p))return"auth";if(/^\/support(\/|$)/.test(p))return"support";if(/^\/status(\/|$)/.test(p))return"status";return""}
+function u(k,p){return"https://"+k+"."+X+((k==="app"||k==="auth")?"/":(p.replace(/^\/(support|status)/,"").replace(/index\.html$/,"")||"/"))}
+var k=kind(p),to=null;
+if(!dev){
+if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://"+X+p+q}
+else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
+}
+if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
-/* bots: read-only mode (scroll, read text, see images; no interaction) */
 var d=document.documentElement;d.setAttribute("data-bot","1");
 var s=document.createElement("style");
 s.textContent="html[data-bot] a,html[data-bot] button,html[data-bot] input,html[data-bot] textarea,html[data-bot] select,html[data-bot] label,html[data-bot] summary,html[data-bot] [role=button],html[data-bot] [onclick]{pointer-events:none!important;cursor:default!important}";
@@ -70,7 +76,7 @@ setInterval(sweep,1500);
 <meta name="description" content="How to install XMM AI on your iPhone, iPad or Android phone.">
 <meta name="theme-color" content="#202020"><meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://xmm-ai.com/qr">
-<link rel="manifest" href="/chat/manifest.webmanifest">
+
 <link rel="icon" href="/favicon.ico?v=gpu6" sizes="any"><link rel="icon" type="image/svg+xml" href="/icon.svg?v=gpu6">
 <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
 <style>
@@ -122,7 +128,7 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:4
 <div class="st"><div class="n">4</div><div><b data-t="a4">Tap “Install”</b><span data-t="a4d">Open XMM AI from your home screen or app drawer.</span></div></div>
 </div>
 
-<div class="act"><button class="btn" id="inst" type="button" hidden data-t="now">Install now</button><a class="btn" id="open" href="/chat/?lens=clone" data-t="open">Open XMM AI</a><button class="btn o" id="copy" type="button" data-t="copy">Copy link</button></div>
+<div class="act"><button class="btn" id="inst" type="button" hidden data-t="now">Install now</button><a class="btn" id="open" href="https://app.xmm-ai.com/?lens=clone" data-t="open">Open XMM AI</a><button class="btn o" id="copy" type="button" data-t="copy">Copy link</button></div>
 <p class="note" data-t="note">Your chats and profile stay on this device. No account, email or password needed.</p>
 <a class="back" href="/" data-t="back">← Back to XMM AI</a>
 </main>
@@ -150,6 +156,6 @@ ib.onclick=async function(){if(!dp)return;try{dp.prompt();await dp.userChoice}ca
 var cp=document.getElementById("copy");
 cp.onclick=function(){var u=location.origin+"/qr",ok=function(){var o=cp.textContent;cp.textContent=T[lang].copied||T.en.copied;setTimeout(function(){cp.textContent=o},1600)};
  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,ok);else ok()};
-if("serviceWorker"in navigator&&location.protocol.indexOf("http")===0)addEventListener("load",function(){navigator.serviceWorker.register("/chat/sw.js",{scope:"/chat/"}).catch(function(){})});
+
 </script>
 </body></html>

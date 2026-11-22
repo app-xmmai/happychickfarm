@@ -58,7 +58,7 @@ export default {
     const ok =
       !origin ||
       allowed.includes(origin) ||
-      origin.endsWith(".vercel.app") || origin.endsWith(".pages.dev") ||
+      origin.endsWith(".vercel.app") || origin.endsWith(".xmm-ai.com") || origin.endsWith(".pages.dev") ||
       origin.endsWith(".workers.dev");
     if (!ok) {
       return new Response("Forbidden", { status: 403, headers: cors(request) });

@@ -1,14 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head><script data-xmm-guard>(function(){try{
-var h=location.hostname.toLowerCase();
-if(h!=="xmm-ai.com"&&h!=="localhost"&&h!=="127.0.0.1"&&h!=="[::1]"&&location.protocol!=="file:"){
-document.documentElement.style.visibility="hidden";
-location.replace("https://xmm-ai.com"+location.pathname+location.search+location.hash);
-return}
+var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
+var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
+var S={app:1,auth:1,support:1,status:1};
+var sub=h===X?"":(h.slice(-X.length-1)==="."+X?h.slice(0,-X.length-1):null);
+function kind(p){if(/^\/chat(\/(index\.html)?)?$/.test(p))return"app";if(/^\/login(\/(index\.html)?)?$/.test(p))return"auth";if(/^\/support(\/|$)/.test(p))return"support";if(/^\/status(\/|$)/.test(p))return"status";return""}
+function u(k,p){return"https://"+k+"."+X+((k==="app"||k==="auth")?"/":(p.replace(/^\/(support|status)/,"").replace(/index\.html$/,"")||"/"))}
+var k=kind(p),to=null;
+if(!dev){
+if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://"+X+p+q}
+else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
+}
+if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
-/* bots: read-only mode (scroll, read text, see images; no interaction) */
 var d=document.documentElement;d.setAttribute("data-bot","1");
 var s=document.createElement("style");
 s.textContent="html[data-bot] a,html[data-bot] button,html[data-bot] input,html[data-bot] textarea,html[data-bot] select,html[data-bot] label,html[data-bot] summary,html[data-bot] [role=button],html[data-bot] [onclick]{pointer-events:none!important;cursor:default!important}";
@@ -186,7 +192,7 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
 </script>
 
 <link rel="stylesheet" href="/chat/cinema.css?v=3">
-<link rel="canonical" href="https://xmm-ai.com/login/"></head>
+<link rel="canonical" href="https://auth.xmm-ai.com/"></head>
 <body>
 <main>
  <form class="card" id="f" autocomplete="off">
@@ -196,15 +202,15 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
   <label for="n">Your name</label>
   <input class="in" id="n" placeholder="Name" maxlength="40" autocapitalize="words" autocomplete="off" spellcheck="false" enterkeyhint="go" dir="auto">
   <button class="go" id="go" type="submit" disabled>Continue</button>
-  <p class="fine">By continuing you agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>. Need help? <a href="/support">Support</a> · support@xmm-ai.com</p>
+  <p class="fine">By continuing you agree to the <a href="https://xmm-ai.com/terms">Terms</a> and <a href="https://xmm-ai.com/privacy">Privacy Policy</a>. Need help? <a href="https://support.xmm-ai.com/">Support</a> · support@xmm-ai.com</p>
  </form>
 </main>
-<footer><a href="/">Home</a><a href="/qr">Get the app</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/support">Support</a><span>© 2026 XMM AI</span></footer>
+<footer><a href="https://xmm-ai.com/">Home</a><a href="https://xmm-ai.com/qr">Get the app</a><a href="https://xmm-ai.com/terms">Terms</a><a href="https://xmm-ai.com/privacy">Privacy</a><a href="https://support.xmm-ai.com/">Support</a><span>© 2026 XMM AI</span></footer>
 <script>
 (function(){
 var n=document.getElementById("n"),go=document.getElementById("go"),f=document.getElementById("f");
 var q=location.search,force=/[?&]force=1/.test(q);
-function dest(){var m=q.match(/[?&]next=([^&]+)/);var d=m?decodeURIComponent(m[1]):"/chat/?lens=clone";return/^\/(?!\/)/.test(d)?d:"/chat/?lens=clone"}
+function dest(){var m=q.match(/[?&]next=([^&]+)/);var d=m?decodeURIComponent(m[1]):"/chat/?lens=clone";if(!/^\/(?!\/)/.test(d))d="/chat/?lens=clone";if(!/(^|\.)xmm-ai\.com$/.test(location.hostname))return d;d=d.replace(/^\/chat(\/|$)/,"/");if(d.indexOf("#")<0){try{var o={};["xmm.name","xmm.terms","xmm.welcomed"].forEach(function(k){var v=localStorage.getItem(k);if(v!=null)o[k]=v});d+="#xmmx="+encodeURIComponent(JSON.stringify(o))}catch(e){}}return"https://app.xmm-ai.com"+d}
 try{var ex=JSON.parse(localStorage.getItem("xmm.name")||'""');if(String(ex||"").trim()&&!force){location.replace(dest());return}if(ex)n.value=ex}catch(e){}
 function upd(){go.disabled=!n.value.trim()}n.addEventListener("input",upd);upd();
 function cfReady(){return true}

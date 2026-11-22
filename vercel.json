@@ -20,6 +20,81 @@
       "source": "/privacy.html",
       "destination": "/privacy",
       "permanent": true
+    },
+    {
+      "source": "/chat",
+      "destination": "https://app.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/chat/",
+      "destination": "https://app.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/chat/index.html",
+      "destination": "https://app.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/login",
+      "destination": "https://auth.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/login/",
+      "destination": "https://auth.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/login/index.html",
+      "destination": "https://auth.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/support",
+      "destination": "https://support.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/support/",
+      "destination": "https://support.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/support/index.html",
+      "destination": "https://support.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/status",
+      "destination": "https://status.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/status/",
+      "destination": "https://status.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/status/index.html",
+      "destination": "https://status.xmm-ai.com/",
+      "permanent": false
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/home/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/home/index.html",
+      "destination": "/",
+      "permanent": false
     }
   ],
   "headers": [
@@ -34,6 +109,50 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "app\\.xmm-ai\\.com"
+        }
+      ],
+      "destination": "/chat/index.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "auth\\.xmm-ai\\.com"
+        }
+      ],
+      "destination": "/login/index.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "support\\.xmm-ai\\.com"
+        }
+      ],
+      "destination": "/support/index.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "status\\.xmm-ai\\.com"
+        }
+      ],
+      "destination": "/status/index.html"
+    },
+    {
+      "source": "/",
+      "destination": "/home/index.html"
+    },
     {
       "source": "/map/(.*)",
       "destination": "/chat/index.html"

@@ -1,14 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head><script data-xmm-guard>(function(){try{
-var h=location.hostname.toLowerCase();
-if(h!=="xmm-ai.com"&&h!=="localhost"&&h!=="127.0.0.1"&&h!=="[::1]"&&location.protocol!=="file:"){
-document.documentElement.style.visibility="hidden";
-location.replace("https://xmm-ai.com"+location.pathname+location.search+location.hash);
-return}
+var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
+var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
+var S={app:1,auth:1,support:1,status:1};
+var sub=h===X?"":(h.slice(-X.length-1)==="."+X?h.slice(0,-X.length-1):null);
+function kind(p){if(/^\/chat(\/(index\.html)?)?$/.test(p))return"app";if(/^\/login(\/(index\.html)?)?$/.test(p))return"auth";if(/^\/support(\/|$)/.test(p))return"support";if(/^\/status(\/|$)/.test(p))return"status";return""}
+function u(k,p){return"https://"+k+"."+X+((k==="app"||k==="auth")?"/":(p.replace(/^\/(support|status)/,"").replace(/index\.html$/,"")||"/"))}
+var k=kind(p),to=null;
+if(!dev){
+if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://"+X+p+q}
+else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
+}
+if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
-/* bots: read-only mode (scroll, read text, see images; no interaction) */
 var d=document.documentElement;d.setAttribute("data-bot","1");
 var s=document.createElement("style");
 s.textContent="html[data-bot] a,html[data-bot] button,html[data-bot] input,html[data-bot] textarea,html[data-bot] select,html[data-bot] label,html[data-bot] summary,html[data-bot] [role=button],html[data-bot] [onclick]{pointer-events:none!important;cursor:default!important}";
@@ -26,7 +32,7 @@ if((String(m).toUpperCase()!=="GET")||x)throw new Error("read-only");return xo.a
 window.WebSocket=function(){throw new Error("read-only")};
 n.sendBeacon=function(){return false};
 window.open=function(){return null};
-}catch(e){}})();</script><script>try{if(localStorage.getItem("xmm.galaxy")==="1")document.documentElement.classList.add("xm-galaxy")}catch(e){}</script><script>if(/^\/map\//.test(location.pathname))document.write('<base href="/chat/">')</script>
+}catch(e){}})();</script><script>/* auth.xmm-ai.com -> app.xmm-ai.com sign-in handoff */(function(){try{var m=/[#&]xmmx=([^&]+)/.exec(location.hash);if(!m)return;var o=JSON.parse(decodeURIComponent(m[1])),ok={"xmm.name":1,"xmm.terms":1,"xmm.welcomed":1};for(var k in o){if(ok[k]&&typeof o[k]==="string"&&o[k].length<200){JSON.parse(o[k]);localStorage.setItem(k,o[k])}}history.replaceState(null,"",location.pathname+location.search)}catch(e){}})();</script><script>try{if(localStorage.getItem("xmm.galaxy")==="1")document.documentElement.classList.add("xm-galaxy")}catch(e){}</script><script>if(/^\/map\//.test(location.pathname)||location.hostname==="app.xmm-ai.com")document.write('<base href="/chat/">')</script>
 <script>/* no-suspension guard: clears any old ban/lock state and removes any suspension screen. */
 (function(){try{
 var h=location.hostname.toLowerCase();
@@ -136,7 +142,7 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 }catch(e){}})();</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
-<script>try{var _n=JSON.parse(localStorage.getItem("xmm.name")||'""');if(!String(_n||"").trim()||/[?&]login=1/.test(location.search)){location.replace("/login/"+(String(_n||"").trim()?"?force=1":""))}}catch(e){}</script>
+<script>try{var _n=JSON.parse(localStorage.getItem("xmm.name")||'""');if(!String(_n||"").trim()||/[?&]login=1/.test(location.search)){location.replace((/(^|\.)xmm-ai\.com$/.test(location.hostname)?"https://auth.xmm-ai.com/":"/login/")+(String(_n||"").trim()?"?force=1":""))}}catch(e){}</script>
 <script>/* instant theme: set before first paint, no flash */try{var _t=JSON.parse(localStorage.getItem("xmm.cl.theme"));var _d=_t!=="light";if(_t==="system")_d=matchMedia("(prefers-color-scheme:dark)").matches;document.documentElement.setAttribute("data-cl-theme",_d?"dark":"light")}catch(e){document.documentElement.setAttribute("data-cl-theme","dark")}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
@@ -178,7 +184,7 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 })();
 </script>
 
-<style>#xl small{position:absolute;left:0;right:0;bottom:calc(22px + env(safe-area-inset-bottom,0px));max-width:none!important;font-size:13px}#xl i,#xl b{display:none!important}#xl{position:fixed;inset:0;z-index:2147483647;background:#0b0b10;color:#f4f4f6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:-apple-system,system-ui,"Segoe UI",sans-serif;text-align:center;padding:24px;transition:opacity .35s}#xl.out{opacity:0;pointer-events:none}#xl img{width:84px;height:84px;border-radius:22px}#xl b{font-size:26px;font-weight:700;letter-spacing:-.3px}#xl small{font-size:13px;color:#9b9ba5;line-height:1.5;max-width:320px}#xl i{width:22px;height:22px;border-radius:50%;border:3px solid #2c2c33;border-top-color:#3b82f6;animation:xls .8s linear infinite;margin-top:6px}@keyframes xls{to{transform:rotate(360deg)}}</style><link rel="canonical" href="https://xmm-ai.com/chat/"></head>
+<style>#xl small{position:absolute;left:0;right:0;bottom:calc(22px + env(safe-area-inset-bottom,0px));max-width:none!important;font-size:13px}#xl i,#xl b{display:none!important}#xl{position:fixed;inset:0;z-index:2147483647;background:#0b0b10;color:#f4f4f6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:-apple-system,system-ui,"Segoe UI",sans-serif;text-align:center;padding:24px;transition:opacity .35s}#xl.out{opacity:0;pointer-events:none}#xl img{width:84px;height:84px;border-radius:22px}#xl b{font-size:26px;font-weight:700;letter-spacing:-.3px}#xl small{font-size:13px;color:#9b9ba5;line-height:1.5;max-width:320px}#xl i{width:22px;height:22px;border-radius:50%;border:3px solid #2c2c33;border-top-color:#3b82f6;animation:xls .8s linear infinite;margin-top:6px}@keyframes xls{to{transform:rotate(360deg)}}</style><link rel="canonical" href="https://app.xmm-ai.com/"></head>
 <body><div id="xl"><img src="icon.svg" alt=""><small id="xls">© XMM AI</small></div><script>window.__xlT=Date.now()</script>
 
 
@@ -278,9 +284,9 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 <div class="xl-l"><div class="xl-h" role="heading" aria-level="1">Ask<br>anything.</div>
 <input id="lgName" class="xl-in" placeholder="Username" maxlength="24" autocapitalize="off" autocomplete="off" spellcheck="false" enterkeyhint="go" aria-label="Username">
 <button type="button" class="xl-b xl-c" id="lgGo" disabled>Continue</button>
-<div class="xl-t">By continuing, you agree to our <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/privacy" target="_blank" rel="noopener">Cookie Use</a>.</div></div>
+<div class="xl-t">By continuing, you agree to our <a href="https://xmm-ai.com/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="https://xmm-ai.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://xmm-ai.com/privacy" target="_blank" rel="noopener">Cookie Use</a>.</div></div>
 <div class="xl-qr"><span>Scan to get the app</span><img src="/qr/qr-dark.svg" alt="QR code: get XMM AI" width="130" height="130"></div>
-<div class="xl-f"><a href="/">About</a><a href="/qr">Get App</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/privacy">Cookies</a><a href="/privacy">Accessibility</a><span>© 2026 XMM AI</span></div>
+<div class="xl-f"><a href="https://xmm-ai.com/">About</a><a href="https://xmm-ai.com/qr">Get App</a><a href="https://xmm-ai.com/terms">Terms</a><a href="https://xmm-ai.com/privacy">Privacy</a><a href="https://xmm-ai.com/privacy">Cookies</a><a href="https://xmm-ai.com/privacy">Accessibility</a><span>© 2026 XMM AI</span></div>
 </div>
 <div class="toast glass" id="toast" hidden></div>
 

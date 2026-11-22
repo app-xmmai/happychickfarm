@@ -18,7 +18,7 @@ export default {
     if (request.method !== "POST") return json(request, 405, { error: "POST only" });
 
     const origin = request.headers.get("Origin") || "";
-    const okOrigin = !origin || origin.endsWith(".vercel.app") || origin.endsWith(".pages.dev") || origin.endsWith(".workers.dev") ||
+    const okOrigin = !origin || origin.endsWith(".vercel.app") || origin.endsWith(".xmm-ai.com") || origin.endsWith(".pages.dev") || origin.endsWith(".workers.dev") ||
       origin.endsWith(".freedev.app") || origin==="https://xmm-ai.com" || origin==="https://www.xmm-ai.com" ||
       origin === "https://app-xmmai.github.io" || origin === "https://xmmcraft.qzz.io" || origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1");
     if (!okOrigin) return json(request, 403, { error: "Forbidden origin" });
