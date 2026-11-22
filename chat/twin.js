@@ -11,7 +11,7 @@ window.XMM_TWIN={
   var s=String(t||"").trim();
   if(/^can birds fly\??$/i.test(s))return{text:"Yes, most birds can fly.",delay:700};
   if(/^can fly birds\??$/i.test(s))return{text:"🙏🥀gah dayum",delay:10000};
-  if(first&&GREET.test(s))return{text:"what do u want🫩✌️🥀💔",delay:600};
+  if(first&&GREET.test(s)){var _n="";try{_n=String(JSON.parse(localStorage.getItem("xmm.name")||'""')||"").trim()}catch(e){}return{text:"Hi"+(_n?" "+_n:"")+"! 👋 Welcome to XMM AI. I'm so glad you're here. What can I help you with today?",delay:600}}
   return null},
  chatItems:function(id){
   var a=api();if(!a)return[];var c=a.S.chats.find(function(x){return x.id===id});if(!c)return[];
