@@ -14,7 +14,7 @@ Chat, analyze images, create images, write code and more, all in one fast, priva
 [![No build step](https://img.shields.io/badge/build-none-brightgreen)](#-getting-started)
 [![Languages](https://img.shields.io/badge/languages-5-blue)](#-languages)
 
-[**Live site**](https://xmm-ai.com) · [**Open the chat**](https://xmm-ai.com/chat/) · [**Install on your phone**](https://xmm-ai.com/qr) · [**Report a bug**](../../issues)
+[**Live site**](https://xmm-ai.com) · [**Open the chat**](https://xmm-ai.com/chat/) · [**Install on your phone**](https://app.xmm-ai.com/?install=1) · [**Report a bug**](../../issues)
 
 </div>
 
@@ -120,7 +120,6 @@ Everything a user creates (chats, profile, settings, notebooks, projects) is sto
 | `/` | Landing page: hero, feature sections, desktop downloads (Linux, Windows, Mac), mobile install, FAQ ("Did you know?") |
 | `/chat/` | The main app: chats, Imagine, Code, Notebooks, settings, voice mode |
 | `/login/` | Simple sign-in: pick a name and start. Everything stays on the device |
-| `/qr` | Step-by-step guide for installing on iPhone, iPad and Android, with a QR code (light and dark variants) |
 | `/privacy` | Privacy Policy |
 | `/terms` | Terms of Use |
 
@@ -167,10 +166,7 @@ xmmai/
 ├── login/index.html           # Sign-in page
 ├── privacy/index.html         # Privacy Policy
 ├── terms/index.html           # Terms of Use
-├── qr/                        # Mobile install guide + QR codes
 │   ├── index.html
-│   ├── qr.svg
-│   └── qr-dark.svg
 ├── chat/                      # The app
 │   ├── index.html             # App shell
 │   ├── app.js                 # Core chat logic
@@ -229,7 +225,7 @@ Open **http://localhost:5500** for the landing page and **http://localhost:5500/
 
 > Port `5500` (and `3000`) is used on purpose: the Workers already allow `localhost:5500` and `localhost:3000` as development origins.
 
-> Note: `/privacy`, `/terms` and `/qr` use clean URLs. A plain static server may need `/privacy/` (with the trailing slash) or a host that supports clean URLs, such as Vercel.
+> Note: `/privacy` and `/terms` use clean URLs. A plain static server may need `/privacy/` (with the trailing slash) or a host that supports clean URLs, such as Vercel.
 
 ## ⚙️ Configuration
 
@@ -344,7 +340,7 @@ XMM AI is a PWA, so no app store is needed.
 **Desktop**
 Use the install icon in the address bar of Chrome or Edge to open XMM AI in its own focused window.
 
-A step-by-step guide with a QR code is built into the site at `/qr`.
+Tap **Install the App** on the landing page. It opens app.xmm-ai.com and shows the install popup.
 
 ## 🌐 Languages
 
@@ -386,7 +382,7 @@ Translations live in [`chat/lang.js`](chat/lang.js). To add a language, add a ne
 | "Cool down: wait Ns" | Expected. Each user can make 1 image per 20 seconds. |
 | Installed app shows old version | The app auto-updates when online. Close and reopen it, or bump the cache name in `chat/sw.js`. |
 | Voice mode does nothing | The browser needs speech recognition support and microphone permission. |
-| `/privacy` or `/qr` returns 404 locally | Use `/privacy/` and `/qr/` with a trailing slash on a plain static server, or deploy to a host with clean URLs. |
+| `/privacy` returns 404 locally | Use `/privacy/` with a trailing slash on a plain static server, or deploy to a host with clean URLs. |
 
 ## 🧭 Roadmap
 

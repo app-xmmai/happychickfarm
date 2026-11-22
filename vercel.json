@@ -1,16 +1,6 @@
 {
   "redirects": [
     {
-      "source": "/qr",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/qr/",
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/terms.html",
       "destination": "/terms",
       "permanent": true
