@@ -204,3 +204,11 @@ html:root:root body .cl-mi:has(svg),html:root:root body .cl-mi[data-k="x7g"]{bor
 @keyframes xgCard{from{opacity:0;transform:translateY(32px) scale(.9)}to{opacity:1;transform:none}}
 html,html body{transition:background-color .8s ease}
 html #xmmBg{animation:xgIn 1s ease}
+
+/* v9 mobile: sidebar button always visible, chips wrap instead of running off-screen */
+@media(max-width:899px){
+ html:root:root:root:root body #clTop #clMenu#clMenu{display:grid!important;place-items:center;visibility:visible!important;opacity:1!important}
+ html:root:root:root body #gmChips{flex-wrap:wrap!important;justify-content:center!important;overflow:visible!important;max-width:100%!important;width:100%;box-sizing:border-box;padding:0 12px!important;gap:8px!important}
+ html:root:root:root body #gmChips button{flex:0 1 auto!important;max-width:100%;height:38px;padding:0 14px 0 10px;font-size:13.5px;white-space:nowrap}
+ html:root:root:root body.xempty #viewChat .dock{max-width:100vw!important;overflow-x:hidden}
+}
