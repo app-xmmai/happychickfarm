@@ -286,10 +286,10 @@ function conv(c){var inp=$("input",c),sl=$$("select",c),out=$(".xw-out",c),rt=$(
 
 var DAYOF=function(t){t=String(t||"");return /day after tomorrow|پس\s*فردا|übermorgen/i.test(t)?2:/\b(tomorrow|tmrw|tomorow|tommorow)\b|فردا|\bmorgen\b/i.test(t)?1:0};
 function wIco(s){s=String(s||"").toLowerCase();return /thunder/.test(s)?"⛈️":/snow|sleet|blizzard|ice/.test(s)?"🌨️":/rain|drizzle|shower/.test(s)?"🌧️":/fog|mist|haze/.test(s)?"🌫️":/overcast/.test(s)?"☁️":/cloud|partly/.test(s)?"⛅":/sun|clear/.test(s)?"☀️":"🌤️"}
-async function jget(u){var r=await fetch(u);if(!r.ok)throw 0;return r.json()}
+async function jget(u,ms){var ac=new AbortController(),t=setTimeout(function(){ac.abort()},ms||7000);try{var r=await fetch(u,{signal:ac.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(t)}}
 async function WX2(el,cfg){
  var name=String(cfg.location||cfg.city||"").replace(/\s+/g," ").trim(),f=/^f/i.test(cfg.unit||""),day=Math.max(0,Math.min(6,+cfg.day||0));
- var key="w2:"+name+"|"+cfg.lat+"|"+cfg.lng+"|"+day+"|"+f;
+ var key="w3:"+name+"|"+cfg.lat+"|"+cfg.lng+"|"+day+"|"+f;
  var show=function(h){el.innerHTML=h||'<div class="xw-load">Weather unavailable for '+E(name)+' (check the spelling)</div>'};
  if(GEO[key]!==undefined)return show(GEO[key]);
  var u=f?"°F":"°C",cv=function(c){return Math.round(f?c*9/5+32:c)},sp=function(k){return Math.round(f?k*0.621:k)}+(f?" mph":" km/h");
@@ -301,29 +301,34 @@ async function WX2(el,cfg){
   '<div class="xw-wxs"><span>📅 '+lab+': '+cv(d.min)+'–'+cv(d.max)+u+' '+d.icon+' '+E(d.desc)+'</span></div>'+
   '<div class="xw-wxs"><span>🌧 '+d.rain+'%</span><span>💧 '+o.hum+'%</span><span>💨 '+sp(o.wind)+'</span></div>'+
   '<div class="xw-wxs"><span>'+tip+'</span></div><div class="xw-wxd">'+days+'</div>'};
- var viaOM=async function(lat,lng,label){
-  var j=await jget("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lng+"&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7");
-  var c=j.current,w=wxi(c.weather_code);
+ var parseOM=function(j,label){var c=j.current,w=wxi(c.weather_code);
   return build({label:label,temp:c.temperature_2m,feels:c.apparent_temperature,hum:c.relative_humidity_2m,wind:c.wind_speed_10m,desc:w[0],icon:w[1],
    days:j.daily.time.map(function(d,i){var x=wxi(j.daily.weather_code[i]);return{date:d,icon:x[1],desc:x[0],max:j.daily.temperature_2m_max[i],min:j.daily.temperature_2m_min[i],rain:Math.round((j.daily.precipitation_probability_max||[])[i]||0)}})})};
- var viaWttr=async function(q){
-  var j=await jget("https://wttr.in/"+encodeURIComponent(q)+"?format=j1"),c=j.current_condition[0],a=(j.nearest_area&&j.nearest_area[0])||{},desc=c.weatherDesc[0].value;
+ var parseWttr=function(j,q){var c=j.current_condition[0],a=(j.nearest_area&&j.nearest_area[0])||{},desc=c.weatherDesc[0].value;
   var lab=(a.areaName&&a.areaName[0].value||q)+(a.country&&a.country[0].value?", "+a.country[0].value:"");
   return build({label:lab,temp:+c.temp_C,feels:+c.FeelsLikeC,hum:+c.humidity,wind:+c.windspeedKmph,desc:desc,icon:wIco(desc),
    days:j.weather.map(function(d){var h=d.hourly[4]||d.hourly[0],ds=h.weatherDesc[0].value,rn=Math.max.apply(null,d.hourly.map(function(x){return+x.chanceofrain||0}));return{date:d.date,icon:wIco(ds),desc:ds,max:+d.maxtempC,min:+d.mintempC,rain:rn}})})};
- var out=null;
- try{
-  if(cfg.lat!=null&&cfg.lng!=null)out=await viaOM(cfg.lat,cfg.lng,name||"Weather");
+ var OMU="https://api.open-meteo.com/v1/forecast?current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7";
+ /* 1) our own Cloudflare Worker /weather (works from Iran, where the weather sites are blocked) */
+ var viaWorker=async function(){var b=String((window.XMM_CONFIG&&XMM_CONFIG.GROQ_PROXY)||"").replace(/\/$/,"");if(!b)throw 0;
+  var qs=(cfg.lat!=null&&cfg.lng!=null?"lat="+cfg.lat+"&lng="+cfg.lng+"&":"")+"q="+encodeURIComponent(name);
+  var j=await jget(b+"/weather?"+qs,10000);if(j&&j.om&&j.om.current)return parseOM(j.om,j.label||name);if(j&&j.wttr&&j.wttr.current_condition)return parseWttr(j.wttr,j.label||name);throw 0};
+ /* 2) straight from the browser: Open-Meteo, then OpenStreetMap geocoding, then wttr.in */
+ var viaDirect=async function(){
+  var hit=null;
+  if(cfg.lat!=null&&cfg.lng!=null)hit={lat:cfg.lat,lng:cfg.lng,label:name||"Weather"};
   else{
    var ws=name.replace(/[,،]/g," ").split(" ").filter(Boolean),cands=[name];for(var n=ws.length-1;n>=1;n--)cands.push(ws.slice(0,n).join(" "));
-   var hit=null;
-   for(var i=0;i<cands.length&&!hit;i++){try{var g=await jget("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name="+encodeURIComponent(cands[i]));if(g.results&&g.results[0])hit={lat:g.results[0].latitude,lng:g.results[0].longitude,label:g.results[0].name+(g.results[0].admin1?", "+g.results[0].admin1:"")+(g.results[0].country?", "+g.results[0].country:"")}}catch(e){}}
-   if(!hit){try{var nn=await jget("https://nominatim.openstreetmap.org/search?format=json&accept-language=en&limit=1&q="+encodeURIComponent(name));if(nn&&nn[0])hit={lat:+nn[0].lat,lng:+nn[0].lon,label:String(nn[0].display_name).split(",").slice(0,3).join(",").trim()}}catch(e){}}
-   if(hit){try{out=await viaOM(hit.lat,hit.lng,hit.label)}catch(e){}}
+   for(var i=0;i<cands.length&&!hit;i++){try{var g=await jget("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name="+encodeURIComponent(cands[i]),5000);if(g.results&&g.results[0])hit={lat:g.results[0].latitude,lng:g.results[0].longitude,label:g.results[0].name+(g.results[0].admin1?", "+g.results[0].admin1:"")+(g.results[0].country?", "+g.results[0].country:"")}}catch(e){}}
+   if(!hit){try{var nn=await jget("https://nominatim.openstreetmap.org/search?format=json&accept-language=en&limit=1&q="+encodeURIComponent(name),5000);if(nn&&nn[0])hit={lat:+nn[0].lat,lng:+nn[0].lon,label:String(nn[0].display_name).split(",").slice(0,3).join(",").trim()}}catch(e){}}
   }
- }catch(e){}
- if(!out){for(var k=0;k<2&&!out;k++){try{out=await viaWttr(k?name.split(/[ ,]+/)[0]:name)}catch(e){}}}
- GEO[key]=out;show(out)}
+  if(hit){try{return parseOM(await jget(OMU+"&latitude="+hit.lat+"&longitude="+hit.lng,7000),hit.label)}catch(e){}}
+  for(var k=0;k<2;k++){try{return parseWttr(await jget("https://wttr.in/"+encodeURIComponent(k?name.split(/[ ,]+/)[0]:name)+"?format=j1",7000),name)}catch(e){}}
+  throw 0};
+ var out=null;
+ try{out=await viaWorker()}catch(e){}
+ if(!out){try{out=await viaDirect()}catch(e){}}
+ if(out)GEO[key]=out;show(out)}
 /* hydration for cards that need network (map geocode, weather, currency) */
 function hydrate(){$$("[data-hyd]:not([data-done])").forEach(function(el){el.dataset.done=1;var cfg=cfgOf(el),t=el.dataset.hyd;
  if(t==="cur")conv(el);

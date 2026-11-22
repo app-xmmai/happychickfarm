@@ -26,6 +26,9 @@ export default {
     // Image generation (Cloudflare Workers AI, free daily allowance, no extra key)
     if (new URL(request.url).pathname === "/image") return handleImage(request, env);
 
+    // Weather proxy (free keyless services, fetched from Cloudflare so it works for users in Iran)
+    if (new URL(request.url).pathname === "/weather") return handleWeather(request);
+
     // Health check: open the Worker URL in a browser to see how it is configured
     if (request.method === "GET") {
       return json(request, 200, {
@@ -210,4 +213,64 @@ async function handleImage(request, env) {
   }
   await cache.delete(ckey);
   return json(request, 502, { error: "Image engines failed: " + lastErr });
+}
+
+
+/* ---------- WEATHER: GET /weather?q=City or ?lat=..&lng=..&q=Label ----------
+ * Uses Open-Meteo + OpenStreetMap (Nominatim) and falls back to wttr.in. No keys needed.
+ * The browser calls this Worker, so users where those sites are blocked (Iran) still get weather. */
+async function handleWeather(request) {
+  const u = new URL(request.url);
+  const q = (u.searchParams.get("q") || "").replace(/\s+/g, " ").trim().slice(0, 80);
+  const lat = u.searchParams.get("lat"), lng = u.searchParams.get("lng");
+  const get = async (url, ms = 8000) => {
+    const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
+    try {
+      const r = await fetch(url, { signal: c.signal, headers: { "User-Agent": "xmm-ai.com weather proxy", Accept: "application/json" } });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return await r.json();
+    } finally { clearTimeout(t); }
+  };
+  let hit = null;
+  if (lat && lng && !isNaN(+lat) && !isNaN(+lng)) hit = { lat: +lat, lng: +lng, label: q || "Weather" };
+  else if (q) {
+    const ws = q.replace(/[,،]/g, " ").split(" ").filter(Boolean);
+    const cands = [q];
+    for (let n = ws.length - 1; n >= 1; n--) cands.push(ws.slice(0, n).join(" "));
+    for (const c of cands) {
+      if (hit) break;
+      try {
+        const g = await get("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(c), 5000);
+        const r = g.results && g.results[0];
+        if (r) hit = { lat: r.latitude, lng: r.longitude, label: r.name + (r.admin1 ? ", " + r.admin1 : "") + (r.country ? ", " + r.country : "") };
+      } catch {}
+    }
+    if (!hit) {
+      try {
+        const n = await get("https://nominatim.openstreetmap.org/search?format=json&accept-language=en&limit=1&q=" + encodeURIComponent(q), 6000);
+        if (n && n[0]) hit = { lat: +n[0].lat, lng: +n[0].lon, label: String(n[0].display_name).split(",").slice(0, 3).join(",").trim() };
+      } catch {}
+    }
+  }
+  if (hit) {
+    try {
+      const om = await get("https://api.open-meteo.com/v1/forecast?latitude=" + hit.lat + "&longitude=" + hit.lng +
+        "&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m" +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7", 9000);
+      return wjson(request, { label: hit.label, om });
+    } catch {}
+  }
+  if (q) {
+    for (const name of [q, q.split(/[ ,]+/)[0]]) {
+      try { return wjson(request, { label: q, wttr: await get("https://wttr.in/" + encodeURIComponent(name) + "?format=j1", 9000) }); } catch {}
+    }
+  }
+  return json(request, 404, { error: "Place not found" });
+}
+
+function wjson(request, obj) {
+  return new Response(JSON.stringify(obj), {
+    status: 200,
+    headers: { ...cors(request), "Content-Type": "application/json", "Cache-Control": "public, max-age=600" }
+  });
 }
