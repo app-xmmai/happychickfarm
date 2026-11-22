@@ -22,7 +22,7 @@ setInterval(function(){var nv=document.getElementById("nv");
  else if(!nv&&seen){seen=false;pending=null}},250);
 addEventListener("popstate",function(){if(document.getElementById("nv")&&window.XMM_NAV)window.XMM_NAV.close()});
 function boot(){var m=location.pathname.match(/^\/map\/(.+)$/);if(!m)return;var q;try{q=decodeURIComponent(m[1]).replace(/-+/g," ").trim()}catch(e){q=m[1]}
- try{history.replaceState(null,"",(/^app\./.test(location.hostname)?"/":"/chat/")+"?lens=clone")}catch(e){}if(!q)return;loading=true;
+ try{history.replaceState(null,"",(/^app\./.test(location.hostname)?"/":"/chat/")+"")}catch(e){}if(!q)return;loading=true;
  var n=0,t=setInterval(function(){if(window.XMM_NAV&&window.XMM_NAV.open){clearInterval(t);pending=q;window.XMM_NAV.open(q,null);setTimeout(function(){loading=false},1500)}else if(++n>80){clearInterval(t);loading=false}},100)}
 if(document.readyState==="complete")boot();else addEventListener("load",boot);
 })();

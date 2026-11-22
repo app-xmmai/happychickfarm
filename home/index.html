@@ -72,18 +72,18 @@ setInterval(sweep,1500);
 </script>
 
 
-<script>try{var u=new URL(location.href);if(u.searchParams.get("lens")!=="clone"){u.searchParams.set("lens","clone");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}</script>
-<meta charset="utf-8">
+
+<script>/* iOS: installing from xmm-ai.com must install the app origin, otherwise the home-screen app jumps cross-origin and iOS shows Safari bars */try{var ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);if(ios&&!navigator.standalone&&location.hostname.replace(/^www\./,"")==="xmm-ai.com"&&!/[?&]site=1/.test(location.search))location.replace("https://app.xmm-ai.com/")}catch(e){}</script><meta charset="utf-8">
 <meta name="google-site-verification" content="8dJAeILRK-D278rZk-3t9al1bweV_zfB74jZjzjLGfE" />
 <meta name="google-site-verification" content="CBqLRxP98Py_x8bL-OoaPuFanIPWQgY4GPwTYcnFwT0" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <title>XMM AI – Your smart assistant</title>
 <link rel="canonical" href="https://xmm-ai.com/">
 <meta name="description" content="XMM AI: your smart assistant. Chat, analyze images, create images and write with one fast AI, instantly.">
-<meta name="theme-color" content="#1c1008">
+<meta name="theme-color" content="#000000"><style>html{background:#000}</style>
 <meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="/favicon.ico?v=gpu6" sizes="48x48 96x96">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png?v=gpu6">
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=gpu6">
@@ -132,11 +132,11 @@ footer svg{width:16px;height:16px;fill:currentColor}
 </style>
 </head>
 <body>
-<script>if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)location.replace("https://app.xmm-ai.com/?lens=clone");</script>
+<script>if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)location.replace("https://app.xmm-ai.com/");</script>
 <div class="top"><a class="brand" href="/"><img src="/chat/icon.svg?v=gpu6" alt="" width="34" height="34"><span>XMM AI</span></a></div>
 <h1>Your smart assistant.</h1>
 <div class="stores">
-<a class="store" href="https://app.xmm-ai.com/?lens=clone"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23M16 4.5c3.5 3.4 5 7.2 5 11.5s-1.5 8.1-5 11.5c-3.5-3.4-5-7.2-5-11.5s1.5-8.1 5-11.5z"/></svg><span><small>Open in your</small><b>Browser</b></span></a>
+<a class="store" href="https://app.xmm-ai.com/"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="11.5"/><path d="M4.5 16h23M16 4.5c3.5 3.4 5 7.2 5 11.5s-1.5 8.1-5 11.5c-3.5-3.4-5-7.2-5-11.5s1.5-8.1 5-11.5z"/></svg><span><small>Open in your</small><b>Browser</b></span></a>
 <a class="store" href="/qr"><svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3.5" width="16" height="25" rx="3.5"/><path d="M16 10v9M12.5 15.5L16 19l3.5-3.5"/></svg><span><small>Install the</small><b>App</b></span></a>
 </div>
 <div class="art" aria-hidden="true"><img src="/media/hero.jpg" width="1248" height="832" alt="" fetchpriority="high" decoding="async"></div>
