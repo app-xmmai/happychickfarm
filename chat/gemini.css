@@ -117,3 +117,55 @@ html:root:root:root body #zhero .zin{height:auto!important;min-height:0!importan
 html:root body #zhero .gm-hi img{width:.95em;height:.95em;flex:none;animation:gmSpin 2.4s cubic-bezier(.22,.8,.24,1) both}
 html:root:root:root body .composer #sendBtn#sendBtn,html:root:root:root body .composer.cl-exp #sendBtn#sendBtn,html:root:root:root body .composer.cl-has #sendBtn#sendBtn{background:linear-gradient(135deg,#4285f4,#9b72cb)!important;color:#fff!important;border:0!important;box-shadow:0 2px 10px rgba(66,133,244,.35)!important}
 html:root:root:root body .composer #sendBtn svg{stroke:#fff!important;color:#fff!important}
+
+/* ======== v6: wave glow + upgraded settings / menus / upload / model switcher ======== */
+:root{--wv:linear-gradient(110deg,#4285f4,#7b5cff 22%,#c86bff 42%,#ff6fa5 62%,#7b5cff 82%,#4285f4)}
+@keyframes gmWave{to{background-position:300% 50%}}
+@keyframes gmGlow{0%,100%{box-shadow:0 0 14px rgba(123,92,255,.35),0 0 32px rgba(66,133,244,.18)}50%{box-shadow:0 0 20px rgba(255,111,165,.4),0 0 40px rgba(123,92,255,.22)}}
+/* send + new chat glow */
+html:root:root:root body .composer #sendBtn#sendBtn{background:var(--wv)!important;background-size:300% 100%!important;animation:gmWave 6s linear infinite!important;box-shadow:0 0 16px rgba(123,92,255,.5)!important}
+html:root:root body #clDrawer #clNc:hover{box-shadow:0 0 0 1px rgba(123,92,255,.5),0 0 22px rgba(123,92,255,.35)!important}
+/* groups + rows (settings & sheets) */
+html:root:root body .cl-grp{background:#1e1f20!important;border:0!important;border-radius:26px!important;overflow:hidden;box-shadow:none!important}
+html:root:root body .cl-row{min-height:60px;border:0!important;background:none!important;color:#e3e3e3!important;position:relative;transition:background .15s}
+html:root:root body .cl-row+.cl-row::before{content:"";position:absolute;top:0;left:68px;right:16px;height:1px;background:rgba(255,255,255,.06)}
+html:root:root body .cl-row:hover{background:#282a2c!important}
+html:root:root body .cl-row>svg:first-child,html:root:root body .cl-row .ic{width:38px!important;height:38px!important;padding:9px;border-radius:12px;background:rgba(138,125,255,.14);color:#b9b2ff!important;box-sizing:border-box;flex:none}
+html:root:root body .cl-row small{color:#9aa0a6!important}
+html:root:root body .cl-sheet,html:root:root body #clSet{background:#131314!important}
+html:root:root body .cl-sh h3{font:500 18px var(--cl-sans)}
+html:root:root body .cl-sh .cl-b{border:0!important;background:#282a2c!important;border-radius:50%!important;width:40px!important;height:40px!important}
+/* model switcher */
+html:root:root body #clModel .cl-grp{background:none!important;display:flex;flex-direction:column;gap:10px;padding:6px 8px!important}
+html:root:root body .cl-mi{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;border:1px solid transparent!important;border-radius:20px!important;background:#1e1f20!important;color:#e3e3e3!important;text-align:left;cursor:pointer;position:relative;transition:background .15s,transform .15s,box-shadow .2s}
+html:root:root body .cl-mi .t{flex:1}
+html:root:root body .cl-mi b{font:500 16px var(--cl-sans)}
+html:root:root body .cl-mi small{display:block;color:#9aa0a6;margin-top:3px;font-size:13px}
+html:root:root body .cl-mi:hover{background:#282a2c!important;transform:translateY(-1px)}
+html:root:root body .cl-mi:has(svg){border:1px solid transparent!important;background:linear-gradient(#1e1f20,#1e1f20) padding-box,var(--wv) border-box!important;background-size:100% 100%,300% 100%!important;animation:gmWave 8s linear infinite,gmGlow 4s ease-in-out infinite}
+html:root:root body .cl-mi svg{color:#c9b8ff!important;flex:none}
+html:root:root body .cl-mi[data-k="x7g"]{background:linear-gradient(rgba(19,19,20,.72),rgba(19,19,20,.72)) padding-box,var(--wv) border-box!important;background-size:100% 100%,300% 100%!important;border:1px solid transparent!important;animation:gmWave 6s linear infinite,gmGlow 3.5s ease-in-out infinite}
+html:root:root body .cl-mi[data-k="x7g"] b{background:var(--wv);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gmWave 6s linear infinite}
+html:root:root body .cl-mi[data-k="x7g"]::after{content:"GALAXY";font:600 10px var(--cl-sans);letter-spacing:.12em;padding:4px 8px;border-radius:99px;background:var(--wv);background-size:300% 100%;animation:gmWave 6s linear infinite;color:#fff}
+/* + upload popup and 3-dots menus */
+html:root:root body #ipPlus,html:root:root body .menu.pop,html:root:root body .menu.pop.glass{background:#1e1f20!important;border:0!important;border-radius:24px!important;padding:8px!important;box-shadow:0 12px 40px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;animation:gmPop .18s cubic-bezier(.22,.8,.24,1) both}
+@keyframes gmPop{from{opacity:0;transform:translateY(6px) scale(.97)}}
+html:root:root body #ipPlus button,html:root:root body .menu.pop button,html:root:root body .menu.pop .mi{display:flex;align-items:center;gap:14px;width:100%;height:46px;padding:0 14px;border:0!important;border-radius:14px!important;background:none!important;color:#e3e3e3!important;font:500 14px var(--cl-sans)!important;cursor:pointer;text-align:left}
+html:root:root body #ipPlus button:hover,html:root:root body .menu.pop button:hover,html:root:root body .menu.pop .mi:hover{background:#282a2c!important}
+html:root:root body #ipPlus button svg{width:34px!important;height:34px!important;padding:8px;border-radius:11px;box-sizing:border-box;background:rgba(138,125,255,.14);color:#b9b2ff!important}
+html:root:root body #ipPlus button:nth-child(2) svg{background:rgba(255,111,165,.14);color:#ff9bc0!important}
+html:root:root body #ipPlus button:nth-child(3) svg{background:rgba(66,133,244,.16);color:#8ab4ff!important}
+html:root:root body .menu.pop .danger,html:root:root body .menu.pop button.danger{color:#f28b82!important}
+
+/* ---- v6b: settings pages (.ip-*) + stronger wave borders ---- */
+html:root:root body .ip-grp{background:#1e1f20!important;border:0!important;border-radius:26px!important;overflow:hidden;box-shadow:none!important}
+html:root:root body .ip-row{min-height:60px;border:0!important;background:none!important;color:#e3e3e3!important;position:relative;transition:background .15s}
+html:root:root body .ip-row+.ip-row::before{content:"";position:absolute;top:0;left:68px;right:16px;height:1px;background:rgba(255,255,255,.07)}
+html:root:root body .ip-row:hover{background:#282a2c!important}
+html:root:root body .ip-row>svg:first-child{width:38px!important;height:38px!important;padding:9px;border-radius:12px;background:rgba(138,125,255,.14);color:#b9b2ff!important;box-sizing:border-box;flex:none}
+html:root:root body .ip-row .t small{color:#9aa0a6!important}
+html:root:root body .ip-av{background:var(--wv)!important;background-size:300% 100%!important;animation:gmWave 8s linear infinite;color:#fff!important;box-shadow:0 0 18px rgba(123,92,255,.4)}
+html:root:root body .ip-h{background:#131314!important}
+html:root:root body .ip-h .ip-circ{border:0!important;background:#282a2c!important;border-radius:50%!important}
+html:root:root body .ip-b,html:root:root body [class~="ip-page"]{background:#131314!important}
+html:root:root body .cl-mi:has(svg),html:root:root body .cl-mi[data-k="x7g"]{border-width:2px!important}
