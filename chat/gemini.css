@@ -1,0 +1,86 @@
+/* XMM AI gemini.css — Gemini look (final layer, loaded last). */
+html:root:root:root{--gw:272px;--dw:272px;--cl-bg:#131314;--cl-bg2:#131314;--cl-card:#1e1f20;--cl-card2:#282a2c;--cl-sheet:#1e1f20;--cl-txt:#e3e3e3;--cl-mut:#9aa0a6;--cl-line:rgba(255,255,255,.08);--cl-glass:#282a2c;--cl-glass2:#282a2c;--cl-glass-b:#333537;--cl-acc:#a8c7fa;--cl-blue:#a8c7fa;--ip-blue:#a8c7fa;--cl-sans:"Google Sans Text","Google Sans",Roboto,"Segoe UI",Arial,sans-serif}
+html:root body.cl-sbhide{--dw:0px}
+html,html body,html body #shell-chat,html body #mainChat,html body #viewChat,html body #zhero{background:#131314!important;font-family:var(--cl-sans)}
+html body #zhero{background:transparent!important}
+
+/* ---------- sidebar ---------- */
+html:root:root body #clDrawer{background:#1e1f20!important;border:0!important;color:#e3e3e3;font-family:var(--cl-sans);display:flex;flex-direction:column;width:var(--dw)!important;box-sizing:border-box}
+html:root body #clDrawer .cl-dh{height:64px;min-height:64px;padding:8px 12px!important;display:flex;align-items:center;justify-content:space-between;background:none!important;border:0!important}
+html:root body #clDrawer .cl-dh>span{display:none}
+html:root body #clDrawer .gm-menu,html:root body #clDrawer #ipSearch{flex:0 0 40px!important;width:40px!important;min-width:40px!important;height:40px!important;padding:0!important;border:0!important;border-radius:50%!important;background:none!important;color:#c4c7c5!important;display:grid;place-items:center;cursor:pointer;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root body #clDrawer .gm-menu:hover,html:root body #clDrawer #ipSearch:hover{background:#333537!important}
+html:root body #clDrawer .gm-menu svg,html:root body #clDrawer #ipSearch svg{width:22px;height:22px}
+html:root:root body #clDrawer #clNc#clNc{display:inline-flex!important;align-items:center;gap:12px;flex:none!important;width:auto!important;min-width:0!important;height:44px!important;margin:4px 12px 14px!important;padding:0 20px 0 14px!important;align-self:flex-start;background:#282a2c!important;color:#e3e3e3!important;border:0!important;border-radius:22px!important;box-shadow:none!important;font:500 14px var(--cl-sans)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root body #clDrawer #clNc:hover{background:#333537!important;transform:none!important}
+html:root body #clDrawer #clNc svg{width:20px!important;height:20px!important;stroke:#c4c7c5!important}
+html:root body #clDrawer .cl-ds{flex:1 1 auto;min-height:0;overflow-y:auto;padding:0 0 8px!important;background:none!important}
+html:root body #clDrawer .cl-nr{height:40px;width:calc(100% - 24px)!important;margin:0 12px!important;padding:0 14px!important;gap:14px;border-radius:20px!important;font:500 14px var(--cl-sans)!important;color:#e3e3e3!important;background:none!important}
+html:root body #clDrawer .cl-nr svg{width:20px;height:20px;color:#c4c7c5;flex:none}
+html:root body #clDrawer .cl-nr:hover,html:root body #clDrawer .cl-ci:hover{background:#282a2c!important}
+html:root body #clDrawer .cl-rl{padding:18px 26px 8px!important;font:500 14px var(--cl-sans)!important;color:#e3e3e3!important;text-transform:none;letter-spacing:0}
+html:root body #clDrawer .cl-ci{height:36px;width:calc(100% - 24px)!important;margin:0 12px!important;padding:0 14px!important;border-radius:18px!important;font:400 14px var(--cl-sans)!important;color:#e3e3e3!important;background:none!important;gap:8px}
+html:root body #clDrawer .cl-ci>svg:first-child{display:none}
+html:root body #clDrawer .cl-ci>span:first-of-type{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html:root body #clDrawer .cl-ci.on{background:#004a77!important;color:#c2e7ff!important}
+html:root body #clDrawer .cl-ci .cl-dots{opacity:0;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;flex:none}
+html:root body #clDrawer .cl-ci:hover .cl-dots{opacity:1}
+html:root body #clDrawer .cl-all,html:root body #clDrawer .cl-none{margin:2px 12px;padding:0 14px;font:400 13px var(--cl-sans);color:#9aa0a6!important;background:none!important}
+html:root:root body #clDrawer .cl-db:not(#_a):not(#_b){display:flex!important;align-items:center;gap:12px!important;flex:none;padding:10px 12px 14px!important;margin:0;background:none!important;border:0!important;box-shadow:none!important}
+html:root:root body #clDrawer .cl-db #clAv#clAv{flex:0 0 36px!important;width:36px!important;min-width:36px!important;height:36px!important;min-height:36px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#3c4043!important;color:#e3e3e3!important;font:500 14px var(--cl-sans)!important;display:grid;place-items:center;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root body #clDrawer .gm-sh{font:500 14px var(--cl-sans);color:#e3e3e3;cursor:pointer;flex:1;line-height:36px}
+
+/* ---------- top bar ---------- */
+html:root:root body #clTop#clTop{display:flex!important;align-items:center;height:64px;min-height:64px;padding:0 16px!important;gap:4px!important;background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root:root body #clTop #clMenu#clMenu,html:root:root body #clTop .cl-pill button{flex:0 0 40px!important;width:40px!important;min-width:40px!important;height:40px!important;padding:0!important;border:0!important;border-radius:50%!important;background:none!important;color:#c4c7c5!important;display:grid!important;place-items:center;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root body #clTop #clMenu:hover,html:root body #clTop .cl-pill button:hover{background:#282a2c!important;transform:none!important}
+html:root body #clTop .cl-pill{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;display:flex;gap:2px;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root:root body #clTop #ipModel#ipModel{height:40px!important;padding:0 8px 0 12px!important;gap:8px;border:0!important;border-radius:20px!important;background:none!important;color:#e3e3e3!important;font:500 20px var(--cl-sans)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;max-width:none!important}
+html:root body #clTop #ipModel:hover{background:#282a2c!important}
+html:root body #clTop #ipModel svg{display:none}
+html:root body #clTop #ipModel::after{content:"";width:7px;height:7px;border:solid #c4c7c5;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-2px,-2px);margin-left:6px}
+html:root body #clTop .gm-av{flex:0 0 36px;width:36px;height:36px;margin-left:8px;border:0;border-radius:50%;background:#3c4043;color:#e3e3e3;font:500 14px var(--cl-sans);cursor:pointer}
+@media(min-width:900px){html:root body:not(.cl-sbhide) #clTop #clMenu{display:none!important}}
+@media(max-width:899px){html:root body #clDrawer .gm-menu{display:none}html:root body #clTop .gm-av{display:none}}
+
+/* ---------- greeting ---------- */
+html:root body #zhero h1{display:flex!important;flex-direction:column;align-items:flex-start;gap:0;margin:0!important;font:500 clamp(34px,4.6vw,56px)/1.2 var(--cl-sans)!important;letter-spacing:-.5px;color:#e3e3e3!important;text-align:left}
+html:root body #zhero .gm-hi{display:flex;align-items:center;gap:.28em}
+html:root body #zhero .gm-hi svg{width:.78em;height:.78em;flex:none;animation:gmSpin 2.4s cubic-bezier(.22,.8,.24,1) both}
+html:root body #zhero .gm-hi b{font-weight:500;background:linear-gradient(74deg,#4285f4 0,#9b72cb 35%,#d96570 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+html:root body #zhero .gm-q{color:#5f6368}
+@keyframes gmSpin{from{transform:rotate(-180deg) scale(.4);opacity:0}}
+html:root body #zhero .zg{display:none!important}
+html:root body #zhero .zh{padding:0!important}
+
+/* ---------- prompt box ---------- */
+html:root:root body #viewChat .dock .composer.composer.composer{width:100%!important;max-width:760px!important;min-height:56px!important;padding:8px 10px 8px 8px!important;margin:0 auto!important;border:0!important;border-radius:28px!important;background:#1e1f20!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root:root body #viewChat .dock .composer:hover,html:root:root body #viewChat .dock .composer:focus-within{background:#1e1f20!important;border:0!important}
+html:root:root body #viewChat .composer #msg{font:400 16px/1.5 var(--cl-sans)!important;color:#e3e3e3!important;padding:8px 6px!important;min-height:0!important}
+html:root:root body .composer>.cl-ph{font:400 16px var(--cl-sans)!important;color:#9aa0a6!important;background:none!important;-webkit-text-fill-color:#9aa0a6!important;animation:none!important}
+html:root:root body .composer #attBtn#attBtn,html:root:root body .composer #gMic#gMic{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border:0!important;border-radius:50%!important;background:none!important;color:#c4c7c5!important;display:grid;place-items:center;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root:root body .composer #attBtn:hover,html:root:root body .composer #gMic:hover{background:#333537!important}
+html:root:root body .composer #gWave#gWave{width:40px!important;height:40px!important;border-radius:50%!important;background:#333537!important;color:#e3e3e3!important;border:0!important}
+html:root:root body .composer #sendBtn#sendBtn{width:40px!important;height:40px!important;border-radius:50%!important;background:#e3e3e3!important;color:#1f1f1f!important;border:0!important}
+html body .foot{color:#9aa0a6;font-size:12px}
+
+/* ---------- suggestion chips ---------- */
+#gmChips{display:none;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px auto 0;max-width:760px}
+html body.xempty #gmChips{display:flex}
+#gmChips button{display:flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;border:0;border-radius:20px;background:#1e1f20;color:#e3e3e3;font:500 14px var(--cl-sans);cursor:pointer;transition:background .15s}
+#gmChips button:hover{background:#282a2c}
+#gmChips i{font-style:normal;font-size:16px}
+@media(max-width:899px){#gmChips{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;margin:0 0 10px;padding:0 4px;scrollbar-width:none}#gmChips button{flex:none}html:root body.xempty #viewChat .dock{display:flex;flex-direction:column}html body.xempty #gmChips{order:-1}}
+
+/* ---------- desktop layout ---------- */
+@media(min-width:900px){
+html:root:root body #clDrawer{position:fixed!important;left:0!important;top:0!important;bottom:0!important;height:auto!important;z-index:30}
+html:root:root body.cl-sbhide #clDrawer{visibility:hidden!important}
+html:root:root body #shell-chat>#mainChat,html:root:root body.xempty #shell-chat>#mainChat,html:root:root body.cl-drawer #shell-chat>#mainChat{position:absolute!important;left:var(--dw)!important;top:0!important;right:0!important;bottom:0!important;width:auto!important;height:auto!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;background:#131314!important}
+html:root:root body #zhero{left:var(--dw)!important;right:0!important;top:0!important;bottom:0!important;border-radius:0!important;overflow:hidden;padding:0!important}
+html:root:root body.xempty #zhero{display:flex!important;align-items:flex-end;justify-content:center;padding:0 24px calc(50vh + 12px)!important}
+html:root body #zhero .zin{max-width:760px!important;width:100%;margin:0!important}
+html:root:root body #viewChat .dock,html:root:root body.xempty #viewChat .dock,html:root:root body.xempty #viewChat.empty .dock{position:fixed!important;left:var(--dw)!important;right:0!important;width:auto!important;max-width:none!important;margin:0!important;padding:0 24px!important;background:none!important;display:flex;flex-direction:column;align-items:center;z-index:20}
+html:root:root body.xempty #viewChat .dock,html:root:root body.xempty #viewChat.empty .dock{top:calc(50% - 4px)!important;bottom:auto!important}
+html:root:root body #viewChat:not(.empty) .dock{top:auto!important;bottom:0!important;padding:0 24px 16px!important}
+}

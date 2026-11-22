@@ -259,7 +259,7 @@ function tick(){
   var has=hasContent();comp.classList.toggle("cl-has",has);if(has)setExp(true);
   else if(comp.classList.contains("cl-exp")&&document.activeElement!==msg&&Date.now()-keep>700)setExp(false);
   var empty=chatEmpty(),exp=comp.classList.contains("cl-exp");
-  var txt=comp.classList.contains("cl-listen")?"Listening…":exp?(empty?"Chat with XMM AI":"Reply to XMM AI"):(empty?"Type or hold to talk":"Reply or hold to talk");
+  var txt=comp.classList.contains("cl-listen")?"Listening…":"Ask XMM AI";
   if(ph){if(ph.textContent!==txt)ph.textContent=txt;ph.classList.toggle("hide",!!msg.value)}
  }
  var vw=$("#mainChat");if(vw){var pg=$("#viewSearch")&&!$("#viewSearch").hidden||$("#viewNotebooks")&&!$("#viewNotebooks").hidden;vw.dataset.vw=pg?"page":"chat"}

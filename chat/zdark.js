@@ -21,7 +21,7 @@
    '<svg viewBox="0 0 120 80"><rect x="24" y="12" width="72" height="58" rx="8" fill="#232329"/><rect x="24" y="12" width="72" height="14" rx="8" fill="'+B+'"/><g fill="'+L+'"><rect x="32" y="34" width="10" height="8" rx="2"/><rect x="48" y="34" width="10" height="8" rx="2"/><rect x="64" y="34" width="10" height="8" rx="2"/><rect x="80" y="34" width="10" height="8" rx="2"/><rect x="32" y="48" width="10" height="8" rx="2"/><rect x="48" y="48" width="10" height="8" rx="2" fill="#fff"/><rect x="64" y="48" width="10" height="8" rx="2"/></g></svg>']
  ];
  var z=document.createElement("div");z.id="zhero";
- var h='<div class="zin"><div class="zh"><h1>What should we create, xmm?</h1></div><div class="zg">';
+ var h='<div class="zin"><div class="zh"><h1><span class="gm-hi"><svg viewBox="0 0 24 24" width="36" height="36"><defs><linearGradient id="gmg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#4285f4"/><stop offset=".6" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs><path fill="url(#gmg)" d="M12 1.5c.7 5.6 4.9 9.8 10.5 10.5-5.6.7-9.8 4.9-10.5 10.5C11.3 16.9 7.1 12.7 1.5 12 7.1 11.3 11.3 7.1 12 1.5z"/></svg><b id="gmName">Hi</b></span><span class="gm-q">Where should we start?</span></h1></div><div class="zg">';
  CARDS.forEach(function(c,i){h+='<button type="button" class="zc" aria-label="'+c[0]+'" title="'+c[0]+'" data-i="'+i+'"><div class="zi">'+c[2]+'</div><span>'+c[0]+'</span></button>'});
  z.innerHTML=h+'</div></div>';
  z.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".zc");if(b)CARDS[+b.dataset.i][1]()});
