@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:.*\\.vercel\\.app|www\\.xmm-ai\\.com)"
+        }
+      ],
+      "destination": "https://xmm-ai.com/$1",
+      "permanent": false
+    },
+    {
       "source": "/terms.html",
       "destination": "/terms",
       "permanent": true
