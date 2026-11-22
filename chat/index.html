@@ -318,16 +318,5 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 <script src="clone.js?v=gm1"></script>
 <script src="ipad.js?v=gm1"></script><script src="zdark.js?v=gm2"></script><script src="bg.js?v=5"></script><script src="gemini.js?v=2"></script>
 
-<style id="safe-top">
-/* Notch / Dynamic Island / punch-hole / status bar: its own solid strip, with a gap before the app content */
-html{background:#000}
-@media(display-mode:standalone),(max-width:900px){
-html::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#000;border-bottom:1px solid rgba(255,255,255,.12);box-sizing:border-box;z-index:2147483000;pointer-events:none}
-html body #mainChat>header.topbar.topbar{padding-top:calc(env(safe-area-inset-top,0px) + 28px)!important}
-html body #viewChat .convo{padding-top:calc(env(safe-area-inset-top,0px) + 110px)!important}
-html body .view.page{padding-top:calc(env(safe-area-inset-top,0px) + 112px)!important}
-body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);box-sizing:border-box}
-}
-</style>
 </body>
 </html>
