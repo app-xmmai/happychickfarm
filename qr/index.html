@@ -9,8 +9,8 @@ function kind(p){if(/^\/chat(\/(index\.html)?)?$/.test(p))return"app";if(/^\/log
 function u(k,p){return"https://"+k+"."+X+((k==="app"||k==="auth")?"/":(p.replace(/^\/(support|status)/,"").replace(/index\.html$/,"")||"/"))}
 var k=kind(p),to=null;
 if(!dev){
-if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://"+X+p+q}
-else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
+if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q}
+else{if(k&&k!==sub)to=u(k,p)+q}
 }
 if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
 var n=navigator,ua=n.userAgent||"";
