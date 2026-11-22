@@ -670,18 +670,18 @@ const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
   if(sun)bot.text=stripEmoji(bot.text);else if(lite&&!bot.__em)bot.text=stripEmoji(bot.text);
   if(!bot.text)bot.text="…";paint();
   /* MCP tool loop: the AI may write an mcp-call block; run it in the browser and let the AI continue with the result */
-  if(window.XMM_MCP&&XMM_MCP.active()){let lastAcc=bot.text,shown="",n=0;
+  if(!AB&&window.XMM_MCP&&XMM_MCP.active()){let lastAcc=bot.text,shown="",n=0;
    while(n++<5&&ctrl&&!ctrl.signal.aborted){const call=XMM_MCP.parse(lastAcc);if(!call)break;
     const before=XMM_MCP.strip(lastAcc);shown+=(before?before+"\n\n":"")+"🔧 *"+call.server+" › "+call.tool+"*\n\n";
     bot.text=shown;bot.status="Using "+call.tool+"…";renderMsgs();
     const res=await XMM_MCP.run(call,ctrl.signal);bot.status="";
     hist.push({role:"assistant",content:XMM_MCP.raw(call)},{role:"user",content:"[TOOL RESULT: "+call.server+" › "+call.tool+"]\n"+res+"\n[END TOOL RESULT]\nNow answer the user using this result. Call another tool only if it is really needed."});
     let acc="";
-    await groq([{role:"system",content:sys+BUD.hint},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:BUD.max,temp:mm.temp,stream:true,signal:ctrl.signal,onDelta:t=>{acc=t;bot.text=shown+XMM_MCP.strip(acc);paint()}});
-    lastAcc=acc}
+    try{await groq([{role:"system",content:sys+BUD.hint},...hist],{model:CFG[mm.cfg]||CFG.TEXT_MODEL,maxTokens:BUD.max,temp:mm.temp,stream:true,signal:ctrl.signal,onDelta:t=>{acc=t;bot.text=shown+XMM_MCP.strip(acc);paint()}})}catch(er){if(er&&er.name==="AbortError")throw er;acc=""}
+    lastAcc=acc;if(!acc)break}
    if(shown)bot.text=shown+XMM_MCP.strip(lastAcc);if(!bot.text||!bot.text.trim())bot.text="…";paint()}
   }
- catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
+ catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else if(bot.text&&bot.text.trim().length>20&&(e.status||e.retry||/not available right now|too many requests|\b(403|429|5\d\d)\b/i.test(e.message||"")))bot.text=bot.text.replace(/\n*🔧 \*[^\n]*\*\s*$/,"");else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
  bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
 function regen(i){const c=cur();if(!c||S.busy)return;c.msgs.splice(i);ask(c)}
 function transcript(c){return c.msgs.map(m=>(m.role==="user"?"You: ":"XMM: ")+(m.text||"")).join("\n\n")}
