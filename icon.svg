@@ -1,15 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="XMM AI"><rect x="8" y="8" width="496" height="496" rx="112" fill="#15151a" stroke="#34343c" stroke-width="8"/><g transform="translate(256 256) scale(.96) translate(-256 -252)">
-<g transform="translate(0 -4)">
-<defs>
-<linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a5b60"/><stop offset=".5" stop-color="#46474b"/><stop offset="1" stop-color="#2e2f33"/></linearGradient>
-<linearGradient id="edge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a9ba1"/><stop offset="1" stop-color="#5c5d62"/></linearGradient>
-<pattern id="fins" width="4.5" height="10" patternUnits="userSpaceOnUse"><rect width="4.5" height="10" fill="#0b0b0c"/><rect x="1.6" width="1.4" height="10" fill="#2b2b2e"/></pattern>
-<linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".07"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
-</defs>
-<rect x="36" y="164" width="440" height="184" rx="26" fill="url(#body)" stroke="url(#edge)" stroke-width="4"/>
-<path d="M62 172 L168 172 L245 256 L168 340 L62 340 Q44 340 44 322 L44 190 Q44 172 62 172Z" fill="url(#fins)" stroke="url(#edge)" stroke-width="3.5" stroke-linejoin="round"/>
-<path d="M450 172 L344 172 L267 256 L344 340 L450 340 Q468 340 468 322 L468 190 Q468 172 450 172Z" fill="url(#fins)" stroke="url(#edge)" stroke-width="3.5" stroke-linejoin="round"/>
-<path d="M62 172 L168 172 L245 256 L168 340 L62 340 Q44 340 44 322 L44 190 Q44 172 62 172Z" fill="url(#shade)"/>
-<path d="M450 172 L344 172 L267 256 L344 340 L450 340 Q468 340 468 322 L468 190 Q468 172 450 172Z" fill="url(#shade)"/>
-<text x="256" y="324" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-weight="700" font-size="17" fill="#c9cacf">© XMMAI</text>
-</g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><linearGradient id="g" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4285f4"/><stop offset=".55" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient></defs><path fill="url(#g)" d="M12 0C12.6 6.6 17.4 11.4 24 12 17.4 12.6 12.6 17.4 12 24 11.4 17.4 6.6 12.6 0 12 6.6 11.4 11.4 6.6 12 0Z"/></svg>

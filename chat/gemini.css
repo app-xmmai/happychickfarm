@@ -84,3 +84,17 @@ html:root:root body #viewChat .dock,html:root:root body.xempty #viewChat .dock,h
 html:root:root body.xempty #viewChat .dock,html:root:root body.xempty #viewChat.empty .dock{top:calc(50% - 4px)!important;bottom:auto!important}
 html:root:root body #viewChat:not(.empty) .dock{top:auto!important;bottom:0!important;padding:0 24px 16px!important}
 }
+
+/* ---------- v2 fixes ---------- */
+html:root body #zhero h1{font-size:clamp(26px,3vw,40px)!important;line-height:1.25!important;font-weight:500!important}
+html:root body #zhero .gm-hi b,html:root body #zhero .gm-q{font-weight:500!important}
+html:root body #zhero .gm-hi svg{width:.7em;height:.7em}
+html:root:root body #zhero .zin{flex:0 0 auto!important;width:min(720px,100%)!important;max-width:720px!important}
+html:root:root body #gmChips button{border:0!important;background:#1e1f20!important;box-shadow:none!important;color:#e3e3e3!important}
+html:root:root body #gmChips button:hover{background:#282a2c!important}
+html:root:root body:not(.cl-sbhide) #clTop #clMenu#clMenu{display:none!important}
+html:root body #clDrawer .cl-ci::before{display:none!important}
+html:root:root body #clDrawer .cl-db:not(#_a):not(#_b){position:static!important}
+html:root body #clDrawer .cl-ds{flex:1 1 0!important;overflow-y:auto!important}
+html:root body #clDrawer{overflow:hidden!important}
+html:root:root body #viewChat .dock .composer.composer.composer{max-width:720px!important}
