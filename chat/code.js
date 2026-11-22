@@ -5,7 +5,7 @@ const $=s=>document.querySelector(s),API=()=>window.XMM_API,T=window.XMM_TIER||{
 const ls={g:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 /* ---- login: tap, type a username, done ---- */
 const L=$("#login");
-if(!String(ls.g("xmm.name","")||"").trim()||/[?&]login=1/.test(location.search)){L.hidden=false;
+if(false){L.hidden=false;
  const i=$("#lgName"),b=$("#lgGo"),shake=[{transform:"translateX(-8px)"},{transform:"translateX(8px)"},{transform:"none"}];
  const upd=()=>{b.disabled=!i.value.trim()};i.oninput=upd;upd();
  const go=()=>{const v=i.value.trim();if(!v){i.focus();i.animate(shake,{duration:250});return}ls.s("xmm.terms",Date.now());API().setName(v);ls.s("xmm.welcomed",1);L.classList.add("out");setTimeout(()=>L.remove(),700);API().toast("Welcome, "+v)};

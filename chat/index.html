@@ -143,9 +143,9 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 }catch(e){}})();</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 
-<script>try{var _n=JSON.parse(localStorage.getItem("xmm.name")||'""');if(!String(_n||"").trim()||/[?&]login=1/.test(location.search)){location.replace((/(^|\.)xmm-ai\.com$/.test(location.hostname)?"https://auth.xmm-ai.com/":"/login/")+(String(_n||"").trim()?"?force=1":""))}}catch(e){}</script>
+<script>try{if(/[?&]login=1/.test(location.search))location.replace(/(^|\.)xmm-ai\.com$/.test(location.hostname)?"https://auth.xmm-ai.com/":"/login/")}catch(e){}</script>
 <script>/* instant theme: set before first paint, no flash */try{var _t=JSON.parse(localStorage.getItem("xmm.cl.theme"));var _d=_t!=="light";if(_t==="system")_d=matchMedia("(prefers-color-scheme:dark)").matches;document.documentElement.setAttribute("data-cl-theme",_d?"dark":"light")}catch(e){document.documentElement.setAttribute("data-cl-theme","dark")}</script>
-<meta charset="utf-8">
+<meta charset="utf-8"><script src="/chat/guest.js?v=1"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <title>XMM AI</title>
 <meta name="theme-color" content="#000000">
@@ -286,8 +286,8 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 <input id="lgName" class="xl-in" placeholder="Username" maxlength="24" autocapitalize="off" autocomplete="off" spellcheck="false" enterkeyhint="go" aria-label="Username">
 <button type="button" class="xl-b xl-c" id="lgGo" disabled>Continue</button>
 <div class="xl-t">By continuing, you agree to our <a href="https://xmm-ai.com/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="https://xmm-ai.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://xmm-ai.com/privacy" target="_blank" rel="noopener">Cookie Use</a>.</div></div>
-<div class="xl-qr"><span>Scan to get the app</span><img src="/qr/qr-dark.svg" alt="QR code: get XMM AI" width="130" height="130"></div>
-<div class="xl-f"><a href="https://xmm-ai.com/">About</a><a href="https://xmm-ai.com/qr">Get App</a><a href="https://xmm-ai.com/terms">Terms</a><a href="https://xmm-ai.com/privacy">Privacy</a><a href="https://xmm-ai.com/privacy">Cookies</a><a href="https://xmm-ai.com/privacy">Accessibility</a><span>© 2026 XMM AI</span></div>
+
+<div class="xl-f"><a href="https://xmm-ai.com/">About</a><a href="https://app.xmm-ai.com/?install=1">Get App</a><a href="https://xmm-ai.com/terms">Terms</a><a href="https://xmm-ai.com/privacy">Privacy</a><a href="https://xmm-ai.com/privacy">Cookies</a><a href="https://xmm-ai.com/privacy">Accessibility</a><span>© 2026 XMM AI</span></div>
 </div>
 <div class="toast glass" id="toast" hidden></div>
 
