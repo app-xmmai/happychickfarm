@@ -13,6 +13,8 @@ if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://
 else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
 }
 if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
+/* fallback: a subdomain root that ever gets the home page (host rewrite missed) is sent to its own page file, same hostname */
+if(!dev&&!k&&p==="/"&&S[sub]){var F={app:"/chat/index.html",auth:"/login/index.html",support:"/support/index.html",status:"/status/index.html"};document.documentElement.style.visibility="hidden";location.replace(F[sub]+q);return}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
 var d=document.documentElement;d.setAttribute("data-bot","1");

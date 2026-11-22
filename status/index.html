@@ -12,6 +12,7 @@ if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q;else if(sub!=="")to="https://
 else{if(k&&k!==sub)to=u(k,p)+q;else if(!k&&/^\/(privacy|terms|qr|child-safety|home)(\/|$)/.test(p))to="https://"+X+p+q}
 }
 if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
+if(!dev&&S[sub]&&k===sub&&/^\/(chat|login|support|status)(\/(index\.html)?)?$/.test(p)){try{history.replaceState(history.state,"","/"+location.search+location.hash)}catch(e){}}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
 var d=document.documentElement;d.setAttribute("data-bot","1");

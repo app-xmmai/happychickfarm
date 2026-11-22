@@ -265,6 +265,16 @@
       "destination": "/home/index.html"
     },
     {
+      "source": "/why",
+      "has": [
+        {
+          "type": "host",
+          "value": "^app\\.xmm-ai\\.com$"
+        }
+      ],
+      "destination": "/chat/why.html"
+    },
+    {
       "source": "/map/(.*)",
       "destination": "/chat/index.html"
     }
