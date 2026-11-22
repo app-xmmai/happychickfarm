@@ -8,13 +8,13 @@
 
 Chat, analyze images, create images, write code and more, all in one fast, private AI app that runs in your browser and installs like a native app.
 
-[![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel)](https://xmmai.vercel.app)
+[![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel)](https://xmm-ai.com)
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white)](#-install-as-an-app)
 [![Cloudflare Workers](https://img.shields.io/badge/backend-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white)](#-architecture)
 [![No build step](https://img.shields.io/badge/build-none-brightgreen)](#-getting-started)
 [![Languages](https://img.shields.io/badge/languages-5-blue)](#-languages)
 
-[**Live site**](https://xmmai.vercel.app) · [**Open the chat**](https://xmmai.vercel.app/chat/) · [**Install on your phone**](https://xmmai.vercel.app/qr) · [**Report a bug**](../../issues)
+[**Live site**](https://xmm-ai.com) · [**Open the chat**](https://xmm-ai.com/chat/) · [**Install on your phone**](https://xmm-ai.com/qr) · [**Report a bug**](../../issues)
 
 </div>
 
@@ -423,6 +423,6 @@ If you want others to be able to reuse the code, add a `LICENSE` file (for examp
 
 **XMM AI**: Your smart assistant. Instantly.
 
-[Live site](https://xmmai.vercel.app) · [Chat](https://xmmai.vercel.app/chat/) · [Privacy](https://xmmai.vercel.app/privacy) · [Terms](https://xmmai.vercel.app/terms)
+[Live site](https://xmm-ai.com) · [Chat](https://xmm-ai.com/chat/) · [Privacy](https://xmm-ai.com/privacy) · [Terms](https://xmm-ai.com/terms)
 
 </div>
