@@ -157,6 +157,7 @@ async function handleImage(request, env) {
     origin.endsWith(".vercel.app") || origin.endsWith(".pages.dev") ||
     origin.endsWith(".workers.dev") ||
     origin.endsWith(".freedev.app") ||
+    origin === "https://xmm-ai.com" || origin === "https://www.xmm-ai.com" || origin.endsWith(".xmm-ai.com") ||
     origin === "https://app-xmmai.github.io" ||
     origin === "https://xmmcraft.qzz.io" ||
     origin.startsWith("http://localhost") ||
