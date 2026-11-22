@@ -210,6 +210,10 @@
   ],
   "rewrites": [
     {
+      "source": "/manifest.webmanifest",
+      "destination": "/chat/manifest.webmanifest"
+    },
+    {
       "source": "/",
       "has": [
         {
