@@ -206,7 +206,7 @@ function autoGo(){var n=0,my=q,iv=setInterval(function(){if(!el||q!==my||++n>60)
 function choose(r){var o=r.o,v=o.display_name||XMM_PLACES.nameOf(o),x=o.extratags||{};hideRes();q=v;coords=[];steps=[];destLL=null;info=null;started=false;if(line){map.removeLayer(line);map.removeLayer(casing);line=null;casing=null}
  var i={ll:r.ll,full:v,phone:x.phone||x["contact:phone"]||"",web:x.website||x["contact:website"]||"",hours:x.opening_hours||""};GI[v]=i;GC[v]=i.ll;var inp=$(".sbar input");if(inp)inp.value=title();$(".nm b").textContent=title();$(".nm small").textContent="";
  if(m3sig)m3sig="";setDest(i.ll,i);if(lastP)getRoute(lastP)}
-var CATS=[["\u26FD","Gas","fuel"],["\uD83C\uDF7D","Food","restaurant"],["\u2615","Coffee","cafe"],["\uD83C\uDD7F","Parking","parking"],["\uD83D\uDC8A","Pharmacy","pharmacy"],["\uD83C\uDFE7","ATM","atm"],["\uD83D\uDECD","Mall","shopping mall"]];
+var CATS=[[XMI("gas"),"Gas","fuel"],[XMI("food"),"Food","restaurant"],[XMI("coffee"),"Coffee","cafe"],[XMI("parking"),"Parking","parking"],[XMI("pharmacy"),"Pharmacy","pharmacy"],[XMI("atm"),"ATM","atm"],[XMI("mall"),"Mall","shopping mall"]];
 function showCats(){var r=$(".res");if(!r||r.classList.contains("on"))return;r.innerHTML='<div class="xp-cats">'+CATS.map(function(c,i){return'<button type="button" data-c="'+i+'"><i>'+c[0]+'</i>'+c[1]+'</button>'}).join("")+'</div>';r.classList.add("on","cats");r.onclick=function(e){var b=e.target.closest&&e.target.closest("[data-c]");if(!b)return;r.classList.remove("cats");r.classList.remove("on");search(CATS[+b.dataset.c][2],true)}}
 /* ---- map styles + real 3D (MapLibre) ---- */
 function mkTile(t){var o={maxZoom:19,keepBuffer:3,updateWhenIdle:false,updateWhenZooming:false,referrerPolicy:"origin"},ly,er=0;

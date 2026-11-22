@@ -169,3 +169,15 @@ html:root:root body .ip-h{background:#131314!important}
 html:root:root body .ip-h .ip-circ{border:0!important;background:#282a2c!important;border-radius:50%!important}
 html:root:root body .ip-b,html:root:root body [class~="ip-page"]{background:#131314!important}
 html:root:root body .cl-mi:has(svg),html:root:root body .cl-mi[data-k="x7g"]{border-width:2px!important}
+
+/* ---- v7: SVG icons (no emoji) + Siri-style pop-up glow ---- */
+.xi{width:1.2em;height:1.2em;vertical-align:-.2em;flex:none}
+#gmChips i{display:grid;place-items:center;color:#a8c7fa}#gmChips i .xi{width:18px;height:18px}
+.xp-cats i .xi{width:20px;height:20px}
+#xgp .xgi{display:grid;place-items:center;color:#b9a2ff}#xgp .xgi .xi{width:60px;height:60px;stroke-width:1.4;filter:drop-shadow(0 0 14px rgba(150,110,255,.7))}
+@property --gma{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes gmSpinA{to{--gma:360deg}}
+#gmSiri{position:fixed;inset:0;z-index:2147483600;pointer-events:none;opacity:0;transition:opacity .7s ease;box-shadow:inset 0 0 140px rgba(123,92,255,.28),inset 0 0 60px rgba(66,133,244,.22)}
+#gmSiri.on{opacity:1}
+#gmSiri::before,#gmSiri::after{content:"";position:absolute;inset:0;padding:4px;background:conic-gradient(from var(--gma),#4285f4,#2fd0ff,#7b5cff,#d96cf0,#ff6fa5,#ffb347,#4285f4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:gmSpinA 4.5s linear infinite}
+#gmSiri::after{padding:30px;filter:blur(26px);opacity:.85}
