@@ -228,6 +228,16 @@
   ],
   "rewrites": [
     {
+      "source": "/a/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "^support\\.xmm-ai\\.com$"
+        }
+      ],
+      "destination": "/support/a/:slug.html"
+    },
+    {
       "source": "/manifest.webmanifest",
       "destination": "/chat/manifest.webmanifest"
     },

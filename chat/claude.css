@@ -1,0 +1,55 @@
+/* XMM AI claude.css — Claude look (final layer, loaded after gemini.css). */
+html:root:root:root:root{--gw:288px;--dw:288px;--cl-bg:#262624;--cl-bg2:#262624;--cl-card:#30302e;--cl-card2:#30302e;--cl-sheet:#30302e;--cl-txt:#faf9f5;--cl-mut:#9c9a92;--cl-line:rgba(222,220,209,.15);--cl-acc:#d97757;--cl-serif:"Tiempos Text","Source Serif 4",Georgia,"Times New Roman",serif;--cl-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+html:root:root:root:root,html:root:root:root:root body,html:root:root:root:root body #shell-chat,html:root:root:root:root body #mainChat,html:root:root:root:root body #viewChat{background:#262624!important;color:#faf9f5;font-family:var(--cl-sans)}
+html:root:root:root:root body .aurora{display:none!important}
+/* sidebar */
+html:root:root:root:root body #clDrawer{background:#1f1e1d!important;border-right:1px solid rgba(222,220,209,.08)!important;color:#c2c0b6;font-family:var(--cl-sans)}
+html:root:root:root:root body #clDrawer .cl-dh{height:56px;min-height:56px;padding:0 16px 0 18px!important}
+html:root:root:root:root body #clDrawer .cl-dh>span{display:block!important;font:500 22px/1 var(--cl-serif);color:#faf9f5;letter-spacing:-.01em}
+html:root:root:root:root body #clDrawer .cl-dh .gm-menu{display:none!important}
+html:root:root:root:root body #clDrawer .cl-ws,html:root:root:root:root body #clDrawer #clNc{display:none!important}
+html:root:root:root:root body #clDrawer .cl-nr{height:36px;width:calc(100% - 16px)!important;margin:1px 8px!important;padding:0 12px!important;gap:12px;border-radius:8px!important;font:400 14.5px var(--cl-sans)!important;color:#c2c0b6!important;background:none!important}
+html:root:root:root:root body #clDrawer .cl-nr svg{width:18px;height:18px;color:#c2c0b6}
+html:root:root:root:root body #clDrawer .cl-nr:hover,html:root:root:root:root body #clDrawer .cl-ci:hover{background:#30302e!important}
+html:root:root:root:root body #clDrawer .cl-nr.on{background:none!important;color:#c2c0b6!important}
+html:root:root:root:root body #clDrawer .cl-rl{padding:22px 20px 6px!important;font:500 12.5px var(--cl-sans)!important;color:#9c9a92!important;letter-spacing:.01em}
+html:root:root:root:root body #clDrawer .cl-ci{height:34px;width:calc(100% - 16px)!important;margin:0 8px!important;padding:0 12px!important;border-radius:8px!important;font:400 14px var(--cl-sans)!important;color:#c2c0b6!important}
+html:root:root:root:root body #clDrawer .cl-ci.on{background:#30302e!important;color:#faf9f5!important}
+html:root:root:root:root body #clDrawer .cl-all,html:root:root:root:root body #clDrawer .cl-none{color:#9c9a92!important;font:400 13px var(--cl-sans)}
+html:root:root:root:root body #clDrawer .cl-db{border-top:1px solid rgba(222,220,209,.08)!important;padding:10px 12px!important}
+html:root:root:root:root body #clDrawer .cl-db #clAv{background:#d97757!important;color:#fff!important;border-radius:50%!important;font:600 13px var(--cl-sans)!important}
+html:root:root:root:root body #clDrawer .gm-sh{color:#faf9f5;font:500 14px var(--cl-sans)}
+/* top bar */
+html:root:root:root:root body #clTop{height:56px;min-height:56px;border-bottom:1px solid rgba(222,220,209,.08)!important;background:#262624!important}
+html:root:root:root:root body #clTop #clMenu:hover,html:root:root:root:root body #clTop .cl-pill button:hover,html:root:root:root:root body #clTop #ipModel:hover{background:#30302e!important}
+html:root:root:root:root body #clTop #ipModel{color:#faf9f5!important;font:500 14.5px var(--cl-sans)!important;border-radius:8px!important}
+html:root:root:root:root body #clTop .gm-av{display:none!important}
+html:root:root:root:root body #clTop .cl-share{margin-left:auto;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:0;border-radius:8px;background:none;color:#c2c0b6;font:500 14px var(--cl-sans);cursor:pointer}
+html:root:root:root:root body #clTop .cl-share:hover{background:#30302e;color:#faf9f5}
+html:root:root:root:root body #clTop .cl-share svg{width:17px;height:17px}
+/* greeting */
+html:root:root:root:root body #zhero h1{align-items:center!important;text-align:center;font:400 clamp(30px,4vw,42px)/1.2 var(--cl-serif)!important;letter-spacing:-.01em;color:#faf9f5!important}
+html:root:root:root:root body #zhero .gm-hi{justify-content:center;color:#faf9f5}
+html:root:root:root:root body #zhero .gm-hi svg{color:#d97757;fill:#d97757;stroke:#d97757}
+html:root:root:root:root body #zhero .gm-hi b{background:none!important;-webkit-text-fill-color:#faf9f5!important;color:#faf9f5!important;font-weight:400}
+html:root:root:root:root body #zhero .gm-q{color:#9c9a92!important}
+/* composer */
+html:root:root:root:root body #viewChat .dock .composer.composer.composer{max-width:720px!important;min-height:60px!important;border:1px solid rgba(222,220,209,.15)!important;border-radius:20px!important;background:#30302e!important;box-shadow:0 4px 24px rgba(0,0,0,.18)!important}
+html:root:root:root:root body #viewChat .dock .composer:hover,html:root:root:root:root body #viewChat .dock .composer:focus-within{background:#30302e!important;border:1px solid rgba(222,220,209,.28)!important}
+html:root:root:root:root body #viewChat .composer #msg{font:400 16px/1.5 var(--cl-sans)!important;color:#faf9f5!important}
+html:root:root:root:root body .composer>.cl-ph{color:#9c9a92!important;-webkit-text-fill-color:#9c9a92!important}
+html:root:root:root:root body .composer .send,html:root:root:root:root body .composer #sendBtn{background:#d97757!important;color:#fff!important;border-radius:10px!important}
+html:root:root:root:root body .composer .mode{color:#c2c0b6!important;background:none!important}
+html:root:root:root:root body .foot{color:#9c9a92!important;font:12px var(--cl-sans)}
+html:root:root:root:root body #gmChips button{background:none!important;border:1px solid rgba(222,220,209,.15)!important;color:#c2c0b6!important;border-radius:10px!important;font:400 14px var(--cl-sans)!important}
+html:root:root:root:root body #gmChips button:hover{background:#30302e!important;color:#faf9f5!important}
+/* messages */
+html:root:root:root:root body .m-user{background:#30302e!important;color:#faf9f5!important;border-radius:14px!important;font:400 16px/1.5 var(--cl-sans)!important;padding:10px 16px!important}
+html:root:root:root:root body .m-bot .body{font:400 17px/1.6 var(--cl-serif)!important;color:#faf9f5!important}
+html:root:root:root:root body .m-bot .body a{color:#d97757}
+html:root:root:root:root body .m-bot .body pre{background:#1f1e1d!important;border:1px solid rgba(222,220,209,.12)!important;border-radius:10px!important}
+html:root:root:root:root body .m-acts button{color:#9c9a92!important}
+html:root:root:root:root body .m-acts button:hover{color:#faf9f5!important;background:#30302e!important}
+/* menus + sheets */
+html:root:root:root:root body .menu.pop,html:root:root:root:root body .sheet{background:#30302e!important;border:1px solid rgba(222,220,209,.15)!important;color:#faf9f5}
+html:root:root:root:root body ::selection{background:rgba(217,119,87,.35)}
