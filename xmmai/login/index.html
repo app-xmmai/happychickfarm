@@ -51,7 +51,7 @@ setInterval(sweep,1500);
 
 html.cf-pending body > *:not(
 </style>
-<meta name="xmm-build" content="v83-no-cf">
+<meta name="xmm-build" content="v300-nozoom">
 <script>
 (function(){
   window.__xmmCfPassed = 1;
@@ -93,7 +93,7 @@ html.cf-pending body > *:not(
 
 
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sign in · XMM AI</title>
 <meta name="theme-color" content="#0b0b0c">
 <meta name="color-scheme" content="dark">
@@ -145,9 +145,11 @@ html{background:#000}
 </style>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{background:#07080a;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100dvh;}
-main{flex:1;display:grid;place-items:center;padding:32px 20px}
+html,body{height:100%;touch-action:manipulation;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{background:#000}
+body{background:#000;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100dvh;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+main{flex:1;display:grid;place-items:center;padding:32px 20px;background:#07080a;touch-action:manipulation}
+input,button,a,.in,.go{touch-action:manipulation;-webkit-user-select:text;user-select:text}
 .card{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:stretch}
 .logo{width:52px;height:52px;border-radius:14px;display:block;margin:0 0 28px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:42px;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
@@ -224,6 +226,16 @@ f.addEventListener("submit",function(e){e.preventDefault();var v=n.value.trim();
 var _upd=upd;upd=function(){go.disabled=!n.value.trim()};
 window.addEventListener("xmm:cf-ok",upd);upd();
 setTimeout(function(){try{n.focus()}catch(e){}},400);
+})();
+/* hard no-zoom on auth (phones + PWA) */
+(function(){
+  var noz=function(e){if(e.touches&&e.touches.length>1){e.preventDefault()}else if(e.scale&&e.scale!==1){e.preventDefault()}};
+  ["gesturestart","gesturechange","gestureend"].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()}, {passive:false})});
+  document.addEventListener("touchmove",noz,{passive:false});
+  document.addEventListener("touchstart",function(e){if(e.touches.length>1)e.preventDefault()},{passive:false});
+  var last=0;document.addEventListener("touchend",function(e){var now=Date.now();if(now-last<320)e.preventDefault();last=now},{passive:false});
+  document.addEventListener("dblclick",function(e){e.preventDefault()}, {passive:false});
+  try{document.documentElement.style.touchAction="manipulation";document.body.style.touchAction="manipulation"}catch(x){}
 })();
 </script>
 <script src="/chat/cinema.js?v=1" defer></script>
