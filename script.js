@@ -13,10 +13,10 @@ const grid=document.getElementById("breedgrid");
 const imgs=[];
 breeds.forEach((b,i)=>{
   const c=document.createElement("article");c.className="card";
-  c.innerHTML=`<div class="im"><img alt="جوجه ${b[0]}" loading="lazy" referrerpolicy="no-referrer"></div><div class="bd"><h3>${fa(i+1)}. ${b[0]}</h3><div class="en">${b[1]}</div><p>${b[3]}</p><ul class="chips">${b[4].map(x=>`<li>${x}</li>`).join("")}</ul><a class="btn" href="tel:${PHONE}">📞 سفارش جوجه ${b[0]}</a></div>`;
+  c.innerHTML=`<div class="im"><img alt="جوجه ${b[0]}" loading="lazy" referrerpolicy="no-referrer"><span class="idx">${fa(i+1)}</span></div><div class="bd"><h3>${b[0]}</h3><div class="en">${b[1]}</div><p>${b[3]}</p><ul class="chips">${b[4].map(x=>`<li>${x}</li>`).join("")}</ul><a class="btn sm" href="tel:${PHONE}">سفارش جوجه ${b[0]}</a></div>`;
   grid.appendChild(c);imgs.push(c.querySelector("img"));
 });
-const fallback=el=>{el.onerror=null;el.src="icon.png";el.style.objectFit="contain";el.style.padding="30px"};
+const fallback=el=>{el.onerror=null;el.src="icon.png";el.style.objectFit="contain";el.style.padding="40px"};
 async function lookup(titles){
   const u="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=700&titles="+encodeURIComponent(titles.join("|"));
   const r=await fetch(u);const j=await r.json();const out={};
@@ -37,3 +37,18 @@ async function lookup(titles){
     if(t)el.src=found[t];else fallback(el);
   });
 })();
+
+// starfield
+(()=>{const c=document.getElementById("bg"),x=c.getContext("2d");let w,h,P=[],m={x:.5,y:.5};
+const rs=()=>{w=c.width=innerWidth;h=c.height=innerHeight;P=Array.from({length:Math.min(140,w/9|0)},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,s:Math.random()*.25+.05,a:Math.random()}))};
+addEventListener("resize",rs);rs();
+addEventListener("pointermove",e=>{m.x=e.clientX/w;m.y=e.clientY/h});
+(function f(){x.clearRect(0,0,w,h);for(const p of P){p.y-=p.s;p.a+=.02;if(p.y<-5){p.y=h+5;p.x=Math.random()*w}
+x.globalAlpha=.35+Math.sin(p.a)*.3;x.fillStyle=p.r>1.1?"#ffc233":"#cfe9ff";x.beginPath();x.arc(p.x+(m.x-.5)*p.r*18,p.y+(m.y-.5)*p.r*18,p.r,0,7);x.fill()}requestAnimationFrame(f)})()})();
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".rv,.card").forEach(el=>io.observe(el));
+// tilt
+document.querySelectorAll(".card,.glass.tilt").forEach(el=>{el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;el.style.setProperty("--rx",(-py*6)+"deg");el.style.setProperty("--ry",(px*6)+"deg");el.style.setProperty("--mx",(px+.5)*100+"%");el.style.setProperty("--my",(py+.5)*100+"%")});el.addEventListener("pointerleave",()=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")})});
+// nav state
+const hd=document.querySelector("header");addEventListener("scroll",()=>hd.classList.toggle("sc",scrollY>20),{passive:true});
