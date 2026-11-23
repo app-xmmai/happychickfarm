@@ -40,17 +40,40 @@ async function lookup(titles){
   });
 })();
 
-// starfield
-(()=>{const c=document.getElementById("bg"),x=c.getContext("2d");let w,h,P=[],m={x:.5,y:.5};
-const rs=()=>{w=c.width=innerWidth;h=c.height=innerHeight;P=Array.from({length:Math.min(140,w/9|0)},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,s:Math.random()*.25+.05,a:Math.random()}))};
-addEventListener("resize",rs);rs();
-addEventListener("pointermove",e=>{m.x=e.clientX/w;m.y=e.clientY/h});
-(function f(){x.clearRect(0,0,w,h);for(const p of P){p.y-=p.s;p.a+=.02;if(p.y<-5){p.y=h+5;p.x=Math.random()*w}
-x.globalAlpha=.35+Math.sin(p.a)*.3;x.fillStyle=p.r>1.1?"#ffc233":"#cfe9ff";x.beginPath();x.arc(p.x+(m.x-.5)*p.r*18,p.y+(m.y-.5)*p.r*18,p.r,0,7);x.fill()}requestAnimationFrame(f)})()})();
-// reveal
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll(".rv,.card").forEach(el=>io.observe(el));
-// nav state
-const hd=document.querySelector("header");addEventListener("scroll",()=>hd.classList.toggle("sc",scrollY>20),{passive:true});
 
+// ---------- UI ----------
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+// real photo backgrounds (eggs) from Wikipedia; CSS gradient is the fallback
+(async()=>{try{
+  const u="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=1600&titles="+encodeURIComponent("Egg as food|Egg (food)|Eggs as food");
+  const j=await (await fetch(u)).json();const p=Object.values((j.query||{}).pages||{}).find(x=>x.thumbnail);
+  if(p)document.documentElement.style.setProperty("--eggs","url('"+p.thumbnail.source+"')");
+}catch(e){}})();
+// menu
+const mm=$("#menu"),bt=$("#burger");
+const setMenu=o=>{mm.classList.toggle("open",o);bt.setAttribute("aria-expanded",o);document.body.classList.toggle("lock",o)};
+bt.addEventListener("click",()=>setMenu(!mm.classList.contains("open")));
+$$("#menu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+addEventListener("keydown",e=>{if(e.key==="Escape")setMenu(false)});
+// reveal (content stays visible if anything fails)
+(()=>{if(!("IntersectionObserver" in window))return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.08});
+  document.documentElement.classList.add("anim");
+  $$(".rv,.card").forEach(el=>io.observe(el));
+  setTimeout(()=>$$(".rv,.card").forEach(el=>el.classList.add("in")),3000);
+})();
+// header + to-top
+const hd=$("#hd"),tp=$("#totop");
+const onS=()=>{hd.classList.toggle("sc",scrollY>10);tp.classList.toggle("show",scrollY>500)};
+addEventListener("scroll",onS,{passive:true});onS();
+tp.addEventListener("click",()=>scrollTo({top:0,behavior:"smooth"}));
+// carousel
+(()=>{const sl=$$(".slide"),dots=$$(".dots button");let i=0,t;
+  const go=n=>{i=(n+sl.length)%sl.length;sl.forEach((s,k)=>s.classList.toggle("on",k===i));dots.forEach((d,k)=>d.classList.toggle("on",k===i))};
+  const auto=()=>{clearInterval(t);t=setInterval(()=>go(i+1),6500)};
+  $("#cnext").addEventListener("click",()=>{go(i+1);auto()});$("#cprev").addEventListener("click",()=>{go(i-1);auto()});
+  dots.forEach((d,k)=>d.addEventListener("click",()=>{go(k);auto()}));go(0);auto();
+  let sx=null;const c=$(".car");c.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+  c.addEventListener("touchend",e=>{if(sx===null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40){go(i+(d<0?-1:1));auto()}sx=null});
+})();
 document.querySelectorAll("[data-wa]").forEach(a=>a.href=wa(a.dataset.wa));
