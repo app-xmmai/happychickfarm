@@ -4,7 +4,7 @@ html body .composer{transition:background-color .2s,border-color .2s!important}
 html body .composer .cl-ph{transition:opacity .12s!important}
 html body button,html body .cl-b,html body .xw-btn,html body .g-ib{touch-action:manipulation;cursor:pointer;min-height:36px}
 html body .composer button{min-height:0}
-html body button:active,html body .xw-btn:active{transform:scale(.96)}
+html body button:active,html body .xw-btn:active{transform:none!important}
 .xcmp{display:flex;flex-direction:column;gap:12px}
 .xcmp-t{font:700 17px system-ui;margin:0}
 .xcmp-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}

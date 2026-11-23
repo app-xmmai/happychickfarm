@@ -287,10 +287,8 @@ function readAloud(i,btn){
 function decorate(){
  $$("#msgs .m-acts").forEach(function(a){
   if(a.dataset.cl)return;a.dataset.cl="1";
-  var map={copy:IC.copy,share:IC.share,like:IC.up_,dislike:IC.dn_,regen:IC.regen};
-  $$("[data-ma]",a).forEach(function(b){var k=b.dataset.ma;if(map[k])b.innerHTML=map[k];
-   if(k==="share"){var p=el("button","icon-btn cl-act");p.type="button";p.setAttribute("aria-label","Read aloud");p.innerHTML=IC.play;p.dataset.i=b.dataset.i;
-    p.onclick=function(){readAloud(p.dataset.i,p)};b.parentNode.insertBefore(p,b.nextSibling)}});
+  var map={copy:IC.copy,like:IC.up_,dislike:IC.dn_,regen:IC.regen};
+  $$("[data-ma]",a).forEach(function(b){var k=b.dataset.ma;if(map[k])b.innerHTML=map[k]});
  });
  notifCard();
 }
@@ -385,7 +383,7 @@ function pageRoot(){
   [["light","Light","l"],["dark","Dark","d"],["system","System","s"]].map(function(t){return'<button class="cl-th'+(th===t[0]?" on":"")+'" data-th="'+t[0]+'" type="button"><div class="p '+t[2]+'"></div>'+t[1]+'</button>'}).join("")+'</div>'+
  '<div class="cl-grp">'+row(IC.logout,"Log out",{act:"logout",cls:"dg",chev:false})+'</div>';
 }
-function pageProfile(){return'<div class="cl-lbl" style="padding-top:6px">Name</div><input class="cl-in" id="clName" maxlength="40" placeholder="Your name" value="'+esc(uname())+'" autocapitalize="words" dir="auto"><div class="cl-lbl">Language</div><div class="cl-grp"><div class="cl-row nl" style="cursor:default">'+IC.globe+'<span class="rt">Language</span><span class="rv">'+esc(langName())+IC.updn+'</span>'+langSel()+'</div></div>'}
+function pageProfile(){var n=uname()||"Xmm Bayat",l=(n||"X").charAt(0).toUpperCase();return'<div class="cl-prof cl-prof-big"><div class="a" style="width:64px;height:64px;font-size:24px;background:#e91e8c;border-radius:50%;display:grid;place-items:center;color:#fff">'+esc(l)+'</div><div class="cl-note" style="margin-top:8px">PNG, JPEG, or WebP, up to 10MB.</div></div><div class="cl-lbl">Full name</div><input class="cl-in" id="clName" maxlength="40" placeholder="Your name" value="'+esc(n)+'" autocapitalize="words" dir="auto"><div class="cl-lbl">What should Claude call you?</div><input class="cl-in" id="clNick" maxlength="40" placeholder="Preferred name" value="'+esc(n)+'" autocapitalize="words" dir="auto"><div class="cl-lbl">What best describes your work?</div><div class="cl-grp"><div class="cl-row nl" style="cursor:default"><span class="rt">Other</span><span class="rv">'+IC.updn+'</span><select data-work><option>Other</option><option>Engineering</option><option>Design</option><option>Research</option><option>Student</option></select></div></div><div class="cl-lbl">Organization ID</div><div class="cl-row nl" style="cursor:default"><span class="rt" style="font-family:monospace;font-size:13px;opacity:.8">aa294a7c-3113-46ac-a4b4-f24489bdb1db</span></div><div class="cl-lbl" style="margin-top:18px">Where you\'re logged in</div><div class="cl-grp"><div class="cl-row nl" style="cursor:default"><span class="rt">Firefox (Ubuntu) <small style="display:block;opacity:.6">Amsterdam, North Holland · Nov 23, 8:38 PM</small></span><span class="rv" style="color:#3b82f6;font-size:13px">Current</span></div></div><div class="cl-lbl">Trusted devices</div><div class="cl-note">Devices that can control your computer remotely.<br>No trusted devices.</div>'}
 function pageNotif(){var p="Notification" in window?Notification.permission:"denied",on=ld("xmm.cl.notif","")==="yes"&&p==="granted";
  return'<div class="cl-grp" style="margin-top:6px"><div class="cl-row nl" style="cursor:default" data-do="notif">'+IC.bell+'<span class="rt">Response notifications<small>Get notified when XMM AI finishes a reply while you are away.</small></span><button class="cl-sw'+(on?" on":"")+'" data-sw="notif" type="button" aria-label="Response notifications"></button></div></div>'+(p==="denied"?'<div class="cl-note">Notifications are blocked for this site. Allow them in your browser settings to turn this on.</div>':"")}
 function pagePrivacy(){return'<div class="cl-grp" style="margin-top:6px">'+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-grp">'+row(IC.trash,"Delete all chats",{act:"clear",cls:"dg",chev:false})+'</div>'}
