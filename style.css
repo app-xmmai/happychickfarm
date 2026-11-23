@@ -1,5 +1,4 @@
-:root{--g:#0d4a2e;--g2:#093a23;--r:#e8363f;--y:#ffd24a;--cr:#fff1a8;--dk:#222;--t:#1d2a24;--m:#5f6d66;--wa:#25d366;--eggs:radial-gradient(circle at 20% 30%,#ffd9a0 0 12%,transparent 13%),radial-gradient(circle at 70% 20%,#ffc27a 0 14%,transparent 15%),radial-gradient(circle at 50% 80%,#ffd9a0 0 13%,transparent 14%),#f3a553}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--g:#0d4a2e;--g2:#093a23;--r:#e8363f;--y:#ffd24a;--cr:#fff1a8;--dk:#222;--t:#1d2a24;--m:#5f6d66;--wa:#25d366;--eggs:linear-gradient(135deg,#f6b25f,#e8893a);margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;scroll-padding-top:70px;-webkit-text-size-adjust:100%}
 body{font-family:'Vazirmatn',Tahoma,sans-serif;background:#fff;color:var(--t);line-height:1.9;overflow-x:hidden}
 body.lock{overflow:hidden}
@@ -40,7 +39,7 @@ h1{font-size:clamp(32px,6vw,58px);font-weight:900;line-height:1.35;margin:6px 0 
 .hero p{color:#cfe2d8;max-width:560px;font-size:17px;margin-bottom:26px}
 .badge{margin-top:26px;display:inline-flex;align-items:center;gap:9px;background:#fff;color:var(--g);font-weight:700;font-size:14px;padding:10px 20px;border-radius:12px;text-decoration:none;box-shadow:0 10px 30px #0004}
 /* egg sections */
-.eggs{background:#f3a553 var(--eggs) center/cover no-repeat;padding:56px 0}
+.eggs{background:#f3a553 var(--eggs) center 30%/cover no-repeat;padding:56px 0}
 @media(min-width:900px){.eggs{background-attachment:fixed}}
 .white{background:#fff;border-radius:6px;box-shadow:0 14px 40px #0003}
 .icons{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#fff;border-radius:6px;padding:26px 14px;text-align:center;margin-bottom:22px;box-shadow:0 14px 40px #0003}

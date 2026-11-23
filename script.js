@@ -43,11 +43,11 @@ async function lookup(titles){
 
 // ---------- UI ----------
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-// real photo backgrounds (eggs) from Wikipedia; CSS gradient is the fallback
+// real photo background: barred Amrock/Plymouth Rock chicken from Wikipedia; plain warm gradient is the fallback
 (async()=>{try{
-  const u="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=1600&titles="+encodeURIComponent("Egg as food|Egg (food)|Eggs as food");
+  const u="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=1600&titles="+encodeURIComponent("Plymouth Rock chicken");
   const j=await (await fetch(u)).json();const p=Object.values((j.query||{}).pages||{}).find(x=>x.thumbnail);
-  if(p)document.documentElement.style.setProperty("--eggs","url('"+p.thumbnail.source+"')");
+  if(p)document.documentElement.style.setProperty("--eggs","linear-gradient(#0000002e,#0000002e),url('"+p.thumbnail.source+"')");
 }catch(e){}})();
 // menu
 const mm=$("#menu"),bt=$("#burger");
