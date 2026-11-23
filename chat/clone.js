@@ -134,7 +134,6 @@ function buildTop(){
 function moreMenu(btn){
  var items=[],c=null;try{c=API().cur&&API().cur()}catch(e){}
  if(c&&c.msgs&&c.msgs.length){
-  items.push({label:"Share chat",fn:function(){var b=$('[data-act="share"]');if(b)b.click()}});
   try{if(window.XMM_TWIN&&XMM_TWIN.chatItems)items=items.concat(XMM_TWIN.chatItems(c.id)||[])}catch(e){}
   items.push({label:"Delete chat",danger:1,fn:function(){try{API().delChat(c.id)}catch(e){}}});
  }
