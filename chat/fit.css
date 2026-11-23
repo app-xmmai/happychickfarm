@@ -1,5 +1,5 @@
 /* fit.css: phones. Fit the real visible screen and push everything down from the top/notch */
-:root{--xgap:22px;--xt:max(env(safe-area-inset-top,0px),var(--sat,0px),16px);--xb:max(env(safe-area-inset-bottom,0px),8px)}
+:root{--xgap:22px;--xt:16px;--xb:max(env(safe-area-inset-bottom,0px),8px)}
 html{background:#0b0b10}html,body{height:var(--app-h,100%);min-height:100%;overflow:hidden;overscroll-behavior:none}#xl{height:100%!important;min-height:var(--app-h,100%)}
 html body .shell{height:var(--app-h,100dvh)!important;min-height:0!important;max-height:var(--app-h,100dvh)!important;overflow:hidden}
 @media(max-width:900px){
@@ -12,3 +12,6 @@ html body .shell{height:var(--app-h,100dvh)!important;min-height:0!important;max
  html body .g-fabD,html body.collapsed .g-fabD{top:calc(var(--xt) + var(--xgap) + 10px)!important}
  html body #xwn .x{top:calc(var(--xt) + var(--xgap) + 10px)}
 }
+
+/* home-screen app (PWA): fixed massive gap at the top, nothing measured */
+@media (display-mode:standalone),(display-mode:fullscreen),(display-mode:minimal-ui){:root{--xt:72px!important}}
