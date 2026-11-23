@@ -1,4 +1,6 @@
 const PHONE="+989038232925";
+const wa=t=>"https://wa.me/989038232925?text="+encodeURIComponent(t);
+const WA='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.5 3.5A11.9 11.9 0 0012 0C5.4 0 .1 5.3.1 11.9c0 2.1.6 4.1 1.6 5.9L0 24l6.4-1.7a12 12 0 005.6 1.4c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.2-3.4-8.3zM12 21.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 01-1.5-5.2c0-5.4 4.4-9.8 9.9-9.8 2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 012.9 6.9c0 5.4-4.4 9.8-9.8 9.8zm5.4-7.3c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 01-4-3.5c-.3-.5.3-.5.9-1.6.1-.2.1-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>';
 const fa=n=>String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
 const breeds=[
 ["امروک","Amrock",["Plymouth Rock chicken"],"نوع تولیدی و خودجنسیت‌شونده از راک راه‌راه که در اروپا اصلاح شده؛ نام آن از «American Rock» گرفته شده اما بیشتر در اروپا پرورش می‌یابد، نه یک نژاد آمریکایی نمایشی. آرام، مقاوم به سرما و تخم‌گذار پایدار.",["منشأ: اروپا (آلمان/انگلستان)","حدود ۲۲۰ تخم در سال","تخم قهوه‌ای روشن","جنسیت جوجه در یک‌روزگی قابل تشخیص"]],
@@ -13,7 +15,7 @@ const grid=document.getElementById("breedgrid");
 const imgs=[];
 breeds.forEach((b,i)=>{
   const c=document.createElement("article");c.className="card";
-  c.innerHTML=`<div class="im"><img alt="جوجه ${b[0]}" loading="lazy" referrerpolicy="no-referrer"><span class="idx">${fa(i+1)}</span></div><div class="bd"><h3>${b[0]}</h3><div class="en">${b[1]}</div><p>${b[3]}</p><ul class="chips">${b[4].map(x=>`<li>${x}</li>`).join("")}</ul><a class="btn sm" href="tel:${PHONE}">سفارش جوجه ${b[0]}</a></div>`;
+  c.innerHTML=`<div class="im"><img alt="جوجه ${b[0]}" loading="lazy" referrerpolicy="no-referrer"><span class="idx">${fa(i+1).padStart?fa(String(i+1).padStart(2,"0")):fa(i+1)}</span></div><div class="bd"><div class="hd"><h3>${b[0]}</h3><span class="en">${b[1]}</span></div><p>${b[3]}</p><ul class="chips">${b[4].map(x=>`<li>${x}</li>`).join("")}</ul><div class="act"><a class="btn sm wa" target="_blank" rel="noopener" href="${wa("سلام، می‌خواهم جوجه "+b[0]+" سفارش بدهم.")}">${WA}سفارش در واتساپ</a><a class="call" href="tel:${PHONE}" aria-label="تماس"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.300 1.800.6 2.8.7a2 2 0 011.7 2z"/></svg></a></div></div>`;
   grid.appendChild(c);imgs.push(c.querySelector("img"));
 });
 const fallback=el=>{el.onerror=null;el.src="icon.png";el.style.objectFit="contain";el.style.padding="40px"};
@@ -48,7 +50,7 @@ x.globalAlpha=.35+Math.sin(p.a)*.3;x.fillStyle=p.r>1.1?"#ffc233":"#cfe9ff";x.beg
 // reveal
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll(".rv,.card").forEach(el=>io.observe(el));
-// tilt
-document.querySelectorAll(".card,.glass.tilt").forEach(el=>{el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;el.style.setProperty("--rx",(-py*6)+"deg");el.style.setProperty("--ry",(px*6)+"deg");el.style.setProperty("--mx",(px+.5)*100+"%");el.style.setProperty("--my",(py+.5)*100+"%")});el.addEventListener("pointerleave",()=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")})});
 // nav state
 const hd=document.querySelector("header");addEventListener("scroll",()=>hd.classList.toggle("sc",scrollY>20),{passive:true});
+
+document.querySelectorAll("[data-wa]").forEach(a=>a.href=wa(a.dataset.wa));
