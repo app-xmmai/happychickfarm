@@ -28,5 +28,4 @@ html.pwa body #clDrawer{height:100%!important;max-height:100%!important;top:0!im
  html body #clDrawer{height:100%!important;max-height:100%!important;top:0!important;bottom:0!important}
 }
 
-/* keyboard: the chat input rides on top of the keyboard (--kb is set from visualViewport in index.html) */
-html body.xempty #viewChat .dock,html body.xempty #viewChat.empty .dock,html.is-tablet body.xempty #viewChat .dock,html.is-tablet body.xempty #viewChat.empty .dock{bottom:var(--kb,0px)!important}
+/* keyboard: --kb (from visualViewport, set in index.html) raises the bottom of #shell-chat; the input bar lives inside it, so it follows the keyboard once */
