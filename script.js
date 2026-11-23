@@ -24,6 +24,6 @@ breeds.forEach(async(b,i)=>{
   grid.appendChild(c);
   const el=c.querySelector("img");
   const s=await img(b[2]);
-  if(s)el.src=s;else el.src="assets/icon.svg";
+  if(s)el.src=s;else el.src="icon.svg";
 });
 img(["Chicken"]).then(s=>{if(s)document.getElementById("heroimg").src=s});
