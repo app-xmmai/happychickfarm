@@ -51,7 +51,7 @@ setInterval(sweep,1500);
 
 html.cf-pending body > *:not(
 </style>
-<meta name="xmm-build" content="v83-no-cf">
+<meta name="xmm-build" content="v303-shell">
 <script>
 (function(){
   window.__xmmCfPassed = 1;
@@ -93,7 +93,7 @@ html.cf-pending body > *:not(
 
 
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sign in · XMM AI</title>
 <meta name="theme-color" content="#0b0b0c">
 <meta name="color-scheme" content="dark">
@@ -145,9 +145,37 @@ html{background:#000}
 </style>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{background:#07080a;color:#f2f2f0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100dvh;}
-main{flex:1;display:grid;place-items:center;padding:32px 20px}
+html,body{height:100%;width:100%;touch-action:manipulation;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{background:#000}
+body{
+  background:#000;color:#f2f2f0;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  margin:0;padding:0;
+  display:grid;place-items:center;
+  min-height:100dvh;min-height:100vh;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;
+  overflow:hidden;
+}
+/* OUTER = pure black bars. INNER #shell = the app box. */
+#shell{
+  width:100%;
+  max-width:430px;
+  height:100%;
+  max-height:100dvh;
+  max-height:100vh;
+  background:#07080a;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  touch-action:manipulation;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06);
+}
+@supports (height:100dvh){
+  #shell{max-height:100dvh}
+}
+main{flex:1;display:grid;place-items:center;padding:32px 20px;background:#07080a;touch-action:manipulation;overflow:auto;-webkit-overflow-scrolling:touch}
+input,button,a,.in,.go{touch-action:manipulation;-webkit-user-select:text;user-select:text}
 .card{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:stretch}
 .logo{width:52px;height:52px;border-radius:14px;display:block;margin:0 0 28px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 h1{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-weight:400;font-size:42px;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
@@ -164,7 +192,7 @@ label{font-size:13px;color:#a1a1a6;margin:0 0 8px 4px}
 .go:disabled:active{transform:none}
 .fine{margin-top:22px;font-size:12.5px;line-height:1.5;color:#7d7d82}
 .fine a{color:#b9b9bd;text-decoration:underline;text-underline-offset:2px}
-footer{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));font-size:12.5px;color:#6e6e73}
+footer{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));font-size:12.5px;color:#6e6e73;background:#07080a;flex-shrink:0}
 footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
 .card>*{animation:rise .7s cubic-bezier(.2,1,.3,1) both}
 .card>*:nth-child(2){animation-delay:.05s}.card>*:nth-child(3){animation-delay:.1s}.card>*:nth-child(4){animation-delay:.15s}.card>*:nth-child(5){animation-delay:.2s}.card>*:nth-child(6){animation-delay:.25s}.card>*:nth-child(7){animation-delay:.3s}
@@ -172,10 +200,9 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
 @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .shake{animation:shake .25s}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-
-
-
+@media(min-width:480px){
+  #shell{width:min(100%,430px);height:min(100dvh,900px);max-height:900px;margin:0 auto}
+}
 </style>
 
 
@@ -195,6 +222,7 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
 <link rel="stylesheet" href="/chat/cinema.css?v=3">
 <link rel="canonical" href="https://auth.xmm-ai.com/"></head>
 <body>
+<div id="shell">
 <main>
  <form class="card" id="f" autocomplete="off">
   <img class="logo" src="/icon.svg?v=gpu6" alt="XMM AI" width="52" height="52">
@@ -207,6 +235,7 @@ footer a{color:inherit;text-decoration:none}footer a:hover{color:#ddd}
  </form>
 </main>
 <footer><a href="https://xmm-ai.com/">Home</a><a href="https://app.xmm-ai.com/?install=1">Get the app</a><a href="https://xmm-ai.com/terms">Terms</a><a href="https://xmm-ai.com/privacy">Privacy</a><a href="https://support.xmm-ai.com/">Support</a><span>© 2026 XMM AI</span></footer>
+</div>
 <script>
 (function(){
 var n=document.getElementById("n"),go=document.getElementById("go"),f=document.getElementById("f");
@@ -224,6 +253,16 @@ f.addEventListener("submit",function(e){e.preventDefault();var v=n.value.trim();
 var _upd=upd;upd=function(){go.disabled=!n.value.trim()};
 window.addEventListener("xmm:cf-ok",upd);upd();
 setTimeout(function(){try{n.focus()}catch(e){}},400);
+})();
+/* hard no-zoom on auth (phones + PWA) */
+(function(){
+  var noz=function(e){if(e.touches&&e.touches.length>1){e.preventDefault()}else if(e.scale&&e.scale!==1){e.preventDefault()}};
+  ["gesturestart","gesturechange","gestureend"].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()}, {passive:false})});
+  document.addEventListener("touchmove",noz,{passive:false});
+  document.addEventListener("touchstart",function(e){if(e.touches.length>1)e.preventDefault()},{passive:false});
+  var last=0;document.addEventListener("touchend",function(e){var now=Date.now();if(now-last<320)e.preventDefault();last=now},{passive:false});
+  document.addEventListener("dblclick",function(e){e.preventDefault()}, {passive:false});
+  try{document.documentElement.style.touchAction="manipulation";document.body.style.touchAction="manipulation"}catch(x){}
 })();
 </script>
 <script src="/chat/cinema.js?v=1" defer></script>
