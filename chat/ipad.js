@@ -13,6 +13,7 @@ function API(){return window.XMM_API||{}}
 function toast(m){try{API().toast(m)}catch(e){}}
 function I(p,w){return'<svg viewBox="0 0 24 24" width="'+(w||20)+'" height="'+(w||20)+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'}
 var IC={
+ video:I('<rect x="3.5" y="6" width="12" height="12" rx="2.5"/><path d="M15.5 10.5l5-3v9l-5-3z"/>'),
  search:I('<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>'),
  images:I('<rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-4.5 3.5 3L16 12l4 4"/>'),
  sched:I('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
@@ -100,7 +101,7 @@ function buildSug(){
 /* ============ plus popup ============ */
 function pickFile(kind){
  var i=document.createElement("input");i.type="file";i.className="xmm-file";i.style.cssText="position:fixed;left:-999px;opacity:0";
- if(kind==="camera"){i.accept="image/*";i.setAttribute("capture","environment")}else if(kind==="photos"){i.accept="image/*,video/*";i.multiple=true}else i.multiple=true;
+ if(kind==="camera"){i.accept="image/*";i.setAttribute("capture","environment")}else if(kind==="photos"){i.accept="image/*,video/*";i.multiple=true}else if(kind==="video"){i.accept="video/*";i.multiple=true}else i.multiple=true;
  document.body.appendChild(i);i.addEventListener("change",function(){setTimeout(function(){i.remove()},2500)});i.click();
 }
 window.__ipPlus=function(a){$("#ipPlus")?closePlus():openPlus(a)};
@@ -108,7 +109,7 @@ function closePlus(){var p=$("#ipPlus");if(p)p.remove()}
 function openPlus(btn){
  closePlus();
  var p=el("div");p.id="ipPlus";
- p.innerHTML=[["camera","Camera",IC.camera],["photos","Photos",IC.photos],["files","Files",IC.files],["plugins","Plugins",IC.plug]].map(function(x){return'<button type="button" data-k="'+x[0]+'">'+x[2]+'<span>'+x[1]+'</span></button>'}).join("");
+ p.innerHTML=[["camera","Camera",IC.camera],["photos","Photos",IC.photos],["video","Video",IC.video],["files","Files",IC.files],["plugins","Plugins",IC.plug]].map(function(x){return'<button type="button" data-k="'+x[0]+'">'+x[2]+'<span>'+x[1]+'</span></button>'}).join("");
  document.body.appendChild(p);
  var r=btn.getBoundingClientRect();
  p.style.left=Math.max(10,Math.min(r.left,innerWidth-p.offsetWidth-10))+"px";

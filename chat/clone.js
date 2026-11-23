@@ -15,6 +15,7 @@ function toast(m){try{API().toast(m)}catch(e){}}
 /* ---------- icons ---------- */
 function I(p,w){return'<svg viewBox="0 0 24 24" width="'+(w||22)+'" height="'+(w||22)+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'}
 var IC={
+ video:I('<rect x="3.5" y="6" width="12" height="12" rx="2.5"/><path d="M15.5 10.5l5-3v9l-5-3z"/>'),
  menu:I('<path d="M4 7h16M4 12h16M4 17h10"/>'),
  compose:I('<path d="M12 5H7.5A3.5 3.5 0 0 0 4 8.5v8A3.5 3.5 0 0 0 7.5 20h8a3.5 3.5 0 0 0 3.5-3.5V12"/><path d="M17.6 3.6a2 2 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z"/>'),
  dots:'<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg>',
@@ -317,6 +318,7 @@ function pickFile(kind){
  var i=document.createElement("input");i.type="file";i.className="xmm-file";i.style.cssText="position:fixed;left:-999px;opacity:0";
  if(kind==="camera"){i.accept="image/*";i.setAttribute("capture","environment")}
  else if(kind==="photos"){i.accept="image/*,video/*";i.multiple=true}
+ else if(kind==="video"){i.accept="video/*";i.multiple=true}
  else i.multiple=true;
  document.body.appendChild(i);i.addEventListener("change",function(){setTimeout(function(){i.remove()},2000)});
  i.click();
@@ -325,7 +327,7 @@ function skillsMem(){var s=window.XMM_SKILLS;return s?s.memory!==false:true}
 function openAdd(){
  if(window.__ipPlus){window.__ipPlus(document.querySelector("#clVoice.on #cvPlus")||document.getElementById("attBtn"));return}
  var s=sheet("clAdd",{title:"Add to Chat",grab:true});
- s.body.innerHTML='<div class="cl-tiles"><button class="cl-tile" data-k="camera" type="button">'+IC.camera+'<span>Camera</span></button><button class="cl-tile" data-k="photos" type="button">'+IC.photos+'<span>Photos</span></button><button class="cl-tile" data-k="files" type="button">'+IC.files+'<span>Files</span></button></div>'+
+ s.body.innerHTML='<div class="cl-tiles"><button class="cl-tile" data-k="camera" type="button">'+IC.camera+'<span>Camera</span></button><button class="cl-tile" data-k="photos" type="button">'+IC.photos+'<span>Photos</span></button><button class="cl-tile" data-k="video" type="button">'+IC.video+'<span>Video</span></button><button class="cl-tile" data-k="files" type="button">'+IC.files+'<span>Files</span></button></div>'+
   '<div class="cl-grp"><div class="cl-row nl" id="clMemRow">'+IC.brain+'<div class="rt">Memory<small>Let XMM AI use what you told it about you</small></div><button class="cl-sw'+(skillsMem()?" on":"")+'" id="clMemSw" type="button" aria-label="Memory"></button></div></div>';
  s.body.addEventListener("click",function(e){
   var t=e.target.closest(".cl-tile");if(t){var k=t.dataset.k;pickFile(k);setTimeout(s.close,60);return}

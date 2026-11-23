@@ -1,7 +1,7 @@
 (function(){"use strict";
 var $=function(s,r){return(r||document).querySelector(s)};
 function sv(p){return'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'}
-var IC={cam:'<path d="M4 8.5A2.5 2.5 0 016.5 6h1.2l1.3-2h6l1.3 2h1.2A2.5 2.5 0 0120 8.5v8a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 16.5z"/><circle cx="12" cy="12.5" r="3.2"/>',img:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',file:'<path d="M14 3.5H8A2.5 2.5 0 005.5 6v12A2.5 2.5 0 008 20.5h8a2.5 2.5 0 002.5-2.5V8z"/><path d="M14 3.5V8h4.5"/>',proj:'<rect x="4" y="9" width="16" height="11" rx="3"/><path d="M7 5.5h10M9 2.5h6"/>',eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',share:'<path d="M12 16V4M7.5 8.5L12 4l4.5 4.5M5 13v5a2 2 0 002 2h10a2 2 0 002-2v-5"/>',gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8l1.4 2.4 2.7-.6.9 2.6 2.6.9-.6 2.7 2.4 1.4-2.4 1.4.6 2.7-2.6.9-.9 2.6-2.7-.6L12 21.2l-1.4-2.4-2.7.6-.9-2.6-2.6-.9.6-2.7L2.6 12l2.4-1.4-.6-2.7 2.6-.9.9-2.6 2.7.6z"/>'};
+var IC={vid:'<rect x="3.5" y="6" width="12" height="12" rx="2.5"/><path d="M15.5 10.5l5-3v9l-5-3z"/>',cam:'<path d="M4 8.5A2.5 2.5 0 016.5 6h1.2l1.3-2h6l1.3 2h1.2A2.5 2.5 0 0120 8.5v8a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 16.5z"/><circle cx="12" cy="12.5" r="3.2"/>',img:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',file:'<path d="M14 3.5H8A2.5 2.5 0 005.5 6v12A2.5 2.5 0 008 20.5h8a2.5 2.5 0 002.5-2.5V8z"/><path d="M14 3.5V8h4.5"/>',proj:'<rect x="4" y="9" width="16" height="11" rx="3"/><path d="M7 5.5h10M9 2.5h6"/>',eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',share:'<path d="M12 16V4M7.5 8.5L12 4l4.5 4.5M5 13v5a2 2 0 002 2h10a2 2 0 002-2v-5"/>',gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8l1.4 2.4 2.7-.6.9 2.6 2.6.9-.6 2.7 2.4 1.4-2.4 1.4.6 2.7-2.6.9-.9 2.6-2.7-.6L12 21.2l-1.4-2.4-2.7.6-.9-2.6-2.6-.9.6-2.7L2.6 12l2.4-1.4-.6-2.7 2.6-.9.9-2.6 2.7.6z"/>'};
 function click(s){var e=$(s);if(e)e.click()}
 var cur=null;
 /* ---- liquid-glass morph: button grows into the panel, panel shrinks back into the button ---- */
@@ -57,7 +57,7 @@ var plus=null;
 document.addEventListener("click",function(e){
  var a=e.target.closest&&e.target.closest("#attBtn");
  if(a){e.stopImmediatePropagation();e.preventDefault();
-  if(!plus)plus=make([["cam","Camera",pick("image/*",true)],["img","Photos",pick("image/*")],["file","Files",pick("image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.log,.pdf")]]);
+  if(!plus)plus=make([["cam","Camera",pick("image/*",true)],["img","Photos",pick("image/*")],["vid","Video",pick("video/*")],["file","Files",pick("image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.log,.pdf")]]);
   if(cur&&cur.btn===a)close();else open(a,plus,"up");return}
  var d=e.target.closest&&e.target.closest("#tbPreview");
  if(d){e.stopImmediatePropagation();e.preventDefault();
@@ -119,7 +119,7 @@ if(st){var busy=false;new MutationObserver(function(){if(busy||window.__xmmTable
     a.dataset.mg="1";
     a.addEventListener("click",function(e){
       e.preventDefault();e.stopPropagation();
-      if(!plus)plus=make([["cam","Camera",pick("image/*",true)],["img","Photos",pick("image/*")],["file","Files",pick("image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.log,.pdf")]]);
+      if(!plus)plus=make([["cam","Camera",pick("image/*",true)],["img","Photos",pick("image/*")],["vid","Video",pick("video/*")],["file","Files",pick("image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.log,.pdf")]]);
       if(cur&&cur.btn===a)close();else open(a,plus,"up");
     },true);
   }

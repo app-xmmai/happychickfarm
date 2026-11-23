@@ -104,25 +104,36 @@ function close(){
  try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}
  try{stream&&stream.getTracks().forEach(function(t){t.stop()});ac&&ac.close()}catch(e){}stream=an=ac=null;
  cls("split",0);cls("talk",0);cls("count",0);cls("speak",0);cls("think",0);el.classList.remove("on")}
-/* blur + wave wipe grows out of the button, then the voice screen opens */
-var wiping=false;
-function open(btn){
- if(on||wiping)return;
- if(!SR){unsup();return}
+/* blur + wave wipe grows out of the button (slow), then voice screen opens */
+var wiping=false,RM=matchMedia("(prefers-reduced-motion: reduce)");
+function wipe(btn,cb,cx,cy){
  var r=btn&&btn.getBoundingClientRect?btn.getBoundingClientRect():null;
- var x=r?r.left+r.width/2:innerWidth/2,y=r?r.top+r.height/2:innerHeight-60;
- if(matchMedia("(prefers-reduced-motion: reduce)").matches){doOpen();return}
+ var x=r?r.left+r.width/2:(cx==null?innerWidth/2:cx),y=r?r.top+r.height/2:(cy==null?innerHeight-60:cy);
+ if(btn)btn.classList.add("vo-morph");
+ if(wiping){if(cb)cb();setTimeout(function(){btn&&btn.classList.remove("vo-morph")},700);return}
  wiping=true;
- if(btn){btn.classList.add("vo-morph")}
  var w=document.createElement("div");w.id="vowipe";w.style.setProperty("--x",x+"px");w.style.setProperty("--y",y+"px");
  w.innerHTML='<div class="vw-wave"><i class="a"></i><i class="b"></i><i class="c"></i></div>';
  document.body.appendChild(w);void w.offsetWidth;w.classList.add("go");
- setTimeout(doOpen,230);
- setTimeout(function(){w.classList.add("out")},520);
- setTimeout(function(){w.remove();wiping=false;if(btn)btn.classList.remove("vo-morph")},900)
+ if(cb)setTimeout(cb,450);
+ setTimeout(function(){w.classList.add("out")},1050);
+ setTimeout(function(){w.remove();wiping=false;if(btn)btn.classList.remove("vo-morph")},1700)
+}
+function open(btn){
+ if(on||wiping)return;
+ if(!SR){unsup();return}
+ if(RM.matches){doOpen();return}
+ wipe(btn,doOpen)
 }
 window.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#speakBtn");if(!b)return;
  e.stopPropagation();e.stopImmediatePropagation();e.preventDefault();open(b)},true);
+/* same effect on every other button */
+window.addEventListener("click",function(e){
+ if(RM.matches||!e.target.closest)return;
+ var b=e.target.closest('button,[role="button"],.icon-btn,.btn');
+ if(!b||b.id==="speakBtn"||b.disabled||b.closest("#vo,#vowipe"))return;
+ wipe(b)
+},true);
 addEventListener("keydown",function(e){if(e.key==="Escape")close()});
 window.XMM_VOICE={open:function(){open(document.getElementById("speakBtn"))},close:close};
 })();
