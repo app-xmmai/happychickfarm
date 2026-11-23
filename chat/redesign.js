@@ -84,7 +84,7 @@ function init(){
  w.onclick=function(e){
   if(e.target===w||e.target.closest("[data-c]")){open(false);return}
   var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a;
-  if(!f)return;f.removeAttribute("capture");f.setAttribute("accept",a==="file"?ACC:"image/*");
+  if(!f)return;f.removeAttribute("capture");f.setAttribute("accept",a==="file"?ACC:"image/*,video/*");
   if(a==="cam")f.setAttribute("capture","environment");open(false);f.click()};
  addEventListener("keydown",function(e){if(e.key==="Escape"){open(false);if(mob())setSide(false)}});
  // close drawer on chat pick (mobile)

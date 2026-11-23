@@ -316,7 +316,7 @@ setInterval(function(){var S=API().S;if(!S)return;var b=!!S.busy;
 function pickFile(kind){
  var i=document.createElement("input");i.type="file";i.className="xmm-file";i.style.cssText="position:fixed;left:-999px;opacity:0";
  if(kind==="camera"){i.accept="image/*";i.setAttribute("capture","environment")}
- else if(kind==="photos"){i.accept="image/*";i.multiple=true}
+ else if(kind==="photos"){i.accept="image/*,video/*";i.multiple=true}
  else i.multiple=true;
  document.body.appendChild(i);i.addEventListener("change",function(){setTimeout(function(){i.remove()},2000)});
  i.click();

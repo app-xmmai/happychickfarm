@@ -590,12 +590,14 @@ function renderAtts(){$("#atts").innerHTML=S.att.map((a,i)=>{const up=a.p!=null&
 async function toDataURL(blob,max=1280){const bm=await createImageBitmap(blob);const k=Math.min(1,max/Math.max(bm.width,bm.height));const c=document.createElement("canvas");c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);return c.toDataURL("image/jpeg",.85)}
 function readProg(f,mode,cb){return new Promise((res,rej)=>{const r=new FileReader();r.onprogress=e=>{if(e.lengthComputable)cb(Math.min(90,e.loaded/e.total*90))};r.onload=()=>res(r.result);r.onerror=rej;mode==="url"?r.readAsDataURL(f):r.readAsText(f)})}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-async function addFiles(files){for(const f of files){const isImg=f.type.startsWith("image/")&&f.type!=="image/svg+xml";if(!isImg&&f.size>=1500000){toast(f.name+" is too large");continue}
-  const it={name:f.name||"image",p:2};S.att.push(it);renderAtts();updateSend();
+async function addFiles(files){for(let f of files){let vmeta=null;
+  if(/^video\//.test(f.type)&&window.XMM_MEDIA){const it0={name:f.name||"video",p:2};S.att.push(it0);renderAtts();updateSend();try{const r=await XMM_MEDIA.video(f,p=>{it0.p=Math.min(95,Math.max(it0.p,p));renderAtts()});S.att.splice(S.att.indexOf(it0),1);f=r.file;vmeta=r.meta}catch(e){S.att.splice(S.att.indexOf(it0),1);renderAtts();updateSend();toast(e.message||"Could not read video");continue}}
+  const isImg=f.type.startsWith("image/")&&f.type!=="image/svg+xml";if(!isImg&&f.size>=1500000){toast(f.name+" is too large");continue}
+  const it={name:f.name||"image",p:2};S.att.push(it);if(vmeta)it.video=vmeta;renderAtts();updateSend();
   const bump=()=>{renderAtts()};
   try{
    await readProg(f,"url",p=>{it.p=Math.max(it.p,p);bump()});
-   if(isImg)it.img=await toDataURL(f);else it.text=(await f.text()).slice(0,40000);
+   if(isImg)it.img=await toDataURL(f,f.xmmGrid?2048:1280);else it.text=(await f.text()).slice(0,40000);
    for(let p=Math.max(it.p,90);p<100;p+=5){it.p=p;bump();await sleep(12)}
    it.p=100;
    /* always save uploads into Files & Preview tab (images + text) */
@@ -617,6 +619,7 @@ function send(textOverride){
  const atts=S.att.slice();S.att=[];renderAtts();input.value="";autosize(input);try{window.XMM_SYNC_EXPAND&&window.XMM_SYNC_EXPAND()}catch(_){}
  const imgs=atts.filter(a=>a.img),files=atts.filter(a=>a.text);
  let full=text;files.forEach(f=>full+=`\n\n[File: ${f.name}]\n${f.text}`);if(!full)full="Describe this image in detail.";
+ {const v=atts.find(a=>a.video);if(v&&window.XMM_MEDIA)full=XMM_MEDIA.videoPrompt(v.video,text)+full.slice(text.length).replace("Describe this image in detail.","");else if(window.XMM_MEDIA)full+=XMM_MEDIA.fileHint(text)}
  c.msgs.push({role:"user",text,full,atts:atts.map(a=>({name:a.name,img:a.img})),imgs:imgs.map(a=>a.img)});
  if(S.view!=="chat")chatView("chat");ask(c)}
 const isCodeReq=t=>{t=String(t||"");return /\b(snake|game|website|web\s*site|landing\s*page|todo\s*app|build|create|make|write)\b.{0,40}\b(code|html|css|js|javascript|app|game|site|page|ui|dashboard|calculator|timer|clock)\b|\b(html|css|javascript|python)\b.{0,30}\b(code|file|script|program)\b|\b(make|build|create|write)\s+(a|an|me|my|the)?\s*(simple\s+)?(snake|pong|tetris|game|app|website|site|page|todo|calculator)/i.test(t)||/^(make|build|create|write)\s+.+\b(game|app|site|page|html)\b/i.test(t.trim())};

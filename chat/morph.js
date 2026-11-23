@@ -36,7 +36,7 @@ var file=$("#file"),ACC=file?file.getAttribute("accept"):"";
 function pick(accept,cap){return function(){
   var f=document.createElement("input");
   f.type="file";f.className="xmm-file";f.multiple=!cap;
-  f.accept=accept||"image/*";
+  f.accept=accept||"image/*,video/*";
   if(cap)f.setAttribute("capture","environment");
   f.style.cssText="position:fixed;left:-99999px;width:0;height:0;opacity:0;pointer-events:none";
   document.body.appendChild(f);

@@ -90,7 +90,7 @@ function sayIt(text,my){
   try{ss.speak(u)}catch(e){end()}}
  try{ss.cancel()}catch(e){}next()}
 function unsup(){var t=document.getElementById("toast");if(!t){alert("Unsupported browser");return}t.textContent="Unsupported browser";t.hidden=false;clearTimeout(t._u);t._u=setTimeout(function(){t.hidden=true},2500)}
-function open(){
+function doOpen(){
  if(!SR){unsup();return}
  build();if(on)return;
  ensureMic(function(ok){if(!ok)return;
@@ -104,8 +104,25 @@ function close(){
  try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}
  try{stream&&stream.getTracks().forEach(function(t){t.stop()});ac&&ac.close()}catch(e){}stream=an=ac=null;
  cls("split",0);cls("talk",0);cls("count",0);cls("speak",0);cls("think",0);el.classList.remove("on")}
+/* blur + wave wipe grows out of the button, then the voice screen opens */
+var wiping=false;
+function open(btn){
+ if(on||wiping)return;
+ if(!SR){unsup();return}
+ var r=btn&&btn.getBoundingClientRect?btn.getBoundingClientRect():null;
+ var x=r?r.left+r.width/2:innerWidth/2,y=r?r.top+r.height/2:innerHeight-60;
+ if(matchMedia("(prefers-reduced-motion: reduce)").matches){doOpen();return}
+ wiping=true;
+ if(btn){btn.classList.add("vo-morph")}
+ var w=document.createElement("div");w.id="vowipe";w.style.setProperty("--x",x+"px");w.style.setProperty("--y",y+"px");
+ w.innerHTML='<div class="vw-wave"><i class="a"></i><i class="b"></i><i class="c"></i></div>';
+ document.body.appendChild(w);void w.offsetWidth;w.classList.add("go");
+ setTimeout(doOpen,230);
+ setTimeout(function(){w.classList.add("out")},520);
+ setTimeout(function(){w.remove();wiping=false;if(btn)btn.classList.remove("vo-morph")},900)
+}
 window.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#speakBtn");if(!b)return;
- e.stopPropagation();e.stopImmediatePropagation();e.preventDefault();open()},true);
+ e.stopPropagation();e.stopImmediatePropagation();e.preventDefault();open(b)},true);
 addEventListener("keydown",function(e){if(e.key==="Escape")close()});
-window.XMM_VOICE={open:open,close:close};
+window.XMM_VOICE={open:function(){open(document.getElementById("speakBtn"))},close:close};
 })();
