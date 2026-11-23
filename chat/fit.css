@@ -17,5 +17,5 @@ html body .shell{height:var(--app-h,100dvh)!important;min-height:0!important;max
 @media (display-mode:standalone),(display-mode:fullscreen),(display-mode:minimal-ui){
  :root{--xt:0px!important;--xgap:0px!important;--xtop:80px}
  html,body{background:#000!important}
- html body .shell{top:var(--xtop)!important;bottom:0!important;height:auto!important;min-height:0!important;max-height:none!important}
+ html body .shell,html body #shell-chat.shell,html body #shell-chat{top:var(--xtop)!important;bottom:0!important;height:auto!important;min-height:0!important;max-height:none!important}
 }
