@@ -1,5 +1,5 @@
 /* fit.css: phones. Fit the real visible screen and push everything down from the top/notch */
-:root{--xt:max(env(safe-area-inset-top,0px),16px);--xb:max(env(safe-area-inset-bottom,0px),8px)}
+:root{--xt:max(env(safe-area-inset-top,0px),var(--sat,0px),16px);--xb:max(env(safe-area-inset-bottom,0px),8px)}
 html{background:#0b0b10}html,body{height:var(--app-h,100%);min-height:100%;overflow:hidden;overscroll-behavior:none}#xl{height:100%!important;min-height:var(--app-h,100%)}
 html body .shell{height:var(--app-h,100dvh)!important;min-height:0!important;max-height:var(--app-h,100dvh)!important;overflow:hidden}
 @media(max-width:900px){
