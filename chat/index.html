@@ -163,9 +163,6 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 <link rel="stylesheet" href="code-ui.css?v=6">
 <link rel="stylesheet" href="voice-ui.css?v=7">
 <link rel="stylesheet" href="widgets.css?v=4">
-<link rel="stylesheet" href="pro.css?v=6">
-<link rel="stylesheet" href="settings-ui.css?v=4">
-<link rel="stylesheet" href="settings-plus.css?v=1">
 <link rel="stylesheet" href="final.css?v=12"><link rel="stylesheet" href="turbo.css?v=1"><link rel="stylesheet" href="maps.css?v=4">
 <link rel="stylesheet" href="sun.css?v=2"><link rel="stylesheet" href="twin.css?v=1"><link rel="stylesheet" href="grok.css?v=14"><link rel="stylesheet" href="cinema.css?v=3"><link rel="stylesheet" href="fix.css?v=88"><link rel="stylesheet" href="clone.css?v=97">
 <link rel="stylesheet" href="ipad.css?v=117"><link rel="stylesheet" href="xfix.css?v=1"><link rel="stylesheet" href="float.css?v=8"><link rel="stylesheet" href="zdark.css?v=3"><link rel="stylesheet" href="lovable.css?v=4"><link rel="stylesheet" href="mobile-final.css?v=1"><link rel="stylesheet" href="bg.css?v=15"><link rel="stylesheet" href="xfix2.css?v=13"><link rel="stylesheet" href="gemini.css?v=8">
@@ -260,19 +257,7 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
 
 <div class="install glass" id="installBanner" hidden><img src="icon.svg?v=gpu6" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
 
-<div class="modal" id="settings" hidden><div class="sheet glass">
-  <div class="sheet-h"><h3>Settings</h3><button class="icon-btn sm" data-act="closeSettings" data-ic="close" aria-label="Close"></button></div>
-  <label>Your name</label><input class="field" id="setName" placeholder="Your name" maxlength="40" dir="auto">
-  <label>Language</label><select class="field sel" id="setLang"><option value="de">Deutsch</option><option value="en">English</option><option value="fa">فارسی</option><option value="ar">العربية</option><option value="es">Español</option></select>
-  <label>AI memory</label><textarea class="field mem" id="setMem" rows="3" maxlength="2000" placeholder="Things the AI should always remember about you…" dir="auto"></textarea>
-  <label>Model</label><p class="hint" id="modelInfo"></p>
-  <label>Install check</label><p class="hint" id="pwaInfo">Checking…</p>
-  <button class="btn wide" id="logout" data-ic="close">Log out</button>
-  <button class="btn glass danger wide" id="clearAll" data-ic="trash">Delete all chats</button>
-  <button class="btn glass wide" data-act="install" data-ic="download">Install App</button>
-  <div class="brandline"><img src="icon.svg?v=gpu6" alt=""><span>XMM AI by XMMAI</span></div>
-  <div class="copy c">© XMMAI. All rights reserved.</div>
-</div></div>
+<div id="settings" hidden><button id="logout" type="button"></button><button id="clearAll" type="button"></button><button data-act="install" type="button"></button></div>
 <div class="modal" id="installGuide" hidden><div class="sheet glass install-guide">
   <div class="sheet-h"><h3>Install XMM AI</h3><button class="icon-btn sm" data-act="closeInstall" data-ic="close" aria-label="Close"></button></div>
   <div id="igBody"></div>
@@ -311,8 +296,6 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
 <script src="code.js?v=198"></script>
 <script src="upload.js?v=2"></script>
 <script src="lang.js"></script>
-<script src="pro.js?v=2"></script>
-<script src="settings-plus.js?v=2"></script>
 <script src="voice-ui.js?v=9"></script>
 <script src="twin.js?v=3"></script><script src="turbo.js?v=1"></script>
 <script src="grok.js?v=9"></script>

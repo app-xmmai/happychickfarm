@@ -700,7 +700,7 @@ async function pwaCheck(){const o=[];o.push(["HTTPS",location.protocol==="https:
  try{const rg=await navigator.serviceWorker.getRegistration();o.push(["Service worker",!!(rg&&rg.active)])}catch{o.push(["Service worker",false])}
  o.push(["Running as app",!!standalone()]);
  $("#pwaInfo").innerHTML=o.map(([k,v])=>`${v?"✅":"❌"} ${k}`).join("<br>")}
-function openSettings(){pwaCheck();$("#setMem").value=ld("xmm.mem","");$("#setName").value=userName();$("#modelInfo").textContent="XMMGPT Sun 6.2 · XMMGPT 6.2 · XMMGPT 5.2 · XMMGPT 5.0";$("#settings").hidden=false}
+function openSettings(){if(window.XMM_CLONE)XMM_CLONE.openSettings()}
 let deferred=null;const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;maybeBanner()});
@@ -775,7 +775,7 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
  $("#convo").addEventListener("click",e=>{const t=e.target.closest("[data-th]");if(t){t.classList.toggle("o");$("#tb"+t.dataset.th).classList.toggle("o")}});
  $("#logout").onclick=()=>{if(confirm("Log out? All chats on this device will be deleted.")){try{Object.keys(localStorage).filter(k=>/^xmm\./.test(k)&&k!=="xmm.lang").forEach(k=>localStorage.removeItem(k))}catch{}try{indexedDB.deleteDatabase("xmmcode")}catch{}location.reload()}};
  window.XMM_SUNAPI={send,cur,S,renderMsgs,saveChats,uid,toast,sunSetMode,MODELS,renderList,newChat,scrollDown};window.XMM_API={setName,groq,toast,showMenu,esc,md,ic,CFG,delChat,newChat,send,S,cur,renderMsgs};
- $("#settings").onclick=e=>{if(e.target.id==="settings")e.target.hidden=true};
+
  $("#installGuide").onclick=e=>{if(e.target.id==="installGuide")e.target.hidden=true};
  $("#clearAll").onclick=clearAll;
  $("#msg").addEventListener("input",e=>{autosize(e.target);updateSend()});

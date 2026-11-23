@@ -77,7 +77,7 @@ var ro=BEND&&window.ResizeObserver?new ResizeObserver(function(es){
 /* ================= 2. top bar animations ================= */
 function spr(el,frames,opt){try{return el.animate(frames,opt)}catch(e){return null}}
 function sc(x,y,o){var f=IND?{scale:x+" "+y}:{transform:"scale("+x+","+y+")"};if(o!=null)f.opacity=o;return f}
-function glint(el){if(RM)return;el.classList.remove("lq-g");void el.offsetWidth;el.classList.add("lq-g")}
+function glint(el){return;if(RM)return;el.classList.remove("lq-g");void el.offsetWidth;el.classList.add("lq-g")}
 function hostOf(b){if(b.closest("#mainChat .composer button")||b.closest(".vtop .vgl button")||b.closest(".vtop .vc"))return b.closest("button");if(b.closest(".vtop .vseg"))return b.closest(".vseg");return b.closest("#mainChat .composer button")||b.closest(".vtop,#cdBack,#cdTog,.seg")||b}
 function pillOf(b){var s=b.closest(".vseg");return s&&s.querySelector(".vseg-pill")}
 /* big -> small -> settle */
@@ -86,7 +86,7 @@ function enter(el,i){
  spr(el,[sc(1.55,1.55,0),sc(.9,.9,1),sc(1.05,1.05,1),sc(1,1,1)],{duration:780,delay:i*70,easing:"cubic-bezier(.25,.9,.3,1)",fill:"backwards"});
  setTimeout(function(){glint(el)},i*70+120)}
 /* tap or slide release: stretch big, squeeze small, settle */
-function jelly(el,k){
+function jelly(el,k){return;
  if(RM||!el)return;if(!IND&&el.matches(".vseg-pill"))return;k=k||1;
  spr(el,[sc(1,1),sc(1+.16*k,1-.12*k),sc(1-.07*k,1+.08*k),sc(1+.03*k,1-.02*k),sc(1,1)],{duration:600,easing:"cubic-bezier(.3,.8,.4,1)"})}
 var done=new WeakSet();

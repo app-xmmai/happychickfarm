@@ -92,7 +92,7 @@ function sheet(id,opts){
  void sh.offsetWidth;requestAnimationFrame(function(){bg.classList.add("on");sh.classList.add("on")});
  return api;
 }
-function closeSheets(){["clAdd","clModel","clSet"].forEach(function(i){var s=document.getElementById(i);if(s){var b=document.getElementById(i+"Bg");s.classList.remove("on");if(b)b.classList.remove("on");setTimeout(function(){s.remove();if(b)b.remove()},520)}})}
+function closeSheets(){var dk=document.getElementById("clDesk");if(dk){dk.remove();setS=null}["clAdd","clModel","clSet"].forEach(function(i){var s=document.getElementById(i);if(s){var b=document.getElementById(i+"Bg");s.classList.remove("on");if(b)b.classList.remove("on");setTimeout(function(){s.remove();if(b)b.remove()},520)}})}
 
 /* ---------- theme / haptics / links ---------- */
 function themePref(){return ld("xmm.cl.theme","dark")}
@@ -393,7 +393,8 @@ function pageVoice(){return'<div class="cl-grp" style="margin-top:6px"><div clas
 function pageInfo(){return'<div class="cl-prof" style="margin-top:6px"><div class="a" style="background:none"><img src="icon.svg?v=gpu6" alt="" width="40" height="40" style="border-radius:11px"></div><div><b>XMM AI</b><span>by XMM Bayat · v89</span></div></div><div class="cl-grp">'+row(IC.term,"Terms of Service",{act:"terms"})+row(IC.term,"Privacy policy",{act:"privacy"})+row(IC.help,"Support",{act:"support"})+'</div><div class="cl-note" style="text-align:center">© XMMAI. All rights reserved.</div>'}
 var PAGES={root:{t:"Settings",h:pageRoot},profile:{t:"Profile",h:pageProfile},notif:{t:"Notifications",h:pageNotif},privacy:{t:"Privacy",h:pagePrivacy},caps:{t:"Memory",h:pageCaps},voice:{t:"Voice and dictation",h:pageVoice},info:{t:"About",h:pageInfo}};
 function show(pg,anim){
- if(!setS)return;var P=PAGES[pg]||PAGES.root;setS.title.textContent=P.t;setS.body.innerHTML=P.h();setS.page=pg;
+ if(!setS)return;
+ if(setS.desk){setS.page=pg;setS.body.innerHTML=deskPage(pg);var nb=setS.el.querySelectorAll("[data-dk]");for(var i=0;i<nb.length;i++)nb[i].classList.toggle("on",nb[i].dataset.dk===pg);setS.body.scrollTop=0;return}var P=PAGES[pg]||PAGES.root;setS.title.textContent=P.t;setS.body.innerHTML=P.h();setS.page=pg;
  setS.left.innerHTML=pg==="root"?IC.x:IC.back;
  setS.right.innerHTML="";
  if(pg==="root"){var ib=el("button","cl-b");ib.type="button";ib.innerHTML=IC.info;ib.setAttribute("aria-label","About");ib.onclick=function(){stack.push("root");show("info",1)};setS.right.appendChild(ib)}
@@ -402,9 +403,14 @@ function show(pg,anim){
  setS.body.scrollTop=0;
 }
 function openSettings(){
+ if(window.innerWidth>=760){openSettingsDesk();return}
  closeDrawer();var m=$("#msg");if(m)m.blur();
  stack=[];setS=sheet("clSet",{title:"Settings",height:"90dvh",onclose:function(){setS=null}});
  show("root",0);
+ wireSet();
+}
+
+function wireSet(){
  setS.body.addEventListener("click",function(e){
   var g=e.target.closest("[data-go]");if(g&&g.dataset.go){stack.push(setS.page);show(g.dataset.go,1);return}
   var th=e.target.closest(".cl-th");if(th){sv("xmm.cl.theme",th.dataset.th);applyTheme();$$(".cl-th",setS.body).forEach(function(x){x.classList.toggle("on",x===th)});return}
@@ -436,6 +442,31 @@ function openSettings(){
   if(e.target.id==="clMem")sv("xmm.mem",e.target.value);
   else if(e.target.id==="clName"){if(e.target.value.trim()){try{API().setName(e.target.value)}catch(_){}updGreeting()}}
  });
+}
+var DESK=[["acc","Account"],["app","Appearance"],["mem","Memory"],["notif","Notifications"],["priv","Privacy"],["about","About"]];
+function dkRow(l,c){return'<div class="dk-row"><label>'+l+'</label><div>'+c+'</div></div>'}
+function themesHtml(){var th=themePref();return'<div class="cl-themes">'+[["light","Light","l"],["dark","Dark","d"],["system","System","s"]].map(function(t){return'<button class="cl-th'+(th===t[0]?" on":"")+'" data-th="'+t[0]+'" type="button"><div class="p '+t[2]+'"></div>'+t[1]+'</button>'}).join("")+'</div>'}
+function deskPage(k){
+ var n=uname()||"";
+ if(k==="acc")return'<h4>Profile</h4>'+dkRow("Profile photo",'<span class="dk-av">'+esc((n||"X").charAt(0).toUpperCase())+'</span>')+dkRow("Full name",'<input class="dk-in" id="clName" maxlength="40" value="'+esc(n)+'" dir="auto">')+dkRow("Language",langSel().replace("<select","<select class=\"dk-in\""))+dkRow("Open links in",'<select class="dk-in" data-links><option value="tab"'+(ld("xmm.cl.links","tab")==="tab"?" selected":"")+'>New tab</option><option value="same"'+(ld("xmm.cl.links","tab")==="same"?" selected":"")+'>This tab</option></select>')+'<div class="dk-btns"><button class="dk-b" data-do="install" type="button">Install app</button><button class="dk-b dg" data-do="logout" type="button">Log out</button></div>';
+ if(k==="app")return'<h4>Appearance</h4>'+themesHtml()+'<div class="cl-grp"><div class="cl-row nl" style="cursor:default" data-do="hap">'+IC.haptic+'<span class="rt">Haptic feedback</span><button class="cl-sw'+(hapOn()?" on":"")+'" data-sw="hap" type="button" aria-label="Haptic feedback"></button></div></div>';
+ if(k==="mem")return'<h4>Memory</h4>'+pageCaps();
+ if(k==="notif")return'<h4>Notifications</h4>'+pageNotif();
+ if(k==="priv")return'<h4>Privacy</h4>'+pagePrivacy();
+ return'<h4>About</h4>'+pageInfo();
+}
+function openSettingsDesk(){
+ closeDrawer();var m=$("#msg");if(m)m.blur();
+ var old=document.getElementById("clDesk");if(old)old.remove();
+ var bg=el("div","dk-bg");bg.id="clDesk";
+ bg.innerHTML='<div class="dk-m"><div class="dk-h"><h3>Settings</h3><button class="dk-x" type="button" aria-label="Close">'+IC.x+'</button></div><div class="dk-c"><nav class="dk-n">'+DESK.map(function(d){return'<button type="button" data-dk="'+d[0]+'">'+d[1]+'</button>'}).join("")+'</nav><div class="dk-p"></div></div></div>';
+ document.body.appendChild(bg);
+ var pane=bg.querySelector(".dk-p");
+ setS={el:bg,body:pane,desk:1,page:"acc",title:{},left:{},right:{},close:function(){bg.remove();setS=null}};
+ bg.addEventListener("mousedown",function(e){if(e.target===bg)setS&&setS.close()});
+ bg.querySelector(".dk-x").onclick=function(){setS&&setS.close()};
+ bg.querySelector(".dk-n").addEventListener("click",function(e){var b=e.target.closest("[data-dk]");if(b)show(b.dataset.dk,0)});
+ wireSet();show("acc",0);
 }
 
 /* ---------- voice screen ---------- */
