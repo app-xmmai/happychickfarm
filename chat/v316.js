@@ -263,6 +263,7 @@ input,textarea,select{font-family:var(--sans)}
  #v3 .v3-comp .v3-go.send{background:var(--ac)!important;border-color:var(--ac)!important;color:#fff!important}
  #v3 .v3-comp .v3-ib svg,#v3 .v3-comp .v3-go svg{width:20px!important;height:20px!important}
  #v3 .v3-comp .v3-model{height:42px!important;padding:0 16px!important;border:1px solid var(--ln)!important;border-radius:99px!important;font:600 15px var(--sans)!important;color:var(--tx)!important;max-width:128px!important;background:none!important}
+ #v3 .v3-comp .v3-seg,#v3 .v3-comp #v3Mic{display:none!important}
  #v3 .v3-comp .v3-seg{margin-left:2px!important;padding:3px!important;border-radius:99px!important}
  #v3 .v3-comp .v3-seg button{height:34px!important;padding:0 11px!important;border-radius:99px!important;font-size:13px!important}
 }
