@@ -4,9 +4,9 @@ var EVENT_END=new Date("2026-12-16T00:00:00").getTime(),KEY="xmm.sun.unlock",GKE
 function A(){return window.XMM_SUNAPI}
 function now(){return Date.now()}
 function eventOn(){return true}
-function galOk(){try{return !!localStorage.getItem(GKEY)}catch(e){return false}}
+function galOk(){return true}
 function unlockedAt(){try{return +JSON.parse(localStorage.getItem(KEY))||0}catch(e){return 0}}
-function fullOk(){return !!unlockedAt()}
+function fullOk(){return true}
 function list(){var l=[];if(galOk())l.push("x7g");if(fullOk())l.push("sun62");l.push("sun62l");return l.concat(["x25","x20","x12"])}
 function locked(k){return (k==="sun62"&&!fullOk())||(k==="x7g"&&!galOk())}
 function allowed(k){if(k==="sun62")return fullOk();if(k==="x7g")return galOk();if(k==="sun62l")return true;return true}
@@ -63,7 +63,7 @@ function unlockGalaxy(){try{localStorage.setItem(GKEY,String(now()))}catch(_){}
  o.querySelector(".sp-go").onclick=function(){A().sunSetMode("x7g");closeAnim(o)};
  o.addEventListener("click",function(e){if(e.target===o)closeAnim(o)})}
 /* ---- Easter egg pop up: no hints ---- */
-function showWN(){if((fullOk()&&galOk())||document.querySelector(".sunwn"))return;
+function showWN(){return;if((fullOk()&&galOk())||document.querySelector(".sunwn"))return;
  try{if(sessionStorage.getItem("xmm.egg.seen"))return}catch(e){}
  var busy=function(id){var e=document.getElementById(id);return e&&!e.hidden&&getComputedStyle(e).display!=="none"};
  if(busy("login")||busy("welcome")||document.getElementById("cine")||/\/login/.test(location.pathname)){setTimeout(showWN,150);return}

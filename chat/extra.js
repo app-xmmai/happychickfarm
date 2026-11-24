@@ -8,7 +8,7 @@ function clamp(){T=0;document.querySelectorAll(".m-bot").forEach(function(m){var
 document.addEventListener("click",function(e){var x=e.target.closest&&e.target.closest(".xm-btn");if(!x)return;e.preventDefault();var m=x.parentNode,id=m.getAttribute("data-i"),b=m.querySelector(".body");if(open.has(id)){open.delete(id);b.classList.add("xm-clamp");x.textContent="See more"}else{open.add(id);b.classList.remove("xm-clamp");x.textContent="See less"}},true);
 new MutationObserver(function(){if(!T)T=setTimeout(clamp,350)}).observe(document.body,{childList:true,subtree:true,characterData:true});
 /* galaxy unlock: asking for directions to "galaxy" -> tapping the card unlocks the space background */
-window.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest("[data-xe=nav]");if(!b||!/galax/i.test(b.getAttribute("data-q")||""))return;ev.preventDefault();ev.stopImmediatePropagation();ev.stopPropagation();
+window.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest("[data-xe=nav]");if(!b||true)return;ev.preventDefault();ev.stopImmediatePropagation();ev.stopPropagation();
  var had=document.documentElement.classList.contains("xm-galaxy");try{localStorage.setItem("xmm.galaxy","1")}catch(_){}document.documentElement.classList.add("xm-galaxy");
  if(document.getElementById("xgp"))return;var d=document.createElement("div");d.id="xgp";d.innerHTML='<div class="xgc"><div class="xgi">'+XMI("galaxy")+'</div><b>You got Galaxy Mode!</b><small>'+(had?"Space background is already on.":"Space background unlocked.")+'</small><button type="button">Awesome</button></div>';d.onclick=function(e){if(e.target===d||e.target.tagName==="BUTTON")d.remove()};document.body.appendChild(d)},true);
 /* splash */

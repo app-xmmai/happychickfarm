@@ -15,7 +15,7 @@ input,textarea,select{font-family:var(--sans)}
 .v3-ib.sm svg{width:16px;height:16px}
 
 /* root */
-#v3{position:fixed;left:0;top:0;right:0;height:var(--app-h,100dvh);z-index:50;display:flex;background:var(--b0);color:var(--tx);font:400 14px/1.4 var(--sans);--sw:288px;--pw:535px;overflow:hidden;transition:padding-right .22s ease}
+#v3{position:fixed;left:0;top:var(--xtop,0px);right:0;height:calc(var(--app-h,100dvh) - var(--xtop,0px));z-index:50;display:flex;background:var(--b0);color:var(--tx);font:400 14px/1.4 var(--sans);--sw:288px;--pw:535px;overflow:hidden;transition:padding-right .22s ease}
 #v3.pn{padding-right:var(--pw)}
 #v3Ctr{position:relative;flex:1;min-width:0;height:100%}
 
@@ -384,7 +384,7 @@ function wire(){
  float_.onclick=function(){togglePanel()};
  $("#v3Add").onclick=function(){try{CL().openAdd()}catch(e){var a=$("#attBtn");if(a)a.click()}};
  $("#v3Model").onclick=$("#v3Model2").onclick=function(){try{CL().openModel()}catch(e){var m=$("#modeBtn");if(m)m.click()}};
- $(".v3-seg").addEventListener("click",function(e){var b=e.target.closest("button[data-m]");if(!b)return;if(b.dataset.m==="code"){var s=$('#seg [data-m="code"]');if(s)s.click()}});
+ $(".v3-seg").addEventListener("click",function(e){var b=e.target.closest("button[data-m]");if(!b)return;var m=b.dataset.m,s=$('#seg [data-m="'+(m==="code"?"code":"chat")+'"]');if(s)s.click();else{document.body.classList.toggle("v-build",m==="code");document.body.classList.remove("code-on")}$$(".v3-seg button",b.parentNode).forEach(function(x){x.classList.toggle("on",x===b)})});
  micB.onclick=function(){var m=$("#gMic");if(m)m.click();else toast("Dictation is not available")};
  sendB.onclick=function(){var S=API().S||{};if(S.busy||ta.value.trim()||($("#atts")&&$("#atts").children.length)){send();return}try{CL().openVoice()}catch(e){var w=$("#gWave");if(w)w.click()}};
  ta.addEventListener("input",function(){fit();var m=$("#msg");if(m){m.value=ta.value;m.dispatchEvent(new Event("input",{bubbles:true}))}upd()});

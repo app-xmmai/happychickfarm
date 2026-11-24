@@ -70,12 +70,12 @@ stretchAllowed().then(function(ok){if(ok)initStretch()});
 
 /* ================= CODE EDITOR → XMM AI ENGINE 5.2 ================= */
 var prevMode=null;
-function toEngine(){
+function toEngine(){return;
  var a=api();if(!a.S)return;
  if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMMGPT 6.2";
   if(a.toast)a.toast("Code uses XMMGPT 6.2")}
 }
-function fromEngine(){
+function fromEngine(){return;
  var a=api();if(!a.S||!prevMode)return;
  if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMMGPT 5.0",x20:"XMMGPT 5.2",x25:"XMMGPT 6.2",sun62:"XMMGPT Sun 6.2"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMMGPT 6.2"}
  prevMode=null;
