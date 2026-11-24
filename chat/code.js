@@ -208,7 +208,7 @@ async function run(text,auto){text=(text||"").trim();const note=attNote();if((!t
  const prose=t=>t.split(/<file\s+path\s*=|<edit\s+path\s*=/)[0];
  let pT=0,pLast="",lastLive=0,liveSteps=[];const paint=t=>{pLast=t;if(pT)return;pT=setTimeout(()=>{pT=0;paint0(pLast)},90)};
  const hlCode=(code,lang)=>{try{if(window.hl)return window.hl(code,lang);if(typeof hl==="function")return hl(code,lang)}catch(e){}return E(code)};
- const paint0=t=>{const f=parse(t);const now=performance.now();if(now-lastLive>700&&Object.keys(f).length){lastLive=now;Object.assign(files,f);if(!page||files[page]==null)page=firstPage();if(page&&/<body/i.test(files[page]||"")){tab="preview";tabs();show(true)}}const n=Object.keys(f).length;const curPath=openTag(t)||(n?Object.keys(f).pop():"");const curCode=curPath&&f[curPath]?f[curPath].slice(-1200):"";const lang=curPath?ext(curPath):"js";
+ const paint0=t=>{try{window.__xmmThought=prose(t).trim()}catch(_){}const f=parse(t);const now=performance.now();if(now-lastLive>700&&Object.keys(f).length){lastLive=now;Object.assign(files,f);if(!page||files[page]==null)page=firstPage();if(page&&/<body/i.test(files[page]||"")){tab="preview";tabs();show(true)}}const n=Object.keys(f).length;const curPath=openTag(t)||(n?Object.keys(f).pop():"");const curCode=curPath&&f[curPath]?f[curPath].slice(-1200):"";const lang=curPath?ext(curPath):"js";
   if(b){const prog=n?`<div class="cd-live"><div class="cd-live-hd"><span class="cd-live-ic">⚡</span><span>Writing <b>${E(curPath||"files")}</b> · ${n} file${n>1?"s":""}</span><span class="cd-live-pct">${Math.min(99,Math.round((t.length/6000)*100))}%</span></div><div class="cd-live-bar"><i style="width:${Math.min(99,Math.round((t.length/6000)*100))}%"></i></div>${curCode?`<pre class="cd-live-code"><code>${hlCode(curCode,lang)}</code></pre>`:""}<div class="cd-live-stps">${liveSteps.map(s=>`<div class="stp ${s.ok?"done":"active"}"><span class="stp-ic">${s.ok?"✓":"⟳"}</span>${E(s.t)}</div>`).join("")}</div></div>`:'<span class="think"><i></i><i></i><i></i>&nbsp;'+(prose(t).slice(0,80)||"Building…")+'</span>';b.innerHTML=prog}const lg=$("#cdLog");if(lg)lg.scrollTop=1e9};
  try{if(API().S&&API().S.mode==="sun62"&&lastU.trim().length>14&&!/^[\d\s+\-*\/().,x=?]+$/.test(lastU.trim())){if(b)b.innerHTML='<span class="think"><i></i><i></i><i></i>&nbsp;Thinking…</span>';await new Promise(r=>{const id=setTimeout(r,120000);ctrl.signal.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});if(ctrl.signal.aborted)throw new DOMException("Aborted","AbortError")}
   let plan="";
@@ -270,5 +270,5 @@ async function runFromChat(text){
  const t=String(text||"").trim();
  return run(t+"\n\nREQUIREMENTS: ONE self-contained index.html. Complete, powerful, working code with real logic and edge-case handling. Fit within about 7000 tokens and finish with closed tags.")
 }
-window.XMM_CODE={open,close,artifacts:arts,isOpen:()=>false,ingest:ingestChatUpload,ingestAll:ingestChatUploads,runFromChat};setTimeout(side,0);
+window.XMM_CODE={getFiles:()=>files,open,close,artifacts:arts,isOpen:()=>false,ingest:ingestChatUpload,ingestAll:ingestChatUploads,runFromChat};setTimeout(side,0);
 })();

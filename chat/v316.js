@@ -435,7 +435,7 @@ function upd(){var S=API().S||{},has=ta.value.trim()||($("#atts")&&$("#atts").ch
 
 /* ------------------------------------------------------------------ preview panel */
 function snapshot(){
- var S=API().S||{},busy=!!S.busy,code=$("#code"),cd=$("#cdLog"),r={status:"",steps:[],out:"",files:[],busy:false,t:0};
+ var S=API().S||{},busy=!!S.busy,code=$("#code"),cd=$("#cdLog"),r={status:"",steps:[],out:"",files:[],busy:false,t:0,thought:"",code:{}};
  var bb=window.__v3bb;
  if(cd){
   $$(".stp",cd).forEach(function(s){r.steps.push({t:(s.textContent||"").replace(/\s+/g," ").trim(),done:s.classList.contains("done")})});
@@ -453,6 +453,7 @@ function snapshot(){
    else{r.status="Writing the answer…";var tx2=(body.textContent||"").trim();r.out=tx2.slice(-2200)}}
   else r.status="Working…";
  }
+ try{r.thought=String(window.__xmmThought||"");var cf=window.XMM_CODE&&XMM_CODE.getFiles&&XMM_CODE.getFiles();if(cf)Object.keys(cf).forEach(function(k){if(typeof cf[k]==="string")r.code[k]=cf[k]});}catch(e){}
  return r;
 }
 function paintPanel(force){
@@ -460,6 +461,7 @@ function paintPanel(force){
  var r=snapshot();
  if(r.busy&&!wasBusy){busyT0=Date.now()}
  if(r.busy){lastOut={status:r.status,steps:r.steps,out:r.out,files:r.files,t:busyT0,done:false}}
+ if(r.thought)lastOut.thought=r.thought;if(Object.keys(r.code).length)lastOut.code=r.code;
  else if(wasBusy){lastOut.done=true;if(r.steps.length||r.out||r.files.length){lastOut.steps=r.steps.length?r.steps:lastOut.steps;lastOut.out=r.out||lastOut.out;lastOut.files=r.files.length?r.files:lastOut.files}}
  wasBusy=r.busy;
  var dot=$("#v3PDot");if(dot)dot.className=r.busy?"busy":(lastOut.t?"done":"");
@@ -467,7 +469,7 @@ function paintPanel(force){
  if(!panel.classList.contains("on"))return;
  var has=lastOut.t||r.busy;
  var el_=r.busy?Math.max(0,Math.round((Date.now()-busyT0)/1000))+"s":"";
- var sig=JSON.stringify([has,r.busy,lastOut.status,lastOut.steps,lastOut.out&&lastOut.out.length,lastOut.files,lastOut.done,el_]);
+ var sig=JSON.stringify([has,r.busy,lastOut.status,lastOut.steps,lastOut.out&&lastOut.out.length,lastOut.files,lastOut.thought&&lastOut.thought.length,lastOut.code&&Object.keys(lastOut.code).map(function(k){return k+":"+lastOut.code[k].length}),lastOut.done,el_]);
  if(!force&&body.__sig===sig)return;body.__sig=sig;
  if(!has){
   body.innerHTML='<div class="v3p-empty"><small>Make something new</small>'+
@@ -481,6 +483,8 @@ function paintPanel(force){
  var h='<div class="v3p-card"><div class="v3p-st">'+(r.busy?'<span class="sp"></span>':'<span class="ok">'+I.ok+'</span>')+'<span>'+esc(st)+'</span><em>'+esc(el_)+'</em></div></div>';
  if(lastOut.steps.length){h+='<div class="v3p-t">Steps</div><div class="v3p-steps">'+lastOut.steps.map(function(s,i){var act=r.busy&&!s.done&&i===lastOut.steps.length-1;return'<div class="v3p-step'+(s.done?" done":act?" act":"")+'"><i></i><span>'+esc(s.t)+'</span></div>'}).join("")+'</div>'}
  if(lastOut.files.length){h+='<div class="v3p-t">Files</div><div class="v3p-files">'+lastOut.files.map(function(f){return'<span>'+esc(f)+'</span>'}).join("")+'</div>'}
+ if(lastOut.thought){h+='<div class="v3p-t">Thoughts</div><div class="v3p-th">'+esc(lastOut.thought)+'</div>'}
+ if(lastOut.code&&Object.keys(lastOut.code).length){h+='<div class="v3p-t">Code</div>'+Object.keys(lastOut.code).map(function(k,i,arr){var src=lastOut.code[k];return'<details class="v3p-cf"'+(arr.length===1||(r.busy&&i===arr.length-1)?" open":"")+'><summary>'+esc(k)+'<em>'+src.split("\n").length+' lines</em></summary><pre class="v3p-code">'+esc(src.length>30000?src.slice(0,30000)+"\n…":src)+'</pre></details>'}).join("")}
  if(lastOut.out){h+='<div class="v3p-t">'+(r.busy?"Live output":"Last output")+'</div><pre class="v3p-out" id="v3POut">'+esc(lastOut.out)+'</pre>'}
  if(lastOut.files.length||$("#cdLog")){h+='<button class="v3p-btn" type="button" data-open="build">Open full preview</button>'}
  body.innerHTML=h;var po=$("#v3POut");if(po)po.scrollTop=po.scrollHeight;

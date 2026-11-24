@@ -39,3 +39,10 @@ html:root:root body .cl-mi:has(svg){background:#282a2c!important}
 html:root:root body .cl-mi[data-k="x7g"] b{background:none!important;-webkit-background-clip:border-box;background-clip:border-box;color:inherit!important;animation:none!important}
 html:root:root body .cl-mi::before,html:root:root body .cl-mi::after,html:root:root body #clModel .cl-grp::before,html:root:root body #clModel .cl-grp::after{display:none!important;content:none!important}
 html:root:root body #clModel .cl-grp,html:root:root body #clModel.cl-sheet,html:root:root body #clModel{box-shadow:none!important;border:0!important}
+/* preview panel: thoughts + code */
+.v3p-th{white-space:pre-wrap;font-size:13px;line-height:1.55;opacity:.85;padding:10px 12px;border-radius:14px;background:rgba(127,127,127,.12);max-height:200px;overflow:auto;margin-bottom:6px}
+.v3p-cf{margin:6px 0;border-radius:14px;background:rgba(127,127,127,.12);overflow:hidden}
+.v3p-cf summary{cursor:pointer;padding:10px 12px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:8px;list-style:none}
+.v3p-cf summary::-webkit-details-marker{display:none}
+.v3p-cf summary em{font-style:normal;opacity:.55;font-weight:400}
+.v3p-code{margin:0;padding:10px 12px;max-height:340px;overflow:auto;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre;tab-size:2;border-top:1px solid rgba(127,127,127,.2)}
