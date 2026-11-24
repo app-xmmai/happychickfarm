@@ -443,7 +443,7 @@ function wire(){
  var lp=0;list.addEventListener("pointerdown",function(e){var r=e.target.closest(".v3-ci");if(!r)return;clearTimeout(lp);lp=setTimeout(function(){r.__lp=1;chatMenu(r,r.dataset.id)},560)});
  ["pointerup","pointermove","pointercancel","pointerleave"].forEach(function(n){list.addEventListener(n,function(){clearTimeout(lp)})});
  $("#v3Title").onclick=function(){var c=$("#chatList .chat-i.on");var id=c&&c.dataset.id;if(id)chatMenu($("#v3Title"),id)};
- try{[srA,srB].forEach(function(sr){var s=el("style");s.textContent=PCSS;sr.appendChild(s);var l=el("link");l.rel="stylesheet";l.href="anim.css?v=5";sr.appendChild(l)})}catch(e){}try{initResize()}catch(e){}$("#v3Prev").onclick=function(){newChat()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
+ try{[srA,srB].forEach(function(sr){var s=el("style");s.textContent=PCSS;sr.appendChild(s);var l=el("link");l.rel="stylesheet";l.href="anim.css?v=6";sr.appendChild(l)})}catch(e){}try{initResize()}catch(e){}$("#v3Prev").onclick=function(){newChat()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
  float_.onclick=function(){newChat()};
  $("#v3Add").onclick=function(){try{CL().openAdd()}catch(e){var a=$("#attBtn");if(a)a.click()}};
  $("#v3Model").onclick=$("#v3Model2").onclick=function(){try{CL().openModel()}catch(e){var m=$("#modeBtn");if(m)m.click()}};
@@ -500,7 +500,7 @@ var PCSS=`.v3p-b{display:flex;flex-direction:column;padding:0!important;overflow
 .v3p-dot{margin-left:auto;width:8px;height:8px;border-radius:50%;background:#4cae6a;flex:none}.v3p-dot.busy{background:var(--ac);animation:v3p 1s ease-in-out infinite}
 .v3p-view{flex:1;min-height:0;overflow:auto;padding:14px 16px}
 .v3p-view:has(.v3p-fr){padding:0;overflow:hidden}
-.v3p-fr{display:block;width:100%;height:100%;border:0;background:#fff}
+.v3p-view:has(.v3p-fr){display:flex;flex-direction:column}.v3p-bar{flex:none;display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--ln);font-size:12px;color:var(--mu)}.v3p-bar button{padding:5px 10px;border-radius:999px;background:var(--b3,#2d2d30);color:var(--tx);font:500 12px var(--sans)}.v3p-bar span{margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v3p-fr{display:block;width:100%;flex:1;min-height:0;border:0;background:#fff;touch-action:manipulation}
 .v3p-none{color:var(--mu);font-size:13px;padding:6px 2px}
 .v3p-th{white-space:pre-wrap;font-size:13.5px;line-height:1.6;color:var(--tx2);padding:12px 14px;border-radius:14px;background:var(--b1);border:1px solid var(--ln)}
 .v3p-cf{margin:0 0 8px;border-radius:14px;background:var(--b1);border:1px solid var(--ln);overflow:hidden}
@@ -519,6 +519,9 @@ function pageDoc(code){
  function lk(p){p=String(p||"").split("?")[0].split("#")[0].replace(/^\.?\//,"");return code[p]!=null?p:(code[p.split("/").pop()]!=null?p.split("/").pop():null)}
  h=h.replace(/<link[^>]+href=["']([^"']+)["'][^>]*>/gi,function(m,u){var k=lk(u);return k&&/stylesheet|\.css/i.test(m+u)?"<style>"+code[k]+"</style>":m});
  h=h.replace(/<script([^>]*)src=["']([^"']+)["']([^>]*)>\s*<\/script>/gi,function(m,a,u,b){var k=lk(u);return k?"<script"+a+b+">"+code[k].replace(/<\/script/gi,"<\\/script")+"<\/script>":m});
+ var pre='<script>try{var _m=function(){var d={};return{getItem:function(k){return k in d?d[k]:null},setItem:function(k,v){d[k]=String(v)},removeItem:function(k){delete d[k]},clear:function(){d={}},key:function(i){return Object.keys(d)[i]||null},get length(){return Object.keys(d).length}}};["localStorage","sessionStorage"].forEach(function(n){try{void window[n]}catch(e){Object.defineProperty(window,n,{value:_m(),configurable:true})}})}catch(e){}addEventListener("keydown",function(e){if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].indexOf(e.key)>-1&&!/INPUT|TEXTAREA|SELECT/.test((e.target&&e.target.tagName)||""))e.preventDefault()},false);<\/script><style>canvas{touch-action:none}html,body{-webkit-tap-highlight-color:transparent}</style>';
+ if(!/<meta[^>]+viewport/i.test(h))pre='<meta name="viewport" content="width=device-width,initial-scale=1">'+pre;
+ if(/<head[^>]*>/i.test(h))h=h.replace(/<head[^>]*>/i,function(m){return m+pre});else h=pre+h;
  return {name:pg,html:h};
 }
 function paintPanel(force){
@@ -553,7 +556,7 @@ function paintPanel(force){
  if(ptab==="preview"){
   var fr=view.querySelector("iframe");
   if(!pd){view.innerHTML=card+'<div class="v3p-none">No web page yet. When the AI makes an HTML file it shows here, running.</div>';return}
-  if(!fr){view.innerHTML='<iframe class="v3p-fr" sandbox="allow-scripts allow-forms allow-modals allow-popups" title="Preview"></iframe>';fr=view.querySelector("iframe");docSig=""}
+  if(!fr){view.innerHTML='<div class="v3p-bar"><button type="button" data-pr="reload">↻ Restart</button><button type="button" data-pr="full">⛶ Fullscreen</button><span>Click the page, then play with keys or taps</span></div><iframe class="v3p-fr" tabindex="0" allow="autoplay; fullscreen; gamepad; accelerometer; gyroscope; clipboard-write" allowfullscreen sandbox="allow-scripts allow-forms allow-modals allow-popups allow-pointer-lock allow-downloads" title="Preview"></iframe>';fr=view.querySelector("iframe");docSig="";fr.addEventListener("load",function(){try{fr.focus();fr.contentWindow.focus()}catch(e){}});fr.addEventListener("pointerenter",function(){try{fr.focus()}catch(e){}})}
   if(docSig!==pd.html.length+":"+pd.html.slice(-200)){docSig=pd.html.length+":"+pd.html.slice(-200);fr.srcdoc=pd.html}
   return;
  }
@@ -580,6 +583,7 @@ function panelClicks(e){
  var b=e.target.closest&&e.target.closest("[data-mk]");
  if(b){var k=b.dataset.mk,pre=k==="doc"?"Write a document about ":k==="sld"?"Create a presentation about ":"Design a modern landing page for ";
   if(ta){ta.value=pre;ta.dispatchEvent(new Event("input",{bubbles:true}));if(isMobile())togglePanel(false);ta.focus();ta.setSelectionRange(pre.length,pre.length)}return}
+ var pr=e.target.closest&&e.target.closest("[data-pr]");if(pr){var f2=srB.querySelector(".v3p-fr");if(f2){if(pr.dataset.pr==="reload"){var d0=f2.srcdoc;f2.srcdoc="";setTimeout(function(){f2.srcdoc=d0;try{f2.focus()}catch(x){}},30)}else{try{(f2.requestFullscreen||f2.webkitRequestFullscreen).call(f2)}catch(x){}}}return}
  var pt=e.target.closest&&e.target.closest("[data-pt]");if(pt){ptab=pt.dataset.pt;userTab=true;paintPanel(true);return}
  var gf=e.target.closest&&e.target.closest("[data-gf]");if(gf){openFile=gf.dataset.gf;ptab="code";userTab=true;paintPanel(true);return}
  var o=e.target.closest&&e.target.closest("[data-open]");

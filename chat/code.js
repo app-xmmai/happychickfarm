@@ -57,6 +57,7 @@ BROKEN-FILE GUARD (check silently before you finish)
 - JS runs after the DOM exists (script at the end of body or DOMContentLoaded). Wrap risky calls (JSON.parse, storage, fetch) in try/catch.
 - Never output partial files, diffs or "..." gaps: every file you touch is written out whole. Prefer a smaller feature set that works over a bigger one that breaks.
 - Mobile first: viewport meta, no fixed pixel widths, nothing off-screen, buttons reachable with a thumb.
+- INTERACTIVE THINGS MUST BE PLAYABLE IN THE PREVIEW: games need a real requestAnimationFrame loop, start/pause/game-over/restart, score, difficulty ramp, keyboard (arrows, WASD, space) AND touch/tap/swipe/on-screen controls, canvas sized to the window and redrawn on resize, crisp visuals (gradients, particles, easing), optional WebAudio sound after first tap. Apps: every button/input works with real state, validation, empty and error states, smooth transitions. The preview runs in a sandboxed iframe: wrap localStorage/sessionStorage in try/catch, never use alert/prompt/confirm, never navigate away.
 FORMAT: <file path="index.html">...</file> only. No markdown fences.`;
 const SYS_MIN='XMM Code (advanced). Output <file path="name">contents</file> only. Ultra short. Multi-step internal reasoning. No fences. /no_think';
 const TOK=s=>window.XMM_TOK?XMM_TOK(s):Math.ceil(String(s).length/3);
