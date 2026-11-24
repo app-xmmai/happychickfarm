@@ -303,10 +303,10 @@ function build(){
  '<button data-n="plugins" type="button">'+I.plug+'<span>Plugins</span></button></nav>'+
  '<div class="v3-lh"><button class="l" id="v3Lbl" type="button"><span>Chats and tasks</span>'+I.chev+'</button><button class="v3-ib sm" id="v3Flt" type="button" aria-label="Show more or fewer chats">'+I.flt+'</button></div>'+
  '<div class="v3-list" id="v3List"></div>'+
- '<div class="v3-user"><button class="u" id="v3Usr" type="button"><span class="v3-av" id="v3Av">X</span><span class="un"><b id="v3Un">XMM</b> · Free</span>'+I.chev+'</button><button class="v3-ib" id="v3Dev" type="button" aria-label="Get the app">'+I.dev+'</button></div></aside>'+
+ '<div class="v3-user"><button class="u" id="v3Usr" type="button"><span class="v3-av" id="v3Av">X</span><span class="un"><b id="v3Un">XMM</b></span>'+I.chev+'</button><button class="v3-ib" id="v3Dev" type="button" aria-label="Get the app">'+I.dev+'</button></div></aside>'+
  '<div id="v3Scrim"></div>'+
  '<div id="v3Ctr"><header id="v3Top"><button class="v3-ib" id="v3Menu" type="button" aria-label="Open sidebar">'+I.panel+'</button>'+
- '<button id="v3Title" type="button"><span id="v3TitleT">New chat</span>'+I.chev+'</button><div class="v3-free">Free plan</div><span class="v3-sp"></span>'+
+ '<button id="v3Title" type="button"><span id="v3TitleT">New chat</span>'+I.chev+'</button><span class="v3-sp"></span>'+
  '<button class="v3-pv" id="v3Prev" type="button">'+I.eye+'<span>Preview</span><i></i></button>'+
  '<button class="v3-ib" id="v3PanelBtn" type="button" aria-label="Toggle panel">'+I.panelR+'</button></header>'+
  '<div id="v3Main"><slot></slot></div>'+
@@ -506,7 +506,7 @@ function themePref(){return ld("xmm.cl.theme","dark")}
 function applyTheme(p){sv("xmm.cl.theme",p);var d=p!=="light";if(p==="system"){try{d=matchMedia("(prefers-color-scheme:dark)").matches}catch(e){}}H.setAttribute("data-cl-theme",d?"dark":"light");H.dataset.clTheme=d?"dark":"light"}
 function row(l,c,s){return'<div class="row"><div>'+l+(s?'<small>'+s+'</small>':'')+'</div><div>'+c+'</div></div>'}
 function tog(k,on){return'<button class="sw'+(on?" on":"")+'" type="button" data-sw="'+k+'" aria-label="Toggle"></button>'}
-var NAV=[["acc","Account",I.usr],["bill","Billing",I.card],0,["app","Appearance",I.pal],["mem","Your XMM",I.sparkle],["cap","Capabilities",I.cap],["notif","Notifications",I.bell],["priv","Privacy",I.lock],0,["plugins","Plugins",I.plug],["code","Code",I.code]];
+var NAV=[["acc","Account",I.usr],["app","Appearance",I.pal],["mem","Your XMM",I.sparkle],["cap","Capabilities",I.cap],["notif","Notifications",I.bell],["priv","Privacy",I.lock],0,["plugins","Plugins",I.plug],["code","Code",I.code]];
 function page(k){
  var n=uname();
  if(k==="acc"){var a=avatarCss(),si=ld("xmm.v3.signin",0);if(!si){si=Date.now();sv("xmm.v3.signin",si)}
