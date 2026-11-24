@@ -20,7 +20,7 @@ html.pwa,html.pwa body{background:#000!important}
 html.pwa body .shell #mainChat,html.pwa body #shell-chat #mainChat,html.pwa body .shell #zhero,html.pwa body .shell #viewChat{height:100%!important;min-height:0!important;max-height:100%!important}
 html.pwa body .shell,html.pwa body #shell-chat.shell,html.pwa body #shell-chat{top:var(--xtop)!important;bottom:var(--kb,0px)!important;height:auto!important;min-height:0!important;max-height:none!important}
 html.pwa body #clDrawer{height:100%!important;max-height:100%!important;top:0!important;bottom:0!important}
-@media (display-mode:standalone),(display-mode:fullscreen),(display-mode:minimal-ui){
+@media (display-mode:standalone) and (pointer:coarse),(display-mode:fullscreen) and (pointer:coarse),(display-mode:minimal-ui) and (pointer:coarse){
  :root{--xt:0px!important;--xgap:0px!important;--xtop:max(28px,calc(env(safe-area-inset-top,0px) + 10px - clamp(0px,calc((30px - env(safe-area-inset-top,0px)) * 100),2px)))}
  html,body{background:#000!important}
  html body .shell #mainChat,html body #shell-chat #mainChat,html body .shell #zhero,html body .shell #viewChat{height:100%!important;min-height:0!important;max-height:100%!important}

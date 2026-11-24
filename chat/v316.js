@@ -110,7 +110,7 @@ input,textarea,select{font-family:var(--sans)}
 .v3-foot button:hover{color:var(--tx)}
 
 /* preview panel (fixed so it also works above Build) */
-#v3Panel{position:fixed;top:0;right:0;bottom:0;width:var(--pw,535px);max-width:100vw;z-index:100;background:var(--b0);color:var(--tx);border-left:1px solid var(--ln);display:none;flex-direction:column;font:400 14px/1.45 var(--sans);--pw:535px}
+#v3Panel{position:fixed;top:var(--xtop,0px);right:0;bottom:auto;height:calc(var(--app-h,100dvh) - var(--xtop,0px));width:var(--pw,535px);max-width:100vw;z-index:100;background:var(--b0);color:var(--tx);border-left:1px solid var(--ln);display:none;flex-direction:column;font:400 14px/1.45 var(--sans);--pw:535px}
 #v3Panel.on{display:flex}
 .v3p-h{flex:none;height:45px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 18px;border-bottom:1px solid var(--ln)}
 .v3p-h b{font:500 15px var(--sans);display:flex;align-items:center;gap:8px}
@@ -145,7 +145,7 @@ input,textarea,select{font-family:var(--sans)}
 .v3p-files span{background:var(--b2);border-radius:7px;padding:3px 9px;font:400 12.5px ui-monospace,Menlo,Consolas,monospace;color:var(--tx2)}
 .v3p-btn{margin-top:14px;height:34px;padding:0 14px;border:0;border-radius:8px;background:var(--b3);color:var(--tx);font:500 13.5px var(--sans)}
 .v3p-btn:hover{filter:brightness(1.15)}
-#v3Float{position:fixed;top:9px;right:64px;z-index:101;display:none;align-items:center;gap:7px;height:32px;padding:0 11px;border:1px solid var(--ln);border-radius:8px;background:var(--b2);color:var(--tx);font:500 13.5px var(--sans)}
+#v3Float{position:fixed;top:calc(var(--xtop,0px) + 9px);right:64px;z-index:101;display:none;align-items:center;gap:7px;height:32px;padding:0 11px;border:1px solid var(--ln);border-radius:8px;background:var(--b2);color:var(--tx);font:500 13.5px var(--sans)}
 #v3Float.on{display:inline-flex}
 
 /* chat search */
@@ -205,9 +205,9 @@ input,textarea,select{font-family:var(--sans)}
 #v3Set a{color:var(--bl)}
 @media (max-width:899px){
  #v3{--sw:min(310px,86vw)}
- #v3Side{position:fixed;left:0;top:0;bottom:0;width:var(--sw);z-index:200;margin-left:0!important;transform:translateX(-102%);transition:transform .24s ease;box-shadow:0 0 40px rgba(0,0,0,.5)}
+ #v3Side{position:fixed;left:0;top:var(--xtop,0px);bottom:auto;height:calc(var(--app-h,100dvh) - var(--xtop,0px));width:var(--sw);padding-bottom:env(safe-area-inset-bottom,0px);z-index:200;margin-left:0!important;transform:translateX(-102%);transition:transform .24s ease;box-shadow:0 0 40px rgba(0,0,0,.5)}
  #v3.open #v3Side{transform:none}
- #v3Scrim{position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5);display:none}
+ #v3Scrim{position:fixed;left:0;right:0;top:var(--xtop,0px);bottom:auto;height:calc(var(--app-h,100dvh) - var(--xtop,0px));z-index:190;background:rgba(0,0,0,.5);display:none}
  #v3.open #v3Scrim{display:block}
  #v3Menu{display:inline-grid!important}
  #v3.pn{padding-right:0}
@@ -219,7 +219,7 @@ input,textarea,select{font-family:var(--sans)}
  .v3-comp{border-radius:18px}
  .v3-model{max-width:120px}
  .v3-foot{font-size:11px}
- #v3Set .m{width:100%;height:100dvh;border-radius:0;border:0}
+ #v3Set .m{width:100%;height:calc(var(--app-h,100dvh) - var(--xtop,0px));margin-top:var(--xtop,0px);border-radius:0;border:0}
  #v3Set .c{flex-direction:column}
  #v3Set nav{width:100%;flex-direction:row;overflow-x:auto;padding:8px 10px;gap:4px;border-bottom:1px solid var(--ln2)}
  #v3Set nav .sr,#v3Set nav hr{display:none}
@@ -234,6 +234,11 @@ input,textarea,select{font-family:var(--sans)}
 @media (min-width:900px){#v3Scrim{display:none}}
 
 .v3-comp ::slotted(*){max-width:100%}
+@media (max-width:1024px),(pointer:coarse){
+ #v3[data-empty="1"] #v3Dock{top:auto!important;bottom:0!important}
+ #v3Dock{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))!important}
+ #v3Panel{padding-bottom:env(safe-area-inset-bottom,0px)}
+}
 `;
 function $(s,r){if(r)return r.querySelector(s);return(srA&&srA.querySelector(s))||(srB&&srB.querySelector(s))||D.querySelector(s)}
 function $$(s,r){var L=function(x){return Array.prototype.slice.call(x.querySelectorAll(s))};if(r)return L(r);var a=srA?L(srA):[];if(a.length)return a;var b=srB?L(srB):[];if(b.length)return b;return L(D)}
