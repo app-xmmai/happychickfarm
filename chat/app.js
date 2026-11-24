@@ -771,7 +771,7 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
   const o=document.createElement("div");o.id="modeSheet";
   const _it=k=>{const lk=window.XMM_SUN&&XMM_SUN.locked(k);return`<button type="button" class="ms-i${S.mode===k?" on":""}${lk?" lock":""}" data-k="${k}"><b>${esc(MODELS[k].name)}</b><small>${esc(lk?"Locked · limited event":MODELS[k].desc)}</small><i>${lk?"\uD83D\uDD12":(S.mode===k?"\u2713":"")}</i></button>`};
   const _L=window.XMM_SUN?XMM_SUN.list():Object.keys(MODELS),_G=window.XMM_SUN?XMM_SUN.galaxy():["x7g","g7l"],_open=_G.indexOf(S.mode)>=0;
-  o.innerHTML='<div class="ms-bg"></div><div class="ms-card" role="menu">'+_L.filter(k=>_G.indexOf(k)<0).map(_it).join("")+'<button type="button" class="ms-gt" aria-expanded="'+_open+'">'+(_open?"\u25BC":"\u25B6")+' Galaxy models</button><div class="ms-gal"'+(_open?"":" hidden")+'>'+_G.map(_it).join("")+'</div></div>';
+  o.innerHTML='<div class="ms-bg"></div><div class="ms-card" role="menu">'+_L.filter(k=>_G.indexOf(k)<0).map(_it).join("")+'<span role="button" tabindex="0" class="ms-gt">'+(_open?"\u25BC":"\u25B6")+' Galaxy models</span><div class="ms-gal"'+(_open?"":" hidden")+'>'+_G.map(_it).join("")+'</div></div>';
   o.querySelector(".ms-gt").onclick=e=>{e.stopPropagation();const g=o.querySelector(".ms-gal"),on=g.hidden;g.hidden=!on;e.currentTarget.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models"};
   o.addEventListener("click",ev=>{const b=ev.target.closest("[data-k]");if(b){const k=b.dataset.k;if(window.XMM_SUN&&XMM_SUN.locked(k)){closeModeSheet();modeLock=Date.now();XMM_SUN.hint();return}closeModeSheet();modeLock=Date.now();sunSetMode(k);if(k==="sun62")sunPopup();return}if(ev.target.closest(".ms-bg"))closeModeSheet()});
   document.body.appendChild(o)

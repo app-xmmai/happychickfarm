@@ -358,8 +358,8 @@ function openModel(){
  var s=sheet("clModel",{title:"Select model",grab:true});
  var mi=function(m){return'<button class="cl-mi'+(m.lock?" lock":"")+'" data-k="'+esc(m.k)+'" type="button"><div class="t"><b>'+esc(m.name)+'</b><small>'+esc(m.desc)+'</small></div>'+(m.on?IC.check:"")+'</button>'};
  var gopen=list.some(function(m){return m.gal&&m.on});
- s.body.innerHTML='<div class="cl-grp" style="padding:4px 0">'+list.filter(function(m){return!m.gal}).map(mi).join("")+'<button type="button" class="cl-gt" style="background:none;border:0;color:inherit;opacity:.7;font:inherit;padding:12px 16px;text-align:left;width:100%;cursor:pointer">'+(gopen?"\u25BC":"\u25B6")+' Galaxy models</button><div class="cl-gal"'+(gopen?"":" hidden")+'>'+list.filter(function(m){return m.gal}).map(mi).join("")+'</div></div>';
- s.body.querySelector(".cl-gt").onclick=function(e){e.stopPropagation();var g=s.body.querySelector(".cl-gal"),on=g.hidden;g.hidden=!on;this.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models"};
+ s.body.innerHTML='<div class="cl-grp" style="padding:4px 0">'+list.filter(function(m){return!m.gal}).map(mi).join("")+'<span role="button" tabindex="0" class="cl-gx">'+(gopen?"\u25BC":"\u25B6")+' Galaxy models</span><div class="cl-gal"'+(gopen?"":" hidden")+'>'+list.filter(function(m){return m.gal}).map(mi).join("")+'</div></div>';
+ s.body.querySelector(".cl-gx").onclick=function(e){e.stopPropagation();var g=s.body.querySelector(".cl-gal"),on=g.hidden;g.hidden=!on;this.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models"};
  s.body.addEventListener("click",function(e){var r=e.target.closest(".cl-mi");if(!r)return;pickModel(r.dataset.k);s.close()});
 }
 function syncModelLabel(){var sp=$("#modeBtn span"),v=$("#cvModel span");if(sp&&v&&v.textContent!==sp.textContent)v.textContent=sp.textContent}

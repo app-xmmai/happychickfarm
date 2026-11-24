@@ -34,3 +34,7 @@ html body #modeSheet .ms-i.lock{opacity:.55}
 .sp-later{width:100%;margin-top:8px;min-height:40px;border:0;background:transparent;color:inherit;opacity:.6;font:inherit;cursor:pointer}
 html body #modeSheet .ms-gt{display:block;width:100%;background:none;border:0;color:inherit;opacity:.7;font:inherit;font-size:14px;padding:12px 14px;text-align:left;cursor:pointer}
 html body #modeSheet .ms-gal[hidden]{display:none}
+
+html body #modeSheet .ms-gt,html body #clModel .cl-gx{display:block!important;width:auto!important;height:auto!important;min-height:0!important;margin:6px 0 2px 14px!important;padding:4px 2px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:inherit!important;opacity:.55;font-size:12px!important;font-weight:400!important;line-height:1.3;text-align:left;cursor:pointer;user-select:none;-webkit-user-select:none}
+html body #modeSheet .ms-gt:hover,html body #clModel .cl-gx:hover{opacity:.9}
+html body #clModel .cl-gal[hidden]{display:none!important}
