@@ -361,6 +361,39 @@ function build(){
  srB.addEventListener("click",panelClicks);wire();paintPanel(true);tick();
 }
 
+
+/* ------------------------------------------------------------------ resizable sidebar + preview (desktop / big tablets) */
+function initResize(){
+ var LS={sw:"xmm.v3.sw",pw:"xmm.v3.pw"};
+ var css='.v3-rz{position:absolute;top:0;bottom:0;width:9px;z-index:30;cursor:col-resize;touch-action:none;display:none;background:transparent}.v3-rz::after{content:"";position:absolute;top:0;bottom:0;left:4px;width:2px;background:var(--ac,#8ab4ff);opacity:0;transition:opacity .25s ease}.v3-rz:hover::after,.v3-rz.drag::after{opacity:.7}@media(min-width:900px){.v3-rz{display:block}#v3Side{position:relative}}#v3.rzing,#v3.rzing *{transition:none!important;user-select:none!important}';
+ [srA,srB].forEach(function(sr){var s=el("style");s.textContent=css;sr.appendChild(s)});
+ var sh=el("div");sh.className="v3-rz";sh.style.right="-4px";side.appendChild(sh);
+ var ph=el("div");ph.className="v3-rz";ph.style.left="-4px";panel.appendChild(ph);
+ function rd(k,d){try{var n=parseInt(localStorage.getItem(LS[k]),10);return n>0?n:d}catch(e){return d}}
+ function wr(k,n){try{localStorage.setItem(LS[k],String(Math.round(n)))}catch(e){}}
+ function apply(){
+  if(isMobile()){root.style.removeProperty("--sw");root.style.removeProperty("--pw");panel.style.removeProperty("--pw");panel.style.removeProperty("width");return}
+  var sw=Math.min(Math.max(rd("sw",288),220),Math.round(innerWidth*.45));
+  var pw=Math.min(Math.max(rd("pw",535),320),Math.round(innerWidth*.7));
+  root.style.setProperty("--sw",sw+"px");root.style.setProperty("--pw",pw+"px");panel.style.setProperty("--pw",pw+"px");
+ }
+ function drag(h,kind){
+  h.addEventListener("pointerdown",function(e){
+   if(isMobile())return;e.preventDefault();
+   try{h.setPointerCapture(e.pointerId)}catch(_){}
+   h.classList.add("drag");root.classList.add("rzing");
+   var move=function(ev){
+    if(kind==="sw"){var n=Math.min(Math.max(ev.clientX,220),Math.round(innerWidth*.45));root.style.setProperty("--sw",n+"px");h.__n=n}
+    else{var m=Math.min(Math.max(innerWidth-ev.clientX,320),Math.round(innerWidth*.7));root.style.setProperty("--pw",m+"px");panel.style.setProperty("--pw",m+"px");h.__n=m}
+   };
+   var up=function(){h.classList.remove("drag");root.classList.remove("rzing");h.removeEventListener("pointermove",move);h.removeEventListener("pointerup",up);h.removeEventListener("pointercancel",up);if(h.__n)wr(kind,h.__n)};
+   h.addEventListener("pointermove",move);h.addEventListener("pointerup",up);h.addEventListener("pointercancel",up);
+  });
+  h.addEventListener("dblclick",function(){try{localStorage.removeItem(LS[kind])}catch(e){}apply()});
+ }
+ drag(sh,"sw");drag(ph,"pw");apply();
+ window.addEventListener("resize",apply);
+}
 /* ------------------------------------------------------------------ actions */
 function isMobile(){return innerWidth<900}
 function openSide(){if(isMobile())root.classList.add("open");else root.classList.remove("col")}
@@ -410,7 +443,7 @@ function wire(){
  var lp=0;list.addEventListener("pointerdown",function(e){var r=e.target.closest(".v3-ci");if(!r)return;clearTimeout(lp);lp=setTimeout(function(){r.__lp=1;chatMenu(r,r.dataset.id)},560)});
  ["pointerup","pointermove","pointercancel","pointerleave"].forEach(function(n){list.addEventListener(n,function(){clearTimeout(lp)})});
  $("#v3Title").onclick=function(){var c=$("#chatList .chat-i.on");var id=c&&c.dataset.id;if(id)chatMenu($("#v3Title"),id)};
- $("#v3Prev").onclick=function(){newChat()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
+ try{initResize()}catch(e){}$("#v3Prev").onclick=function(){newChat()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
  float_.onclick=function(){newChat()};
  $("#v3Add").onclick=function(){try{CL().openAdd()}catch(e){var a=$("#attBtn");if(a)a.click()}};
  $("#v3Model").onclick=$("#v3Model2").onclick=function(){try{CL().openModel()}catch(e){var m=$("#modeBtn");if(m)m.click()}};
