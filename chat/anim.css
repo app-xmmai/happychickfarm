@@ -1,0 +1,24 @@
+/* XMM smooth motion: spring press, hover lift, soft entrances (uses individual transform props so nothing existing breaks) */
+:root{--spring:cubic-bezier(.34,1.56,.64,1);--out:cubic-bezier(.22,1,.36,1)}
+button,[role=button],.icon-btn,.circle,.chat-i,.chip,summary,label.sin,select,a.btn{
+ transition:scale .22s var(--spring),translate .22s var(--out),filter .18s ease,opacity .2s ease,background-color .22s ease,border-color .22s ease,color .2s ease,box-shadow .25s ease!important;
+ -webkit-tap-highlight-color:transparent;will-change:scale}
+@media(hover:hover){
+ button:not(:disabled):hover,[role=button]:hover,.icon-btn:hover,.circle:hover,.chat-i:hover{scale:1.045;filter:brightness(1.08)}
+ .chat-i:hover{scale:1.012;translate:2px 0}
+}
+button:not(:disabled):active,[role=button]:active,.icon-btn:active,.circle:active,.chat-i:active,.chip:active{
+ scale:.93!important;translate:0 0!important;filter:brightness(.94);transition-duration:.09s,.09s,.09s!important}
+button:disabled{opacity:.5}
+button svg,.icon-btn svg,.circle svg{transition:rotate .3s var(--spring),scale .25s var(--spring)}
+@media(hover:hover){button:hover svg{scale:1.08}}
+button[data-act=newchat]:hover svg,#v3Prev:hover svg,#v3Float:hover svg{rotate:90deg}
+/* entrances */
+@keyframes xIn{from{opacity:0;translate:0 10px;scale:.985}to{opacity:1;translate:0 0;scale:1}}
+@keyframes xPop{from{opacity:0;scale:.92;translate:0 -6px}to{opacity:1;scale:1;translate:0 0}}
+#msgs>*,.m-uw,.m-bot{animation:xIn .38s var(--out) both}
+[role=menu],[role=dialog],.menu,.popup,.pop,.v3-menu,#settings:not([hidden]),.v3-srch,#v3Srch{animation:xPop .26s var(--spring) both}
+#v3Panel,#v3Side,#sideChat{transition:transform .38s var(--out),translate .38s var(--out),opacity .3s ease,width .38s var(--out)!important}
+textarea,input{transition:box-shadow .25s ease,border-color .25s ease,background-color .25s ease}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
