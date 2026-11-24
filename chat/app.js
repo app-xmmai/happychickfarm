@@ -42,7 +42,7 @@ function toast(t){const e=$("#toast");e.textContent=t;e.hidden=false;clearTimeou
 
 /* ---------- popup menu ---------- */
 const closeMenu=()=>{$$(".menu.pop").forEach(x=>x.remove())};
-function showMenu(btn,items,align="left"){closeMenu();const m=document.createElement("div");m.className="menu pop glass";$$(".menu.pop").forEach(function(x){if(x!==m)x.remove()});
+let menuT=0;function showMenu(btn,items,align="left"){closeMenu();menuT=Date.now();const m=document.createElement("div");m.className="menu pop glass";$$(".menu.pop").forEach(function(x){if(x!==m)x.remove()});
  m.innerHTML=items.map((it,i)=>`<button type="button" data-i="${i}" class="${it.danger?"danger":""}">${it.label}</button>`).join("");document.body.appendChild(m);
  m.style.visibility="hidden";m.style.position="fixed";m.style.zIndex="120";
  const r=btn.getBoundingClientRect(),w=m.offsetWidth||220,h=m.offsetHeight||120;
@@ -52,7 +52,7 @@ function showMenu(btn,items,align="left"){closeMenu();const m=document.createEle
  m.style.left=x+"px";m.style.top=y+"px";m.style.visibility="visible";
  m.onclick=e=>{const b=e.target.closest("[data-i]");if(b){closeMenu();items[b.dataset.i].fn()}};
  /* don't let the menu sit under transparent layers */
- setTimeout(()=>{document.addEventListener("pointerdown",function once(ev){if(!m.contains(ev.target)&&ev.target!==btn){closeMenu();document.removeEventListener("pointerdown",once,true)}},true)},0)}
+ setTimeout(()=>{document.addEventListener("pointerdown",function once(ev){if(Date.now()-menuT>450&&!m.contains(ev.target)&&!(btn.contains&&btn.contains(ev.target))){closeMenu();document.removeEventListener("pointerdown",once,true)}},true)},0)}
 
 /* ---------- state ---------- */
 const S={chats:ld("xmm.chats",[]),cur:null,notes:ld("xmm.notes",[]),att:[],busy:false,view:"chat"};
@@ -736,7 +736,7 @@ function clearAll(){if(confirm("Delete all chats?")){S.chats=[];S.cur=null;saveC
 function init(){
  buildNav("#chatNav",NAV,navClick);buildBn("#chatBnav",BN,navClick);
  icons();renderChips();renderList();renderMsgs();updateSend();chatView("chat");
- document.addEventListener("click",e=>{const t=e.target;if(!t.closest(".pop"))closeMenu();
+ document.addEventListener("click",e=>{const t=e.target;if(!t.closest(".pop")&&Date.now()-menuT>450)closeMenu();
   let b;
   if(b=t.closest("[data-act]")){const a=b.dataset.act;
    if(a==="newchat")newChat();else if(a==="openDrawer")openDrawer();else if(a==="closeDrawer")closeDrawer();else if(a==="settings")openSettings();else if(a==="closeSettings")$("#settings").hidden=true;
