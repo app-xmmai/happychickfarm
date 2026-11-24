@@ -341,7 +341,7 @@ function scrapeModels(){
  var fake={stopPropagation:function(){},preventDefault:function(){}};
  var old=document.getElementById("modeSheet");if(old)old.remove();
  try{b.onclick(fake)}catch(e){}
- var out=$$("#modeSheet .ms-i").map(function(i){var bb=i.querySelector("b"),sm=i.querySelector("small");return{k:i.dataset.k,name:bb?bb.textContent:i.dataset.k,desc:sm?sm.textContent:"",on:i.classList.contains("on"),lock:i.classList.contains("lock")}});
+ var out=$$("#modeSheet .ms-i").map(function(i){var bb=i.querySelector("b"),sm=i.querySelector("small");return{k:i.dataset.k,name:bb?bb.textContent:i.dataset.k,desc:sm?sm.textContent:"",on:i.classList.contains("on"),lock:i.classList.contains("lock"),gal:!!i.closest(".ms-gal")}});
  var ms=document.getElementById("modeSheet");if(ms)ms.remove();
  return out;
 }
@@ -356,7 +356,10 @@ function pickModel(k){
 function openModel(){
  var list=scrapeModels();
  var s=sheet("clModel",{title:"Select model",grab:true});
- s.body.innerHTML='<div class="cl-grp" style="padding:4px 0">'+list.map(function(m){return'<button class="cl-mi'+(m.lock?" lock":"")+'" data-k="'+esc(m.k)+'" type="button"><div class="t"><b>'+esc(m.name)+'</b><small>'+esc(m.desc)+'</small></div>'+(m.on?IC.check:"")+'</button>'}).join("")+'</div>';
+ var mi=function(m){return'<button class="cl-mi'+(m.lock?" lock":"")+'" data-k="'+esc(m.k)+'" type="button"><div class="t"><b>'+esc(m.name)+'</b><small>'+esc(m.desc)+'</small></div>'+(m.on?IC.check:"")+'</button>'};
+ var gopen=list.some(function(m){return m.gal&&m.on});
+ s.body.innerHTML='<div class="cl-grp" style="padding:4px 0">'+list.filter(function(m){return!m.gal}).map(mi).join("")+'<button type="button" class="cl-gt" style="background:none;border:0;color:inherit;opacity:.7;font:inherit;padding:12px 16px;text-align:left;width:100%;cursor:pointer">'+(gopen?"\u25BC":"\u25B6")+' Galaxy models</button><div class="cl-gal"'+(gopen?"":" hidden")+'>'+list.filter(function(m){return m.gal}).map(mi).join("")+'</div></div>';
+ s.body.querySelector(".cl-gt").onclick=function(e){e.stopPropagation();var g=s.body.querySelector(".cl-gal"),on=g.hidden;g.hidden=!on;this.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models"};
  s.body.addEventListener("click",function(e){var r=e.target.closest(".cl-mi");if(!r)return;pickModel(r.dataset.k);s.close()});
 }
 function syncModelLabel(){var sp=$("#modeBtn span"),v=$("#cvModel span");if(sp&&v&&v.textContent!==sp.textContent)v.textContent=sp.textContent}

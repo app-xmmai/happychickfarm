@@ -7,9 +7,10 @@ function eventOn(){return true}
 function galOk(){return true}
 function unlockedAt(){try{return +JSON.parse(localStorage.getItem(KEY))||0}catch(e){return 0}}
 function fullOk(){return true}
-function list(){var l=[];if(galOk())l.push("x7g");if(fullOk())l.push("sun62");l.push("sun62l");return l.concat(["x25"])}
-function locked(k){return (k==="sun62"&&!fullOk())||(k==="x7g"&&!galOk())}
-function allowed(k){if(k==="x20"||k==="x12")return false;if(k==="sun62")return fullOk();if(k==="x7g")return galOk();if(k==="sun62l")return true;return true}
+function galaxy(){return["x7g","g7l"]}
+function list(){return["x25","x70","x71","sun70","sun70l","sun62","sun62l"].concat(galaxy())}
+function locked(k){return false}
+function allowed(k){if(k==="x20"||k==="x12")return false;return true}
 function hint(){A().toast("Locked.")}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
@@ -42,9 +43,9 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 /* ---- unlock pop up + confetti ---- */
 function closeAnim(el,fn){el.classList.add("out");setTimeout(function(){el.remove();fn&&fn()},320)}
 function unlockPop(){var o=document.createElement("div");o.className="sunpop";
- o.innerHTML='<div class="sp-card"><div class="sp-sun"></div><h3>Congrats!</h3><p>You have unlocked the new <b>XMMGPT Sun 6.2</b> model!</p><button type="button" class="sp-go">Try it now</button></div>';
+ o.innerHTML='<div class="sp-card"><div class="sp-sun"></div><h3>Congrats!</h3><p>You have unlocked the new <b>XMMGPT 7.0 Sun</b> model!</p><button type="button" class="sp-go">Try it now</button></div>';
  document.body.appendChild(o);requestAnimationFrame(function(){requestAnimationFrame(function(){o.classList.add("in")})});confetti();
- o.querySelector(".sp-go").onclick=function(){A().sunSetMode("sun62");closeAnim(o)};
+ o.querySelector(".sp-go").onclick=function(){A().sunSetMode("sun70");closeAnim(o)};
  o.addEventListener("click",function(e){if(e.target===o)closeAnim(o)})}
 function confetti(){var cv=document.createElement("canvas");cv.className="sun-confetti";document.body.appendChild(cv);
  var x=cv.getContext("2d"),W=cv.width=innerWidth,H=cv.height=innerHeight,dpr=Math.min(devicePixelRatio||1,2);cv.width=W*dpr;cv.height=H*dpr;x.scale(dpr,dpr);
@@ -74,5 +75,5 @@ function showWN(){return;if((fullOk()&&galOk())||document.querySelector(".sunwn"
  o.querySelector(".sp-go").onclick=function(){closeAnim(o)};
  o.addEventListener("click",function(e){if(e.target===o)closeAnim(o)})}
 setTimeout(showWN,250);
-window.XMM_SUN={galOk:galOk,unlockGalaxy:unlockGalaxy,list:list,locked:locked,allowed:allowed,hint:hint,card:card,intercept:intercept,play:play,eventOn:eventOn,fullOk:fullOk,closeAnim:closeAnim};
+window.XMM_SUN={galaxy:galaxy,galOk:galOk,unlockGalaxy:unlockGalaxy,list:list,locked:locked,allowed:allowed,hint:hint,card:card,intercept:intercept,play:play,eventOn:eventOn,fullOk:fullOk,closeAnim:closeAnim};
 })();

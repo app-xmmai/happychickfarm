@@ -32,3 +32,5 @@ html body #modeSheet .ms-i.lock{opacity:.55}
 @media(prefers-reduced-motion:reduce){.sun-confetti{display:none}html body #modeSheet,html body #modeSheet *{animation-duration:.01s!important}}
 .sp-fl{list-style:none;margin:0 0 16px;padding:0;text-align:left;display:grid;gap:10px}.sp-fl li{display:grid;gap:2px}.sp-fl span{font-size:14px;opacity:.7;line-height:1.4}
 .sp-later{width:100%;margin-top:8px;min-height:40px;border:0;background:transparent;color:inherit;opacity:.6;font:inherit;cursor:pointer}
+html body #modeSheet .ms-gt{display:block;width:100%;background:none;border:0;color:inherit;opacity:.7;font:inherit;font-size:14px;padding:12px 14px;text-align:left;cursor:pointer}
+html body #modeSheet .ms-gal[hidden]{display:none}
