@@ -1,0 +1,31 @@
+/* final2.css: no tap/wave animations, no share button, Claude-style settings */
+html:root body *,html:root body *::before,html:root body *::after{-webkit-tap-highlight-color:transparent!important}
+html:root body :is(button,.btn,.icon-btn,.circle,.send,.mode,.chip,.lq-row,.lq-x,.cl-nr,.cl-ci,.stabs button,#gmChips button,[role=button],a):is(:active,:hover,:focus){transform:none!important;scale:none!important}
+html:root body :is(button,.btn,.icon-btn,.circle,.send,.mode,.chip,.lq-row,.lq-x,.stabs button){will-change:auto!important}
+#gmSiri,#vowipe,#vowipe *{visibility:hidden!important}
+html:root body :is(.cl-share,.tb-share,[data-act="share"]){display:none!important}
+/* ---- settings (desktop modal, Claude style) ---- */
+#clDesk{position:fixed;inset:0;z-index:200002;background:rgba(0,0,0,.55);display:grid;place-items:center;font-family:var(--cl-sans)}
+#clDesk .dk-m{width:min(1024px,calc(100% - 48px));height:min(740px,calc(100dvh - 48px));background:var(--cl-sheet);color:var(--cl-txt);border:1px solid var(--cl-line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#clDesk .dk-h{flex:none;display:flex;align-items:center;justify-content:space-between;padding:16px 16px 16px 20px;border-bottom:1px solid var(--cl-line)}
+#clDesk .dk-h h3{margin:0;font:500 16px var(--cl-sans)}
+#clDesk .dk-x{width:32px;height:32px;border:0;border-radius:8px;background:none;color:var(--cl-txt);display:grid;place-items:center;cursor:pointer;padding:0}
+#clDesk .dk-x:hover{background:var(--cl-card)}
+#clDesk .dk-x svg{width:18px;height:18px}
+#clDesk .dk-c{flex:1;min-height:0;display:flex}
+#clDesk .dk-n{flex:none;width:220px;padding:16px;display:flex;flex-direction:column;gap:2px;border-right:1px solid var(--cl-line);overflow:auto}
+#clDesk .dk-n button{height:36px;padding:0 12px;border:0;border-radius:8px;background:none;color:var(--cl-mut);font:400 14px var(--cl-sans);text-align:left;cursor:pointer}
+#clDesk .dk-n button:hover{background:var(--cl-card)}
+#clDesk .dk-n button.on{background:var(--cl-card2);color:var(--cl-txt)}
+#clDesk .dk-p{flex:1;min-width:0;overflow:auto;padding:24px 28px}
+#clDesk .dk-p h4{margin:0 0 14px;font:500 15px var(--cl-sans)}
+#clDesk .dk-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--cl-line);font-size:14px}
+#clDesk .dk-row:first-of-type{border-top:0}
+#clDesk .dk-in{width:220px;max-width:100%;height:34px;padding:0 12px;border:0;border-radius:8px;background:var(--cl-card2);color:var(--cl-txt);font:400 14px var(--cl-sans);outline:0}
+#clDesk .dk-av{width:40px;height:40px;border-radius:50%;background:#d6457f;color:#fff;display:grid;place-items:center;font:600 15px var(--cl-sans)}
+#clDesk .dk-btns{display:flex;gap:10px;margin-top:32px}
+#clDesk .dk-b{height:34px;padding:0 14px;border:0;border-radius:8px;background:var(--cl-card2);color:var(--cl-txt);font:400 14px var(--cl-sans);cursor:pointer}
+#clDesk .dk-b.dg{background:none;color:var(--cl-danger,#ef6a5e);box-shadow:inset 0 0 0 1px rgba(239,106,94,.4)}
+#clDesk .cl-grp,#clDesk .cl-themes,#clDesk .cl-in,#clDesk .cl-prof{margin-left:0;margin-right:0}
+#clDesk .cl-lbl{display:none}
+#clDesk .cl-note{margin-left:0;margin-right:0}
