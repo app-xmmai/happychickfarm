@@ -1,14 +1,13 @@
 /* XMM smooth motion: spring press, hover lift, soft entrances (uses individual transform props so nothing existing breaks) */
 :root,:host{--spring:cubic-bezier(.34,1.56,.64,1);--out:cubic-bezier(.22,1,.36,1)}
-button,[role=button],.icon-btn,.circle,.chat-i,.chip,summary,label.sin,select,a.btn{
+button,.icon-btn,.circle,.chat-i,.chip,summary,label.sin,select,a.btn{
  transition:scale .4s var(--spring),translate .4s var(--out),filter .3s ease,opacity .35s ease,background-color .38s ease,border-color .38s ease,color .35s ease,box-shadow .4s ease!important;
- -webkit-tap-highlight-color:transparent;will-change:scale}
+ -webkit-tap-highlight-color:transparent}
 @media(hover:hover){
- button:not(:disabled):hover,[role=button]:hover,.icon-btn:hover,.circle:hover,.chat-i:hover{scale:1.045;filter:brightness(1.08)}
- .chat-i:hover{scale:1.012;translate:2px 0}
+ :is(button,.icon-btn,.circle):not(:disabled):not(.g-file *):not(.g-file):not(#mainChat .composer *):not(.vtop *):not(.seg *):not(#cdBack):not(#cdTog):not(.cd-fcard *):hover{scale:1.04}
+ .chat-i:hover{translate:2px 0}
 }
-button:not(:disabled):active,[role=button]:active,.icon-btn:active,.circle:active,.chat-i:active,.chip:active{
- scale:.93!important;translate:0 0!important;filter:brightness(.94);transition-duration:.18s,.18s,.18s!important}
+:is(button,.icon-btn,.circle):not(.g-file *):not(#mainChat .composer *):not(.vtop *):not(.seg *):not(#cdBack):not(#cdTog):active{scale:.95;transition-duration:.18s!important}
 button:disabled{opacity:.5}
 button svg,.icon-btn svg,.circle svg{transition:rotate .5s var(--spring),scale .4s var(--spring)}
 @media(hover:hover){button:hover svg{scale:1.08}}

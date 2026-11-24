@@ -128,7 +128,7 @@ function cards(){
   var ext=EXT[l]||detect(code);
   var msg=n.closest(".m-bot");var used=(msg.dataset.gn||"").split("|");
   var base=NAME[ext]||("code."+ext),name=base,k=2;while(used.indexOf(name)>-1){var d=base.lastIndexOf(".");name=base.slice(0,d)+"-"+k+base.slice(d);k++}
-  used.push(name);msg.dataset.gn=used.join("|");
+  used.push(name);msg.dataset.gn=used.join("|");try{var _R=window.__xmmChatFiles=window.__xmmChatFiles||{};_R[(msg.dataset.i||"")+"|"+name]={i:msg.dataset.i,name:name,code:code}}catch(_){}
   var c=el("div","g-file",'<div class="g-fi">'+FI+'</div><div class="g-fm"><b></b><span>'+(KIND[ext]||"File")+" · "+fmtSize(new Blob([code]).size)+'</span></div><span class="g-fd">'+DI+'Download</span>');
   c.querySelector("b").textContent=name;c.tabIndex=0;c.setAttribute("role","button");
   var go=function(){dl(name,code,ext)};c.onclick=go;c.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}};
