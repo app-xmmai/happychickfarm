@@ -1,6 +1,8 @@
 /* Place picker: up to 5 results, ranked by closeness + fame; tap one to get the map + Directions. */
 (function(){
 var CACHE={},POS=null,POSP=null;
+var CAT=/(schools?|universit|college|hospital|pharmac|restaurant|cafe|supermarket|bank\b|atm\b|gas station|petrol|mosque|church|park\b|hotel|airport|station|clinic|dentist|library|gym\b|bakery|mall\b|kindergarten|market)|مدرسه|دبستان|دبیرستان|دانشگاه|بیمارستان|داروخانه|رستوران|بانک|مسجد|پارک|هتل|Schule|\u00e9cole|escuela/i;
+var NEAR=/near me|nearby|closest|nearest|around me|close to me|around here|\u0646\u0632\u062f\u06cc\u06a9|\u0627\u0637\u0631\u0627\u0641/i;
 var CASP=/caspian\s*mall|caspian\s*complex|کاسپین\s*مال|مجتمع\s*(تجاری\s*)?کاسپین|کاسپین\s*انزلی/i;
 var ANZ=[49.30,37.58,49.66,37.34]; /* Bandar Anzali box: left,top,right,bottom */
 function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -18,7 +20,7 @@ function search(q,pos,bnd){var key=q+"|"+(bnd?"b":"")+"|"+(pos?pos.map(function(
  return CACHE[key]=Promise.all(jobs).then(function(a){var seen={},out=[];[].concat.apply([],a).forEach(function(o){if(!o||!o.lat)return;var k=(o.display_name||"").split(",").slice(0,2).join("|")+Math.round(o.lat*200)+Math.round(o.lon*200);if(seen[k])return;seen[k]=1;
    var ll=[+o.lat,+o.lon],km=pos?hav(pos,ll):null,imp=+o.importance||0,boost=CASP.test(q)&&CASP.test(o.display_name||"")?1:0;
    var sc=boost*2+imp*.65+(km==null?0:.35/(1+km/15));out.push({o:o,ll:ll,km:km,sc:sc})});
-  out.sort(function(x,y){return y.sc-x.sc});return out.slice(0,5)})}
+  out.sort(function(x,y){return y.sc-x.sc});return out.slice(0,CAT.test(q)?8:5)})}
 function fmtKm(k){return k==null?"":(k<1?Math.round(k*1000)+" m":k<100?k.toFixed(1)+" km":Math.round(k)+" km")}
 function nameOf(o){return o.name||(o.display_name||"").split(",")[0]}
 function pretty(t){t=String(t||"").replace(/_/g," ").trim();return t?t[0].toUpperCase()+t.slice(1):""}
@@ -52,7 +54,7 @@ function pick(box,i){var r=box._res&&box._res[i];if(!r)return;var o=r.o,nm=nameO
  box.classList.add("sel")}
 function hydrate(){var n=document.querySelectorAll(".xp-pick:not([data-done])");if(!n.length)return;
  [].forEach.call(n,function(b){b.dataset.done=1;b.innerHTML='<div class="xp-empty">Finding places…</div>';var q=b.getAttribute("data-q");
-  getPos().then(function(pos){return search(q,pos)}).then(function(r){render(b,r)}).catch(function(){b.innerHTML='<div class="xp-empty">Could not search places.</div>'})})}
+  getPos().then(function(pos){var near=NEAR.test(q)&&pos;var qq=near?(q.replace(/near me|nearby|around me|close to me|around here/ig,"").trim()||q):q;return search(qq,pos,near)}).then(function(r){render(b,r)}).catch(function(){b.innerHTML='<div class="xp-empty">Could not search places.</div>'})})}
 document.addEventListener("click",function(e){var t=e.target,row=t.closest&&t.closest(".xp-row");
  if(t.closest&&t.closest(".xp-start")&&t.closest(".xp-pick"))return;
  if(row){var b=row.closest(".xp-pick");if(b){e.preventDefault();pick(b,+row.dataset.i)}return}
