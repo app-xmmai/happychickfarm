@@ -22,3 +22,30 @@ html body .xw-thw{background:rgba(128,128,128,.18)}
 .xp-go{border-radius:26px!important;height:50px!important;font-size:16px!important}
 .xp-gm{border-radius:26px!important;height:50px!important}
 .xp-row{border-radius:16px}
+
+/* directions screen: compact, docked to the screen edges (no floating cards) */
+html body #nv .sheet,html body #nv .drv{left:0!important;right:0!important;bottom:0!important;width:auto!important;border-radius:16px 16px 0 0!important;padding:6px 12px calc(env(safe-area-inset-bottom,0px) + 8px)!important;box-shadow:0 -4px 18px rgba(0,0,0,.14)!important;border-left:0!important;border-right:0!important;border-bottom:0!important}
+html body #nv .sheet::before{width:32px!important;height:4px!important;margin:0 auto 6px!important}
+html body #nv .hd{gap:8px!important}
+html body #nv .rb{width:28px!important;height:28px!important}
+html body #nv .nm b{font-size:16px!important}html body #nv .nm small{font-size:11.5px!important;margin-top:0!important}
+html body #nv .acts{gap:6px!important;margin-top:8px!important}
+html body #nv .acts>*{height:38px!important;border-radius:11px!important;font-size:10.5px!important;gap:1px!important}
+html body #nv .acts .st b{font-size:13px!important}
+html body #nv .acts svg{width:16px!important;height:16px!important}
+html body #nv .stats{margin-top:8px!important;padding-top:7px!important}
+html body #nv .stats small{font-size:10px!important}html body #nv .stats b{font-size:14px!important;margin-top:1px!important}
+html body #nv .drv b{font-size:21px!important}html body #nv .drv small{font-size:11px!important}
+html body #nv .top{left:0!important;right:0!important;top:0!important;padding-top:env(safe-area-inset-top,0px)!important;gap:6px!important}
+html body #nv .sbar{height:40px!important;border-radius:0 0 14px 14px!important;padding:0 6px 0 12px!important}
+html body #nv .sbar input{font-size:15px!important}
+html body #nv .sbar .av{width:28px!important;height:28px!important;font-size:11px!important}
+html body #nv .turn{border-radius:0 0 16px 16px!important;padding:8px 12px!important;gap:10px!important}
+html body #nv .turn .ti{width:32px!important;height:32px!important}
+html body #nv .turn b{font-size:17px!important}html body #nv .turn small{font-size:11.5px!important}
+html body #nv .wx{margin-left:10px!important;padding:5px 10px 5px 8px!important;font-size:13px!important}
+html body #nv .rcl{padding:6px 12px!important;font-size:13px!important}
+html body #nv .fabs{right:0!important;bottom:calc(var(--sh,150px) + 10px)!important;border-radius:12px 0 0 12px!important}
+html body #nv .fabs button{width:38px!important;height:38px!important;font-size:20px!important}
+html body #nv .aip{left:0!important;right:0!important;border-radius:16px 16px 0 0!important;padding:8px 10px!important;bottom:var(--sh,150px)!important}
+@media (min-width:700px){html body #nv .sheet,html body #nv .drv{left:50%!important;right:auto!important;width:480px!important;transform:translateX(-50%)!important}}
