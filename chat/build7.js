@@ -8,7 +8,7 @@
   if(on&&a.S.mode!=="x7g"){prev=a.S.mode;a.sunSetMode("x7g");try{a.toast("Build uses XMMGPT-7 Galaxy")}catch(e){}}
   else if(!on&&prev){if(a.S.mode==="x7g")a.sunSetMode(prev);prev=null}
   /* keep the Ask/Build highlight of the new UI in sync */
-  try{var h=document.getElementById("v3"),sr=h&&h.shadowRoot;if(sr)[].forEach.call(sr.querySelectorAll(".v3-seg button"),function(b){b.classList.toggle("on",(b.dataset.m==="code")===on)})}catch(e){}
+  try{var h=document.getElementById("v3host"),sr=h&&h.shadowRoot,r=sr&&sr.querySelector("#v3");if(r){r.setAttribute("data-build",on?"1":"0");[].forEach.call(sr.querySelectorAll(".v3-seg button"),function(b){b.classList.toggle("on",(b.dataset.m==="code")===on)})}}catch(e){}
  }
  new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:["class"]});
  addEventListener("xmm-code-start",sync);

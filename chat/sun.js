@@ -7,9 +7,9 @@ function eventOn(){return true}
 function galOk(){return true}
 function unlockedAt(){try{return +JSON.parse(localStorage.getItem(KEY))||0}catch(e){return 0}}
 function fullOk(){return true}
-function list(){var l=[];if(galOk())l.push("x7g");if(fullOk())l.push("sun62");l.push("sun62l");return l.concat(["x25","x20","x12"])}
+function list(){var l=[];if(galOk())l.push("x7g");if(fullOk())l.push("sun62");l.push("sun62l");return l.concat(["x25"])}
 function locked(k){return (k==="sun62"&&!fullOk())||(k==="x7g"&&!galOk())}
-function allowed(k){if(k==="sun62")return fullOk();if(k==="x7g")return galOk();if(k==="sun62l")return true;return true}
+function allowed(k){if(k==="x20"||k==="x12")return false;if(k==="sun62")return fullOk();if(k==="x7g")return galOk();if(k==="sun62l")return true;return true}
 function hint(){A().toast("Locked.")}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 

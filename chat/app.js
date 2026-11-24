@@ -218,7 +218,7 @@ const sunTrivial=t=>{t=String(t||"").trim();return t.length<=14||/^[\d\s+\-*\/()
 const sunCode=t=>isCodeReq(t)||/\b(code|coding|script|function|program|html|css|javascript|python|java|c\+\+|sql|bug|debug|algorithm|app|website|game)\b/i.test(String(t||""));
 const stripEmoji=t=>String(t||"").split("```").map((x,i)=>i%2?x:x.replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D\u20E3]/gu,"").replace(/[ \t]{2,}/g," ").replace(/ +([.,!?;:])/g,"$1")).join("```");
 function sunSetMode(k){S.mode=k;const sp=$("#modeBtn span");if(sp)sp.textContent=MODELS[k].short}
-function sunPopup(){
+function sunPopup(){return;
  if(document.getElementById("sunPop"))return;
  const m=document.createElement("div");m.className="modal";m.id="sunPop";
  m.innerHTML=`<div class="sheet glass" style="max-width:420px"><div class="sheet-h"><h3>XMMGPT Sun 6.2</h3></div>

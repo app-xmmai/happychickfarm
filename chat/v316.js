@@ -234,6 +234,19 @@ input,textarea,select{font-family:var(--sans)}
 @media (min-width:900px){#v3Scrim{display:none}}
 
 .v3-comp ::slotted(*){max-width:100%}
+#v3[data-build="1"] .v3-comp{position:relative}
+#v3[data-build="1"] .v3-comp::before,#v3[data-build="1"] .v3-comp::after{content:"";position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;background:linear-gradient(90deg,#ff3b6b,#ff9f0a,#ffe14d,#34d399,#38bdf8,#a78bfa,#ff3b6b,#ff9f0a,#ffe14d,#34d399,#38bdf8,#a78bfa,#ff3b6b);background-size:300% 100%;animation:v3rb 5s linear infinite}
+#v3[data-build="1"] .v3-comp::before{padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+#v3[data-build="1"] .v3-comp::after{z-index:-1;filter:blur(12px);opacity:.5}
+@keyframes v3rb{to{background-position:300% 0}}
+@media (max-width:899px){
+ #v3Hi{display:none}
+ #v3Home{top:38%}
+ #v3Home h1 img{width:64px;height:64px}
+ #v3Dock{padding-left:10px;padding-right:10px}
+ #v3Top{height:44px}
+ .v3-comp{padding:12px 12px 8px 14px}
+}
 @media (max-width:1024px),(pointer:coarse){
  #v3[data-empty="1"] #v3Dock{top:auto!important;bottom:0!important}
  #v3Dock{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))!important}
@@ -302,10 +315,7 @@ function build(){
  '<nav class="v3-nav" id="v3Nav">'+
  '<button data-n="new" class="on" type="button">'+I.plus+'<span>New</span></button>'+
  '<button data-n="search" type="button">'+I.search+'<span>Search</span></button>'+
- '<button data-n="projects" type="button">'+I.proj+'<span>Projects</span></button>'+
- '<button data-n="artifacts" type="button">'+I.art+'<span>Artifacts</span></button>'+
- '<button data-n="code" type="button">'+I.code+'<span>Code</span></button>'+
- '<button data-n="plugins" type="button">'+I.plug+'<span>Plugins</span></button></nav>'+
+ '</nav>'+
  '<div class="v3-lh"><button class="l" id="v3Lbl" type="button"><span>Chats and tasks</span>'+I.chev+'</button><button class="v3-ib sm" id="v3Flt" type="button" aria-label="Show more or fewer chats">'+I.flt+'</button></div>'+
  '<div class="v3-list" id="v3List"></div>'+
  '<div class="v3-user"><button class="u" id="v3Usr" type="button"><span class="v3-av" id="v3Av">X</span><span class="un"><b id="v3Un">XMM</b></span>'+I.chev+'</button><button class="v3-ib" id="v3Dev" type="button" aria-label="Get the app">'+I.dev+'</button></div></aside>'+
