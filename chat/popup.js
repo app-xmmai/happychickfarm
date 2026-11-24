@@ -3,26 +3,34 @@
  if(window.__xmmPopup)return;window.__xmmPopup=1;
  var css=document.createElement("style");
  css.textContent=
- ".xp-ov{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(0,0,0,.55);opacity:0;transition:opacity .16s ease}"+
- ".xp-ov.on{opacity:1}"+
- ".xp-box{display:flex;flex-direction:column;width:min(660px,100%);height:min(560px,86vh);border-radius:24px;background:#2b2b2d;color:#f2f2f2;border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 80px rgba(0,0,0,.6);transform:scale(.96) translateY(6px);transition:transform .18s ease;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow:hidden}"+
- ".xp-ov.on .xp-box{transform:none}"+
- ".xp-h{display:flex;align-items:center;gap:10px;padding:0 18px 0 24px;height:56px;flex:none;border-bottom:1px solid rgba(255,255,255,.1);font-size:15px;font-weight:500}"+
- ".xp-h span.t{flex:1}"+
- ".xp-bt{font-size:11px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.75)}"+
- ".xp-x{display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;padding:0;flex:none;-webkit-tap-highlight-color:transparent}"+
- ".xp-x:hover{background:rgba(255,255,255,.1)}.xp-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}"+
- ".xp-b{flex:1;min-height:0;padding:20px}"+
- ".xp-d{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;border-radius:16px;background:#3a3a3c;padding:20px;transition:background .15s,outline-color .15s;outline:2px dashed transparent;outline-offset:-8px}"+
- ".xp-d.over{background:#444447;outline-color:rgba(255,255,255,.4)}"+
- ".xp-d b{font-size:15px;font-weight:500}.xp-d small{font-size:13px;color:rgba(255,255,255,.62);margin-bottom:6px}"+
- ".xp-c{border:0;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;font:inherit;font-size:14px;padding:8px 16px;cursor:pointer}.xp-c:hover{background:rgba(255,255,255,.26)}"+
- ".xp-m{display:none;gap:8px;margin-top:10px}.xp-m button{border:0;border-radius:99px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:13px;padding:7px 14px;cursor:pointer}"+
- "@media (pointer:coarse){.xp-m{display:flex}.xp-box{height:min(440px,80vh)}}"+
- "html[data-cl-theme=light] .xp-box{background:#fff;color:#141413;border-color:rgba(0,0,0,.1)}"+
- "html[data-cl-theme=light] .xp-h{border-color:rgba(0,0,0,.08)}html[data-cl-theme=light] .xp-bt{background:rgba(0,0,0,.07);color:#555}"+
- "html[data-cl-theme=light] .xp-x:hover{background:rgba(0,0,0,.07)}html[data-cl-theme=light] .xp-d{background:#f1f0ea}html[data-cl-theme=light] .xp-d small{color:#6b6a64}"+
- "html[data-cl-theme=light] .xp-c,html[data-cl-theme=light] .xp-m button{background:rgba(0,0,0,.08);color:#141413}";
+ ".xup-ov{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(0,0,0,.55);opacity:0;transition:opacity .16s ease}"+
+ ".xup-ov.on{opacity:1}"+
+ ".xup-box{display:flex;flex-direction:column;width:min(660px,100%);height:min(560px,86vh);border-radius:24px;background:#2b2b2d;color:#f2f2f2;border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 80px rgba(0,0,0,.6);transform:scale(.96) translateY(6px);transition:transform .18s ease;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow:hidden}"+
+ ".xup-ov.on .xup-box{transform:none}"+
+ ".xup-h{display:flex;align-items:center;gap:10px;padding:0 18px 0 24px;height:56px;flex:none;border-bottom:1px solid rgba(255,255,255,.1);font-size:15px;font-weight:500}"+
+ ".xup-h span.t{flex:1}"+
+ ".xup-bt{font-size:11px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.75)}"+
+ ".xup-x{display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;padding:0;flex:none;-webkit-tap-highlight-color:transparent}"+
+ ".xup-x:hover{background:rgba(255,255,255,.1)}.xup-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}"+
+ ".xup-b{flex:1;min-height:0;padding:20px}"+
+ ".xup-d{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;border-radius:16px;background:#3a3a3c;padding:20px;transition:background .15s,outline-color .15s;outline:2px dashed transparent;outline-offset:-8px}"+
+ ".xup-d.over{background:#444447;outline-color:rgba(255,255,255,.4)}"+
+ ".xup-d b{font-size:15px;font-weight:500}.xup-d small{font-size:13px;color:rgba(255,255,255,.62);margin-bottom:6px}"+
+ ".xup-c{border:0;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;font:inherit;font-size:14px;padding:8px 16px;cursor:pointer}.xup-c:hover{background:rgba(255,255,255,.26)}"+
+ ".xup-m{display:none;gap:8px;margin-top:10px}.xup-m button{border:0;border-radius:99px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:13px;padding:7px 14px;cursor:pointer}"+
+ "@media (pointer:coarse){.xup-m{display:flex}.xup-box{height:min(440px,80vh)}}"+
+ "html[data-cl-theme=light] .xup-box{background:#fff;color:#141413;border-color:rgba(0,0,0,.1)}"+
+ "html[data-cl-theme=light] .xup-h{border-color:rgba(0,0,0,.08)}html[data-cl-theme=light] .xup-bt{background:rgba(0,0,0,.07);color:#555}"+
+ "html[data-cl-theme=light] .xup-x:hover{background:rgba(0,0,0,.07)}html[data-cl-theme=light] .xup-d{background:#f1f0ea}html[data-cl-theme=light] .xup-d small{color:#6b6a64}"+
+ "html[data-cl-theme=light] .xup-c,html[data-cl-theme=light] .xup-m button{background:rgba(0,0,0,.08);color:#141413}";
+ css.textContent+="html body .xup-ov,html body .xup-ov *{text-transform:none!important;letter-spacing:normal!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}"+
+ "html body .xup-box{background:#2b2b2d!important;border-radius:24px!important;width:min(660px,100%)!important;box-shadow:0 24px 80px rgba(0,0,0,.6)!important}"+
+ "html[data-cl-theme=light] body .xup-box{background:#fff!important}"+
+ "html body .xup-d{border-radius:16px!important;border:0!important;box-shadow:none!important}"+
+ "html body .xup-b{border-radius:0!important;background:none!important;border:0!important;box-shadow:none!important;position:static!important;height:auto!important;display:block!important;flex:1!important;min-height:0!important;padding:20px!important;width:auto!important}"+
+ "html body .xup-x,html body .xup-c,html body .xup-m button,html body .xup-bt{border:0!important;box-shadow:none!important}"+
+ "html body .xup-x{background:none!important}html body .xup-bt{border-radius:99px!important;background:rgba(255,255,255,.12)!important}"+
+ "html body .xup-h{background:none!important;border-radius:0!important;box-shadow:none!important}";
  document.head.appendChild(css);
  var ALL="image/*,video/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.log,.pdf";
  function deliver(files){
@@ -33,7 +41,7 @@
   real.dispatchEvent(new Event("change",{bubbles:true}));
  }
  function pick(accept,cap){
-  var f=document.createElement("input");f.type="file";f.className="xmm-file";f.multiple=!cap;f.accept=accept;
+  var f=document.createElement("input");f.type="file";f.multiple=!cap;f.accept=accept;
   if(cap)f.setAttribute("capture","environment");
   f.style.cssText="position:fixed;left:-99999px;width:0;height:0;opacity:0;pointer-events:none";
   document.body.appendChild(f);
@@ -44,13 +52,13 @@
  function close(){if(!ov)return;var o=ov;ov=null;o.classList.remove("on");setTimeout(function(){try{o.remove()}catch(e){}},180)}
  function open(){
   if(ov)return;
-  ov=document.createElement("div");ov.className="xp-ov";
-  ov.innerHTML='<div class="xp-box" role="dialog" aria-modal="true" aria-label="Upload or add files"><div class="xp-h"><span class="t">Upload or add files</span><span class="xp-bt">Beta</span><button class="xp-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>'+
-   '<div class="xp-b"><div class="xp-d"><b>Drag files or photos here</b><small>Documents, images, spreadsheets, and code files</small><button class="xp-c" type="button" data-a="files">Choose files</button>'+
-   '<div class="xp-m"><button type="button" data-a="cam">Camera</button><button type="button" data-a="img">Photos</button><button type="button" data-a="vid">Video</button></div></div></div></div>';
-  var box=ov.querySelector(".xp-box"),dz=ov.querySelector(".xp-d");
+  ov=document.createElement("div");ov.className="xup-ov";
+  ov.innerHTML='<div class="xup-box" role="dialog" aria-modal="true" aria-label="Upload or add files"><div class="xup-h"><span class="t">Upload or add files</span><span class="xup-bt">Beta</span><button class="xup-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>'+
+   '<div class="xup-b"><div class="xup-d"><b>Drag files or photos here</b><small>Documents, images, spreadsheets, and code files</small><button class="xup-c" type="button" data-a="files">Choose files</button>'+
+   '<div class="xup-m"><button type="button" data-a="cam">Camera</button><button type="button" data-a="img">Photos</button><button type="button" data-a="vid">Video</button></div></div></div></div>';
+  var box=ov.querySelector(".xup-box"),dz=ov.querySelector(".xup-d");
   /* close: X button, backdrop, Esc */
-  ov.querySelector(".xp-x").addEventListener("click",function(e){e.preventDefault();e.stopPropagation();close()});
+  ov.querySelector(".xup-x").addEventListener("click",function(e){e.preventDefault();e.stopPropagation();close()});
   ov.addEventListener("mousedown",function(e){if(e.target===ov)close()});
   ov.addEventListener("touchstart",function(e){if(e.target===ov){e.preventDefault();close()}},{passive:false});
   ov.addEventListener("click",function(e){
