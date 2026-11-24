@@ -446,7 +446,7 @@ const RNOT=/^\s*(?:how|why|what|which|where|when|who|is|are|do|does|did|can i|co
 const isImgReq=t=>{t=String(t||"").trim();if(window.XMM_GENMODE==="image"&&t.length>=2)return true;if(t.length<4||t.length>600||/```/.test(t)||RNOT.test(t))return false;if(/^\/(?:image|img|imagine)\b/i.test(t))return true;
  if(/^[^\n]*[?？؟]\s*$/.test(t)&&!/^\s*(?:can you|could you|would you|will you|kannst du|könntest du|puedes|peux-tu|puoi|kun je|можешь|میتونی|می‌تونی|میتوانی|می توانی|هل يمكنك)\b/iu.test(t))return false;
  return RVERBFIRST.test(t)||RDRAW.test(t)||RVERBLAST.test(t)||RCJK.test(t)};
-window.XMM_ISIMG=isImgReq;
+window.XMM_ISIMG=t=>{try{if(S&&S.att&&S.att.some(x=>x.img))return false}catch(e){}return isImgReq(t)};
 const ratioOf=t=>/(?:^|[^\p{L}])(?:9:16|portrait|vertical|story|hochformat|phone wallpaper)(?![\p{L}])/iu.test(t)?[720,1280]:/(?:^|[^\p{L}])(?:16:9|landscape|wide|wallpaper|banner|desktop|querformat|panorama)(?![\p{L}])/iu.test(t)?[1280,720]:/\b4:3\b/.test(t)?[1152,864]:[1024,1024];
 const ENG=["gptimage","flux"];window.XMM_ENG=ENG;
 const polli=(p,w,h,m)=>`https://image.pollinations.ai/prompt/${encodeURIComponent(p.slice(0,900))}?model=${m||ENG[0]}&width=${w}&height=${h}&seed=${Math.floor(Math.random()*1e9)}&nologo=true`;

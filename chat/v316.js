@@ -337,7 +337,7 @@ function build(){
  '<div id="v3Scrim"></div>'+
  '<div id="v3Ctr"><header id="v3Top"><button class="v3-ib" id="v3Menu" type="button" aria-label="Open sidebar">'+I.panel+'</button>'+
  '<button id="v3Title" type="button"><span id="v3TitleT">New chat</span>'+I.chev+'</button><span class="v3-sp"></span>'+
- '<button class="v3-pv" id="v3Prev" type="button">'+I.eye+'<span>Preview</span><i></i></button>'+
+ '<button class="v3-pv" id="v3Prev" type="button" aria-label="New chat">'+I.plus+'<span>New chat</span></button>'+
  '<button class="v3-ib" id="v3PanelBtn" type="button" aria-label="Toggle panel">'+I.panelR+'</button></header>'+
  '<div id="v3Main"><slot></slot></div>'+
  '<section id="v3Home"><h1><img src="icon.svg?v=gpu6" alt=""><span id="v3Hi"></span></h1></section>'+
@@ -355,7 +355,7 @@ function build(){
  panel=el("aside");panel.id="v3Panel";panel.innerHTML=
   '<div class="v3p-h"><b><i id="v3PDot"></i>Preview</b><button class="v3-ib" id="v3PClose" type="button" aria-label="Close panel">'+I.panelR+'</button></div><div class="v3p-b" id="v3PBody"></div>';
  srB.appendChild(panel);
- float_=el("button");float_.id="v3Float";float_.type="button";float_.innerHTML=I.eye+"<span>Preview</span><i></i>";srB.appendChild(float_);
+ float_=el("button");float_.id="v3Float";float_.type="button";float_.setAttribute("aria-label","New chat");float_.innerHTML=I.plus+"<span>New chat</span>";srB.appendChild(float_);
  H.classList.add("v3");
  if(innerWidth<900)root.classList.add("col");
  srB.addEventListener("click",panelClicks);wire();paintPanel(true);tick();
@@ -410,8 +410,8 @@ function wire(){
  var lp=0;list.addEventListener("pointerdown",function(e){var r=e.target.closest(".v3-ci");if(!r)return;clearTimeout(lp);lp=setTimeout(function(){r.__lp=1;chatMenu(r,r.dataset.id)},560)});
  ["pointerup","pointermove","pointercancel","pointerleave"].forEach(function(n){list.addEventListener(n,function(){clearTimeout(lp)})});
  $("#v3Title").onclick=function(){var c=$("#chatList .chat-i.on");var id=c&&c.dataset.id;if(id)chatMenu($("#v3Title"),id)};
- $("#v3Prev").onclick=function(){togglePanel()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
- float_.onclick=function(){togglePanel()};
+ $("#v3Prev").onclick=function(){newChat()};$("#v3PanelBtn").onclick=function(){togglePanel()};$("#v3PClose").onclick=function(){togglePanel(false)};
+ float_.onclick=function(){newChat()};
  $("#v3Add").onclick=function(){try{CL().openAdd()}catch(e){var a=$("#attBtn");if(a)a.click()}};
  $("#v3Model").onclick=$("#v3Model2").onclick=function(){try{CL().openModel()}catch(e){var m=$("#modeBtn");if(m)m.click()}};
  $(".v3-seg").addEventListener("click",function(e){var b=e.target.closest("button[data-m]");if(!b)return;var m=b.dataset.m,s=$('#seg [data-m="'+(m==="code"?"code":"chat")+'"]');if(s)s.click();else{document.body.classList.toggle("v-build",m==="code");document.body.classList.remove("code-on")}$$(".v3-seg button",b.parentNode).forEach(function(x){x.classList.toggle("on",x===b)})});
