@@ -27,8 +27,8 @@ function page(){
   if(window.xmmDesktop||/XMMAI-Desktop/.test(navigator.userAgent||""))return;
   if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)return;
   var D=detect();
-  var steps=D.os==="ios"?[["Open this page in <b>Safari</b>.","On iPhone and iPad, only Safari can add apps to the Home Screen."],["Tap the <b>Share</b> button.","The square with an arrow pointing up, at the bottom of the screen (top right on iPad)."],["Choose <b>Add to Home Screen</b>.","Scroll down in the share sheet if you don\u2019t see it."],["Tap <b>Add</b>.","XMM AI now opens full screen from your Home Screen."]]
-   :D.os==="android"?[["Open this page in <b>Chrome</b>.","Other browsers may call the same option something different."],["Tap the <b>menu</b> button.","The three dots at the top right."],["Tap <b>Install app</b> or <b>Add to Home screen</b>.","Confirm when Chrome asks."],["Open <b>XMM AI</b> from your app list.","It now runs full screen, like any other app."]]:null;
+  var steps=D.os==="ios"?[["Open this page in <b>Safari</b>.","On iPhone and iPad, only Safari can add apps to the Home Screen."],["Tap the <b>Share</b> button.","The square with an arrow pointing up, at the bottom of the screen (top right on iPad)."],["Choose <b>Add to Home Screen</b>.","Scroll down in the share sheet if you don\u2019t see it."],["Tap <b>Add</b>.","XMM-AI now opens full screen from your Home Screen."]]
+   :D.os==="android"?[["Open this page in <b>Chrome</b>.","Other browsers may call the same option something different."],["Tap the <b>menu</b> button.","The three dots at the top right."],["Tap <b>Install app</b> or <b>Add to Home screen</b>.","Confirm when Chrome asks."],["Open <b>XMM-AI</b> from your app list.","It now runs full screen, like any other app."]]:null;
   var st=document.createElement("style");
   st.textContent='#xi{position:fixed;inset:0;z-index:99999;overflow:auto;-webkit-overflow-scrolling:touch;background:#0b0b0e;color:#f4f4f6;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;animation:xiF .3s ease both}'+
   '#xi .w{max-width:520px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) 24px calc(32px + env(safe-area-inset-bottom,0px));min-height:100%;box-sizing:border-box;display:flex;flex-direction:column}'+
@@ -47,15 +47,15 @@ function page(){
   var top='<div class="top"><img src="/chat/icon.svg" alt=""><button class="x" type="button">Close</button></div>',body="";
   if(!D.ok){
     var need=D.os==="ios"?"iOS 15 or later":"Android 5.0 or later";
-    body='<h1>This device is too old</h1><p class="lead">XMM AI needs <b>'+need+'</b> to be installed. Your '+D.name+' runs '+(D.os==="ios"?"iOS ":"Android ")+D.ver+'.</p><button class="btn s web" type="button">Continue in browser</button>'}
+    body='<h1>This device is too old</h1><p class="lead">XMM-AI needs <b>'+need+'</b> to be installed. Your '+D.name+' runs '+(D.os==="ios"?"iOS ":"Android ")+D.ver+'.</p><button class="btn s web" type="button">Skip Install & Continue in Browser</button>'}
   else if(steps){
-    body='<h1>Add XMM AI to your '+(D.os==="ios"?"Home Screen":"phone")+'</h1><p class="lead">It takes about 20 seconds and needs no store.</p><ol>'+steps.map(function(s){return'<li><b>'+s[0]+'</b><p>'+s[1]+'</p></li>'}).join("")+'</ol>'+
-      (deferred?'<button class="btn get" type="button">Install now</button>':"")+'<button class="btn s web" type="button">Continue in browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads \u00b7 Under 2 MB</div>'}
+    body='<h1>Add XMM-AI to your '+(D.os==="ios"?"Home Screen":"phone")+'</h1><p class="lead">It takes about 20 seconds and needs no store.</p><ol>'+steps.map(function(s){return'<li><b>'+s[0]+'</b><p>'+s[1]+'</p></li>'}).join("")+'</ol>'+
+      (deferred?'<button class="btn get" type="button">Install now</button>':"")+'<button class="btn s web" type="button">Skip Install & Continue in Browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads \u00b7 Under 2 MB</div>'}
   else{
     var keys=D.os==="win"||D.os==="mac"||D.os==="linux"?[D.os].concat(["win","mac","linux"].filter(function(k){return k!==D.os})):["win","mac","linux"];
-    body='<h1>Get XMM AI for your computer</h1><p class="lead">A real desktop app, not a browser tab. Chat, local models and PC control.</p>'+
+    body='<h1>Get XMM-AI for your computer</h1><p class="lead">A real desktop app, not a browser tab. Chat, local models and PC control.</p>'+
       keys.map(function(k,i){var f=FILES[k];return'<a class="btn'+(i?" s":"")+'" href="'+REL+f[1]+'" download>Download for '+f[0]+'<small>'+f[2]+' file</small></a>'}).join("")+
-      '<button class="btn s web" type="button">Continue in browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads</div>'}
+      '<button class="btn s web" type="button">Skip Install & Continue in Browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads</div>'}
   d.innerHTML='<div class="w">'+top+body+'</div>';
   document.body.appendChild(d);
   function close(){d.style.transition="opacity .25s";d.style.opacity="0";setTimeout(function(){d.remove();if(!named())location.href=AUTH},230)}
