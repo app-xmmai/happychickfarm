@@ -130,6 +130,9 @@ img{display:block;max-width:100%;height:auto}
 .strip-card p{font-size:14px;color:#6e6e73;margin-bottom:14px}
 .strip-card a{font-size:14px;color:#0066cc}
 .strip-card a:hover{text-decoration:underline}
+.strip-card .dl-btn{display:inline-block;color:#000;padding:10px 22px;border-radius:980px;font-size:15px;margin-bottom:10px}
+.strip-card .dl-btn:hover{text-decoration:none}
+.strip-card .play-link{display:block}
 
 /* Full-bleed feature */
 .feature{
@@ -259,6 +262,13 @@ footer,.footer{background:#000!important;color:#8e949c}
       <a href="https://app.xmm-ai.com/?install=1">Learn more ›</a>
     </div>
     <div class="strip-card">
+      <img src="/media/spikedash.svg" alt="SpikeDash game" width="400" height="140">
+      <h3>SpikeDash</h3>
+      <p>A gem-collecting arcade dash game inspired by Gemtray. Free on Linux, Windows, macOS, Android and iOS &mdash; it runs in any modern browser.</p>
+      <a class="btn btn-blue dl-btn" href="/downloads/SpikeDash.html" download="SpikeDash.html">Download free</a>
+      <a class="play-link" href="/downloads/SpikeDash.html">Play online &rsaquo;</a>
+    </div>
+    <div class="strip-card">
       <img src="/media/hero-fold.jpg" alt="xmm-ai for fold" width="120" height="120">
       <h3>More apps</h3>
       <p>New digital experiences from XMM-AI Corporation are on the way.</p>
@@ -319,7 +329,7 @@ footer,.footer{background:#000!important;color:#8e949c}
   var modal = document.getElementById("comingSoonModal");
   function open(){ modal.classList.add("show"); }
   function close(){ modal.classList.remove("show"); }
-  document.getElementById("otherProjectsBtn").addEventListener("click", open);
+  document.getElementById("otherProjectsBtn").addEventListener("click", function(){ document.getElementById("products").scrollIntoView({behavior:"smooth"}); });
   document.getElementById("otherProjectsLink").addEventListener("click", function(e){ e.preventDefault(); open(); });
   document.getElementById("closeModalBtn").addEventListener("click", close);
   modal.addEventListener("click", function(e){ if(e.target === modal) close(); });
