@@ -32,3 +32,11 @@ html.pwa body #clDrawer{height:100%!important;max-height:100%!important;top:0!im
 }
 
 /* keyboard: --kb (from visualViewport, set in index.html) raises the bottom of #shell-chat; the input bar lives inside it, so it follows the keyboard once */
+
+/* the top gap is painted by its own fixed strip, so nothing else can leave it black */
+html.pwa::before{content:"";position:fixed;left:0;right:0;top:0;height:var(--xtop,0px);background:var(--xgapbg,#191919);z-index:2147483000;pointer-events:none}
+html.pwa[data-cl-theme="light"]::before{background:var(--xgapbg,#faf9f5)}
+@media (display-mode:standalone) and (pointer:coarse),(display-mode:fullscreen) and (pointer:coarse),(display-mode:minimal-ui) and (pointer:coarse){
+ html:root::before{content:"";position:fixed;left:0;right:0;top:0;height:var(--xtop,0px);background:var(--xgapbg,#191919);z-index:2147483000;pointer-events:none}
+ html:root[data-cl-theme="light"]::before{background:var(--xgapbg,#faf9f5)}
+}

@@ -15,6 +15,7 @@ function sample(){
  if(!layers.length||layers[layers.length-1][3]<.98)layers.push(base);
  var out=layers[layers.length-1].slice(0,3);
  for(var i=layers.length-2;i>=0;i--){var a=layers[i][3];out=[out[0]*(1-a)+layers[i][0]*a,out[1]*(1-a)+layers[i][1]*a,out[2]*(1-a)+layers[i][2]*a]}
+ if(out[0]+out[1]+out[2]<36&&H.getAttribute("data-cl-theme")!=="light")out=[25,25,25];
  return"rgb("+Math.round(out[0])+","+Math.round(out[1])+","+Math.round(out[2])+")"}
 function apply(){
  busy=0;
