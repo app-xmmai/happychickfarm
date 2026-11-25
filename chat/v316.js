@@ -162,6 +162,7 @@ input,textarea,select{font-family:var(--sans)}
 #v3Set .m{width:min(1022px,calc(100% - 48px));height:min(735px,calc(100dvh - 34px));background:var(--b1);color:var(--tx);border:1px solid var(--ln2);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.55);font:400 14px/1.45 var(--sans)}
 #v3Set .h{flex:none;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 14px 0 22px;border-bottom:1px solid var(--ln2)}
 #v3Set .h h3{margin:0;font:500 16px var(--sans)}
+#v3Set .v3-bk{display:none}
 #v3Set .c{flex:1;min-height:0;display:flex}
 #v3Set nav{flex:none;width:212px;padding:16px 12px;display:flex;flex-direction:column;gap:2px;overflow:auto}
 #v3Set nav .sr{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;background:var(--b4);border-radius:8px;color:var(--mu);margin-bottom:8px}
@@ -221,11 +222,19 @@ input,textarea,select{font-family:var(--sans)}
  .v3-foot{font-size:11px}
  #v3Set .m{width:100%;height:calc(var(--app-h,100dvh) - var(--xtop,0px));margin-top:var(--xtop,0px);border-radius:0;border:0}
  #v3Set .c{flex-direction:column}
- #v3Set nav{width:100%;flex-direction:row;overflow-x:auto;padding:8px 10px;gap:4px;border-bottom:1px solid var(--ln2)}
+ #v3Set nav{width:100%;flex:1;min-height:0;flex-direction:column;overflow-y:auto;padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 14px);gap:6px;border-bottom:0}
  #v3Set nav .sr,#v3Set nav hr{display:none}
- #v3Set nav button{flex:none}
- #v3Set nav button svg{display:none}
- #v3Set .p{border-left:0;padding:16px}
+ #v3Set nav button{flex:none;height:54px;padding:0 16px;background:var(--b4);border-radius:14px;font-size:16px;width:100%}
+ #v3Set nav button::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--mu);border-top:2px solid var(--mu);transform:rotate(45deg)}
+ #v3Set nav button.on{background:var(--b4)}
+ #v3Set.pg nav{display:none}
+ #v3Set.mm .p{display:none}
+ #v3Set .p{border-left:0;padding:16px;flex:1}
+ #v3Set .v3-bk{display:inline-grid}
+ #v3Set.mm .v3-bk{display:none}
+ #v3Set .h{justify-content:flex-start;gap:6px;padding:0 10px}
+ #v3Set .h h3{flex:1;font-size:17px}
+ #v3Set.pg #v3SX{display:none}
  #v3Set .row{flex-wrap:wrap}
  #v3Set .in{width:100%}
  #v3Set table{font-size:13px}
@@ -664,14 +673,23 @@ function page(k){
 function openSettings(k){
  var old=$("#v3Set");if(old)old.remove();
  var o=el("div");o.id="v3Set";
- o.innerHTML='<div class="m"><div class="h"><h3>Settings</h3><button class="v3-ib" id="v3SX" type="button" aria-label="Close">'+I.x+'</button></div><div class="c"><nav id="v3SN"><div class="sr">'+I.search+'<input id="v3SS" placeholder="Search" autocomplete="off"></div>'+
+ o.innerHTML='<div class="m"><div class="h"><button class="v3-ib v3-bk" id="v3SB" type="button" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h3 id="v3ST">Settings</h3><button class="v3-ib" id="v3SX" type="button" aria-label="Close">'+I.x+'</button></div><div class="c"><nav id="v3SN"><div class="sr">'+I.search+'<input id="v3SS" placeholder="Search" autocomplete="off"></div>'+
   NAV.map(function(x){return x?'<button type="button" data-k="'+x[0]+'">'+x[2]+'<span>'+x[1]+'</span></button>':'<hr>'}).join("")+'</nav><div class="p" id="v3SP"></div></div></div>';
  srB.appendChild(o);var cur="acc";
- function show(key){cur=key;$$("#v3SN button").forEach(function(b){b.classList.toggle("on",b.dataset.k===key)});$("#v3SP").innerHTML=page(key)}
- show(k&&NAV.some(function(x){return x&&x[0]===k})?k:"acc");
- o.addEventListener("mousedown",function(e){if(e.target===o)o.remove()});
- $("#v3SX").onclick=function(){o.remove()};
- $("#v3SN").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(b)show(b.dataset.k)});
+ var mob=function(){try{return matchMedia("(max-width:899px)").matches}catch(e){return false}},pushed=0,skipPop=0;
+ function title(key){var f=NAV.filter(function(x){return x&&x[0]===key})[0];return f?f[1]:"Settings"}
+ function menu(){cur="";o.classList.remove("pg");o.classList.add("mm");$("#v3ST").textContent="Settings";$("#v3SP").innerHTML=""}
+ function show(key){cur=key;$$("#v3SN button").forEach(function(b){b.classList.toggle("on",b.dataset.k===key)});$("#v3SP").innerHTML=page(key);if(mob()){o.classList.remove("mm");o.classList.add("pg");$("#v3ST").textContent=title(key);var pp=$("#v3SP");if(pp)pp.scrollTop=0}}
+ function push(){try{history.pushState({v3s:1},"");pushed++}catch(e){}}
+ function closeAll(){var n=pushed;pushed=0;o.remove();window.removeEventListener("popstate",onPop);if(n>0){skipPop=1;try{history.go(-n)}catch(e){}setTimeout(function(){skipPop=0},400)}}
+ function onPop(){if(skipPop)return;if(!D.body.contains(o)||!o.isConnected){window.removeEventListener("popstate",onPop);return}if(pushed>0)pushed--;if(mob()&&o.classList.contains("pg"))menu();else{pushed=0;o.remove();window.removeEventListener("popstate",onPop)}}
+ function goBack(){if(pushed>0){try{history.back();return}catch(e){}}if(o.classList.contains("pg"))menu();else closeAll()}
+ var start=k&&NAV.some(function(x){return x&&x[0]===k})?k:"acc";
+ if(mob()){window.addEventListener("popstate",onPop);push();if(k&&start===k){push();show(start)}else menu()}else show(start);
+ o.addEventListener("mousedown",function(e){if(e.target===o)closeAll()});
+ $("#v3SX").onclick=closeAll;
+ $("#v3SB").onclick=goBack;
+ $("#v3SN").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(!b)return;var wasMenu=o.classList.contains("mm");show(b.dataset.k);if(mob()&&wasMenu)push()});
  $("#v3SS").addEventListener("input",function(e){var q=e.target.value.trim().toLowerCase();$$("#v3SN button").forEach(function(b){b.style.display=!q||b.textContent.toLowerCase().indexOf(q)>-1?"":"none"})});
  var P=$("#v3SP");
  P.addEventListener("input",function(e){var t=e.target;
