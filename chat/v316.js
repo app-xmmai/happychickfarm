@@ -163,6 +163,7 @@ input,textarea,select{font-family:var(--sans)}
 #v3Set .h{flex:none;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 14px 0 22px;border-bottom:1px solid var(--ln2)}
 #v3Set .h h3{margin:0;font:500 16px var(--sans)}
 #v3Set .v3-bk{display:none}
+#v3Set nav .sl,#v3Set nav .bta{display:none}
 #v3Set .c{flex:1;min-height:0;display:flex}
 #v3Set nav{flex:none;width:212px;padding:16px 12px;display:flex;flex-direction:column;gap:2px;overflow:auto}
 #v3Set nav .sr{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;background:var(--b4);border-radius:8px;color:var(--mu);margin-bottom:8px}
@@ -222,13 +223,19 @@ input,textarea,select{font-family:var(--sans)}
  .v3-foot{font-size:11px}
  #v3Set .m{width:100%;height:calc(var(--app-h,100dvh) - var(--xtop,0px));margin-top:var(--xtop,0px);border-radius:0;border:0}
  #v3Set .c{flex-direction:column}
- #v3Set nav{width:100%;flex:1;min-height:0;flex-direction:column;overflow-y:auto;padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 14px);gap:6px;border-bottom:0}
+ #v3Set nav{width:100%;flex:1;min-height:0;flex-direction:column;overflow-y:auto;padding:4px 10px calc(env(safe-area-inset-bottom,0px) + 14px);gap:2px;border-bottom:0;background:var(--b1)}
  #v3Set nav .sr,#v3Set nav hr{display:none}
- #v3Set nav button{flex:none;height:54px;padding:0 16px;background:var(--b4);border-radius:14px;font-size:16px;width:100%}
- #v3Set nav button::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--mu);border-top:2px solid var(--mu);transform:rotate(45deg)}
+ #v3Set nav .sl{display:block;padding:18px 10px 6px;font:500 13px var(--sans);color:var(--mu)}
+ #v3Set nav .bta{display:flex;align-items:center;gap:12px;height:44px;padding:0 10px;font-size:15px;background:none;color:var(--tx);width:100%}
+ #v3Set nav button{flex:none;height:44px;padding:0 10px;background:none;border-radius:10px;font-size:15px;width:100%}
+ #v3Set nav button svg{display:block}
  #v3Set nav button.on{background:var(--b4)}
+ #v3Set.mm nav button.on{background:none}
  #v3Set.pg nav{display:none}
  #v3Set.mm .p{display:none}
+ #v3Set.mm .h{display:none}
+ #v3Set .m,#v3Set .h,#v3Set .p{background:var(--b1)}
+ #v3Set .h{border-bottom:0}
  #v3Set .p{border-left:0;padding:16px;flex:1}
  #v3Set .v3-bk{display:inline-grid}
  #v3Set.mm .v3-bk{display:none}
@@ -642,7 +649,7 @@ function themePref(){return ld("xmm.cl.theme","dark")}
 function applyTheme(p){sv("xmm.cl.theme",p);var d=p!=="light";if(p==="system"){try{d=matchMedia("(prefers-color-scheme:dark)").matches}catch(e){}}H.setAttribute("data-cl-theme",d?"dark":"light");H.dataset.clTheme=d?"dark":"light"}
 function row(l,c,s){return'<div class="row"><div>'+l+(s?'<small>'+s+'</small>':'')+'</div><div>'+c+'</div></div>'}
 function tog(k,on){return'<button class="sw'+(on?" on":"")+'" type="button" data-sw="'+k+'" aria-label="Toggle"></button>'}
-var NAV=[["acc","Account",I.usr],["app","Appearance",I.pal],["mem","Your XMM",I.sparkle],["cap","Capabilities",I.cap],["notif","Notifications",I.bell],["priv","Privacy",I.lock],0,["plugins","Plugins",I.plug],["code","Code",I.code]];
+var NAV=[["acc","Account",I.usr],["priv","Privacy",I.lock],0,["app","Appearance",I.pal],["mem","Your XMM",I.sparkle],["cap","Capabilities",I.cap],["notif","Notifications",I.bell],["plugins","Plugins",I.plug],["code","Code",I.code]];
 function page(k){
  var n=uname();
  if(k==="acc"){var a=avatarCss(),si=ld("xmm.v3.signin",0);if(!si){si=Date.now();sv("xmm.v3.signin",si)}
@@ -674,7 +681,7 @@ function openSettings(k){
  var old=$("#v3Set");if(old)old.remove();
  var o=el("div");o.id="v3Set";
  o.innerHTML='<div class="m"><div class="h"><button class="v3-ib v3-bk" id="v3SB" type="button" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h3 id="v3ST">Settings</h3><button class="v3-ib" id="v3SX" type="button" aria-label="Close">'+I.x+'</button></div><div class="c"><nav id="v3SN"><div class="sr">'+I.search+'<input id="v3SS" placeholder="Search" autocomplete="off"></div>'+
-  NAV.map(function(x){return x?'<button type="button" data-k="'+x[0]+'">'+x[2]+'<span>'+x[1]+'</span></button>':'<hr>'}).join("")+'</nav><div class="p" id="v3SP"></div></div></div>';
+  '<button type="button" class="bta" id="v3BA"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to app</span></button><div class="sl">Account</div>'+NAV.map(function(x){return x?'<button type="button" data-k="'+x[0]+'">'+x[2]+'<span>'+x[1]+'</span></button>':'<hr><div class="sl">App</div>'}).join("")+'</nav><div class="p" id="v3SP"></div></div></div>';
  srB.appendChild(o);var cur="acc";
  var mob=function(){try{return matchMedia("(max-width:899px)").matches}catch(e){return false}},pushed=0,skipPop=0;
  function title(key){var f=NAV.filter(function(x){return x&&x[0]===key})[0];return f?f[1]:"Settings"}
@@ -688,7 +695,7 @@ function openSettings(k){
  if(mob()){window.addEventListener("popstate",onPop);push();if(k&&start===k){push();show(start)}else menu()}else show(start);
  o.addEventListener("mousedown",function(e){if(e.target===o)closeAll()});
  $("#v3SX").onclick=closeAll;
- $("#v3SB").onclick=goBack;
+ $("#v3SB").onclick=goBack;$("#v3BA").onclick=closeAll;
  $("#v3SN").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(!b)return;var wasMenu=o.classList.contains("mm");show(b.dataset.k);if(mob()&&wasMenu)push()});
  $("#v3SS").addEventListener("input",function(e){var q=e.target.value.trim().toLowerCase();$$("#v3SN button").forEach(function(b){b.style.display=!q||b.textContent.toLowerCase().indexOf(q)>-1?"":"none"})});
  var P=$("#v3SP");
