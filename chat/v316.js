@@ -647,7 +647,7 @@ function page(k){
    row('User ID','<span class="cp"><code>'+esc(uid())+'</code><button class="v3-ib sm" id="v3Cp" type="button" aria-label="Copy">'+I.copy+'</button></span>')+
    '<div class="sec"><b>Where you’re logged in</b><button class="bt" id="v3Lo" type="button">Log out of all devices</button></div>'+
    '<table><thead><tr><th>Device</th><th>Location</th><th>Signed in</th><th>Last active</th></tr></thead><tbody><tr><td>'+esc(devName())+'<span class="cur">Current</span></td><td>'+esc(loc()||"—")+'</td><td>'+esc(fmt(si))+'</td><td>'+esc(fmt(Date.now()))+'</td></tr></tbody></table>'+
-   '<div class="sec"><b>Installed app</b><button class="bt" id="v3Ins" type="button">Install XMM AI</button></div><p class="note">Add XMM AI to your home screen or desktop for full-screen use.</p>';}
+   (window.XMM_APP?"":'<div class="sec"><b>Installed app</b><button class="bt" id="v3Ins" type="button">Install XMM AI</button></div><p class="note">Add XMM AI to your home screen or desktop for full-screen use.</p>');}
  if(k==="bill")return'<h4>Billing</h4>'+row('Plan','Free','XMM AI is free to use. No payment details are needed.')+row('Usage','Fair use','Some features such as video have cooldowns to keep servers fast for everyone.');
  if(k==="app"){var p=themePref();return'<h4>Appearance</h4><div class="th">'+[["light","Light","l"],["dark","Dark","d"],["system","System","s"]].map(function(t){return'<button type="button" data-th="'+t[0]+'" class="'+(p===t[0]?"on":"")+'"><i class="'+t[2]+'"></i>'+t[1]+'</button>'}).join("")+'</div>'+
   row('Haptic feedback',tog("hap",ld("xmm.cl.hap",true)!==false),'Tiny vibration on taps (phones).')}

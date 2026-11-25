@@ -712,7 +712,7 @@ async function pwaCheck(){const o=[];o.push(["HTTPS",location.protocol==="https:
  o.push(["Running as app",!!standalone()]);
  $("#pwaInfo").innerHTML=o.map(([k,v])=>`${v?"✅":"❌"} ${k}`).join("<br>")}
 function openSettings(){if(window.XMM_CLONE)XMM_CLONE.openSettings()}
-let deferred=null;const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+let deferred=null;const standalone=()=>!!window.XMM_APP||matchMedia("(display-mode: standalone)").matches||navigator.standalone;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;maybeBanner()});
 window.addEventListener("appinstalled",()=>{$("#installBanner").hidden=true;deferred=null;toast("XMM AI installed")});
@@ -754,7 +754,7 @@ function init(){
    else if(a==="install")doInstall();else if(a==="toggleSide")document.body.classList.toggle("collapsed");
    else if(a==="share"){const c=cur();if(c)navigator.clipboard.writeText(transcript(c)).then(()=>toast("Chat copied"))}
    
-   else if(a==="topdots")showMenu(b,[{label:"Settings",fn:openSettings},{label:"Install App",fn:doInstall},{label:"Delete all chats",danger:1,fn:clearAll}],"right");
+   else if(a==="topdots")showMenu(b,[{label:"Settings",fn:openSettings},...(window.XMM_APP?[]:[{label:"Install App",fn:doInstall}]),{label:"Delete all chats",danger:1,fn:clearAll}],"right");
    return}
   if(b=t.closest("[data-dots]")){e.stopPropagation();const id=b.dataset.dots;showMenu(b,(window.XMM_TWIN?XMM_TWIN.chatItems(id):[]).concat([{label:"Delete chat",danger:1,fn:()=>delChat(id)}]),"right");return}
   if(b=t.closest("[data-ma]")){const c=cur(),i=+b.dataset.i,m=c&&c.msgs[i];if(!m)return;const k=b.dataset.ma;

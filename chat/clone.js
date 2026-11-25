@@ -381,7 +381,7 @@ function pageRoot(){
   row(IC.sliders,"Memory",{go:"caps"})+row(IC.voice,"Voice and dictation",{go:"voice"})+
   '<div class="cl-row" style="cursor:default">'+IC.globe+'<span class="rt">Open links in</span><span class="rv">'+(ld("xmm.cl.links","tab")==="same"?"This tab":"New tab")+IC.updn+'</span><select data-links><option value="tab"'+(ld("xmm.cl.links","tab")==="tab"?" selected":"")+'>New tab</option><option value="same"'+(ld("xmm.cl.links","tab")==="same"?" selected":"")+'>This tab</option></select></div>'+
   '<div class="cl-row" style="cursor:default" data-do="hap">'+IC.haptic+'<span class="rt">Haptic feedback</span><button class="cl-sw'+(hapOn()?" on":"")+'" data-sw="hap" type="button" aria-label="Haptic feedback"></button></div>'+
-  row(IC.dl,"Install app",{act:"install"})+'</div>'+
+  (window.XMM_APP?(window.xmmDesktop?row(IC.dl,"Download local model",{act:"localmodel"}):""):row(IC.dl,"Install app",{act:"install"}))+'</div>'+
  '<div class="cl-note">Links that open without asking, such as sources in XMM AI’s responses, follow this setting.</div>'+
  '<div class="cl-lbl" style="padding-top:6px">Appearance</div><div class="cl-themes">'+
   [["light","Light","l"],["dark","Dark","d"],["system","System","s"]].map(function(t){return'<button class="cl-th'+(th===t[0]?" on":"")+'" data-th="'+t[0]+'" type="button"><div class="p '+t[2]+'"></div>'+t[1]+'</button>'}).join("")+'</div>'+
@@ -432,6 +432,7 @@ function wireSet(){
    else if(a==="privacy")window.open("/privacy","_blank","noopener");
    else if(a==="terms")window.open("/terms","_blank","noopener");
    else if(a==="support")window.open("/support","_blank","noopener");
+   else if(a==="localmodel"){setS.close();if(window.XMMD)XMMD.openLocal()}
    else if(a==="install"){var ib=$('[data-act="install"]');setS.close();if(ib)setTimeout(function(){ib.click()},300)}
    else if(a==="clear"){var c=$("#clearAll");if(c)c.click()}
    else if(a==="logout"){var lo=$("#logout");if(lo)lo.click()}
@@ -452,7 +453,7 @@ function themesHtml(){var th=themePref();return'<div class="cl-themes">'+[["ligh
 function deskPage(k){
  var n=uname()||"";
  if(k==="acc")return'<h4>Profile</h4>'+dkRow("Profile photo",'<span class="dk-av">'+esc((n||"X").charAt(0).toUpperCase())+'</span>')+dkRow("Full name",'<input class="dk-in" id="clName" maxlength="40" value="'+esc(n)+'" dir="auto">')+dkRow("Language",langSel().replace("<select","<select class=\"dk-in\""))+dkRow("Open links in",'<select class="dk-in" data-links><option value="tab"'+(ld("xmm.cl.links","tab")==="tab"?" selected":"")+'>New tab</option><option value="same"'+(ld("xmm.cl.links","tab")==="same"?" selected":"")+'>This tab</option></select>')+'<div class="dk-btns"><button class="dk-b" data-do="install" type="button">Install app</button><button class="dk-b dg" data-do="logout" type="button">Log out</button></div>';
- if(k==="app")return'<h4>Appearance</h4>'+themesHtml()+'<div class="cl-grp"><div class="cl-row nl" style="cursor:default" data-do="hap">'+IC.haptic+'<span class="rt">Haptic feedback</span><button class="cl-sw'+(hapOn()?" on":"")+'" data-sw="hap" type="button" aria-label="Haptic feedback"></button></div></div>';
+ if(k==="app")return'<h4>Appearance</h4>'+themesHtml()+'<div class="cl-grp"><div class="cl-row nl" style="cursor:default" data-do="hap">'+IC.haptic+'<span class="rt">Haptic feedback</span><button class="cl-sw'+(hapOn()?" on":"")+'" data-sw="hap" type="button" aria-label="Haptic feedback"></button></div></div>'+(window.xmmDesktop?'<h4 style="margin-top:22px">Local model</h4><div class="cl-grp">'+row(IC.dl,"Download local model",{act:"localmodel",sub:"Run an AI on this computer instead of the online one"})+'</div>':"");
  if(k==="mem")return'<h4>Memory</h4>'+pageCaps();
  if(k==="notif")return'<h4>Notifications</h4>'+pageNotif();
  if(k==="priv")return'<h4>Privacy</h4>'+pagePrivacy();
