@@ -46,7 +46,7 @@ try{var c=JSON.parse(localStorage.getItem("xmm.chats")||"[]");var ch=0;c.forEach
 <title>XMM-AI Corporation</title>
 <meta name="description" content="XMM-AI Corporation builds digital apps. XMM-AI is our intelligent assistant for chat, images, and creation.">
 <meta name="theme-color" content="#ffffff">
-<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.ico?v=c1" sizes="any"><link rel="icon" type="image/png" href="/favicon-96x96.png?v=c1">
 <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
 <meta property="og:site_name" content="XMM-AI Corporation">
 <meta property="og:title" content="XMM-AI Corporation">
@@ -185,6 +185,32 @@ footer{
   .product-strip,.feature,.about{padding:48px 16px}
   .strip-grid{grid-template-columns:1fr}
 }
+
+/* XMM chrome theme */
+:root{--chrome:linear-gradient(180deg,#fff 0%,#d9dde3 38%,#8e949c 52%,#f4f6f8 70%,#aeb4bc 100%)}
+body{background:#000;color:#f2f2f5}
+.chrome-text{background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:800;letter-spacing:.01em}
+.nav{background:rgba(0,0,0,.72);border-bottom:1px solid rgba(255,255,255,.12)}
+.nav-links,.nav-links a{color:#c9ccd2}.nav-links a:hover,.nav-cta:hover{color:#fff}
+.nav-cta{color:#e8eaee}
+.nav-brand img{border-radius:6px;width:26px;height:26px}
+.nav-brand span{background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:800}
+.top-img{background:#000;text-align:center;padding:28px 16px 0}
+.top-img img{margin:0 auto;width:min(820px,100%);height:auto}
+.hero{background:#000;padding-top:8px}
+.hero h1{font-size:clamp(26px,5vw,40px);font-weight:800;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero .sub{color:#9ea3ab}
+.btn-blue{background:linear-gradient(180deg,#f4f6f8,#9aa0a8);color:#000;font-weight:600}
+.btn-blue:hover{background:linear-gradient(180deg,#fff,#b8bec6)}
+.btn-outline{color:#e8eaee;border:1px solid #8e949c}.btn-outline:hover{background:#e8eaee;color:#000}
+.hero-img{box-shadow:0 20px 60px rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.product-strip{background:#08080a}.product-strip h2,.about h2,.feature h2{background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:800}
+.product-strip .sub{color:#9ea3ab}
+.strip-card{background:#111114;border:1px solid rgba(255,255,255,.12);box-shadow:none}.strip-card h3{color:#fff}.strip-card p{color:#9ea3ab}.strip-card a{color:#cfd3d9}
+.strip-card img{border-radius:22px;background:#000}
+.feature,.feature.dark,.about{background:#000!important;color:#f2f2f5}
+.about p,.feature .sub{color:#9ea3ab}
+footer,.footer{background:#000!important;color:#8e949c}
 </style>
 </head>
 <body>
@@ -193,8 +219,8 @@ footer{
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="/">
-      <img src="/chat/icon.svg?v=gpu6" alt="">
-      <span>XMM-AI</span>
+      <img src="/chat/icon.svg?v=c1" alt="">
+      <span>XMM AI Corporation</span>
     </a>
     <div class="nav-links">
       <a href="#products">Products</a>
@@ -207,8 +233,10 @@ footer{
 </nav>
 
 <!-- Hero -->
+<section class="top-img"><img src="/media/xmm-chrome.jpg" alt="XMM AI Corporation" width="821" height="382" fetchpriority="high"></section>
+
 <section class="hero">
-  <h1>XMM-AI</h1>
+  <h1>XMM AI Corporation</h1>
   <p class="sub">Your intelligent assistant.</p>
   <div class="hero-btns">
     <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Get XMM-AI</a>
@@ -225,8 +253,8 @@ footer{
   <p class="sub">Digital apps built by XMM-AI Corporation.</p>
   <div class="strip-grid">
     <div class="strip-card">
-      <img src="/media/hero-xmm.jpg" alt="XMM" width="120" height="120">
-      <h3>XMM-AI</h3>
+      <img src="/media/xmm-chrome.jpg" alt="XMM AI" width="120" height="120">
+      <h3>XMM AI</h3>
       <p>Chat, create, and understand images with one fast assistant.</p>
       <a href="https://app.xmm-ai.com/?install=1">Learn more ›</a>
     </div>
@@ -247,7 +275,7 @@ footer{
     <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Try XMM-AI</a>
   </div>
   <div class="feature-img">
-    <img src="/media/hero-xmm.jpg" alt="XMM" width="1280" height="720">
+    <img src="/media/xmm-chrome.jpg" alt="XMM AI" width="1280" height="720">
   </div>
 </section>
 

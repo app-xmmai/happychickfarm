@@ -151,9 +151,9 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark light">
 <meta name="description" content="XMM AI by XMMAI">
-<link rel="preload" as="image" href="icon.svg?v=gpu6" type="image/svg+xml" fetchpriority="high">
+<link rel="preload" as="image" href="icon.svg?v=c1" type="image/svg+xml" fetchpriority="high">
 <meta name="application-name" content="XMM AI"><meta name="apple-mobile-web-app-title" content="XMM AI"><link rel="manifest" href="/chat/manifest.webmanifest?v=gpu7">
-<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="icon.svg?v=gpu6">
+<link rel="icon" href="/favicon.ico" sizes="48x48 96x96"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/svg+xml" href="icon.svg?v=c1">
 <link rel="apple-touch-icon" href="/chat/pwa-180.png?v=gpu7"><link rel="apple-touch-icon" sizes="152x152" href="/chat/pwa-152.png?v=gpu7"><link rel="apple-touch-icon" sizes="167x167" href="/chat/pwa-167.png?v=gpu7"><link rel="apple-touch-icon" sizes="180x180" href="/chat/pwa-180.png?v=gpu7">
 
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
@@ -187,7 +187,7 @@ document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!
  var land=window.innerWidth>window.innerHeight;if(land)v=0;
  else if(!v&&navigator.standalone===true){var H=Math.max(screen.width,screen.height);v=H>=956?62:H>=852?(H===932||H===852?54:47):H>=812?(H===896?44:H===926?47:H===844?47:44):20}
  document.documentElement.style.setProperty("--sat",v+"px")}catch(e){}}
-function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight||document.documentElement.clientHeight;if(navigator.standalone===true){var sw=screen.width,sh=screen.height,land=window.innerWidth>window.innerHeight,full=land?Math.min(sw,sh):Math.max(sw,sh);if(full>h&&full-h<120)h=full}var vv=window.visualViewport,kb=0,vt=0;if(vv){vt=Math.max(0,vv.offsetTop);kb=Math.max(0,Math.round(window.innerHeight-vv.height-vt));if(kb<90)kb=0}document.documentElement.style.setProperty("--kb",kb+"px");document.documentElement.style.setProperty("--vvt",vt+"px");if(kb&&(window.scrollY||vt)){try{window.scrollTo(0,0)}catch(e){}}document.documentElement.style.setProperty("--app-h",Math.round(h)+"px")}catch(e){}}f();window.addEventListener("resize",f);window.addEventListener("orientationchange",function(){setTimeout(f,150)});window.addEventListener("pageshow",f);if(window.visualViewport){window.visualViewport.addEventListener("resize",f);window.visualViewport.addEventListener("scroll",f)}document.addEventListener("focusin",function(){setTimeout(f,120);setTimeout(f,400)});document.addEventListener("focusout",function(){setTimeout(f,120);setTimeout(f,400)});setTimeout(f,300)})()</script><link rel="stylesheet" href="anim.css?v=6"></head>
+function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight||document.documentElement.clientHeight;if(navigator.standalone===true){var sw=screen.width,sh=screen.height,land=window.innerWidth>window.innerHeight,full=land?Math.min(sw,sh):Math.max(sw,sh);if(full>h&&full-h<120)h=full}var vv=window.visualViewport,kb=0,vt=0;if(vv){vt=Math.max(0,vv.offsetTop);kb=Math.max(0,Math.round(window.innerHeight-vv.height-vt));if(kb<90)kb=0}document.documentElement.style.setProperty("--kb",kb+"px");document.documentElement.style.setProperty("--vvt",vt+"px");if(kb&&(window.scrollY||vt)){try{window.scrollTo(0,0)}catch(e){}}document.documentElement.style.setProperty("--app-h",Math.round(h)+"px")}catch(e){}}f();window.addEventListener("resize",f);window.addEventListener("orientationchange",function(){setTimeout(f,150)});window.addEventListener("pageshow",f);if(window.visualViewport){window.visualViewport.addEventListener("resize",f);window.visualViewport.addEventListener("scroll",f)}document.addEventListener("focusin",function(){setTimeout(f,120);setTimeout(f,400)});document.addEventListener("focusout",function(){setTimeout(f,120);setTimeout(f,400)});setTimeout(f,300)})()</script><link rel="stylesheet" href="anim.css?v=6"><link rel="stylesheet" href="chrome.css?v=1"></head>
 <body><script src="verify.js?v=1"></script><div id="xl"><img src="icon.svg" alt=""><small id="xls">© XMM AI</small></div><script>window.__xlT=Date.now()</script>
 
 
@@ -196,7 +196,7 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
 <section class="shell" id="shell-chat">
   <aside class="side glass" id="sideChat">
     <div class="side-top">
-      <div class="brand"><img class="logo" src="icon.svg?v=gpu6" alt=""><span>XMM AI</span></div>
+      <div class="brand"><img class="logo" src="icon.svg?v=c1" alt=""><span>XMM AI</span></div>
       <div class="side-tools"><button class="icon-btn only-m" data-act="closeDrawer" data-ic="chev2" aria-label="Close"></button></div>
     </div>
     <nav class="side-nav" id="chatNav"></nav>
@@ -255,7 +255,7 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
   <nav class="bnav-wrap only-m"><div class="bnav glass" id="chatBnav"></div><button class="circle glass" data-act="newchat" data-ic="plus" aria-label="New chat"></button></nav>
 </section>
 
-<div class="install glass" id="installBanner" hidden><img src="icon.svg?v=gpu6" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
+<div class="install glass" id="installBanner" hidden><img src="icon.svg?v=c1" alt=""><div><b>Install XMM AI</b><span>Add to your home screen for full-screen use</span></div><button class="btn sm" id="instYes">Install</button><button class="icon-btn sm" id="instNo" data-ic="close" aria-label="Dismiss"></button></div>
 
 <div id="settings" hidden><button id="logout" type="button"></button><button id="clearAll" type="button"></button><button data-act="install" type="button"></button></div>
 <div class="modal" id="installGuide" hidden><div class="sheet glass install-guide">
@@ -263,7 +263,7 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
   <div id="igBody"></div>
 </div></div>
 <div class="modal" id="welcome" hidden><form class="sheet glass welcome" id="welcomeForm" autocomplete="off">
-  <img src="icon.svg?v=gpu6" alt="">
+  <img src="icon.svg?v=c1" alt="">
   <h3>Welcome to XMM AI</h3>
   <p class="hint">What should I call you? Give me your name so I know you.</p>
   <input class="field" id="nameIn" placeholder="Your name" maxlength="40" dir="auto" autocapitalize="words" enterkeyhint="done">
