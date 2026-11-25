@@ -190,7 +190,7 @@ function autoMem(text){
 const clean=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"").replace(/^\s+/,"");
 const cleanR=t=>t.replace(/<think>[\s\S]*?<\/think>/g,"").replace(/<think>[\s\S]*$/,"");
 const getKey=()=>String(CFG.GROQ_KEY||"").trim();
-const MODELS={x70:{name:"XMMGPT Engine 7.0",short:"XMMGPT Engine 7.0",desc:"Smarter · fast",max:1000,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 7.0 in XMM AI. Give thorough, careful, high quality answers with good structure."},x71:{name:"XMMGPT Engine 7.1",short:"XMMGPT Engine 7.1",desc:"Newest engine · fast",max:1100,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 7.1 in XMM AI. Give thorough, careful, high quality answers with good structure."},sun70:{name:"XMMGPT 7.0 Sun",short:"XMMGPT 7.0 Sun",desc:"Most powerful · cold",max:1500,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT 7.0 Sun, the most powerful Sun model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun70l:{name:"XMMGPT 7.0 Lite Sun",short:"XMMGPT 7.0 Lite Sun",desc:"Warm · fast",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT 7.0 Lite Sun, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},g7l:{name:"XMMGPT 7.0 Galaxy Lite",short:"XMMGPT 7.0 Galaxy Lite",desc:"Cold · fast · good at coding",max:1200,temp:.2,cfg:"SMART_MODEL",p:" You are XMMGPT 7.0 Galaxy Lite, a fast, cold model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji. Speak cold, short and exact. No small talk, no filler, no apologies, no praise. For code, give complete, correct, working code first, then only the notes that matter."},x7g:{name:"XMMGPT-7 Galaxy",short:"XMMGPT-7 Galaxy",desc:"Most powerful · cold · best at coding",max:1800,temp:.2,cfg:"SMART_MODEL",p:" You are XMMGPT-7 Galaxy, the most powerful model in XMM AI and the strongest at coding. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji. Speak cold, short and exact. No small talk, no filler, no apologies, no praise. For code, give complete, correct, working code first, then only the notes that matter."},sun62:{name:"XMMGPT 6.2 Sun",short:"XMMGPT 6.2 Sun",desc:"Most powerful",max:1400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT 6.2 Sun, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT 6.2 Lite Sun",short:"XMMGPT 6.2 Lite Sun",desc:"Warm · fast",max:1200,temp:.6,cfg:"SMART_MODEL",p:" You are XMMGPT 6.2 Lite Sun, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMMGPT Engine 6.2",short:"XMMGPT Engine 6.2",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 6.2 in XMM AI. Give thorough, careful, high quality answers with good structure."},x20:{name:"XMMGPT 5.2",short:"XMMGPT 5.2",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" You are XMMGPT 5.2 in XMM AI. Think step by step when needed and give clear, useful answers."},x12:{name:"XMMGPT 5.0",short:"XMMGPT 5.0",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 5.0 in XMM AI. Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
+const MODELS={x70:{name:"XMMGPT Engine 7.0",short:"XMMGPT Engine 7.0",desc:"Smarter · fast",max:1000,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 7.0 in XMM AI. Give thorough, careful, high quality answers with good structure."},x71:{name:"XMMGPT Engine 7.1",short:"XMMGPT Engine 7.1",desc:"Newest engine · fast",max:1100,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 7.1 in XMM AI. Give thorough, careful, high quality answers with good structure."},sun70:{name:"XMMGPT 7.0 Sun",short:"XMMGPT 7.0 Sun",desc:"Most powerful · cold",max:1500,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT 7.0 Sun, the most powerful Sun model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun70l:{name:"XMMGPT 7.0 Lite Sun",short:"XMMGPT 7.0 Lite Sun",desc:"Warm · fast",max:1200,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 7.0 Lite Sun, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},g7l:{name:"XMMGPT 7.0 Galaxy Lite",short:"XMMGPT 7.0 Galaxy Lite",desc:"Cold · fast · good at coding",max:1200,temp:.2,cfg:"FAST_MODEL",p:" You are XMMGPT 7.0 Galaxy Lite, a fast, cold model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji. Speak cold, short and exact. No small talk, no filler, no apologies, no praise. For code, give complete, correct, working code first, then only the notes that matter."},x7g:{name:"XMMGPT-7 Galaxy",short:"XMMGPT-7 Galaxy",desc:"Most powerful · cold · best at coding",max:1800,temp:.2,cfg:"SMART_MODEL",p:" You are XMMGPT-7 Galaxy, the most powerful model in XMM AI and the strongest at coding. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji. Speak cold, short and exact. No small talk, no filler, no apologies, no praise. For code, give complete, correct, working code first, then only the notes that matter."},sun62:{name:"XMMGPT 6.2 Sun",short:"XMMGPT 6.2 Sun",desc:"Most powerful",max:1400,temp:.3,cfg:"SMART_MODEL",p:" You are XMMGPT 6.2 Sun, the most powerful model in XMM AI. PERSONA OVERRIDE (this beats every earlier instruction): never use any emoji or emoticon, not even one. Do not write in Gen Z style or slang. Speak like a cold, senior boss: short, exact, commanding, no small talk, no filler, no apologies, no enthusiasm, no praise. State the answer or the result first, then only what is needed. Do not ask the user questions back unless the task is impossible without it."},sun62l:{name:"XMMGPT 6.2 Lite Sun",short:"XMMGPT 6.2 Lite Sun",desc:"Warm · fast",max:1200,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 6.2 Lite Sun, a warm, friendly and gentle model in XMM AI. Be kind and warm in tone. Use an emoji only rarely, in a small share of your replies, never more than one or two."},x25:{name:"XMMGPT Engine 6.2",short:"XMMGPT Engine 6.2",desc:"Smartest · default",max:900,temp:.7,cfg:"SMART_MODEL",p:" You are XMMGPT Engine 6.2 in XMM AI. Give thorough, careful, high quality answers with good structure."},x20:{name:"XMMGPT 5.2",short:"XMMGPT 5.2",desc:"Balanced · smart and quick",max:700,temp:.7,cfg:"TEXT_MODEL",p:" You are XMMGPT 5.2 in XMM AI. Think step by step when needed and give clear, useful answers."},x12:{name:"XMMGPT 5.0",short:"XMMGPT 5.0",desc:"Smallest · fastest replies",max:400,temp:.6,cfg:"FAST_MODEL",p:" You are XMMGPT 5.0 in XMM AI. Keep answers short, quick and to the point."}};Object.keys(MODELS).forEach(k=>{MODELS[k].max=T.chat[k]||MODELS[k].max});var S_MODE_DEFAULT="x25";
 
 /* ---------- answer length budget: tiny for chit-chat, big only for really hard requests ---------- */
 function budgetFor(txt,hist){
@@ -349,29 +349,39 @@ const BOX_MIN_TPM=CFG.BOX_MIN_TPM||8000;
 const FP=FREE_AI.map(()=>({until:0,hits:[],busy:0}));let fRot=0,fNote=0;
 function fAvail(i){const p=FREE_AI[i],st=FP[i],n=Date.now();if(st.until>n)return false;if(p.conc&&st.busy>=p.conc)return false;st.hits=st.hits.filter(t=>n-t<60000);return !p.rpm||st.hits.length<p.rpm}
 function fCool(i,x){const st=FP[i],c=x&&x.status;st.until=Date.now()+((c===404||c===401||c===403||c===400)?600000:(c===429||c===402||c===503)?Math.max(20000,Math.min(120000,((x&&x.ra)||60)*1000)):45000)}
+async function freeTry(messages,o,ex){
+ const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(ex&&ex.indexOf(i)>=0)continue;if(fAvail(i)&&(!o.box||(FREE_AI[i].tpm||0)>=BOX_MIN_TPM))order.push(i)}fRot=(fRot+1)%n;
+ if(o.box)order.sort((a,b)=>(FREE_AI[b].tpm||0)-(FREE_AI[a].tpm||0));
+ if(o.switchFrom){const bad=order.filter(i=>FREE_AI[i].name===o.switchFrom),good=order.filter(i=>FREE_AI[i].name!==o.switchFrom);order.length=0;order.push(...good,...bad)}
+ for(const i of order.slice(0,4)){
+  if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
+  const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
+  try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}
+  catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
+  finally{st.busy--}}
+ return null}
 async function groq1(messages,o={}){
- if(FREE_AI.length&&textOnly(messages)){
-  const n=FREE_AI.length,order=[];for(let k=0;k<n;k++){const i=(fRot+k)%n;if(fAvail(i)&&(!o.box||(FREE_AI[i].tpm||0)>=BOX_MIN_TPM))order.push(i)}fRot=(fRot+1)%n;
-  if(o.box)order.sort((a,b)=>(FREE_AI[b].tpm||0)-(FREE_AI[a].tpm||0));
-  if(o.switchFrom){const bad=order.filter(i=>FREE_AI[i].name===o.switchFrom),good=order.filter(i=>FREE_AI[i].name!==o.switchFrom);order.length=0;order.push(...good,...bad)}
-  for(const i of order.slice(0,3)){
-   if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
-   const st=FP[i];if(!fAvail(i))continue;st.busy++;st.hits.push(Date.now());
-   try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}
-   catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(i,x)}
-   finally{st.busy--}}
-  if(Date.now()-fNote>30000){fNote=Date.now();try{toast("Server 1 failed, using server 2")}catch(e){}}}
- window.__xmmBackup="Groq";
- try{return await groqMain(messages,o)}
- catch(e){
-  /* 403/451 = Groq blocked this region/edge (common for Persian users): ignore cooldowns and force every free backup AI */
-  if(e&&(e.status===403||e.status===451)&&FREE_AI.length&&textOnly(messages)&&!(o.signal&&o.signal.aborted)){
-   for(let i=0;i<FREE_AI.length;i++){
-    if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError");
-    try{const r=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r}catch(x){if(o.signal&&o.signal.aborted)throw x}
-   }
-  }
-  throw e}}
+ /* order: 1) LLM7 always first (25/min) 2) when LLM7 is at its limit or fails -> Groq (about 1/min) 3) when Groq fails -> the other free servers 4) all failed -> "server overused" card */
+ const canFree=FREE_AI.length&&textOnly(messages);
+ if(!canFree){window.__xmmBackup="Groq";return await groqMain(messages,o)}
+ const ab=()=>{if(o.signal&&o.signal.aborted)throw new DOMException("Aborted","AbortError")};
+ const L=FREE_AI.findIndex(f=>f.name==="LLM7");
+ if(L>=0&&o.switchFrom!=="LLM7"&&fAvail(L)&&(!o.box||(FREE_AI[L].tpm||0)>=BOX_MIN_TPM)){
+  ab();const st=FP[L];st.busy++;st.hits.push(Date.now());
+  try{const r=await freeAsk(FREE_AI[L],messages,o);window.__xmmBackup="LLM7";return r}
+  catch(x){if(o.signal&&o.signal.aborted)throw x;fCool(L,x)}
+  finally{st.busy--}}
+ let last;
+ if(Date.now()>=(window.__gLim||0)){
+  ab();window.__xmmBackup="Groq";
+  try{return await groqMain(messages,o)}
+  catch(e){
+   if(e&&e.name==="AbortError")throw e;ab();last=e;
+   if(e&&(e.status===429||e.status===413||/\b(413|429)\b|rate limit|too many requests|per minute|tokens per/i.test(e.message||"")))window.__gLim=Date.now()+60000}}
+ ab();
+ const r=await freeTry(messages,o,L>=0?[L]:null);if(r!=null)return r;
+ if(last&&(last.status===403||last.status===451)){for(let i=0;i<FREE_AI.length;i++){ab();try{const r2=await freeAsk(FREE_AI[i],messages,o);window.__xmmBackup=FREE_AI[i].name;return r2}catch(x){if(o.signal&&o.signal.aborted)throw x}}}
+ const er=new Error("Server overused. Please wait a minute and try again.");er.allFailed=true;er.fatal=true;er.status=503;throw er}
 
 /* ---------- web search (Groq compound = built-in live search) ---------- */
 const WEB_MODELS=[]; /* off: the Worker forces one model with no web access, so these calls only burned quota */
@@ -571,7 +581,7 @@ function renderList(){const q=($("#sideSearch")||{value:""}).value.trim().toLowe
 function msgHTML(m,i,last){if(m.gen&&m.role==="assistant")return genHTML(m,i);if(m.role==="user")return`<div class="m-uw">${m.atts&&m.atts.length?`<div class="m-atts">${m.atts.map(a=>a.img?`<img src="${a.img}" alt="">`:`<span class="chip">${esc(a.name)}</span>`).join("")}</div>`:""}${m.text?`<div class="m-user" dir="auto">${esc(m.text)}</div>`:""}</div>`;
  if(m.sunQuiz)return window.XMM_SUN?XMM_SUN.card(m,i):"";
  const th=(m.think||m.web||m.visit)?`<span class="thoughts" role="button" tabindex="0" data-th="${i}">Thoughts ${ic("chevr")}</span><div class="tbody" id="tb${i}">${esc((m.visit?"Visited the website.\n":"")+(m.web?"Searched the web.\n":"")+(m.think||"").trim())}</div>`:"";
- return`<div class="m-bot" data-i="${i}">${th}${m.fallback?`<div class="sun-note" style="margin:0 0 8px;padding:10px 12px;border-radius:12px;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);font-size:.9em;line-height:1.45">${esc(SUN_NOTICE)} <a href="${/^app\./.test(location.hostname)?"/why":"/chat/why.html"}" target="_blank" rel="noopener" style="font-weight:600;text-decoration:underline;white-space:nowrap">Learn more</a></div>`:""}<div class="body" dir="auto">${m.text?md(m.text):m.fallback?"":`<span class="think"><span class="stop-x think-x" aria-hidden="true"><i></i><i></i></span><span class="think-lbl">${esc(m.status||"Thinking…")}</span></span>`}</div>${m.text&&!(last&&S.busy)?`<div class="m-acts"><button class="icon-btn" data-ma="copy" data-i="${i}" aria-label="Copy">${ic("copy")}</button><button class="icon-btn" data-ma="share" data-i="${i}" aria-label="Share">${ic("share")}</button><button class="icon-btn ${m.liked===1?"on":""}" data-ma="like" data-i="${i}" aria-label="Good response">${ic("thumb")}</button><button class="icon-btn dis ${m.liked===-1?"on":""}" data-ma="dislike" data-i="${i}" aria-label="Bad response">${ic("thumb")}</button><button class="icon-btn" data-ma="regen" data-i="${i}" aria-label="Regenerate">${ic("regen")}</button><span class="sp"></span>${m.ms?`<small>${(m.ms/1000).toFixed(2)}s</small>`:""}</div>`:""}</div>`}
+ return`<div class="m-bot" data-i="${i}">${th}${m.fallback?`<div class="sun-note" style="margin:0 0 8px;padding:10px 12px;border-radius:12px;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);font-size:.9em;line-height:1.45">${esc(SUN_NOTICE)} <a href="${/^app\./.test(location.hostname)?"/why":"/chat/why.html"}" target="_blank" rel="noopener" style="font-weight:600;text-decoration:underline;white-space:nowrap">Learn more</a></div>`:""}<div class="body" dir="auto">${m.text?md(m.text):m.fallback||m.errCard?"":`<span class="think"><span class="stop-x think-x" aria-hidden="true"><i></i><i></i></span><span class="think-lbl">${esc(m.status||"Thinking…")}</span></span>`}</div>${m.errCard?`<div class="xerr"><div class="xerr-i">!</div><div class="xerr-t"><b>${esc(m.errCard.t)}</b><span>${esc(m.errCard.s)}</span></div><button type="button" class="xerr-b" data-ma="regen" data-i="${i}">Try again</button></div>`:""}${m.text&&!(last&&S.busy)?`<div class="m-acts"><button class="icon-btn" data-ma="copy" data-i="${i}" aria-label="Copy">${ic("copy")}</button><button class="icon-btn" data-ma="share" data-i="${i}" aria-label="Share">${ic("share")}</button><button class="icon-btn ${m.liked===1?"on":""}" data-ma="like" data-i="${i}" aria-label="Good response">${ic("thumb")}</button><button class="icon-btn dis ${m.liked===-1?"on":""}" data-ma="dislike" data-i="${i}" aria-label="Bad response">${ic("thumb")}</button><button class="icon-btn" data-ma="regen" data-i="${i}" aria-label="Regenerate">${ic("regen")}</button><span class="sp"></span>${m.ms?`<small>${(m.ms/1000).toFixed(2)}s</small>`:""}</div>`:""}</div>`}
 function renderMsgs(){const c=cur();const empty=!c||!c.msgs.length;$("#viewChat").classList.toggle("empty",empty);$("#mainChat").dataset.empty=empty?1:0;
  $("#msgs").innerHTML=c?c.msgs.map((m,i)=>msgHTML(m,i,i===c.msgs.length-1)).join(""):"";scrollDown();syncNav();}
 function scrollDown(){const c=$("#convo");c.scrollTop=c.scrollHeight}
@@ -657,7 +667,7 @@ const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
     if(found){bot.web=true;sys+=" Fresh web search results are below; use them to answer accurately, mention source names briefly at the end, and say so if they don't answer the question.\n\n[WEB RESULTS for: "+q+"]\n"+found}
     else{sys+=" Web search was attempted for \""+q+"\" but it failed or returned nothing. Answer from your own knowledge. Briefly tell the user that the live web search failed, then give the best answer you can from knowledge."}}}
   const MIN_MS=0;let held="";if(lite){bot.status="Thinking…";renderMsgs()}
-  let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=Math.max(0,90-(performance.now()-_pl));_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
+  let _pq=0,_pl=0;const paint=()=>{if(_pq)return;const w=0;_pq=setTimeout(()=>{_pq=0;_pl=performance.now();const e=$(`.m-bot[data-i="${idx}"] .body`);if(e){if(bot.text){const h=md(bot.text);if(e.__h!==h){e.__h=h;e.innerHTML=h}}const c=$("#convo");if(c&&c.scrollHeight-c.scrollTop-c.clientHeight<400)scrollDown()}},w)};
   if(lite)bot.__em=Math.random()<.3;
   const BUD=budgetFor(userTxt,hist);
   if(AB){bot.text=AB;paint()}
@@ -666,7 +676,7 @@ const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
    const tt=sun?stripEmoji(t):(lite&&!bot.__em?stripEmoji(t):t);bot.think=th;
    if(performance.now()-t0<MIN_MS){held=tt;return}
    bot.text=tt;
-   if(bot.__raf)return;bot.__raf=requestAnimationFrame(()=>{bot.__raf=0;paint()});
+   paint();
   }});
   const left=MIN_MS-(performance.now()-t0);
   if(left>0&&ctrl&&!ctrl.signal.aborted)await new Promise(r=>{const id=setTimeout(r,left);ctrl.signal.addEventListener("abort",()=>{clearTimeout(id);r()},{once:true})});
@@ -685,7 +695,7 @@ const AB=window.XMM_AUTOBOX?XMM_AUTOBOX(userTxt):"";
     lastAcc=acc;if(!acc)break}
    if(shown)bot.text=shown+XMM_MCP.strip(lastAcc);if(!bot.text||!bot.text.trim())bot.text="…";paint()}
   }
- catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else if(bot.text&&bot.text.trim().length>20&&(e.status||e.retry||/not available right now|too many requests|\b(403|429|5\d\d)\b/i.test(e.message||"")))bot.text=bot.text.replace(/\n*🔧 \*[^\n]*\*\s*$/,"");else bot.text=(bot.text?bot.text+"\n\n":"")+"⚠️ "+e.message}
+ catch(e){if(e.name==="AbortError"){bot.text=bot.text||"Stopped."}else if(bot.text&&bot.text.trim().length>20&&(e.status||e.retry||/not available right now|too many requests|\b(403|429|5\d\d)\b/i.test(e.message||"")))bot.text=bot.text.replace(/\n*🔧 \*[^\n]*\*\s*$/,"");else{const off=(typeof navigator!=="undefined"&&navigator.onLine===false)||/failed to fetch|networkerror|load failed|network request failed/i.test(String(e&&e.message||""));bot.errCard=e&&e.allFailed?{t:"Server overused",s:"Too many people are using XMM AI right now. Please wait a minute and try again."}:off?{t:"Can\u2019t connect",s:"Check your internet connection and try again."}:{t:"Something went wrong",s:String(e&&e.message||"Please try again.").replace(/^Error \(\w+\):\s*/,"")}}}
  bot.ms=performance.now()-t0;bot.mode=mm.short;S.busy=false;ctrl=null;saveChats();renderMsgs();updateSend()}
 function regen(i){const c=cur();if(!c||S.busy)return;c.msgs.splice(i);ask(c)}
 function transcript(c){return c.msgs.map(m=>(m.role==="user"?"You: ":"XMM: ")+(m.text||"")).join("\n\n")}

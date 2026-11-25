@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="noanim.js?v=1"></script><script data-xmm-guard>(function(){try{
+<head><script src="noanim.js?v=1"></script><script src="net.js?v=1" defer></script><script data-xmm-guard>(function(){try{
 var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
 var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
 var S={app:1,auth:1,support:1,status:1};
@@ -137,7 +137,7 @@ html.cf-pending body > *:not(
 
 <script>/* fresh-load: every load drops service workers, caches and cookies so users always get the newest site. Never hides the page, never redirects, never wipes chats or the saved name. */
 (function(){try{
-if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){x.unregister()})}).catch(function(){});
+if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){var u=(x.active&&x.active.scriptURL)||(x.installing&&x.installing.scriptURL)||(x.waiting&&x.waiting.scriptURL)||"";if(u.indexOf("offline-sw.js")<0)x.unregister()})}).catch(function(){});
 if(window.caches)caches.keys().then(function(k){k.forEach(function(x){caches.delete(x)})}).catch(function(){});
 document.cookie.split(";").forEach(function(c){var n=c.split("=")[0].trim();if(!n)return;["",location.hostname,"."+location.hostname].forEach(function(d){document.cookie=n+"=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"+(d?";domain="+d:"")})});
 }catch(e){}})();</script>
@@ -282,11 +282,11 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
 <div class="toast glass" id="toast" hidden></div>
 
 <script src="icons.js?v=1"></script>
-<script src="config.js?v=183"></script>
+<script src="config.js?v=183f"></script>
 <script src="limit.js?v=5"></script>
 <script src="sun.js?v=9"></script>
 <script src="media.js?v=2"></script>
-<script src="app.js?v=209m"></script>
+<script src="app.js?v=209mfgh"></script>
 <script src="widgets.js?v=28"></script><script src="nav.js?v=27"></script><script src="places.js?v=5"></script><script src="extra.js?v=8"></script><script src="boximg.js?v=2"></script>
 <script src="redesign.js?v=19"></script>
 <script src="summary.js?v=1"></script>
@@ -309,5 +309,5 @@ function f(){st();try{var h=(window.visualViewport&&window.visualViewport.height
 <script src="gemini.js?v=2"></script>
 <script src="v316.js?v=17m"></script><script src="popup.js?v=4"></script><script src="build7.js?v=2"></script>
 
-<link rel="stylesheet" href="noanim.css?v=2"></body>
+<link rel="stylesheet" href="noanim.css?v=3"></body>
 </html>

@@ -44,7 +44,7 @@ window.XMM_CONFIG = {
   FALLBACK_MODELS: [],
 
   TEXT_MODEL: "openai/gpt-oss-120b",
-  FAST_MODEL: "openai/gpt-oss-120b",
+  FAST_MODEL: "openai/gpt-oss-20b",
   SMART_MODEL: "openai/gpt-oss-120b",
   CODE_MODEL: "openai/gpt-oss-120b",
   VISION_MODEL: "qwen/qwen3.8-27b"
