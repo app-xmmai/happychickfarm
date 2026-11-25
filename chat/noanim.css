@@ -1,2 +1,7 @@
 /* no animations anywhere */
 *,*::before,*::after{animation:none!important;animation-delay:0s!important;animation-duration:0s!important;transition:none!important;transition-delay:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}
+/* no hover effect on model options */
+html body #clModel .cl-mi:hover,html body #clModel .cl-mi:active,html body #clModel .cl-mi:focus,html body #clModel .cl-mi:focus-visible,html body #modeSheet .ms-i:hover,html body #modeSheet .ms-i:active,html body #modeSheet .ms-i:focus,html body #modeSheet .ms-i:focus-visible{background:#1e1f20!important;background-color:#1e1f20!important;background-image:none!important;filter:none!important;transform:none!important;scale:none!important;translate:none!important;box-shadow:none!important;opacity:1!important;outline:0!important;border-color:transparent!important}
+html body #clModel .cl-mi:hover *,html body #modeSheet .ms-i:hover *{opacity:1!important;filter:none!important}
+html body #clModel .cl-mi,html body #modeSheet .ms-i{-webkit-tap-highlight-color:transparent}
+html body #clModel span.cl-gx:hover,html body #modeSheet span.ms-gt:hover{opacity:.5!important}
