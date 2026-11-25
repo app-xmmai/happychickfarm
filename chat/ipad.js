@@ -88,7 +88,7 @@ function buildTop(){
  m.onclick=function(e){e.stopPropagation();var b=$("#modeBtn");if(b)b.click()};
  return true;
 }
-function syncModel(){var s=$("#modeBtn span"),p=$("#ipModel span");if(s&&p&&p.textContent!==s.textContent)p.textContent=s.textContent}
+function syncModel(){var s=$("#modeBtn span"),p=$("#ipModel span");if(s&&s.textContent!=="Models")s.textContent="Models";if(p&&p.textContent!=="Models")p.textContent="Models"}
 function buildSug(){
  var dock=$("#viewChat .dock");if(!dock||$("#ipSug"))return;
  var s=el("div");s.id="ipSug";

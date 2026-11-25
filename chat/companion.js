@@ -72,12 +72,12 @@ stretchAllowed().then(function(ok){if(ok)initStretch()});
 var prevMode=null;
 function toEngine(){return;
  var a=api();if(!a.S)return;
- if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="XMMGPT Engine 6.2";
+ if(a.S.mode!=="x25"&&a.S.mode!=="sun62"){prevMode=a.S.mode;a.S.mode="x25";var sp=$("#modeBtn span");if(sp)sp.textContent="Models";
   if(a.toast)a.toast("Code uses XMMGPT 6.2")}
 }
 function fromEngine(){return;
  var a=api();if(!a.S||!prevMode)return;
- if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMMGPT 5.0",x20:"XMMGPT 5.2",x25:"XMMGPT Engine 6.2",sun62:"XMMGPT 6.2 Sun"};var sp=$("#modeBtn span");if(sp)sp.textContent=M[prevMode]||"XMMGPT Engine 6.2"}
+ if(a.S.mode==="x25"){a.S.mode=prevMode;var M={x12:"XMMGPT 5.0",x20:"XMMGPT 5.2",x25:"XMMGPT Engine 6.2",sun62:"XMMGPT 6.2 Sun"};var sp=$("#modeBtn span");if(sp)sp.textContent="Models"}
  prevMode=null;
 }
 var wasCode=false;

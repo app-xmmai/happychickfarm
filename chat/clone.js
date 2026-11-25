@@ -362,7 +362,7 @@ function openModel(){
 
  s.body.addEventListener("click",function(e){var x=e.target.closest(".cl-gx");if(x){var g=s.body.querySelector(".cl-gal"),on=g.hidden;g.hidden=!on;x.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models";return}var r=e.target.closest(".cl-mi");if(!r)return;pickModel(r.dataset.k);s.close()});
 }
-function syncModelLabel(){var sp=$("#modeBtn span"),v=$("#cvModel span");if(sp&&v&&v.textContent!==sp.textContent)v.textContent=sp.textContent}
+function syncModelLabel(){var sp=$("#modeBtn span"),v=$("#cvModel span");if(sp&&sp.textContent!=="Models")sp.textContent="Models";if(v&&v.textContent!=="Models")v.textContent="Models"}
 
 /* ---------- settings sheet ---------- */
 var setS=null,stack=[];

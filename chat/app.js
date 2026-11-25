@@ -217,7 +217,7 @@ const sunSensitive=t=>false;
 const sunTrivial=t=>{t=String(t||"").trim();return t.length<=14||/^[\d\s+\-*\/().,x×÷^=?]+$/.test(t)||/^(hi+|hello|hey|yo|hallo|salam|سلام|hola|thanks|thank you|ok|okay)[\s!.?]*$/i.test(t)};
 const sunCode=t=>isCodeReq(t)||/\b(code|coding|script|function|program|html|css|javascript|python|java|c\+\+|sql|bug|debug|algorithm|app|website|game)\b/i.test(String(t||""));
 const stripEmoji=t=>String(t||"").split("```").map((x,i)=>i%2?x:x.replace(/[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D\u20E3]/gu,"").replace(/[ \t]{2,}/g," ").replace(/ +([.,!?;:])/g,"$1")).join("```");
-function sunSetMode(k){S.mode=k;const sp=$("#modeBtn span");if(sp)sp.textContent=MODELS[k].short}
+function sunSetMode(k){S.mode=k;const sp=$("#modeBtn span");if(sp)sp.textContent="Models"}
 function sunPopup(){return;
  if(document.getElementById("sunPop"))return;
  const m=document.createElement("div");m.className="modal";m.id="sunPop";
@@ -774,7 +774,7 @@ $("#modeBtn").onclick=e=>{e.stopPropagation();e.preventDefault();
   o.innerHTML='<div class="ms-bg"></div><div class="ms-card" role="menu">'+_L.filter(k=>_G.indexOf(k)<0).map(_it).join("")+'<span class="ms-gt">'+(_open?"\u25BC":"\u25B6")+' Galaxy models</span><div class="ms-gal"'+(_open?"":" hidden")+'>'+_G.map(_it).join("")+'</div></div>';
     o.addEventListener("click",ev=>{const gt=ev.target.closest(".ms-gt");if(gt){ev.stopPropagation();const g=o.querySelector(".ms-gal"),on=g.hidden;g.hidden=!on;gt.textContent=(on?"\u25BC":"\u25B6")+" Galaxy models";return}const b=ev.target.closest("[data-k]");if(b){const k=b.dataset.k;if(window.XMM_SUN&&XMM_SUN.locked(k)){closeModeSheet();modeLock=Date.now();XMM_SUN.hint();return}closeModeSheet();modeLock=Date.now();sunSetMode(k);if(k==="sun62")sunPopup();return}if(ev.target.closest(".ms-bg"))closeModeSheet()});
   document.body.appendChild(o)
-};S.mode=S_MODE_DEFAULT;$("#modeBtn span").textContent=MODELS[S_MODE_DEFAULT].short;
+};S.mode=S_MODE_DEFAULT;$("#modeBtn span").textContent="Models";
  $("#convo").addEventListener("click",e=>{const t=e.target.closest("[data-th]");if(t){t.classList.toggle("o");$("#tb"+t.dataset.th).classList.toggle("o")}});
  $("#logout").onclick=()=>{if(confirm("Log out? All chats on this device will be deleted.")){try{Object.keys(localStorage).filter(k=>/^xmm\./.test(k)&&k!=="xmm.lang").forEach(k=>localStorage.removeItem(k))}catch{}try{indexedDB.deleteDatabase("xmmcode")}catch{}location.reload()}};
  window.XMM_SUNAPI={send,cur,S,renderMsgs,saveChats,uid,toast,sunSetMode,MODELS,renderList,newChat,scrollDown};window.XMM_API={setName,groq,toast,showMenu,esc,md,ic,CFG,delChat,newChat,send,S,cur,renderMsgs};

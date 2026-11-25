@@ -611,7 +611,7 @@ function tick(){
  var nw=$('#v3Nav button[data-n="new"]');if(nw)nw.classList.toggle("on",empty&&!other);
  var hi=$("#v3Hi");if(hi){var t=hello();if(hi.textContent!==t)hi.textContent=t}
  var on=$("#chatList .chat-i.on span"),tt=on?on.textContent.trim():"New chat";var tel=$("#v3TitleT");if(tel&&tel.textContent!==(tt||"New chat"))tel.textContent=tt||"New chat";
- var mo=$("#modeBtn span"),mn=mo?mo.textContent.trim():"XMM AI";
+ var mo=$("#modeBtn span"),mn="Models";
  var m1=$("#v3Model"),m2=$("#v3Model2");if(m1&&m1.__t!==mn){m1.__t=mn;m1.innerHTML="<b>"+esc(mn)+"</b>";if(m2)m2.textContent=mn}
  var gm=$("#gMic");if(gm)micB.classList.toggle("on",gm.classList.contains("on"));
  var m=$("#msg");if(m&&D.activeElement!==ta&&m.value!==ta.value){ta.value=m.value;fit()}
