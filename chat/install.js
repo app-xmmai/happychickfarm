@@ -1,9 +1,7 @@
 /* Install page for app.xmm-ai.com/?install=1 — full-screen instructions. Never shown inside the desktop app or an installed app.
-   Phones: add-to-home-screen steps. Computers: real downloads (.exe / .app / .deb). Unsupported: iOS 14 and lower, Android 4.5 and lower. */
+   Phones: add-to-home-screen steps. Computers: PWA install steps (no native files). Unsupported: iOS 14 and lower, Android 4.5 and lower. */
 (function(){
 "use strict";
-var REL="https://github.com/app-xmmai/xmmai/releases/latest/download/";
-var FILES={win:["Windows","XMM-AI-Setup.exe",".exe"],mac:["macOS","XMM-AI-mac.tar.gz",".app"],linux:["Linux","XMM-AI-linux.deb",".deb"]};
 var AUTH=/(^|\.)xmm-ai\.com$/.test(location.hostname)?"https://auth.xmm-ai.com/":"/login/";
 function named(){try{return String(JSON.parse(localStorage.getItem("xmm.name")||'""')||"").trim()!==""}catch(e){return false}}
 var deferred=null;
@@ -53,9 +51,8 @@ function page(){
     body='<h1>Add XMM-AI to your '+(D.os==="ios"?"Home Screen":"phone")+'</h1><p class="lead">It takes about 20 seconds and needs no store.</p><ol>'+steps.map(function(s){return'<li><b>'+s[0]+'</b><p>'+s[1]+'</p></li>'}).join("")+'</ol>'+
       (deferred?'<button class="btn get" type="button">Install now</button>':"")+'<button class="btn s web" type="button">Skip Install & Continue in Browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads \u00b7 Under 2 MB</div>'}
   else{
-    var keys=D.os==="win"||D.os==="mac"||D.os==="linux"?[D.os].concat(["win","mac","linux"].filter(function(k){return k!==D.os})):["win","mac","linux"];
-    body='<h1>Get XMM-AI for your computer</h1><p class="lead">A real desktop app, not a browser tab. Chat, local models and PC control.</p>'+
-      keys.map(function(k,i){var f=FILES[k];return'<a class="btn'+(i?" s":"")+'" href="'+REL+f[1]+'" download>Download for '+f[0]+'<small>'+f[2]+' file</small></a>'}).join("")+
+    body='<h1>Install XMM-AI on your computer</h1><p class="lead">XMM-AI is a web app (PWA). Install it from your browser in a few seconds.</p><ol><li><b>Open this page in Chrome, Edge or Brave.</b><p>Works on Windows, macOS and Linux.</p></li><li><b>Click the install icon in the address bar.</b><p>Or open the browser menu and choose <b>Install XMM-AI</b>.</p></li></ol>'+
+      (deferred?'<button class="btn get" type="button">Install now</button>':"")+
       '<button class="btn s web" type="button">Skip Install & Continue in Browser</button><div class="sp"></div><div class="foot">Free \u00b7 No ads</div>'}
   d.innerHTML='<div class="w">'+top+body+'</div>';
   document.body.appendChild(d);
