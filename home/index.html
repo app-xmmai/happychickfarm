@@ -216,7 +216,7 @@ body{background:#000;color:#f2f2f5}
 footer,.footer{background:#000!important;color:#8e949c}
 .made-by{color:#e8eaee;font-size:17px;font-weight:600;margin:6px 0 18px}
 .contact-btns{margin-bottom:18px}
-.handle{opacity:.7;font-weight:400;margin-left:4px}
+.btn-sm{height:34px;padding:0 16px;font-size:14px}
 </style>
 </head>
 <body>
@@ -246,8 +246,7 @@ footer,.footer{background:#000!important;color:#8e949c}
   <p class="sub">Your intelligent assistant.</p>
   <p class="made-by">All made by Mohammad Yasin Bayat / XMM Bayat</p>
   <div class="hero-btns contact-btns">
-    <a class="btn btn-blue" href="https://t.me/xmmtheceo" target="_blank" rel="noopener">Talk to me on Telegram <span class="handle">@xmmtheceo</span></a>
-    <button class="btn btn-outline" type="button" id="discordBtn">Talk to me on Discord <span class="handle">@xmmtheceo</span></button>
+    <a class="btn btn-blue btn-sm" id="discordBtn" href="https://discord.gg/Bb9x8rMe5" target="_blank" rel="noopener">Join our Discord</a>
   </div>
   <div class="hero-btns">
     <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Get XMM-AI</a>
@@ -339,13 +338,6 @@ footer,.footer{background:#000!important;color:#8e949c}
   function close(){ modal.classList.remove("show"); }
   document.getElementById("otherProjectsBtn").addEventListener("click", function(){ document.getElementById("products").scrollIntoView({behavior:"smooth"}); });
   document.getElementById("otherProjectsLink").addEventListener("click", function(e){ e.preventDefault(); open(); });
-  var db=document.getElementById("discordBtn");
-  db.addEventListener("click", function(){
-    var n="xmmtheceo";
-    try{navigator.clipboard.writeText(n)}catch(e){}
-    var old=db.innerHTML;db.textContent="Copied @xmmtheceo \u2014 add me on Discord";
-    setTimeout(function(){db.innerHTML=old},2500);
-  });
   document.getElementById("closeModalBtn").addEventListener("click", close);
   modal.addEventListener("click", function(e){ if(e.target === modal) close(); });
 })();
