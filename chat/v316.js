@@ -245,6 +245,25 @@ input,textarea,select{font-family:var(--sans)}
  #v3Set .row{flex-wrap:wrap}
  #v3Set .in{width:100%}
  #v3Set table{font-size:13px}
+ #v3Set .row{flex-wrap:nowrap;gap:12px}
+ #v3Set .row:has(.in){flex-direction:column;align-items:stretch;gap:10px}
+ #v3Set .row:has(.in)>div{width:100%;min-width:0}
+ #v3Set .row .in{width:100%;max-width:100%;box-sizing:border-box}
+ #v3Set .row>div:last-child{flex:none;max-width:60%}
+ #v3Set .row:has(.in)>div:last-child{max-width:100%}
+ #v3Set .row:has(.cp){flex-direction:column;align-items:stretch;gap:8px}
+ #v3Set .row:has(.cp)>div:last-child{max-width:100%}
+ #v3Set .cp{display:flex;width:100%;min-width:0;justify-content:space-between}
+ #v3Set .cp code{min-width:0;overflow-wrap:anywhere;word-break:break-all;font-size:12px}
+ #v3Set .sec{flex-wrap:wrap;margin-top:26px}
+ #v3Set table,#v3Set tbody,#v3Set tr,#v3Set td{display:block;width:100%}
+ #v3Set thead{display:none}
+ #v3Set tr{border-top:1px solid var(--ln2);padding:6px 0}
+ #v3Set td{display:flex;justify-content:space-between;gap:12px;border:0;padding:8px 0;text-align:right}
+ #v3Set td::before{content:attr(data-l);color:var(--mu);text-align:left;flex:none}
+ #v3Set .th{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+ #v3Set .th button{width:100%;height:84px}
+ #v3Set .p{overflow-x:hidden;word-break:break-word}
  #v3Float{right:56px}
 }
 @media (min-width:900px){#v3Scrim{display:none}}
@@ -662,7 +681,7 @@ function page(k){
    (lo?row('Language','<select class="in" id="v3Lg">'+lo+'</select>'):"")+
    row('User ID','<span class="cp"><code>'+esc(uid())+'</code><button class="v3-ib sm" id="v3Cp" type="button" aria-label="Copy">'+I.copy+'</button></span>')+
    '<div class="sec"><b>Where you’re logged in</b><button class="bt" id="v3Lo" type="button">Log out of all devices</button></div>'+
-   '<table><thead><tr><th>Device</th><th>Location</th><th>Signed in</th><th>Last active</th></tr></thead><tbody><tr><td>'+esc(devName())+'<span class="cur">Current</span></td><td>'+esc(loc()||"—")+'</td><td>'+esc(fmt(si))+'</td><td>'+esc(fmt(Date.now()))+'</td></tr></tbody></table>'+
+   '<table><thead><tr><th>Device</th><th>Location</th><th>Signed in</th><th>Last active</th></tr></thead><tbody><tr><td data-l="Device"><span>'+esc(devName())+'<span class="cur">Current</span></span></td><td data-l="Location">'+esc(loc()||"—")+'</td><td data-l="Signed in">'+esc(fmt(si))+'</td><td data-l="Last active">'+esc(fmt(Date.now()))+'</td></tr></tbody></table>'+
    (window.XMM_APP?"":'<div class="sec"><b>Installed app</b><button class="bt" id="v3Ins" type="button">Install XMM AI</button></div><p class="note">Add XMM AI to your home screen or desktop for full-screen use.</p>');}
  if(k==="bill")return'<h4>Billing</h4>'+row('Plan','Free','XMM AI is free to use. No payment details are needed.')+row('Usage','Fair use','Some features such as video have cooldowns to keep servers fast for everyone.');
  if(k==="app"){var p=themePref();return'<h4>Appearance</h4><div class="th">'+[["light","Light","l"],["dark","Dark","d"],["system","System","s"]].map(function(t){return'<button type="button" data-th="'+t[0]+'" class="'+(p===t[0]?"on":"")+'"><i class="'+t[2]+'"></i>'+t[1]+'</button>'}).join("")+'</div>'+
@@ -689,10 +708,10 @@ function openSettings(k){
  function show(key){cur=key;$$("#v3SN button").forEach(function(b){b.classList.toggle("on",b.dataset.k===key)});$("#v3SP").innerHTML=page(key);if(mob()){o.classList.remove("mm");o.classList.add("pg");$("#v3ST").textContent=title(key);var pp=$("#v3SP");if(pp)pp.scrollTop=0}}
  function push(){try{history.pushState({v3s:1},"");pushed++}catch(e){}}
  function closeAll(){var n=pushed;pushed=0;o.remove();window.removeEventListener("popstate",onPop);if(n>0){skipPop=1;try{history.go(-n)}catch(e){}setTimeout(function(){skipPop=0},400)}}
- function onPop(){if(skipPop)return;if(!D.body.contains(o)||!o.isConnected){window.removeEventListener("popstate",onPop);return}if(pushed>0)pushed--;if(mob()&&o.classList.contains("pg"))menu();else{pushed=0;o.remove();window.removeEventListener("popstate",onPop)}}
+ function onPop(){if(skipPop)return;if(!o.isConnected){window.removeEventListener("popstate",onPop);return}if(pushed>0)pushed--;if(mob()&&o.classList.contains("pg"))menu();else{pushed=0;o.remove();window.removeEventListener("popstate",onPop)}}
  function goBack(){if(pushed>0){try{history.back();return}catch(e){}}if(o.classList.contains("pg"))menu();else closeAll()}
  var start=k&&NAV.some(function(x){return x&&x[0]===k})?k:"acc";
- if(mob()){window.addEventListener("popstate",onPop);push();if(k&&start===k){push();show(start)}else menu()}else show(start);
+ if(mob()){window.addEventListener("popstate",onPop);push();if(k&&k!=="acc"&&start===k){push();show(start)}else menu()}else show(start);
  o.addEventListener("mousedown",function(e){if(e.target===o)closeAll()});
  $("#v3SX").onclick=closeAll;
  $("#v3SB").onclick=goBack;$("#v3BA").onclick=closeAll;
