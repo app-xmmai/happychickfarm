@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-lg-theme="dark">
+<html lang="en">
 <head><script>if(/XMMAI-Desktop/.test(navigator.userAgent)){var _s=document.createElement("style");_s.textContent='a[href*="install=1"],a.store{display:none!important}';document.documentElement.appendChild(_s)}</script><script data-xmm-guard>(function(){try{
 var h=location.hostname.toLowerCase(),p=location.pathname,q=location.search+location.hash,X="xmm-ai.com";
 var dev=h==="localhost"||h==="127.0.0.1"||h==="[::1]"||location.protocol==="file:";
@@ -13,7 +13,6 @@ if(sub===""||sub===null||!S[sub]){if(k)to=u(k,p)+q}
 else{if(k&&k!==sub)to=u(k,p)+q}
 }
 if(to){document.documentElement.style.visibility="hidden";location.replace(to);return}
-/* fallback: a subdomain root that ever gets the home page (host rewrite missed) is sent to its own page file, same hostname */
 if(!dev&&!k&&p==="/"&&S[sub]){var F={app:"/chat/index.html",auth:"/login/index.html",support:"/support/index.html",status:"/status/index.html"};document.documentElement.style.visibility="hidden";location.replace(F[sub]+q);return}
 var n=navigator,ua=n.userAgent||"";
 if(!(n.webdriver||/googlebot|bingbot|adsbot|applebot|duckduckbot|duckassistbot|baiduspider|yandex|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|claude-user|claude-searchbot|anthropic|perplexitybot|perplexity-user|ccbot|bytespider|amazonbot|meta-external|facebookexternalhit|petalbot|semrush|ahrefs|mj12bot|dotbot|cohere|diffbot|youbot|ia_archiver|headless|lighthouse|python-requests|curl\/|wget|scrapy|puppeteer|playwright|selenium|phantomjs|(^|[^a-z])bot([^a-z]|$)|crawler|spider|slurp/i.test(ua)))return;
@@ -35,211 +34,267 @@ window.WebSocket=function(){throw new Error("read-only")};
 n.sendBeacon=function(){return false};
 window.open=function(){return null};
 }catch(e){}})();</script>
-<script>/* no-suspension guard: clears any old ban/lock state and removes any suspension screen. */
+<script>
 (function(){try{
-var h=location.hostname.toLowerCase();
 var BAD=/ban|susp|violat|strike|lockout|cooldown_chat|blocked/i;
 try{for(var i=localStorage.length-1;i>=0;i--){var k=localStorage.key(i);if(k&&BAD.test(k)&&!/^xmm\.(chats|notes|name|terms|welcomed)$/.test(k))localStorage.removeItem(k)}}catch(e){}
 try{var c=JSON.parse(localStorage.getItem("xmm.chats")||"[]");var ch=0;c.forEach(function(x){if(x&&(x.locked||x.banned||x.closed)){delete x.locked;delete x.banned;delete x.closed;ch=1}});if(ch)localStorage.setItem("xmm.chats",JSON.stringify(c))}catch(e){}
-var RX=/access suspended|account was suspended|safety violation|can.t message in this chat|you have been logged out/i;
-function sweep(){try{var all=document.body?document.body.querySelectorAll("div,section,aside,p,span"):[];for(var j=0;j<all.length;j++){var e=all[j];if(e.children.length<4&&RX.test(e.textContent||"")&&(e.textContent||"").length<400){var t=e;while(t.parentElement&&t.parentElement!==document.body&&(t.parentElement.textContent||"").length<500)t=t.parentElement;t.remove()}}
-var ins=document.querySelectorAll("#msg[disabled],#msg[readonly]");ins.forEach(function(n){n.removeAttribute("disabled");n.removeAttribute("readonly")})}catch(e){}}
-document.addEventListener("DOMContentLoaded",function(){sweep();new MutationObserver(sweep).observe(document.documentElement,{childList:true,subtree:true})});
-setInterval(sweep,1500);
-}catch(e){}})();</script>
-<script>
-(function(){
-  function apply(){
-    try{
-      var w=innerWidth||0;
-      var coarse=false;
-      try{coarse=matchMedia("(pointer:coarse)").matches}catch(e){}
-      var tab=w<=1100 || (coarse && w<=1400);
-      document.documentElement.classList.toggle("is-tablet", !!tab);
-      document.documentElement.classList.toggle("is-landscape", !!matchMedia("(orientation:landscape)").matches);
-      document.documentElement.classList.toggle("is-portrait", !!matchMedia("(orientation:portrait)").matches);
-    }catch(e){}
-  }
-  apply();
-  addEventListener("resize", apply);
-  addEventListener("orientationchange", function(){setTimeout(apply, 100)});
-})();
+}catch(e){}})();
 </script>
 <meta charset="utf-8">
-<meta name="google-site-verification" content="8dJAeILRK-D278rZk-3t9al1bweV_zfB74jZjzjLGfE" />
-<meta name="google-site-verification" content="CBqLRxP98Py_x8bL-OoaPuFanIPWQgY4GPwTYcnFwT0" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
-<title>XMM-AI Corporation – Digital Apps</title>
-<meta name="description" content="XMM-AI Corporation builds digital apps. XMM-AI is our flagship intelligent assistant for chat, images, and creation.">
-<meta name="theme-color" content="#0a0a0b">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>XMM-AI Corporation</title>
+<meta name="description" content="XMM-AI Corporation builds digital apps. XMM-AI is our intelligent assistant for chat, images, and creation.">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png">
 <meta property="og:site_name" content="XMM-AI Corporation">
-<meta property="og:title" content="XMM-AI Corporation – Digital Apps">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://xmm-ai.com/">
-<meta property="og:description" content="XMM-AI Corporation is a company that makes digital apps. Meet XMM-AI, our intelligent assistant.">
-<meta name="application-name" content="XMM-AI Corporation">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"XMM-AI Corporation","alternateName":["XMM-AI","XMMAI"],"url":"https://xmm-ai.com/","description":"XMM-AI Corporation is a company that makes digital apps."}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta property="og:title" content="XMM-AI Corporation">
+<meta property="og:description" content="XMM-AI Corporation is a company that makes digital apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
+html{scroll-behavior:smooth}
 body{
-  min-height:100dvh;color:#e8e6e3;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  -webkit-font-smoothing:antialiased;background:#0a0a0b;
-  display:flex;flex-direction:column;
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#1d1d1f;background:#fff;-webkit-font-smoothing:antialiased;
+  line-height:1.47;font-size:17px;
 }
 a{color:inherit;text-decoration:none}
-/* Header */
-.header{
-  position:sticky;top:0;z-index:20;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 40px;background:rgba(10,10,11,.85);backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.06);
+img{display:block;max-width:100%;height:auto}
+
+/* Nav - Apple style */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(251,251,253,.8);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.08);
 }
-.brand{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:600;letter-spacing:-.02em}
-.brand img{width:32px;height:32px;border-radius:8px;background:#fff}
-.header nav{display:flex;gap:28px;font-size:14px;font-weight:500;color:#a1a1aa}
-.header nav a:hover{color:#fff}
+.nav-inner{
+  max-width:980px;margin:0 auto;padding:0 22px;
+  height:48px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:600;letter-spacing:-.02em}
+.nav-brand img{width:22px;height:22px;border-radius:5px}
+.nav-links{display:flex;gap:28px;font-size:12px;font-weight:400;color:#1d1d1f}
+.nav-links a:hover{color:#0066cc}
+.nav-cta{font-size:12px;font-weight:400;color:#0066cc}
+.nav-cta:hover{text-decoration:underline}
+
 /* Hero */
 .hero{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:60px 24px 80px;max-width:920px;margin:0 auto;width:100%;
+  text-align:center;padding:72px 22px 40px;background:#fff;
 }
-.eyebrow{
-  display:inline-block;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
-  color:#a1a1aa;margin-bottom:20px;padding:6px 14px;border:1px solid rgba(255,255,255,.1);border-radius:999px;
+.hero h1{
+  font-size:clamp(40px,8vw,56px);font-weight:600;letter-spacing:-.015em;
+  line-height:1.07;margin-bottom:8px;
 }
-h1{
-  font-weight:600;font-size:clamp(36px,6vw,56px);line-height:1.12;letter-spacing:-.03em;
-  color:#fafafa;margin-bottom:20px;
+.hero .sub{
+  font-size:clamp(19px,3vw,28px);font-weight:400;color:#6e6e73;margin-bottom:28px;
 }
-.lead{
-  font-size:clamp(16px,2.2vw,19px);line-height:1.6;color:#a1a1aa;max-width:560px;margin:0 auto 40px;
-}
-/* CTAs */
-.ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
+.hero-btns{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-width:180px;height:52px;padding:0 24px;border-radius:12px;
-  font-size:15px;font-weight:600;letter-spacing:-.01em;cursor:pointer;border:0;
-  transition:transform .15s,background .15s,box-shadow .15s;
+  display:inline-flex;align-items:center;justify-content:center;
+  height:44px;padding:0 22px;border-radius:980px;font-size:17px;font-weight:400;
+  cursor:pointer;border:0;transition:background .2s,color .2s;
 }
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{background:#fafafa;color:#0a0a0b}
-.btn-primary:hover{background:#fff;box-shadow:0 8px 24px rgba(255,255,255,.12)}
-.btn-secondary{background:transparent;color:#fafafa;border:1px solid rgba(255,255,255,.18)}
-.btn-secondary:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.28)}
-/* About strip */
+.btn-blue{background:#0071e3;color:#fff}
+.btn-blue:hover{background:#0077ed}
+.btn-outline{background:transparent;color:#0071e3;border:1px solid #0071e3}
+.btn-outline:hover{background:#0071e3;color:#fff}
+.hero-img{
+  max-width:920px;margin:0 auto;border-radius:18px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+}
+.hero-img img{width:100%}
+
+/* Product strip */
+.product-strip{
+  background:#fbfbfd;padding:60px 22px 70px;text-align:center;
+}
+.product-strip h2{
+  font-size:clamp(28px,5vw,40px);font-weight:600;letter-spacing:-.01em;margin-bottom:8px;
+}
+.product-strip .sub{font-size:19px;color:#6e6e73;margin-bottom:40px}
+.strip-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;max-width:980px;margin:0 auto;
+}
+.strip-card{
+  background:#fff;border-radius:18px;padding:28px 20px 24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.04);transition:transform .2s;
+}
+.strip-card:hover{transform:translateY(-3px)}
+.strip-card img{width:100%;height:140px;object-fit:cover;border-radius:12px;margin:0 auto 16px}
+.strip-card h3{font-size:21px;font-weight:600;margin-bottom:4px}
+.strip-card p{font-size:14px;color:#6e6e73;margin-bottom:14px}
+.strip-card a{font-size:14px;color:#0066cc}
+.strip-card a:hover{text-decoration:underline}
+
+/* Full-bleed feature */
+.feature{
+  padding:80px 22px;text-align:center;
+}
+.feature.dark{background:#000;color:#f5f5f7}
+.feature h2{
+  font-size:clamp(32px,6vw,48px);font-weight:600;letter-spacing:-.015em;margin-bottom:8px;
+}
+.feature .sub{font-size:19px;color:#86868b;margin-bottom:28px;max-width:580px;margin-left:auto;margin-right:auto}
+.feature.dark .sub{color:#a1a1a6}
+.feature-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.feature-img{max-width:860px;margin:0 auto;border-radius:18px;overflow:hidden}
+.feature-img img{width:100%}
+
+/* About section */
 .about{
-  width:100%;max-width:720px;margin:0 auto;
-  padding:28px 28px;border-radius:16px;
-  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
-  text-align:left;
+  background:#f5f5f7;padding:80px 22px;text-align:center;
 }
-.about h2{font-size:15px;font-weight:600;color:#fafafa;margin-bottom:10px;letter-spacing:-.01em}
-.about p{font-size:14.5px;line-height:1.65;color:#a1a1aa}
+.about h2{font-size:clamp(28px,5vw,40px);font-weight:600;margin-bottom:16px}
+.about p{
+  font-size:17px;color:#6e6e73;max-width:640px;margin:0 auto 32px;line-height:1.5;
+}
+.about-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
 /* Footer */
 footer{
-  padding:28px 40px;border-top:1px solid rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
-  font-size:13px;color:#71717a;
+  background:#f5f5f7;border-top:1px solid #d2d2d7;
+  padding:28px 22px 40px;font-size:12px;color:#6e6e73;
 }
-footer nav{display:flex;gap:22px;flex-wrap:wrap}
-footer a:hover{color:#e4e4e7}
-footer .copy{white-space:nowrap}
-/* Modal for Coming Soon */
+.footer-inner{max-width:980px;margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:16px}
+.footer-links a:hover{color:#1d1d1f;text-decoration:underline}
+.footer-copy{padding-top:12px;border-top:1px solid #d2d2d7}
+
+/* Modal */
 .modal-bg{
-  position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);
+  position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);
   display:none;align-items:center;justify-content:center;padding:20px;
 }
 .modal-bg.show{display:flex}
 .modal{
-  background:#141416;border:1px solid rgba(255,255,255,.1);border-radius:16px;
-  padding:32px 28px;max-width:360px;width:100%;text-align:center;
+  background:#fff;border-radius:18px;padding:32px 28px;max-width:360px;width:100%;text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.2);
 }
-.modal h3{font-size:20px;font-weight:600;margin-bottom:8px;color:#fafafa}
-.modal p{font-size:14.5px;color:#a1a1aa;margin-bottom:24px;line-height:1.5}
+.modal h3{font-size:21px;font-weight:600;margin-bottom:8px}
+.modal p{font-size:15px;color:#6e6e73;margin-bottom:24px;line-height:1.45}
 .modal .btn{width:100%}
-@media(max-width:640px){
-  .header{padding:14px 18px}
-  .header nav{display:none}
-  .hero{padding:40px 18px 60px}
-  .ctas{flex-direction:column;width:100%;max-width:320px}
-  .btn{width:100%}
-  footer{padding:22px 18px;flex-direction:column;align-items:flex-start;gap:12px}
+
+@media(max-width:734px){
+  .nav-links{display:none}
+  .hero{padding:48px 16px 32px}
+  .product-strip,.feature,.about{padding:48px 16px}
+  .strip-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <script>if(navigator.standalone||matchMedia("(display-mode: standalone)").matches)location.replace("https://app.xmm-ai.com/");</script>
 
-<header class="header">
-  <a class="brand" href="/">
-    <img src="/chat/icon.svg?v=gpu6" alt="" width="32" height="32">
-    <span>XMM-AI Corporation</span>
-  </a>
-  <nav>
-    <a href="https://support.xmm-ai.com/">Support</a>
-    <a href="https://status.xmm-ai.com/">Status</a>
-    <a href="/terms">Terms</a>
-    <a href="/privacy">Privacy</a>
-  </nav>
-</header>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">
+      <img src="/chat/icon.svg?v=gpu6" alt="">
+      <span>XMM-AI</span>
+    </a>
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#about">About</a>
+      <a href="https://support.xmm-ai.com/">Support</a>
+      <a href="https://status.xmm-ai.com/">Status</a>
+    </div>
+    <a class="nav-cta" href="https://app.xmm-ai.com/?install=1">Get XMM-AI</a>
+  </div>
+</nav>
 
-<main class="hero">
-  <div class="eyebrow">Digital Apps Company</div>
-  <h1>We build digital apps that work.</h1>
-  <p class="lead">
-    XMM-AI Corporation is a company that makes digital apps. Our flagship product is XMM-AI — a fast, intelligent assistant for chat, image understanding, creation, and writing.
+<!-- Hero -->
+<section class="hero">
+  <h1>XMM-AI</h1>
+  <p class="sub">Your intelligent assistant.</p>
+  <div class="hero-btns">
+    <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Get XMM-AI</a>
+    <button class="btn btn-outline" type="button" id="otherProjectsBtn">Other Projects</button>
+  </div>
+  <div class="hero-img">
+    <img src="/media/hero-mac.jpg" alt="XMM-AI" width="1280" height="720" fetchpriority="high">
+  </div>
+</section>
+
+<!-- Product strip -->
+<section class="product-strip" id="products">
+  <h2>Explore the lineup.</h2>
+  <p class="sub">Digital apps built by XMM-AI Corporation.</p>
+  <div class="strip-grid">
+    <div class="strip-card">
+      <img src="/media/hero-xmm.jpg" alt="XMM" width="120" height="120">
+      <h3>XMM-AI</h3>
+      <p>Chat, create, and understand images with one fast assistant.</p>
+      <a href="https://app.xmm-ai.com/?install=1">Learn more ›</a>
+    </div>
+    <div class="strip-card">
+      <img src="/media/hero-fold.jpg" alt="xmm-ai for fold" width="120" height="120">
+      <h3>More apps</h3>
+      <p>New digital experiences from XMM-AI Corporation are on the way.</p>
+      <a href="#" id="otherProjectsLink">Coming soon ›</a>
+    </div>
+  </div>
+</section>
+
+<!-- Feature dark -->
+<section class="feature dark">
+  <h2>Built for everyday use.</h2>
+  <p class="sub">XMM-AI helps you write, analyze images, generate visuals, and get answers — instantly, in the browser or as an app.</p>
+  <div class="feature-btns">
+    <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Try XMM-AI</a>
+  </div>
+  <div class="feature-img">
+    <img src="/media/hero-xmm.jpg" alt="XMM" width="1280" height="720">
+  </div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <h2>XMM-AI Corporation</h2>
+  <p>
+    XMM-AI Corporation is a company that makes digital apps. We design products that feel simple, fast, and useful — starting with XMM-AI, our intelligent assistant available on the web and as an installable app.
   </p>
-
-  <div class="ctas">
-    <a class="btn btn-primary" href="https://app.xmm-ai.com/?install=1">XMM-AI</a>
-    <button class="btn btn-secondary" type="button" id="otherProjectsBtn">Other Projects</button>
+  <div class="about-btns">
+    <a class="btn btn-blue" href="https://app.xmm-ai.com/?install=1">Get XMM-AI</a>
+    <a class="btn btn-outline" href="https://support.xmm-ai.com/">Support</a>
   </div>
-
-  <div class="about">
-    <h2>About XMM-AI Corporation</h2>
-    <p>
-      XMM-AI Corporation creates digital applications designed for everyday usefulness. We focus on speed, clarity, and products people actually want to open. XMM-AI is our primary app — available in the browser and as an installable experience across devices.
-    </p>
-  </div>
-</main>
+</section>
 
 <footer>
-  <nav>
-    <a href="https://support.xmm-ai.com/">FAQ</a>
-    <a href="https://support.xmm-ai.com/">Support</a>
-    <a href="/terms">Terms</a>
-    <a href="/privacy">Privacy</a>
-    <a href="https://status.xmm-ai.com/">Status</a>
-    <a href="/child-safety">Child Safety</a>
-  </nav>
-  <div class="copy">© 2026 XMM-AI Corporation</div>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="https://support.xmm-ai.com/">FAQ</a>
+      <a href="https://support.xmm-ai.com/">Support</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://status.xmm-ai.com/">Status</a>
+      <a href="/child-safety">Child Safety</a>
+    </div>
+    <div class="footer-copy">Copyright © 2026 XMM-AI Corporation. All rights reserved.</div>
+  </div>
 </footer>
 
 <!-- Coming Soon modal -->
-<div class="modal-bg" id="comingSoonModal" role="dialog" aria-modal="true" aria-labelledby="csTitle">
+<div class="modal-bg" id="comingSoonModal">
   <div class="modal">
-    <h3 id="csTitle">Coming Soon</h3>
+    <h3>Coming Soon</h3>
     <p>Other projects from XMM-AI Corporation are on the way. Check back later.</p>
-    <button class="btn btn-primary" type="button" id="closeModalBtn">Got it</button>
+    <button class="btn btn-blue" type="button" id="closeModalBtn">Got it</button>
   </div>
 </div>
 
 <script>
 (function(){
-  var btn = document.getElementById("otherProjectsBtn");
   var modal = document.getElementById("comingSoonModal");
-  var close = document.getElementById("closeModalBtn");
-  if(btn) btn.addEventListener("click", function(){ modal.classList.add("show"); });
-  if(close) close.addEventListener("click", function(){ modal.classList.remove("show"); });
-  if(modal) modal.addEventListener("click", function(e){ if(e.target === modal) modal.classList.remove("show"); });
+  function open(){ modal.classList.add("show"); }
+  function close(){ modal.classList.remove("show"); }
+  document.getElementById("otherProjectsBtn").addEventListener("click", open);
+  document.getElementById("otherProjectsLink").addEventListener("click", function(e){ e.preventDefault(); open(); });
+  document.getElementById("closeModalBtn").addEventListener("click", close);
+  modal.addEventListener("click", function(e){ if(e.target === modal) close(); });
 })();
 </script>
 </body>
