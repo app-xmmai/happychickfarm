@@ -422,4 +422,4 @@ If you want others to be able to reuse the code, add a `LICENSE` file (for examp
 [Live site](https://xmm-ai.com) · [Chat](https://xmm-ai.com/chat/) · [Privacy](https://xmm-ai.com/privacy) · [Terms](https://xmm-ai.com/terms)
 
 </div>
-<!-- XMM AI v4.0.0 -->
+<!-- XMM AI v4.0.1 -->
